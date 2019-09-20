@@ -1,0 +1,66 @@
+.note {
+  margin: 1vw;
+  min-width: 15%;
+  max-width: 30%;
+  min-height: 20vh;
+  max-height: 40vh;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(250, 249, 244);
+  border-radius: 4px;
+  box-shadow: 0px 0px 8px 0px rgba(0, 0 ,0 , 0.25);
+  color: rgb(80, 80, 80);
+
+  .groupName {
+    color: white;
+    background-color: #9b3494;
+    text-align: center;
+    border-radius: 4px 4px 0 0;
+  }
+
+  .title {
+    margin-top: 4%;
+    margin-bottom: 0;
+    padding: 0 4%;
+    text-align: center;
+    font-size: 26px;
+    font-weight: normal;
+    word-break: break-word;
+  }
+  
+  .content {
+    flex-grow: 1;
+    padding: 5%;
+    box-sizing: border-box;
+    white-space: pre;
+    overflow: auto;
+  }
+
+  .date {
+    padding: 1% 0;
+    box-sizing: border-box;
+    border-top: 1px solid rgb(240, 240 ,240);
+    text-align: center;
+    color: rgb(180, 180 ,180);
+  }
+}
+
+@media (max-width: 768px) {
+  .note {
+    margin: 4vw;
+    min-width: 20%;
+    max-width: 40%;
+  }
+}
+
+@media (max-width: 480px) {
+  .note {
+    margin: 2vh 0;
+    max-width: none;
+    width: 100%;
+
+    .title {
+      font-size: 22px;
+    }
+  }
+}

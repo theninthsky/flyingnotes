@@ -1,0 +1,29 @@
+.navBar {
+    margin: 4vh auto;
+    width: 40vw;
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 1px solid rgb(220, 220 ,220);
+
+    .icon {
+        margin-right: 8px;
+        width: 16px;
+    }
+
+    .icon.group {
+        margin-right: 12px;
+        transform: scale(1.5, 1.5) translate(-10%, -10%);
+    }
+}
+
+@media (max-width: 768px) {
+    .navBar {
+        width: 60vw;
+    }
+}
+
+@media (max-width: 480px) {
+    .navBar {
+        width: 90vw;
+    }
+}

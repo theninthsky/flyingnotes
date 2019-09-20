@@ -1,0 +1,23 @@
+.navItem {
+    font-size: 26px;
+    color: rgb(60, 60, 60);
+    text-decoration: none;
+
+    &:visited {
+        color: rgb(60, 60, 60);
+    }
+
+    &:active {
+        color: rgb(180, 180, 180);
+    }
+}
+
+.active.active {
+    color: gray;
+}
+
+@media (max-width: 450px) {
+    .navItem {
+        font-size: 20px;
+    }
+}
