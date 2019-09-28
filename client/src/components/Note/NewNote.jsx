@@ -36,8 +36,8 @@ const NewNote = props => {
                     <option>Herolo Workers</option>
                     <option>Fiverr Workers</option>
                 </select> : null }
-                <input className={styles.title} placeholder="Title" maxLength="40" value={title} onChange={titleHandler} />
-                <textarea className={styles.content} placeholder=". . ." value={content} onChange={contentHandler} required></textarea>
+                <input className={styles.title} dir="auto" placeholder="Title" maxLength="40" value={title} onChange={titleHandler} />
+                <textarea className={styles.content} dir="auto" placeholder=". . ." value={content} onChange={contentHandler} required></textarea>
                 <input className={styles.save} type="submit" value="Save" />
             </form>
         </div>

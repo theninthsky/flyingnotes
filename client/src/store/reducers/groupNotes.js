@@ -1,12 +1,14 @@
-const initialState = [
-    { groupName: 'Herolo Workers', title: 'Announcements', content: 'You are fired!', date: new Date().toDateString() }
-];
+import * as actionTypes from '../actions/actionTypes';
+
+const initialState = [];
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'SAVE_GROUP_NOTE':
+        case actionTypes.UPDATE_GROUP_NOTES:
+            return [...action.notes];
+        case actionTypes.SAVE_GROUP_NOTE:
             return [ ...state, action.note ];
-        default: return [...state];
+        default: return state;
     }
 };
 

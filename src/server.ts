@@ -7,7 +7,7 @@ const app = express();
 //     .then(() => console.log('MongoDB is Connected...'))
 //     .catch(err => console.log(err));
 
-app.get('/', (_, res: Response) => res.send('Root Route!'));
+app.get('*', (_, res: Response) => res.send('Root Route!'));
 
 app.listen(+process.env.PORT || 3000, process.env.IP, () => {
     console.log('Server is running on PORT 3000...');
