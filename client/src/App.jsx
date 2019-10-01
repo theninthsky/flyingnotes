@@ -9,7 +9,7 @@ import * as actionTypes from './store/actions/actionTypes';
 import './App.scss';
 
 const App = props => {
-  const { myNotes, groupNotes, rssNotes, updateMyNotes, updateGroupNotes, updateRssNotes } = props;
+  const { myNotes, groupNotes, rssNotes, setRssNotes, updateMyNotes, updateGroupNotes, updateRssNote } = props;
   
   /* DUMMY DB */
   const dbNotes = {
@@ -49,14 +49,20 @@ const App = props => {
     groupNotes: [
       { groupName: 'Herolo Workers', title: 'Announcements', content: 'You are fired!', date: new Date().toDateString() }
     ],
-    rssFeeds: [{ title: 'Reddit',url: 'http://www.reddit.com/.rss' }, { title: 'BBC', url: 'http://feeds.bbci.co.uk/news/rss.xml' }, { title: 'Ynet', url: 'http://www.ynet.co.il/Integration/StoryRss2.xml'}]
+    rssFeeds: [{ name: 'Reddit',url: 'http://www.reddit.com/.rss' }, { name: 'BBC', url: 'http://feeds.bbci.co.uk/news/rss.xml' }, { name: 'Ynet', url: 'http://www.ynet.co.il/Integration/StoryRss2.xml'}]
+  };
+
+  const storeRssFeeds = () => {
+    for (const feed of dbNotes.rssFeeds) {
+      fetchRss(feed);
+    }
   };
   
-  const fetchRss = async ({title, url}) => {
+  const fetchRss = async ({name, url}) => {
     const parser = new RSSParser();
     const CORS_PROXY = 'https://cors-anywhere.herokuapp.com/';
     const feed = await parser.parseURL(CORS_PROXY + url);
-    updateRssNotes(title, feed);
+    updateRssNote(name, feed);
   };
   
   useEffect(() => {
@@ -67,9 +73,9 @@ const App = props => {
     if (JSON.stringify(dbNotes.groupNotes) !== JSON.stringify(groupNotes)) {
       updateGroupNotes(dbNotes.groupNotes);
     }
-    for (const feed of dbNotes.rssFeeds) {
-      fetchRss(feed);
-    }
+    setRssNotes(dbNotes.rssFeeds);
+    storeRssFeeds();
+    setInterval(storeRssFeeds, 30000); // refetch RSS feeds every 30 secs
   }, [ /*myNotes, groupNotes, updateMyNotes, updateGroupNotes, updateRssNotes */]);
 
   return (
@@ -78,7 +84,7 @@ const App = props => {
       <Switch>
         <Route exact path="/" render={props => <Notes notes={myNotes} />} />
         <Route path="/group-notes" render={props => <Notes notes={groupNotes} />} />
-        <Route path="/rss-notes" render={props => <Notes notes={rssNotes} />} />
+        <Route path="/rss-notes" render={props => <Notes notes={rssNotes} pathname={props.location.pathname} />} />
         <Redirect to="/" />
       </Switch>
     </>
@@ -94,7 +100,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   updateMyNotes: myNotes => dispatch({ type: actionTypes.UPDATE_PERSONAL_NOTES, notes: myNotes }),
   updateGroupNotes: groupNotes => dispatch({ type: actionTypes.UPDATE_GROUP_NOTES, notes: groupNotes }),
-  updateRssNotes: (title, feed) => dispatch({ type: actionTypes.UPDATE_RSS_NOTES, title: title, feed: feed })
+  setRssNotes: rssFeeds => dispatch({ type: actionTypes.SET_RSS_NOTES, feeds: rssFeeds }),
+  updateRssNote: (name, feed) => dispatch({ type: actionTypes.UPDATE_RSS_NOTE, name: name, feed: feed })
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

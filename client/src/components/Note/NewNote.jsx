@@ -16,7 +16,7 @@ const NewNote = props => {
     
     const saveNoteHandler = event => {
         event.preventDefault();
-        switch (props.path) {
+        switch (props.pathname) {
             case '/':
                 props.onSavePersonalNote({ title: title, content: content });
                 break;
@@ -31,10 +31,11 @@ const NewNote = props => {
     return (
         <div className={styles.note}>
             <form onSubmit={saveNoteHandler} action="/" method="post" autoComplete="off">
-                { props.path === '/group-notes' ? <select className={styles.groupName} value={groupName} onChange={groupNameHandler}>
+                { props.pathname === '/group-notes' ? <select className={styles.groupName} value={groupName} onChange={groupNameHandler}>
                     <option defaultValue disabled>Choose Group</option>
-                    <option>Herolo Workers</option>
+                    <option style={{backgroundColor: 'purple'}}>Herolo Workers</option>
                     <option>Fiverr Workers</option>
+                    <option dir="auto">עובדי רפאל!</option>
                 </select> : null }
                 <input className={styles.title} dir="auto" placeholder="Title" maxLength="40" value={title} onChange={titleHandler} />
                 <textarea className={styles.content} dir="auto" placeholder=". . ." value={content} onChange={contentHandler} required></textarea>

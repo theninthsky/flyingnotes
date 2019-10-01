@@ -6,10 +6,10 @@ import NewRssFeed from '../../components/Note/NewRssFeed';
 import styles from './Notes.module.scss';
 
 const Notes = memo(props => {
-    const notes = window.location.pathname === '/rss-notes' ?
+    const notes = props.pathname === '/rss-notes' ?
         props.notes.map(note => 
             <Note 
-                title={note.title}
+                name={note.name}
                 content={
                     note.content.map(item => 
                         <>
@@ -18,7 +18,7 @@ const Notes = memo(props => {
                             <br />
                         </>
                     )
-                } 
+                }
                 date={note.date} 
             />) :
         [...props.notes].reverse().map(
@@ -27,7 +27,7 @@ const Notes = memo(props => {
 
     return (
         <div className={styles.notesContainer}>
-            { window.location.pathname === '/rss-notes' ? <NewRssFeed /> : <NewNote path={window.location.pathname} /> }
+            { props.pathname === '/rss-notes' ? <NewRssFeed /> : <NewNote pathname={window.location.pathname} /> }
             {notes}
         </div>
     );
