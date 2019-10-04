@@ -6,7 +6,9 @@ const reducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.SET_RSS_NOTES:
             const rssArr = [];
-            for (let feed of action.feeds) {
+            // eslint v6.2.0 bug
+            // eslint-disable-next-line
+            for (const feed of action.feeds) {
                 rssArr.push({ name: feed.name, content: [] });
             }
             return rssArr;
@@ -15,8 +17,8 @@ const reducer = (state = initialState, action) => {
             return state.map(feed => feed.name === action.name ? 
                 { ...feed, content: content, date: new Date().toTimeString().split` `[0] } : 
                 feed);
-        case actionTypes.SAVE_RSS_NOTE:
-            return 'post to DB';
+        case actionTypes.ADD_NEW_FEED:
+            return state; // TEMPORARY
         default: return state;
     }
 };
