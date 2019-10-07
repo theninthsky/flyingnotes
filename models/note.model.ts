@@ -1,6 +1,7 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 interface INote extends Document {
+    user: object,
     title?: string;
     content: string;
     color?: string;
@@ -8,6 +9,10 @@ interface INote extends Document {
 }
 
 const noteSchema: Schema = new Schema({
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
     title: String,
     content: {
         type: String,

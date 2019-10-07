@@ -29,9 +29,7 @@ const userSchema: Schema = new Schema({
     theme: {
         type: String,
         default: 'light'
-    },
-    notes: Array,
-    feeds: Array
+    }
 });
 
 export default mongoose.model<IUser>('User', userSchema);

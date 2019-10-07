@@ -4,13 +4,15 @@ import Note from '../models/note.model';
 
 const router = express.Router();
 
+/* CREATE */
 router.post('/notes', (req: Request, res: Response) => {
-    const { title, content, color } = req.body;
-    const newNote = new Note({title, content, color });
+    const { userId, title, content, color } = req.body;
+    const newNote = new Note({ userId, title, content, color });
 
     newNote.save()
-        .then(({title}) => console.log(title + ' note added!'))
-        .catch(({message, errmsg}) => console.log('Error: ' + message || errmsg));
+        .then(() => Note.find({userId: req.body.userId}))
+        .then(notes => res.json(notes))
+        .catch(({ message, errmsg }) => console.log('Error: ' + message || errmsg));
 });
 
 export default router;
