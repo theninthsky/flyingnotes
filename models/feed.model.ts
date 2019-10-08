@@ -9,7 +9,8 @@ interface IFeed extends Document {
 const feedSchema: Schema = new Schema({
     userId: {
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: true
     },
     name: {
         type: String,

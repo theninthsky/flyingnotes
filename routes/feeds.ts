@@ -1,8 +1,10 @@
 import express, { Request, Response } from 'express';
+import RSSParser from 'rss-parser';
 
 import Feed from '../models/feed.model';
 
 const router = express.Router();
+const parser = new RSSParser();
 
 /* CREATE */
 router.post('/feeds', (req: Request, res: Response) => {
@@ -16,9 +18,23 @@ router.post('/feeds', (req: Request, res: Response) => {
 
 /* UPDATE */
 router.put('/feeds', (req: Request, res: Response) => {
-    Feed.findOneAndUpdate({_id: req.body.feedId}, req.body, {new: true})
+    Feed.findByIdAndUpdate(req.body.feedId, req.body, { new: true, runValidators: true })
         .then(feed => res.json(feed))
         .catch(({ message, errmsg }) => console.log('Error: ' + message || errmsg));
+});
+
+/* DELETE */
+router.delete('/feeds', (req: Request, res: Response) => {
+    Feed.findByIdAndDelete(req.body.feedId)
+        .then(() => res.send('DELETED'))
+        .catch(({ message, errmsg }) => console.log('Error: ' + message || errmsg));
+});
+
+/* PROXY */
+router.get('/fetch-rss', (req: Request, res: Response) => {
+    parser.parseURL(req.body.url)
+        .then(data => res.send(data))
+        .catch(() => res.send(`No response from ${req.body.url}, make sure the URL is typed correctly.`));
 });
 
 export default router;

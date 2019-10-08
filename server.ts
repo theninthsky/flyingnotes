@@ -1,6 +1,5 @@
 import express, { Response } from 'express';
 import mongoose from 'mongoose';
-// import rssParser from 'rss-parser';
 
 import userRoutes from './routes/users';
 import noteRoutes from './routes/notes';

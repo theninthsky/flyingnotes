@@ -12,8 +12,14 @@ router.post('/register', (req: Request, res: Response) => {
     const newUser = new User({ name, email, password, theme });
     
     newUser.save()
-        .then(({name}) => console.log(name + ' registered!'))
-        .catch(({message, errmsg}) => console.log('Error: ' + message || errmsg));
+        .then(user => {
+            console.log(name + ' registered!');
+            res.json({status: 'success', data: user._id});
+        })
+        .catch(({message, errmsg}) => { 
+            console.log('Error: ' + message || errmsg);
+            res.json({status: 'error', data: 'This email address is already registered, try login instead.'});
+        });
 });
 
 /* READ */
@@ -29,10 +35,9 @@ router.get('/index', async (req: Request, res: Response) => {
 
 /* UPDATE */
 router.put('/register', (req: Request, res: Response) => {
-    const { userId, name, password } = req.body;
-    
-    User.findOneAndUpdate({_id: userId}, { name, password })
-        .then(({_id}) => res.json(_id));
+    User.findByIdAndUpdate(req.body.userId, req.body, {runValidators: true})
+        .then(() => res.send('Successfully updated!'))
+        .catch(({ message, errmsg }) => console.log('Error: ' + message || errmsg));
 });
 
 /* LOGIN */

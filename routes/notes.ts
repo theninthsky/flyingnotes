@@ -16,8 +16,15 @@ router.post('/notes', (req: Request, res: Response) => {
 
 /* UPDATE */
 router.put('/notes', (req: Request, res: Response) => {
-    Note.findOneAndUpdate({_id: req.body.noteId}, { ...req.body, date: Date.now() }, {new: true})
+    Note.findByIdAndUpdate(req.body.noteId, { ...req.body, date: Date.now() }, { new: true, runValidators: true })
         .then(note => res.json(note))
+        .catch(({ message, errmsg }) => console.log('Error: ' + message || errmsg));
+});
+
+/* DELETE */
+router.delete('/notes', (req: Request, res: Response) => {
+    Note.findByIdAndDelete(req.body.noteId)
+        .then(() => res.send('DELETED'))
         .catch(({ message, errmsg }) => console.log('Error: ' + message || errmsg));
 });
 
