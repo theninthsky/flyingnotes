@@ -42,15 +42,11 @@ router.put('/register', (req: Request, res: Response) => {
 
 /* LOGIN */
 router.post('/login', (req: Request, res: Response) => {
-    User.findOne({ email: req.body.email })
+    User.findOne({ email: req.body.email, password: req.body.password })
         .then(user => {
-            if (user && user.password === req.body.password) {
-                res.json({userId: user['_id']});
-            } else {
-                res.send('Incorrect email or password');
-            }
+            res.json({userId: user['_id']});
         })
-        .catch(({message, errmsg}) => console.log('Error: ' + message || errmsg));
+        .catch(() => res.send('Incorrect email or password'));
 });
 
 export default router;

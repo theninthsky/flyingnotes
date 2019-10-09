@@ -1,4 +1,4 @@
-import RSSParser from 'rss-parser';
+import axios from 'axios';
 
 import * as actionTypes from './actionTypes';
 
@@ -7,9 +7,7 @@ const rssFeeds = [{ name: 'Reddit',url: 'http://www.reddit.com/.rss' }, { name: 
 export const setRssNotes = ()=> ({ type: actionTypes.SET_RSS_NOTES, feeds: rssFeeds });
 
 const fetchRss = async ({name, url}) => {
-    const parser = new RSSParser();
-    const CORS_PROXY = 'https://cors-anywhere.herokuapp.com/';
-    const feed = await parser.parseURL(CORS_PROXY + url);
+    const feed = await axios.get('http"//localhost:3000');
     return { type: actionTypes.UPDATE_RSS_NOTE, name: name, feed: feed };
 };
 
