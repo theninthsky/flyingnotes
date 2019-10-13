@@ -6,13 +6,17 @@ import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 
 import App from './App';
-import myNotesReducer from './store/reducers/myNotes';
+import userReducer from './store/reducers/user';
+import userNotesReducer from './store/reducers/userNotes';
 import rssNotesReducer from './store/reducers/rssNotes';
 
-const composeEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;
+const composeEnhancers = process.env.NODE_ENV === 'development' ? 
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || null || compose : 
+    null || compose;
 
 const rootReducer = combineReducers({
-    myNotes: myNotesReducer,
+    user: userReducer,
+    userNotes: userNotesReducer,
     rssNotes: rssNotesReducer
 });
 

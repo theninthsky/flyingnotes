@@ -31,10 +31,10 @@ router.delete('/feeds', (req: Request, res: Response) => {
 });
 
 /* PROXY */
-router.get('/fetch-rss', (req: Request, res: Response) => {
-    parser.parseURL(req.body.url)
+router.get('/fetch-rss/*', (req: Request, res: Response) => {
+    parser.parseURL(req.params[0])
         .then(data => res.send(data))
-        .catch(() => res.send(`No response from ${req.body.url}, make sure the URL is typed correctly.`));
+        .catch(() => res.send(`No response from ${req.params[0]}, make sure the URL is typed correctly.`));
 });
 
 export default router;

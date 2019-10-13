@@ -4,9 +4,9 @@ const initialState = [];
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case actionTypes.UPDATE_MY_NOTES:
-            return [...action.notes];
-        case actionTypes.ADD_NEW_NOTE:
+        case actionTypes.SET_USER_NOTES:
+            return action.notes;
+        case actionTypes.ADD_NOTE:
             return [ ...state, action.note ];
         default: return state;
     }

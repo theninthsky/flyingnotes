@@ -1,19 +1,19 @@
 .navItem {
     font-size: 26px;
-    color: rgb(60, 60, 60);
+    color: gray;
     text-decoration: none;
 
-    &:visited {
+    &:hover {
         color: rgb(60, 60, 60);
     }
 
     &:active {
-        color: rgb(180, 180, 180);
+        color: rgb(60, 60, 60);
     }
 }
 
 .active.active {
-    color: gray;
+    color: rgb(60, 60, 60);
 }
 
 @media (max-width: 450px) {

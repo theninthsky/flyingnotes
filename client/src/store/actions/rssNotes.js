@@ -1,27 +1,42 @@
+import { batch } from 'react-redux';
 import axios from 'axios';
 
 import * as actionTypes from './actionTypes';
 
-const rssFeeds = [{ name: 'Reddit',url: 'http://www.reddit.com/.rss' }, { name: 'BBC', url: 'http://feeds.bbci.co.uk/news/rss.xml' }, { name: 'Ynet', url: 'http://www.ynet.co.il/Integration/StoryRss2.xml'}];
-
-export const setRssNotes = ()=> ({ type: actionTypes.SET_RSS_NOTES, feeds: rssFeeds });
-
-const fetchRss = async ({name, url}) => {
-    const feed = await axios.get('http"//localhost:3000');
-    return { type: actionTypes.UPDATE_RSS_NOTE, name: name, feed: feed };
+export const setRssNotes = feeds => {
+    console.log('setRssNotes');
+    return async dispatch => {
+        batch(() => {
+            dispatch({ type: actionTypes.SET_RSS_NOTES, feeds });
+            dispatch(updateRssNotes(feeds));
+        });
+    };
 };
 
-export const updateRssNotes = () => {
+const fetchRss = async ({name, url}) => {
+    const { data } = await axios.get(`${process.env.REACT_APP_SERVER_URL}/fetch-rss/${url}`);
+    return { type: actionTypes.UPDATE_RSS_NOTE, name: name, data: data };
+};
+
+export const updateRssNotes = feeds => {
+    console.log('updateRssNotes', feeds);
     return async dispatch => {
         // eslint v6.2.0 bug
         // eslint-disable-next-line
-        for (const feed of rssFeeds) {
+        for (const feed of feeds) {
             dispatch(await fetchRss(feed));
         }
     }
 };
 
-export const addNewFeed = feed => {
-    // POST TO DB
-    return { type: actionTypes.ADD_NEW_FEED, feed: feed };
+export const addFeed = feed => {
+    return async dispatch => {
+        if (feed.userId) {
+            const response = await axios.post(process.env.REACT_APP_SERVER_URL + '/feeds', feed);
+            feed = response.data;
+        } else {
+            localStorage.setItem('feeds', JSON.stringify(localStorage.feeds ? [...JSON.parse(localStorage.feeds), feed] : [feed]));
+        }
+        dispatch({ type: actionTypes.ADD_FEED, feed });
+    };
 };

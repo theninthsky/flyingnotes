@@ -1,15 +1,33 @@
 .navBar {
     margin: 4vh auto;
-    width: 40vw;
+    width: 20vw;
     display: flex;
     justify-content: space-around;
-    border-bottom: 1px solid rgb(220, 220 ,220);
+    border-bottom: 1px solid rgb(230, 230 ,230);
 
     .icon {
         margin-right: 8px;
-        width: 16px;
-        opacity: 0.5;
+        width: 14px;
+        opacity: 0.25;
     }
+}
+
+.login {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    font-size: 18px;
+    color: rgb(100, 100, 100);
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+        font-weight: bold;
+    }
+}
+
+.active.active {
+    color: gray;
 }
 
 @media (max-width: 768px) {

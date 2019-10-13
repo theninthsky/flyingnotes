@@ -1,10 +1,17 @@
 export {
-    updateMyNotes,
-    addNewNote
-} from './myNotes';
+    register,
+    login,
+    logout,
+    fetchData
+} from './user';
+
+export {
+    setUserNotes,
+    addNote
+} from './userNotes';
 
 export {
     setRssNotes,
     updateRssNotes,
-    addNewFeed
+    addFeed
 } from './rssNotes';

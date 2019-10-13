@@ -2,7 +2,7 @@ import mongoose, { Document, Schema } from 'mongoose';
 
 interface INote extends Document {
     user: object,
-    group?: string;
+    category?: string;
     title?: string;
     content: string;
     color?: string;
@@ -15,7 +15,7 @@ const noteSchema: Schema = new Schema({
         ref: 'User',
         required: true
     },
-    group: String,
+    category: String,
     title: String,
     content: {
         type: String,
