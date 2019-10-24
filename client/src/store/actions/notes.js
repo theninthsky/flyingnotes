@@ -2,8 +2,8 @@ import axios from 'axios';
 
 import * as actionTypes from './actionTypes';
 
-export const setUserNotes = notes => ({ 
-    type: actionTypes.SET_USER_NOTES, 
+export const setNotes = notes => ({ 
+    type: actionTypes.SET_NOTES, 
     notes: notes
 });
 

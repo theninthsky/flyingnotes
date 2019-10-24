@@ -5,7 +5,6 @@ import NavigationItem from './NavigationItem';
 import Auth from '../../containers/Auth/Auth';
 import styles from './NavigationBar.module.scss';
 import userImage from '../../assets/images/user.svg';
-import rssImage from '../../assets/images/rss.svg';
 
 const NavigationBar = props => {
     const [showAuth, setShowAuth] = useState(false);
@@ -18,7 +17,6 @@ const NavigationBar = props => {
         <>
             <div className={styles.navBar}>
                 <NavigationItem url="/"><img className={styles.icon} src={userImage} alt="" />My Notes</NavigationItem>
-                <NavigationItem url="/rss-notes"><img className={styles.icon} src={rssImage} alt="" />RSS Notes</NavigationItem>
             </div>
             <div className={styles.login} onClick={toggleAuthHandler}>{props.name || 'Login'}</div>
             {showAuth ? <Auth toggleAuth={toggleAuthHandler} /> : null}

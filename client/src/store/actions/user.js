@@ -2,7 +2,7 @@ import { batch } from 'react-redux';
 import axios from 'axios';
 
 import * as actionTypes from './actionTypes';
-import { setUserNotes, setRssNotes } from './index';
+import { setNotes } from './index';
 
 export const register = credentials => {
     return async dispatch => {
@@ -20,13 +20,12 @@ export const login = credentials => {
     return async dispatch => {
         const { data } = await axios.post(process.env.REACT_APP_SERVER_URL + '/login', credentials);
         if (data.userId) {
-            const { userId, name, notes, feeds } = data;
+            const { userId, name, notes } = data;
             localStorage.setItem('userId', userId);
             localStorage.setItem('name', name);
             batch(() => {
                 dispatch({ type: actionTypes.LOGIN, userId, name });
-                dispatch({ type: actionTypes.SET_USER_NOTES, notes });
-                dispatch(setRssNotes(feeds));
+                dispatch({ type: actionTypes.SET_NOTES, notes });
             });
         } else {
             // show response to user...
@@ -40,19 +39,14 @@ export const logout = () => {
         localStorage.removeItem('name');
         batch(() => {
             dispatch({type: actionTypes.LOGOUT});
-            dispatch(setUserNotes(JSON.parse(localStorage.notes || '[]')));
-            dispatch(setRssNotes(JSON.parse(localStorage.feeds || '[]')));
+            dispatch(setNotes(JSON.parse(localStorage.notes || '[]')));
         });
     };
 };
 
-export const fetchData = () => {
+export const fetchNotes = () => {
     return async dispatch => {
-        const { data } = await axios.get(process.env.REACT_APP_SERVER_URL + '/user/' + localStorage.userId);
-        batch(() => {
-            // dataFethed aswell here
-            dispatch({ type: actionTypes.SET_USER_NOTES, notes: data.notes });
-            dispatch(setRssNotes(data.feeds));
-        });
+        const { data } = await axios.get(process.env.REACT_APP_SERVER_URL + '/users/' + localStorage.userId);
+        dispatch({ type: actionTypes.SET_NOTES, notes: data });
     };
 };

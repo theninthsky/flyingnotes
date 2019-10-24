@@ -15,7 +15,6 @@ const App = () => {
       <NavigationBar />
       <Switch>
         <Route exact path="/" component={Notes} />
-        <Route path="/rss-notes" render={props => <Notes pathname={props.location.pathname} />} />
         <Redirect to="/" />
       </Switch>
     </>
