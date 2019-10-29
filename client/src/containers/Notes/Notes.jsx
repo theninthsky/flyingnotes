@@ -7,13 +7,13 @@ import * as actions from '../../store/actions/index';
 import styles from './Notes.module.scss';
 
 const Notes = props => {
-    const { loggedIn, notes, fetchNotes, setNotes } = props;
+    const { user: { userId, isLoggedIn }, notes, fetchNotes, setNotes } = props;
 
     useEffect(() => {
         console.log('[Notes] rendered!');
         if (!notes.length) {
-            if (localStorage.userId) {
-                if (!loggedIn) {
+            if (userId) {
+                if (!isLoggedIn) {
                     fetchNotes();
                 }
             } else {
@@ -22,10 +22,10 @@ const Notes = props => {
                 }
             }
         }
-    }, [ loggedIn, notes, fetchNotes, setNotes ]);
+    }, [ userId, isLoggedIn, notes, fetchNotes, setNotes ]);
 
     const filteredNotes = useMemo(() => [...notes].reverse().map((note, ind) => 
-        <Note key={note['_id'] || ind} title={note.title} content={note.content} date={note.date} />
+        <Note key={note._id || ind} title={note.title} content={note.content} date={note.date} />
     ), [notes]);
 
     return (
@@ -37,7 +37,7 @@ const Notes = props => {
 };
 
 const mapStateToProps = state => ({
-    loggedIn: state.user.loggedIn,
+    user: state.user,
     notes: state.notes
   });
   

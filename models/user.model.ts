@@ -1,10 +1,34 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
-export interface IUser extends Document {
+interface INote extends Document {
+    category?: string;
+    title?: string;
+    content: string;
+    color?: string;
+    date: Date;
+}
+
+const noteSchema: Schema = new Schema({
+    category: String,
+    title: String,
+    content: {
+        type: String,
+        required: true
+    },
+    color: String,
+    date: { 
+        type: Date,
+        default: Date.now(),
+        required: true
+    }
+});
+
+interface IUser extends Document {
     name: string;
     email: string;
     password: string;
     theme?: string;
+    notes: any[];
 }
 
 const userSchema: Schema = new Schema({
@@ -27,7 +51,8 @@ const userSchema: Schema = new Schema({
     theme: {
         type: String,
         default: 'light'
-    }
+    },
+    notes: [noteSchema]
 });
 
 export default mongoose.model<IUser>('User', userSchema);

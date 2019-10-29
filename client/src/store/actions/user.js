@@ -6,10 +6,16 @@ import { setNotes } from './index';
 
 export const register = credentials => {
     return async dispatch => {
-        const { data } = await axios.post(process.env.REACT_APP_SERVER_URL + '/register', credentials);
-        if (data.userId) {
+        const { data: { userId, name, notes } } = await axios.post(process.env.REACT_APP_SERVER_URL + '/register', { 
+            ...credentials, 
+            notes: localStorage.notes
+        });
+        if (userId) {
             localStorage.clear();
-            dispatch({ type: actionTypes.REGISTER, userId: data.userId, name: data.name });
+            batch(() => {
+                dispatch({ type: actionTypes.REGISTER, userId, name });
+                dispatch({ type: actionTypes.SET_NOTES, notes });
+            });
         } else {
             //show response to user...
         }
@@ -18,9 +24,8 @@ export const register = credentials => {
 
 export const login = credentials => {
     return async dispatch => {
-        const { data } = await axios.post(process.env.REACT_APP_SERVER_URL + '/login', credentials);
-        if (data.userId) {
-            const { userId, name, notes } = data;
+        const { data: { userId, name, notes } } = await axios.post(process.env.REACT_APP_SERVER_URL + '/login', credentials);
+        if (userId) {
             localStorage.setItem('userId', userId);
             localStorage.setItem('name', name);
             batch(() => {
@@ -46,7 +51,7 @@ export const logout = () => {
 
 export const fetchNotes = () => {
     return async dispatch => {
-        const { data } = await axios.get(process.env.REACT_APP_SERVER_URL + '/users/' + localStorage.userId);
-        dispatch({ type: actionTypes.SET_NOTES, notes: data });
+        const { data: notes } = await axios.get(process.env.REACT_APP_SERVER_URL + '/' + localStorage.userId + '/notes');
+        dispatch({ type: actionTypes.SET_NOTES, notes });
     };
 };

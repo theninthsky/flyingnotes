@@ -16,7 +16,7 @@ const NewNote = props => {
     
     const saveNoteHandler = event => {
         event.preventDefault();
-        props.onSaveNote({ userId: localStorage.userId, category, title, content, color });
+        props.onSaveNote({ category, title, content, color });
         setCategory('');
         setTitle('');
         setContent('');

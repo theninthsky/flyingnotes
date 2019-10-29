@@ -1,22 +1,18 @@
 import express, { Request, Response } from 'express';
 
 import User from '../models/user.model'
-import Note from '../models/note.model';
 
 const router = express.Router();
 
-const findNotes = async (userId: string) => await Note.find({userId: userId});
-
 /* REGISTER */
 router.post('/register', (req: Request, res: Response) => {
-    const { name, email, password, theme, data } = req.body;
-    const newUser = new User({ name, email, password, theme, ...data });
+    const { name, email, password, theme, notes } = req.body;
+    const newUser = new User({ name, email, password, theme, notes: notes || [] });
     
     newUser.save()
-        .then(async user => {
+        .then(async ({ _id, name, notes }) => {
             console.log(name + ' registered!');
-            const data = await findNotes(user._id);
-            res.json({ userId: user._id, name: user.name, ...data });
+            res.json({ userId: _id, name, notes });
         })
         .catch(({message, errmsg}) => { 
             console.log('Error: ' + message || errmsg);
@@ -27,16 +23,10 @@ router.post('/register', (req: Request, res: Response) => {
 /* LOGIN */
 router.post('/login', (req: Request, res: Response) => {
     User.findOne({ email: req.body.email, password: req.body.password })
-        .then(async user => {
-            const notes = await findNotes(user._id);
-            res.json({ userId: user['_id'], name: user.name, notes });
+        .then(async ({ _id, name, notes }) => {
+            res.json({ userId: _id, name: name, notes });
         })
         .catch(() => res.send('Incorrect email or password'));
-});
-
-/* READ */
-router.get('/users/:userId', async (req: Request, res: Response) => {
-    res.json(await findNotes(req.params.userId));
 });
 
 /* UPDATE */
