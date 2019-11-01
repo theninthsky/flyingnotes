@@ -1,24 +1,23 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 interface INote extends Document {
+    color?: string;
     category?: string;
     title?: string;
     content: string;
-    color?: string;
     date: Date;
 }
 
 const noteSchema: Schema = new Schema({
+    color: String,
     category: String,
     title: String,
     content: {
         type: String,
         required: true
     },
-    color: String,
     date: { 
-        type: Date,
-        default: Date.now(),
+        type: Number,
         required: true
     }
 });
@@ -28,7 +27,7 @@ interface IUser extends Document {
     email: string;
     password: string;
     theme?: string;
-    notes: any[];
+    notes: INote[];
 }
 
 const userSchema: Schema = new Schema({

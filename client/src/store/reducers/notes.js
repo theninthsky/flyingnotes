@@ -5,9 +5,13 @@ const initialState = [];
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.SET_NOTES:
-            return action.notes;
+            return action.notes || [];
         case actionTypes.ADD_NOTE:
-            return [ ...state, action.note ];
+            return [ ...state, action.newNote ];
+        case actionTypes.UPDATE_NOTE:
+            return state.map(note => note._id === action.updatedNote._id ? action.updatedNote : note);
+        case actionTypes.DELETE_NOTE:
+            return state.filter(note => note._id !== action.noteId);
         default: return state;
     }
 };

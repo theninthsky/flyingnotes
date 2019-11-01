@@ -8,7 +8,7 @@ const router = express.Router();
 router.post('/:userId/notes', (req: Request, res: Response) => {
     User.findById(req.params.userId)
         .then(async user => {
-            user.notes.push(req.body.newNote);
+            user.notes.push({ ...req.body.newNote, date: Date.now() });
             const { notes } = await user.save();
             res.json(notes[notes.length - 1]);
         })
@@ -18,18 +18,18 @@ router.post('/:userId/notes', (req: Request, res: Response) => {
 /* READ */
 router.get('/:userId/notes', (req: Request, res: Response) => {
     User.findById(req.params.userId)
-        .then(({ notes }) => res.json(notes))
+        .then(({ notes }) => res.json({notes}))
         .catch(({ message, errmsg }) => console.log('Error: ' + message || errmsg));
 });
 
 /* UPDATE */
 router.put('/:userId/notes', (req: Request, res: Response) => {
-    const { noteId, updatedNote } = req.body;
+    const { updatedNote, updatedNote: { _id: noteId } } = req.body;
     User.findById(req.params.userId)
         .then(async user => {
-            user.notes = user.notes.map(note => note._id == noteId ? { ...updatedNote, _id: note._id, date: Date.now() }  : note);
+            user.notes = user.notes.map(note => note._id == noteId ? { ...updatedNote, _id: note._id, date: Date.now() }  : note); // CHECK IF _id: note._id IS STILL NECCESARY
             const { notes } = await user.save();
-            res.json(notes.filter(note => note._id == noteId)[0]);
+            res.json({updatedNote: notes.filter(note => note._id == noteId)[0]});
         })
         .catch(({ message, errmsg }) => console.log('Error: ' + message || errmsg));
 });
@@ -39,10 +39,13 @@ router.delete('/:userId/notes', (req: Request, res: Response) => {
     User.findById(req.params.userId)
         .then(user => {
             user.notes = user.notes.filter(note => note._id != req.body.noteId);
-            user.save();
-            res.send('OK');
+            user.save()
+                .then(() => res.sendStatus(200));
         })
-        .catch(({ message, errmsg }) => console.log('Error: ' + message || errmsg));
+        .catch(({ message, errmsg }) => {
+            console.log('Error: ' + message || errmsg);
+            res.sendStatus(404);
+        });
 });
 
 export default router;

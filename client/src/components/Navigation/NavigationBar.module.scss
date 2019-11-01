@@ -1,14 +1,11 @@
 .navBar {
     margin: 4vh auto;
-    width: 20vw;
     display: flex;
     justify-content: space-around;
-    border-bottom: 1px solid rgb(230, 230 ,230);
 
-    .icon {
-        margin-right: 8px;
-        width: 14px;
-        opacity: 0.25;
+    .name {
+        border-bottom: 1px solid rgb(230, 230 ,230);
+        font-size: 32px;
     }
 }
 
@@ -24,10 +21,6 @@
     &:hover {
         font-weight: bold;
     }
-}
-
-.active.active {
-    color: gray;
 }
 
 @media (max-width: 768px) {

@@ -1,14 +1,32 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { GithubPicker } from 'react-color';
 
 import * as actions from '../../store/actions/index';
 import styles from './NewNote.module.scss';
+import colorPalette from '../../assets/images/color-palette.svg';
+
+const colorsArray = [
+    '#B80000', '#DB3E00', '#FCCB00', '#008B02', 
+    '#006B76', '#1273DE', '#004DCF', '#5300EB',
+    '#808080', '#000000'
+];
 
 const NewNote = props => {
+    const [showColorPicker, setShowColorPicker] = useState(false);
+    const [color, setColor] = useState('#006B76');
     const [category, setCategory] = useState('');
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-    const [color, setColor] = useState('');
+
+    const colorPickerHandler = () => setShowColorPicker(!showColorPicker);
+
+    const colorChangeHanlder = color => {
+        setColor(color.hex);
+        setShowColorPicker(false);
+    };
+    
+    const categoryHanlder = event => setCategory(event.target.value.toUpperCase());
 
     const titleHandler = event => setTitle(event.target.value);
 
@@ -16,18 +34,37 @@ const NewNote = props => {
     
     const saveNoteHandler = event => {
         event.preventDefault();
-        props.onSaveNote({ category, title, content, color });
+        props.onSaveNote({ color, category, title, content });
+        setColor('#006B76');
         setCategory('');
         setTitle('');
         setContent('');
-        setColor('');
     };
     
     return (
         <div className={styles.note}>
             <form onSubmit={saveNoteHandler} autoComplete="off">
-                <input className={styles.title} dir="auto" placeholder="Title" maxLength="40" value={title} onChange={titleHandler} />
-                <textarea className={styles.content} dir="auto" placeholder=". . ." value={content} onChange={contentHandler} required></textarea>
+                <img className={styles.colorPalette} src={colorPalette} alt="Choose color" onClick={colorPickerHandler} />
+                { showColorPicker ? 
+                    <GithubPicker 
+                        className={styles.colorPicker} 
+                        width="262px" 
+                        triangle="hide" 
+                        colors={colorsArray} 
+                        onChangeComplete={colorChangeHanlder}
+                    /> : 
+                    <input 
+                        className={styles.category} 
+                        type="text" 
+                        dir="auto" 
+                        placeholder="CATEGORY" 
+                        maxLength="24" value={category}
+                        title="Optional" 
+                        style={{backgroundColor: color}} 
+                        onChange={categoryHanlder} 
+                    />  }
+                <input className={styles.title} type="text" dir="auto" placeholder="Title" value={title} title="Optional" onChange={titleHandler} />
+                <textarea className={styles.content} dir="auto" placeholder=". . ." value={content} onChange={contentHandler} title="Note's content" required></textarea>
                 <input className={styles.save} type="submit" value="Save" />
             </form>
         </div>

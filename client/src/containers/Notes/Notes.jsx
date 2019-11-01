@@ -7,25 +7,25 @@ import * as actions from '../../store/actions/index';
 import styles from './Notes.module.scss';
 
 const Notes = props => {
-    const { user: { userId, isLoggedIn }, notes, fetchNotes, setNotes } = props;
+    const { user: { userId, notesFetched }, notes, fetchNotes } = props;
 
     useEffect(() => {
         console.log('[Notes] rendered!');
-        if (!notes.length) {
-            if (userId) {
-                if (!isLoggedIn) {
-                    fetchNotes();
-                }
-            } else {
-                if (localStorage.notes) {
-                    setNotes(JSON.parse(localStorage.notes));
-                }
-            }
+        if (!notesFetched) {
+            fetchNotes();
         }
-    }, [ userId, isLoggedIn, notes, fetchNotes, setNotes ]);
+    }, [ userId, notesFetched, notes, fetchNotes ]);
 
-    const filteredNotes = useMemo(() => [...notes].reverse().map((note, ind) => 
-        <Note key={note._id || ind} title={note.title} content={note.content} date={note.date} />
+    const filteredNotes = useMemo(() => [...notes].sort((a, b) => b.date - a.date).map(note => 
+        <Note 
+            key={note._id || note.date} 
+            id={note._id || note.date} 
+            color={note.color} 
+            category={note.category} 
+            title={note.title} 
+            content={note.content} 
+            date={note.date} 
+        />
     ), [notes]);
 
     return (
@@ -42,8 +42,7 @@ const mapStateToProps = state => ({
   });
   
   const mapDispatchToProps = dispatch => ({
-    fetchNotes: () => dispatch(actions.fetchNotes()),
-    setNotes: notes => dispatch(actions.setNotes(notes)),
+    fetchNotes: () => dispatch(actions.fetchNotes())
   });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Notes);

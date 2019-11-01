@@ -1,11 +1,12 @@
 export {
     register,
     login,
-    logout,
-    fetchNotes
+    logout
 } from './user';
 
 export {
-    setNotes,
-    addNote
+    fetchNotes,
+    addNote,
+    editNote,
+    deleteNote
 } from './notes';
