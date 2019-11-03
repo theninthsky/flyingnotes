@@ -1,9 +1,11 @@
 .bar {
-    position: relative;
+    position: absolute;
+    bottom: 1.25%;
     width: 100%;
     min-height: 19px;
     border-radius: 4px 4px 0 0;
-    animation: show 0.25s;
+    background-color: transparent;
+    animation: show 0.5s;
 
     @keyframes show {
         from {opacity: 0;}
@@ -13,17 +15,16 @@
     .edit, .delete {
         position: absolute;
         top: 10%;
-        filter: invert(100%);
         cursor: pointer;
     }
 
     .edit {
         left: 2%;
-        width: 14px;
+        width: 19px;
     }
 
     .delete {
         right: 2%;
-        width: 11.5px;
+        width: 14px;
     }
 }

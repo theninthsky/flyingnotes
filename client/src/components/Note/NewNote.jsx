@@ -14,10 +14,10 @@ const colorsArray = [
 
 const NewNote = props => {
     const [showColorPicker, setShowColorPicker] = useState(false);
-    const [color, setColor] = useState('#006B76');
-    const [category, setCategory] = useState('');
-    const [title, setTitle] = useState('');
-    const [content, setContent] = useState('');
+    const [color, setColor] = useState(props.color || '#006B76');
+    const [category, setCategory] = useState(props.category || '');
+    const [title, setTitle] = useState(props.title || '');
+    const [content, setContent] = useState(props.content || '');
 
     const colorPickerHandler = () => setShowColorPicker(!showColorPicker);
 
@@ -34,11 +34,18 @@ const NewNote = props => {
     
     const saveNoteHandler = event => {
         event.preventDefault();
-        props.onSaveNote({ color, category: category.trim(), title: title.trim(), content });
-        setColor('#006B76');
-        setCategory('');
-        setTitle('');
-        setContent('');
+        const note = { _id: props.id, color, category: category.trim(), title: title.trim(), content };
+        if (props.update) {
+            props.updateNote(note);
+            props.toggleEditMode();
+            props.toggleBar();
+        } else {
+            props.addNote(note);
+            setColor('#006B76');
+            setCategory('');
+            setTitle('');
+            setContent('');
+        }
     };
     
     return (
@@ -72,7 +79,8 @@ const NewNote = props => {
 };
 
 const mapDispatchToProps = dispatch => ({
-    onSaveNote: note => dispatch(actions.addNote(note))
+    addNote: note => dispatch(actions.addNote(note)),
+    updateNote: note => dispatch(actions.updateNote(note))
 });
 
 export default connect(null, mapDispatchToProps)(NewNote);

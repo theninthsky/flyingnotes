@@ -27,7 +27,7 @@ router.put('/:userId/notes', (req: Request, res: Response) => {
     const { updatedNote, updatedNote: { _id: noteId } } = req.body;
     User.findById(req.params.userId)
         .then(async user => {
-            user.notes = user.notes.map(note => note._id == noteId ? { ...updatedNote, _id: note._id, date: Date.now() }  : note); // CHECK IF _id: note._id IS STILL NECCESARY
+            user.notes = user.notes.map(note => note._id == noteId ? { ...updatedNote, date: Date.now() }  : note);
             const { notes } = await user.save();
             res.json({updatedNote: notes.filter(note => note._id == noteId)[0]});
         })

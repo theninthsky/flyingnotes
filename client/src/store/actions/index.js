@@ -7,6 +7,6 @@ export {
 export {
     fetchNotes,
     addNote,
-    editNote,
+    updateNote,
     deleteNote
 } from './notes';

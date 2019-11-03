@@ -7,7 +7,7 @@ export const register = credentials => {
     return async dispatch => {
         const { data: { userId, name, notes } } = await axios.post(process.env.REACT_APP_SERVER_URL + '/register', { 
             ...credentials, 
-            notes: JSON.parse(localStorage.notes)
+            notes: JSON.parse(localStorage.notes).map(note => ({ ...note, _id: null })) // _id is removed to prevent ObjectId errors on server side
         });
         if (userId) {
             localStorage.clear();

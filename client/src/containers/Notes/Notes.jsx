@@ -18,8 +18,8 @@ const Notes = props => {
 
     const filteredNotes = useMemo(() => [...notes].sort((a, b) => b.date - a.date).map(note => 
         <Note 
-            key={note._id || note.date} 
-            id={note._id || note.date} 
+            key={note._id} 
+            id={note._id} 
             color={note.color} 
             category={note.category} 
             title={note.title} 

@@ -26,7 +26,6 @@ interface IUser extends Document {
     name: string;
     email: string;
     password: string;
-    theme?: string;
     notes: INote[];
 }
 
@@ -46,10 +45,6 @@ const userSchema: Schema = new Schema({
         type: String,
         minlength: 8,
         required: true
-    },
-    theme: {
-        type: String,
-        default: 'light'
     },
     notes: [noteSchema]
 });

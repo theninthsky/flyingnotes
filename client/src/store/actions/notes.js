@@ -25,14 +25,14 @@ export const addNote = newNote => {
             const { data } = await axios.post(process.env.REACT_APP_SERVER_URL + '/' + localStorage.userId + '/notes', {newNote});
             newNote = data;
         } else {
-            newNote = { ...newNote, date: Date.now() }
+            newNote = { ...newNote, _id: Date.now(), date: Date.now() }
             localStorage.setItem('notes', JSON.stringify(localStorage.notes ? [...JSON.parse(localStorage.notes), newNote] : [newNote]));
         }
         dispatch({ type: actionTypes.ADD_NOTE, newNote });
     };
 };
 
-export const editNote = updatedNote => {
+export const updateNote = updatedNote => {
     return async dispatch => {
         if (localStorage.userId) {
             const { data } = await axios.put(process.env.REACT_APP_SERVER_URL + '/' + localStorage.userId + '/notes', {updatedNote});
@@ -56,7 +56,7 @@ export const deleteNote = noteId => {
             }
         } else {
             localStorage.setItem('notes', 
-                JSON.stringify(JSON.parse(localStorage.notes).filter(note => note.date !== noteId)));
+                JSON.stringify(JSON.parse(localStorage.notes).filter(note => note._id !== noteId)));
         }
         dispatch({ type: actionTypes.DELETE_NOTE, noteId });
     };
