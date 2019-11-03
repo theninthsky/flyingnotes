@@ -34,7 +34,7 @@ const NewNote = props => {
     
     const saveNoteHandler = event => {
         event.preventDefault();
-        props.onSaveNote({ color, category, title, content });
+        props.onSaveNote({ color, category: category.trim(), title: title.trim(), content });
         setColor('#006B76');
         setCategory('');
         setTitle('');

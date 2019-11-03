@@ -56,7 +56,7 @@ export const deleteNote = noteId => {
             }
         } else {
             localStorage.setItem('notes', 
-                JSON.stringify(JSON.parse(localStorage.notes).filter(note => note._id !== noteId)));
+                JSON.stringify(JSON.parse(localStorage.notes).filter(note => note.date !== noteId)));
         }
         dispatch({ type: actionTypes.DELETE_NOTE, noteId });
     };

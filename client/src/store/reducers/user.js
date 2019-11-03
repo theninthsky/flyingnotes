@@ -3,6 +3,7 @@ import * as actionTypes from '../actions/actionTypes';
 const initialState = {
     userId: localStorage.userId,
     name: localStorage.name,
+    theme: localStorage.theme,
     notesFetched: false
 };
 

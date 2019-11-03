@@ -12,7 +12,7 @@ const Note = props => {
     
     return (
         <div className={styles.note} onMouseEnter={() => setShowBar(true)} onMouseLeave={() => setShowBar(false)}>
-            { showBar ? <Bar color={props.color} id={props.id} delete={props.deleteNote} /> : 
+            { showBar ? <Bar color={props.color} id={props.id || props.date} delete={props.deleteNote} /> : 
                 props.category ? <div className={styles.category} dir="auto" style={{backgroundColor: props.color}} >{props.category}</div> : 
                 null }
             { props.title ? <h1 className={styles.title} dir="auto">{props.title}</h1> : null }

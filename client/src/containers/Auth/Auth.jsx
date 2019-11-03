@@ -32,7 +32,7 @@ const Auth = props => {
   return (
     <>
       <Backdrop className={styles.animated} toggleAuth={props.toggleAuth} />
-      <div className={styles.auth + ' ' + styles.animated}>
+      <div className={styles.auth}>
         <div className={styles.title}>
           <h1 
             className={action === 'Login' ? styles.active : null}

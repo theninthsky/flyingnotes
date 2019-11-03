@@ -11,7 +11,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.UPDATE_NOTE:
             return state.map(note => note._id === action.updatedNote._id ? action.updatedNote : note);
         case actionTypes.DELETE_NOTE:
-            return state.filter(note => note._id !== action.noteId);
+            return state.filter(note => (note._id || note.date) !== action.noteId);
         default: return state;
     }
 };
