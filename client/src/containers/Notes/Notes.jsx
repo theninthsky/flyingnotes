@@ -7,30 +7,36 @@ import * as actions from '../../store/actions/index';
 import styles from './Notes.module.scss';
 
 const Notes = props => {
-    const { user: { userId, notesFetched }, notes, fetchNotes } = props;
+    const { user: { userId, notesFetched, theme }, notes, fetchNotes } = props;
 
     useEffect(() => {
         console.log('[Notes] rendered!');
         if (!notesFetched) {
             fetchNotes();
         }
-    }, [ userId, notesFetched, notes, fetchNotes ]);
+    }, [ userId, notesFetched, notes, fetchNotes, theme ]);
 
+    const backgroundTheme = {
+        color: theme === 'light' ? 'inherit' : 'white',
+        backgroundColor: `rgb(${theme === 'light' ? '250, 249, 244' : '64, 64 ,64'})`
+    };
+    
     const filteredNotes = useMemo(() => [...notes].sort((a, b) => b.date - a.date).map(note => 
         <Note 
             key={note._id} 
             id={note._id} 
+            theme={backgroundTheme}
             color={note.color} 
             category={note.category} 
             title={note.title} 
             content={note.content} 
             date={note.date} 
         />
-    ), [notes]);
+    ), [notes, backgroundTheme]);
 
     return (
         <div className={styles.notesContainer}>
-            <NewNote />
+            <NewNote theme={backgroundTheme}/>
             { filteredNotes }
         </div>
     );

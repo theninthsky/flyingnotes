@@ -1,0 +1,78 @@
+// Colors variables
+$primary: #4285F47F; // blue
+$success: #34A8537F; // green
+$danger: #EA43357F; // red
+$warning: #FBBC057F; // yellow
+
+// Container and shapes dimentions
+$containerDimentions: 60px;
+$shapeDimentions: 30px;
+//shape translate amount
+$amount: 30px;
+
+// custom translation for each shape in an animation
+@mixin customTranslate ($shape, $tx, $ty) {
+  @if  $shape == 1 {
+    transform: translate($tx, $ty);
+  } @else if $shape == 2 {
+    transform: translate(-$ty, $tx);
+  } @else if $shape == 3 {
+    transform: translate($ty, -$tx);
+  } @else if $shape == 4 {
+    transform: translate(-$tx, -$ty);
+  }
+}
+
+//colors
+.container {
+    z-index: 3;
+    position: absolute;
+    top: 50vh;
+    left: 49vw;
+    width: $containerDimentions;
+    height: $containerDimentions;
+    transform: rotate(45deg) translate(-50%, -50%);
+    .shape {
+    position: absolute;
+    width: $shapeDimentions;
+    height: $shapeDimentions;
+    &.shape-1 {
+      left: 0;
+      background-color: $primary;
+    }
+    &.shape-2 {
+      right: 0;
+      background-color: $success;
+    }
+    &.shape-3 {
+      bottom: 0;
+      background-color: $warning;
+    }
+    &.shape-4 {
+      bottom: 0;
+      right: 0;
+      background-color: $danger;
+    }
+  }
+  @for $i from 1 through 4 {
+    .shape-#{$i} {
+      animation: shape#{$i} 2s infinite reverse;
+    }
+  }
+}
+
+
+@for $i from 1 through 4 {
+  @keyframes shape#{$i} {
+    0% { transform: translate(0, 0) }
+    25% { @include customTranslate($i, 0, $amount) }
+    50% { @include customTranslate($i, $amount, $amount) }
+    75% { @include customTranslate($i, $amount, 0) }
+  }
+}
+
+@media (max-width: 480px) {
+    .container {
+        left: 42.5vw;
+    }
+}

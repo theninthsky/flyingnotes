@@ -1,0 +1,29 @@
+.container {
+    width: 2.5vw;
+    display: flex;
+    justify-content: space-around;
+
+    .light, .dark {
+        width: 20px;
+        height: 20px;
+        border-radius: 2px;
+        box-sizing: border-box;
+        cursor: pointer;
+    }
+
+    .light {
+        background-color: white;
+        border: 1px solid rgb(32, 32, 32);
+    }
+
+    .dark {
+        background-color: black;
+        border: 1px solid white;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        width: 12vw;
+    }
+}

@@ -25,7 +25,7 @@ const Auth = props => {
 
   const submitFormHandler = event => {
     event.preventDefault();
-    props.onFormSubmit({ name, email, password }, action.toLowerCase());
+    props.onFormSubmit({ name: name.trim(), email, password }, action.toLowerCase());
     props.toggleAuth();
   };
   

@@ -49,7 +49,7 @@ const NewNote = props => {
     };
     
     return (
-        <div className={styles.note}>
+        <div className={styles.note} style={props.theme}>
             <form onSubmit={saveNoteHandler} autoComplete="off">
                 <img className={styles.colorPalette} src={colorPalette} alt="Choose color" onClick={colorPickerHandler} />
                 { showColorPicker ? 

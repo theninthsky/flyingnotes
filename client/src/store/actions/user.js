@@ -5,6 +5,7 @@ import * as actionTypes from './actionTypes';
 
 export const register = credentials => {
     return async dispatch => {
+        dispatch({ type: actionTypes.LOADING });
         const { data: { userId, name, notes } } = await axios.post(process.env.REACT_APP_SERVER_URL + '/register', { 
             ...credentials, 
             notes: JSON.parse(localStorage.notes).map(note => ({ ...note, _id: null })) // _id is removed to prevent ObjectId errors on server side
@@ -25,6 +26,7 @@ export const register = credentials => {
 
 export const login = credentials => {
     return async dispatch => {
+        dispatch({ type: actionTypes.LOADING });
         const { data: { userId, name, notes } } = await axios.post(process.env.REACT_APP_SERVER_URL + '/login', credentials);
         if (userId) {
             localStorage.setItem('userId', userId);
@@ -48,4 +50,9 @@ export const logout = () => {
             dispatch({type: actionTypes.LOGOUT});
         });
     };
+};
+
+export const changeTheme = theme => {
+    localStorage.setItem('theme', theme);
+    return { type: actionTypes.CHANGE_THEME, theme };
 };

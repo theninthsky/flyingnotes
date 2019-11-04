@@ -15,10 +15,18 @@ const Note = props => {
     const toggleBarHandler = mode => setShowBar(mode);
     
     const toggleEditModeHandler = () => setEditMode(!editMode);
-
+    
     const note = editMode ? 
-     <NewNote {...props} id={props.id} date={props.date} toggleEditMode={toggleEditModeHandler} toggleBar={() => toggleBarHandler(false)} update /> :
-     <div className={styles.note} onMouseEnter={() => toggleBarHandler(true)} onMouseLeave={() => toggleBarHandler(false)}>
+     <NewNote 
+        {...props} 
+        theme={props.theme} 
+        id={props.id} 
+        date={props.date} 
+        toggleEditMode={toggleEditModeHandler} 
+        toggleBar={() => toggleBarHandler(false)} 
+        update 
+    /> :
+     <div className={styles.note} style={props.theme} onMouseEnter={() => toggleBarHandler(true)} onMouseLeave={() => toggleBarHandler(false)}>
         { showBar ? <Bar id={props.id} edit={toggleEditModeHandler} delete={props.deleteNote} /> : null }
         { props.category ? <div className={styles.category} dir="auto" style={{backgroundColor: props.color}} >{props.category}</div> : null }
         { props.title ? <h1 className={styles.title} dir="auto">{props.title}</h1> : null }
@@ -26,7 +34,6 @@ const Note = props => {
         <div className={styles.date}>{new Date(props.date).toLocaleString()}</div>
     </div>;
 
-    
     return note;
 };
 
