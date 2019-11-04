@@ -1,5 +1,6 @@
 import express, { Response } from 'express';
 import cors from 'cors';
+import http from 'http';
 import mongoose from 'mongoose';
 
 import userRoutes from './routes/users';
@@ -28,3 +29,6 @@ app.get('*', (_, res: Response) => res.send('Root Route!'));
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${process.env.PORT}...`);
 });
+
+/* Keep Heroku App Awake */
+setInterval(() => http.get(process.env.HEROKUAPP_URL), 900000);
