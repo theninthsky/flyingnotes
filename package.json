@@ -8,7 +8,7 @@
     "dev": "tsc -w & nodemon ./dist/server.js",
     "client": "cd client && npm start",
     "app": "cd client && npm run build && cd .. && npm start",
-    "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
+    "heroku-postbuild": "cd client && npm install && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Almog Gabay",
