@@ -7,9 +7,8 @@ import styles from './NewNote.module.scss';
 import colorPalette from '../../assets/images/color-palette.svg';
 
 const colorsArray = [
-    '#B80000', '#DB3E00', '#FCCB00', '#008B02', 
-    '#006B76', '#1273DE', '#004DCF', '#5300EB',
-    '#808080', '#000000'
+    '#B80000', '#DB3E00', '#FCCB00', '#008B02', '#006B76', 
+    '#1273DE', '#004DCF', '#5300EB', '#808080', '#000000'
 ];
 
 const NewNote = props => {
@@ -38,7 +37,7 @@ const NewNote = props => {
         if (props.update) {
             props.updateNote(note);
             props.toggleEditMode();
-            props.toggleBar();
+            props.closeBar();
         } else {
             props.addNote(note);
             setColor('#006B76');

@@ -1,8 +1,8 @@
 .bar {
     position: absolute;
-    bottom: 1.25%;
+    bottom: 0;
     width: 100%;
-    min-height: 19px;
+    height: 25px;
     border-radius: 4px 4px 0 0;
     background-color: transparent;
     animation: show 0.5s;
@@ -12,20 +12,30 @@
         to {opacity: 1};
     }
 
-    .edit, .delete {
+    .edit, .delete, .confirm, .cancel {
         position: absolute;
-        top: 10%;
-        opacity: 0.75;
+        top: 12.5%;
+        height: 75%;
         cursor: pointer;
+
+        &:hover {
+            opacity: 0.5;
+        }
     }
 
-    .edit {
+    .edit, .confirm {
         left: 2%;
-        width: 19px;
     }
 
-    .delete {
+    .delete, .cancel {
         right: 2%;
-        width: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .bar {
+        .edit, .delete, .confirm, .cancel {
+            top: 5%;
+        }
     }
 }
