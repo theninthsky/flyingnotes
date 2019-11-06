@@ -13,7 +13,7 @@ const colorsArray = [
 
 const NewNote = props => {
     const [showColorPicker, setShowColorPicker] = useState(false);
-    const [color, setColor] = useState(props.color || '#006B76');
+    const [color, setColor] = useState(props.color || colorsArray[Math.floor(Math.random() * 10)]);
     const [category, setCategory] = useState(props.category || '');
     const [title, setTitle] = useState(props.title || '');
     const [content, setContent] = useState(props.content || '');
