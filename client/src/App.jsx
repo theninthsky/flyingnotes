@@ -7,7 +7,7 @@ import Notes from './containers/Notes/Notes';
 import Spinner from './components/UI/Spinner';
 import './App.scss';
 
-const lightTheme = 'linear-gradient(#fdffeb, #fdfcf9) fixed';
+const lightTheme = 'white';
 const darkTheme = 'linear-gradient(#202020, #404040) fixed';
 
 const App = props => {

@@ -1,21 +1,32 @@
 .filters {
     margin: 2vh auto;
-    width: 15vw;
+    width: 20vw;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
 
     .categoryFilter, .searchFilter {
-        border: 0.5px solid black;
-        border-radius: 4px;
-        background-color: transparent;
+        border: 1px solid #ccc;
+        border-radius: 5px;
     }
 
     .categoryFilter {
-
+        max-width: 40%;
+        
+        option {
+            background-color: transparent;
+        }
     }
 
     .searchFilter {
-        // width: 40%;
+        .searchIcon {
+            padding: 0.5rem;
+        }
+
+        .searchBox {
+            border: none;
+            background-color: transparent;
+            outline: none;
+        }
     }
 }
 
@@ -30,8 +41,12 @@
 }
 
 @media (max-width: 480px) {
-    .filter {
-        width: 100vw;
+    .filters {
+        width: 75vw;
+
+        .categoryFilter {
+            max-width: 25%;
+        }
     }
     
     .notesContainer {

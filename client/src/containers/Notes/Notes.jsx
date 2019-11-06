@@ -48,18 +48,29 @@ const Notes = props => {
     return (
         <>
         <div className={styles.filters}>
-            <select className={styles.categoryFilter} style={{color: backgroundTheme.color}} onChange={categoryFilterHandler}>
-                <option defaultValue disabled>CATEGORY</option>
-                <option value="">ALL</option>
-                { notes.filter(({ category }) => category).map(({ category, _id }) => <option key={_id}>{category}</option>) }
+            <select 
+                className={styles.categoryFilter} 
+                style={{color: backgroundTheme.color, backgroundColor: theme === 'light' ? '#fff' : '#262626'}}
+                title="Category" 
+                onChange={categoryFilterHandler}
+            >
+                <option defaultValue value="">ALL</option>
+                { notes
+                    .sort((a, b) => a.category.localeCompare(b.category))
+                    .filter(({ category }, ind, notes) => category && category !== (notes[ind + 1] && notes[ind + 1].category))
+                    .map(({ category, _id }) => <option key={_id}>{category}</option>) }
             </select>
-            <input 
-                className={styles.searchFilter} 
-                style={{color: backgroundTheme.color}} 
-                type="text" value={searchFilter} 
-                placeholder="Search" 
-                onChange={searchFilterHandler} 
-            />
+            <div className={styles.searchFilter}>
+                <i className={'fa fa-search ' +  styles.searchIcon}></i>
+                <input 
+                    className={styles.searchBox} 
+                    style={{color: backgroundTheme.color}} 
+                    type="search" 
+                    value={searchFilter} 
+                    placeholder="Search..." 
+                    onChange={searchFilterHandler} 
+                />
+            </div>
         </div>
         <div className={styles.notesContainer}>
             <NewNote theme={backgroundTheme}/>
