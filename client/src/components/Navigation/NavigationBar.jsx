@@ -17,9 +17,16 @@ const NavigationBar = props => {
         <>
             <div className={styles.navBar} style={{color: props.theme === 'light' ? 'inherit' : 'white'}}>
                 <Theme />
-                <div className={styles.name}>{props.name ? props.name + `'s Notes` : `Local Notes`}</div>
+                <h1 className={styles.name}>{props.name ? props.name + `'s Notes` : `Local Notes`}</h1>
                 <div className={styles.login} onClick={toggleAuthHandler}>
-                    {props.name ? <img src={userImage} alt="Account" title="Account" style={{filter: `invert(${props.theme === 'light' ? '0%' : '100%'})`}} /> : 'Login'}
+                    { props.name ? 
+                        <img
+                            src={userImage} 
+                            alt="Account" 
+                            title="Account" 
+                            style={{width: '20px', filter: `invert(${props.theme === 'light' ? '0%' : '100%'})`}} 
+                        /> : 
+                        'Login' }
                 </div>
             </div>
             {showAuth ? <Auth toggleAuth={toggleAuthHandler} /> : null}

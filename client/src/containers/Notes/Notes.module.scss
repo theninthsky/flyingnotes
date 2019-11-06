@@ -1,3 +1,24 @@
+.filters {
+    margin: 2vh auto;
+    width: 15vw;
+    display: flex;
+    justify-content: space-around;
+
+    .categoryFilter, .searchFilter {
+        border: 0.5px solid black;
+        border-radius: 4px;
+        background-color: transparent;
+    }
+
+    .categoryFilter {
+
+    }
+
+    .searchFilter {
+        // width: 40%;
+    }
+}
+
 .notesContainer {
     margin: 0 auto;
     width: 95%;
@@ -9,6 +30,10 @@
 }
 
 @media (max-width: 480px) {
+    .filter {
+        width: 100vw;
+    }
+    
     .notesContainer {
         width: 90%;
         flex-direction: column;

@@ -69,9 +69,9 @@ const NewNote = props => {
                         style={{backgroundColor: color}} 
                         onChange={categoryHanlder} 
                     />  }
-                <input className={styles.title} type="text" dir="auto" placeholder="Title" value={title} title="Optional" onChange={titleHandler} />
+                <input className={styles.title} type="text" dir="auto" placeholder="Title" value={title} title="Optional" maxLength="60" onChange={titleHandler} />
                 <textarea className={styles.content} dir="auto" placeholder=". . ." value={content} onChange={contentHandler} title="Note's content" required></textarea>
-                <input className={styles.save} type="submit" value="Save" />
+                <input className={styles.save} type="submit" value="SAVE" />
             </form>
         </div>
     );

@@ -9,16 +9,16 @@ import confirmSymbol from '../../../assets/images/confirm.svg';
 import cancelSymbol from '../../../assets/images/cancel.svg';
 
 const Bar = props => {
-    const [showConfirm, setShowConfirm] = useState(false);
+    const [showConfirmIcons, setShowConfirmIcons] = useState(false);
 
     const deletePressedHandler = mode => {
-        setShowConfirm(mode);
-        props.showConfirmMessage(mode);
+        setShowConfirmIcons(mode);
+        props.toggleConfirmMessage(mode);
     };
     
     return (
         <div className={styles.bar}>
-            { showConfirm ?
+            { showConfirmIcons ?
                 <>
                     <img className={styles.confirm} src={confirmSymbol} alt="Confirm" title="Confirm" onClick={() => props.deleteNote(props.id)} />
                     <img className={styles.cancel} src={cancelSymbol} alt="Cancel" title="Cancel" onClick={() => deletePressedHandler(false)} />
