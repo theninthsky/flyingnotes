@@ -28,7 +28,7 @@ const Note = props => {
         update
     /> :
      <div className={styles.note} style={props.theme} onMouseMove={() => toggleBarHandler(true)} onMouseLeave={() => { toggleBarHandler(false); toggleConfirmMessageHanlder(false);}}>
-        { props.category ? <div className={styles.category} dir="auto" style={{backgroundColor: props.color}} >{props.category}</div> : null }
+        <div className={styles.category} dir="auto" style={{backgroundColor: props.color}} >{props.category}</div>
         { props.title ? <h1 className={styles.title} dir="auto">{props.title}</h1> : null }
         <div className={styles.content} dir="auto">{props.content}</div>
         { showBar ? <Bar id={props.id} edit={toggleEditModeHandler} toggleConfirmMessage={toggleConfirmMessageHanlder} /> : null }

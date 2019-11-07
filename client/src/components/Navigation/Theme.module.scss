@@ -23,6 +23,12 @@
     }
 }
 
+@media (max-width: 768px) {
+    .container {
+        width: 6vw;
+    }
+}
+
 @media (max-width: 480px) {
     .container {
         width: 11vw;

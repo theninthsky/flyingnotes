@@ -8,6 +8,13 @@
   border-radius: 4px;
   box-shadow: 0px 0px 6px 0px rgba(0, 0 ,0 , 0.25);
 
+  &:hover {
+    .content {
+      height: auto;
+      padding-bottom: 20vh;
+    }
+  }
+
   .colorPicker {
     z-index: 2;
     margin: 0 auto;
@@ -54,7 +61,7 @@
   }
 
   .title {
-    margin: 0;
+    margin-bottom: 5%;
     padding: 0 5%;
     box-sizing: border-box;
     font-size: 26px;
@@ -62,9 +69,9 @@
   }
 
   .content {
+    height: 0;
     flex-basis: 100%;
     padding: 0 5%;
-    padding-bottom: 20vh;
     box-sizing: border-box;
     resize: none;
     white-space: pre;
@@ -72,6 +79,12 @@
     text-align: left;
     font-size: 14px;
     font-family: 'Gloria Hallelujah', cursive;
+    transition: padding 0.25s;
+
+    &:focus {
+      height: auto;
+      padding-bottom: 20vh;
+    }
   }
 
   .save {
@@ -97,9 +110,5 @@
   .note {
     margin: 2vh 0;
     width: 100%;
-  
-    .content {
-      padding-bottom: 5vh;
-    }
   }
 }

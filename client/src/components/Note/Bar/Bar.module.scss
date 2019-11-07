@@ -16,6 +16,7 @@
         position: absolute;
         top: 12.5%;
         height: 75%;
+        user-select: none;
         cursor: pointer;
 
         &:hover {

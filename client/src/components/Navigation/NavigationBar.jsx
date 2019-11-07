@@ -29,7 +29,7 @@ const NavigationBar = props => {
                         'Login' }
                 </div>
             </div>
-            {showAuth ? <Auth toggleAuth={toggleAuthHandler} /> : null}
+            {showAuth ? <Auth theme={props.theme} toggleAuth={toggleAuthHandler} /> : null}
         </>
     );
 };

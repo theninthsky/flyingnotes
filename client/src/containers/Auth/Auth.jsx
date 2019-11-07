@@ -28,24 +28,28 @@ const Auth = props => {
     props.onFormSubmit({ name: name.trim(), email, password }, action.toLowerCase());
     props.toggleAuth();
   };
+
+  const backgroundTheme = {
+    color: props.theme === 'light' ? 'inherit' : 'white',
+    backgroundColor: props.theme === 'light' ? 'white' : 'rgb(32, 32, 32)'
+  };
   
   return (
     <>
-      <Backdrop className={styles.animated} toggleAuth={props.toggleAuth} />
-      <div className={styles.auth}>
+      <Backdrop className={styles.animated} theme={props.theme} toggleAuth={props.toggleAuth} />
+      <div className={styles.auth} style={backgroundTheme}>
         <div className={styles.title}>
           <h1 
-            className={action === 'Login' ? styles.active : null}
+            className={action === 'Login' ? null : styles.notActive}
+            style={{ color: backgroundTheme.color }}
             onClick={actionChangedHandler}
           >
             Login
           </h1>
-          <div>
-            <p>◆</p>
-            <p>◆</p>
-          </div>
+          <div className={styles.divider}></div>
           <h1 
-            className={action === 'Register' ? styles.active : null}
+            className={action === 'Register' ? null : styles.notActive}
+            style={{ color: backgroundTheme.color }}
             onClick={actionChangedHandler}
           >
             Register
