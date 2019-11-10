@@ -43,17 +43,13 @@
 
 @media (max-width: 768px) {
     .filters {
-        width: 50vw;
+        width: 60vw;
     }
 }
 
 @media (max-width: 480px) {
     .filters {
-        width: 75vw;
-
-        .categoryFilter {
-            max-width: 25%;
-        }
+        width: 90vw;
     }
     
     .notesContainer {
