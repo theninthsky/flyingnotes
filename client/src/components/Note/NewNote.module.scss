@@ -7,13 +7,7 @@
   background-color: rgb(250, 249, 244);
   border-radius: 4px;
   box-shadow: 0px 0px 6px 0px rgba(0, 0 ,0 , 0.25);
-
-  &:hover {
-    .content {
-      height: auto;
-      padding-bottom: 20vh;
-    }
-  }
+  animation: show 0.5s;
 
   .colorPicker {
     z-index: 2;
@@ -56,7 +50,7 @@
     color: white;
 
     &::placeholder {
-      color: white;
+      color: #ffffff8f;
     }
   }
 
@@ -69,9 +63,8 @@
   }
 
   .content {
-    height: 0;
     flex-basis: 100%;
-    padding: 0 5%;
+    padding: 0 5% 20vh 5%;
     box-sizing: border-box;
     resize: none;
     white-space: pre;
@@ -79,11 +72,11 @@
     text-align: left;
     font-size: 14px;
     font-family: 'Gloria Hallelujah', cursive;
-    transition: padding 0.25s;
+    animation: showContent 0.25s;
 
-    &:focus {
-      height: auto;
-      padding-bottom: 20vh;
+    @keyframes showContent {
+      from { padding-bottom: 0 }
+      to { padding-bottom: 20vh }
     }
   }
 
@@ -96,6 +89,11 @@
     font-size: 16px;
     background-color: green;
     cursor: pointer;
+  }
+
+  @keyframes show {
+    from { opacity: 0 }
+    to { opacity: 1 }
   }
 }
 

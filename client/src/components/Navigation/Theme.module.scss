@@ -1,36 +1,15 @@
-.container {
-    width: 2.5vw;
-    display: flex;
-    justify-content: space-around;
-
-    .light, .dark {
-        width: 20px;
-        height: 20px;
-        border-radius: 2px;
-        box-sizing: border-box;
-        cursor: pointer;
-        -webkit-tap-highlight-color: transparent;
-    }
-
-    .light {
-        background-color: white;
-        border: 1px solid rgb(32, 32, 32);
-    }
-
-    .dark {
-        background-color: black;
-        border: 1px solid white;
-    }
+.symbol {
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
-@media (max-width: 768px) {
-    .container {
-        width: 6vw;
-    }
+.sun {
+    width: 25px;
 }
 
-@media (max-width: 480px) {
-    .container {
-        width: 11vw;
-    }
+.moon {
+    margin-top: 2px;
+    margin-left: 2px;
+    width: 20px;
 }

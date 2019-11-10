@@ -1,14 +1,14 @@
 .backdrop {
-    z-index: 1;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    animation: show 0.75s;
+  z-index: 1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  animation: show 0.75s;
 
-    @keyframes show {
-        from {opacity: 0;}
-        to {opacity: 1;}
-      }
+  @keyframes show {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
 }

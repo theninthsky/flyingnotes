@@ -16,11 +16,10 @@ const NewNote = props => {
     const [color, setColor] = useState(props.color || colorsArray[Math.floor(Math.random() * 10)]);
     const [category, setCategory] = useState(props.category || '');
     const [title, setTitle] = useState(props.title || '');
+    const [showContent, setShowContent] = useState(props.id ? true : false);
     const [content, setContent] = useState(props.content || '');
 
-    const colorPickerHandler = () => setShowColorPicker(!showColorPicker);
-
-    const colorChangeHanlder = color => {
+    const colorHanlder = color => {
         setColor(color.hex);
         setShowColorPicker(false);
     };
@@ -48,16 +47,16 @@ const NewNote = props => {
     };
     
     return (
-        <div className={styles.note} style={props.theme}>
+        <div className={styles.note} style={props.theme} onMouseMove={() => setShowContent(true)}>
             <form onSubmit={saveNoteHandler} autoComplete="off">
-                <img className={styles.colorPalette} src={colorPalette} alt="Choose color" onClick={colorPickerHandler} />
+                <img className={styles.colorPalette} src={colorPalette} alt="Choose color" onClick={() => setShowColorPicker(!showColorPicker)} />
                 { showColorPicker ? 
                     <GithubPicker 
                         className={styles.colorPicker} 
                         width="262px" 
                         triangle="hide" 
                         colors={colorsArray} 
-                        onChangeComplete={colorChangeHanlder}
+                        onChangeComplete={colorHanlder}
                     /> : 
                     <input 
                         className={styles.category} 
@@ -71,7 +70,18 @@ const NewNote = props => {
                         onChange={categoryHanlder} 
                     />  }
                 <input className={styles.title} type="text" dir="auto" placeholder="Title" value={title} title="Optional" maxLength="60" onChange={titleHandler} />
-                <textarea className={styles.content} dir="auto" placeholder=". . ." value={content} onChange={contentHandler} title="Note's content" required></textarea>
+                { showContent ? 
+                    <textarea 
+                        className={styles.content} 
+                        dir="auto" 
+                        placeholder=". . ." 
+                        value={content} 
+                        title="Note's content" 
+                        required
+                        onChange={contentHandler}
+                    >
+                    </textarea> : 
+                null}
                 <input className={styles.save} type="submit" value="SAVE" />
             </form>
         </div>

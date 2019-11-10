@@ -3,18 +3,21 @@ import { connect } from 'react-redux';
 
 import * as actions from '../../store/actions/index';
 import styles from './Theme.module.scss';
+import sunSymbol from '../../assets/images/sun.svg';
+import moonSymbol from '../../assets/images/moon.svg';
 
 const Theme = props => {
-    return (
-        <div className={styles.container}>
-            <div className={styles.light} onClick={() => props.onChangeTheme('light')}></div>
-            <div className={styles.dark} onClick={() => props.onChangeTheme('dark')}></div>
-        </div>
-    );
+    return props.theme === 'light' ?
+        <img className={styles.symbol + ' ' + styles.sun} src={sunSymbol} alt="Light" title="Theme" onClick={() => props.onChangeTheme('dark')} /> :
+        <img className={styles.symbol + ' ' + styles.moon} src={moonSymbol} alt="Dark" title="Theme" onClick={() => props.onChangeTheme('light')} />;
 };
+
+const mapStateToProps = state => ({
+    theme: state.user.theme
+});
 
 const mapDispatchToProps = dispatch => ({
     onChangeTheme: theme => dispatch(actions.changeTheme(theme))
 });
 
-export default connect(null, mapDispatchToProps)(Theme);
+export default connect(mapStateToProps, mapDispatchToProps)(Theme);

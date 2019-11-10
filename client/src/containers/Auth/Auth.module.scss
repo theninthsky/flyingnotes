@@ -52,13 +52,32 @@
       border-radius: 4px;
     }
 
-    .submit {
+    .login_register, .logout {
       margin-top: 10%;
       padding: 6px;
-      background-color: white;
-      border: 1px solid rgb(200, 200, 200);
+      border-width: 1.5px;
       border-radius: 8px;
+      background-color: transparent;
+      color: inherit;
+      outline: none;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+
+      &:hover {
+        background-color: rgb(192, 192, 192);
+      }
     }
+  }
+
+  .userLogo {
+    margin: 0 auto;
+    width: 15%;
+    border-radius: 100%;
+  }
+  
+  .greeting {
+    text-align: center;
+    font-size: 18px;
   }
 
   @keyframes show {
