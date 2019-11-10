@@ -49,7 +49,7 @@ const Auth = props => {
           />
           <div className={styles.greeting}>{'Hello, ' + props.user.name}</div>
           <form>
-            <input className={styles.logout} type="submit" value="Logout" onClick={props.onLogout} />
+            <input className={styles.logout} type="submit" value="Logout" onClick={() => { props.onLogout(); props.toggleAuth(); }} />
           </form>
          </> : 
           <>
