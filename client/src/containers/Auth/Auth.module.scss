@@ -95,6 +95,15 @@
   .updateText {
     color: #28a745;
   }
+
+  .showNewPassword {
+    width: 100%;
+    border: none;
+    background-color: transparent;
+    outline: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
   
   .errorMessage {
     color: red;

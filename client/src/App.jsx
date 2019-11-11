@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import NavigationBar from './components/Navigation/NavigationBar';
@@ -19,10 +18,7 @@ const App = props => {
   return (
     <>
       <NavigationBar user={props.user} />
-      <Switch>
-        <Route exact path="/" component={props.user.loading || props.user.fetchingNotes ? Spinner : Notes} />
-        <Redirect to="/" />
-      </Switch>
+      { props.user.loading || props.user.fetchingNotes ? <Spinner /> : <Notes />} /> }
     </>
   );
 }

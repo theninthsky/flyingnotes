@@ -12,6 +12,7 @@ const Auth = props => {
   const [name, setName] = useState(props.user.name || '');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showNewPassword, setShowNewPassword] = useState(false);
   const [newPassword, setNewPassword] = useState('');
 
   const actionChangedHandler = event => {
@@ -32,6 +33,8 @@ const Auth = props => {
   const emailHanlder = event => setEmail(event.target.value);
 
   const passwordHanlder = event => setPassword(event.target.value);
+
+  const showNewPasswordHandler = () => setShowNewPassword(true);
 
   const newPasswordHandler = event => setNewPassword(event.target.value);
 
@@ -63,8 +66,12 @@ const Auth = props => {
             <form onSubmit={submitFormHandler}>
               { props.user.errorMessage ? <p className={styles.errorMessage}>{props.user.errorMessage}</p> : null }
               <input type="text" value={name} placeholder="Name" required onChange={nameHanlder} />
-              <input type="password" value={password} placeholder="Current Password" minLength="8" required  onChange={passwordHanlder} />
-              <input type="password" value={newPassword} placeholder="New Password" minLength="8" required  onChange={newPasswordHandler} />
+              <input type="password" value={password} placeholder="Password" minLength="8" required onChange={passwordHanlder} />
+              { showNewPassword ? 
+                <input type="password" value={newPassword} placeholder="New Password" minLength="8" onChange={newPasswordHandler} /> :
+                <button className={styles.showNewPassword} onClick={showNewPasswordHandler} style={{color: backgroundTheme.color}}>
+                  ➤ Change password
+                </button> }
               <input className={styles.update} type="submit" value={action} />
             </form> : 
             <>
