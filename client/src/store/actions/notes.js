@@ -5,7 +5,7 @@ import * as actionTypes from './actionTypes';
 
 export const fetchNotes = () => {
     return async dispatch => {
-        dispatch({ type: actionTypes.LOADING, loading: true });
+        dispatch({ type: actionTypes.FETCHING_NOTES, fetching: true });
         let notes;
         if (localStorage.userId) {
             const { data } = await axios.get(process.env.REACT_APP_SERVER_URL + '/' + localStorage.userId + '/notes');
@@ -15,15 +15,15 @@ export const fetchNotes = () => {
         }
         batch(() => {
             dispatch({ type: actionTypes.SET_NOTES, notes });
+            dispatch({ type: actionTypes.FETCHING_NOTES, fetching: false });
             dispatch({type: actionTypes.NOTES_FETCHED});
-            dispatch({ type: actionTypes.LOADING, loading: false });
         });
     };
 };
 
 export const addNote = newNote => {
     return async dispatch => {
-        dispatch({ type: actionTypes.LOADING, loading: true });
+        dispatch({ type: actionTypes.FETCHING_NOTES, fetching: true });
         if (localStorage.userId) {
             const { data } = await axios.post(process.env.REACT_APP_SERVER_URL + '/' + localStorage.userId + '/notes', {newNote});
             newNote = data;
@@ -33,14 +33,14 @@ export const addNote = newNote => {
         }
         batch(() => {
             dispatch({ type: actionTypes.ADD_NOTE, newNote });
-            dispatch({ type: actionTypes.LOADING, loading: false });
+            dispatch({ type: actionTypes.FETCHING_NOTES, fetching: false });
         });
     };
 };
 
 export const updateNote = updatedNote => {
     return async dispatch => {
-        dispatch({ type: actionTypes.LOADING, loading: true });
+        dispatch({ type: actionTypes.FETCHING_NOTES, fetching: true });
         if (localStorage.userId) {
             const { data } = await axios.put(process.env.REACT_APP_SERVER_URL + '/' + localStorage.userId + '/notes', {updatedNote});
             updatedNote = data.updatedNote;
@@ -52,14 +52,14 @@ export const updateNote = updatedNote => {
         }
         batch(() => {
             dispatch({ type: actionTypes.UPDATE_NOTE, updatedNote });
-            dispatch({ type: actionTypes.LOADING, loading: false });
+            dispatch({ type: actionTypes.FETCHING_NOTES, fetching: false });
         });
     };
 };
 
 export const deleteNote = noteId => {
     return async dispatch => {
-        dispatch({ type: actionTypes.LOADING, loading: true });
+        dispatch({ type: actionTypes.FETCHING_NOTES, fetching: true });
         if (localStorage.userId) {
             const { status } = await axios.delete(process.env.REACT_APP_SERVER_URL + '/' + localStorage.userId + '/notes', {data: {noteId}});
             if (status !== 200) {
@@ -71,7 +71,7 @@ export const deleteNote = noteId => {
         }
         batch(() => {
             dispatch({ type: actionTypes.DELETE_NOTE, noteId });
-            dispatch({ type: actionTypes.LOADING, loading: false });
+            dispatch({ type: actionTypes.FETCHING_NOTES, fetching: false });
         });
     };
 };

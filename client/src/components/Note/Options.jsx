@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
-import * as actions from '../../../store/actions/index';
-import styles from './Bar.module.scss';
-import editSymbol from '../../../assets/images/edit.svg';
-import deleteSymbol from '../../../assets/images/delete.svg';
-import confirmSymbol from '../../../assets/images/confirm.svg';
-import cancelSymbol from '../../../assets/images/cancel.svg';
+import * as actions from '../../store/actions/index';
+import styles from './Options.module.scss';
+import editSymbol from '../../assets/images/edit.svg';
+import deleteSymbol from '../../assets/images/delete.svg';
+import confirmSymbol from '../../assets/images/confirm.svg';
+import cancelSymbol from '../../assets/images/cancel.svg';
 
-const Bar = props => {
+const Options = props => {
     const [showConfirmIcons, setShowConfirmIcons] = useState(false);
 
     const deletePressedHandler = mode => {
@@ -17,7 +17,7 @@ const Bar = props => {
     };
     
     return (
-        <div className={styles.bar}>
+        <div className={styles.options}>
             { showConfirmIcons ?
                 <>
                     <img className={styles.confirm} src={confirmSymbol} alt="Confirm" title="Confirm" onClick={() => props.deleteNote(props.id)} />
@@ -36,4 +36,4 @@ const mapDispatchToProps = dispatch => ({
     deleteNote: noteId => dispatch(actions.deleteNote(noteId))
 });
 
-export default connect(null, mapDispatchToProps)(Bar);
+export default connect(null, mapDispatchToProps)(Options);

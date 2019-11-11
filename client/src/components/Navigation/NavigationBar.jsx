@@ -28,7 +28,7 @@ const NavigationBar = props => {
                         'Login' }
                 </div>
             </div>
-            {showAuth || loading || errorMessage ? <Auth theme={theme} toggleAuth={toggleAuthHandler} /> : null}
+            { showAuth || loading || errorMessage ? <Auth theme={theme} toggleAuth={toggleAuthHandler} /> : null }
         </>
     );
 };

@@ -36,7 +36,7 @@ const NewNote = props => {
         if (props.update) {
             props.updateNote(note);
             props.toggleEditMode();
-            props.closeBar();
+            props.closeOptions();
         } else {
             props.addNote(note);
             setColor('#006B76');

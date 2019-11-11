@@ -1,4 +1,4 @@
-.bar {
+.options {
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -34,7 +34,7 @@
 }
 
 @media (max-width: 480px) {
-    .bar {
+    .options {
         .edit, .delete, .confirm, .cancel {
             top: 17.5%;
             -webkit-tap-highlight-color: transparent;

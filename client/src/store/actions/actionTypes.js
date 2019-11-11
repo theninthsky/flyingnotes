@@ -1,9 +1,10 @@
 export const REGISTER = 'REGISTER';
 export const LOGIN = 'LOGIN';
+export const FETCHING_NOTES = 'FETCHING_NOTES';
+export const NOTES_FETCHED = 'NOTES_FETCHED';
 export const UPDATE = 'UPDATE';
 export const LOGOUT = 'LOGOUT';
 export const LOADING = 'LOADING';
-export const NOTES_FETCHED = 'NOTES_FETCHED';
 export const CHANGE_THEME = 'CHANGE_THEME';
 export const ERROR = 'ERROR';
 

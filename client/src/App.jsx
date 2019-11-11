@@ -20,7 +20,7 @@ const App = props => {
     <>
       <NavigationBar user={props.user} />
       <Switch>
-        <Route exact path="/" component={props.user.loading ? Spinner : Notes} />
+        <Route exact path="/" component={props.user.loading || props.user.fetchingNotes ? Spinner : Notes} />
         <Redirect to="/" />
       </Switch>
     </>
