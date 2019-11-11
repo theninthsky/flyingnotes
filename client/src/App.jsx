@@ -18,10 +18,10 @@ const App = props => {
   return (
     <>
       <NavigationBar user={props.user} />
-      { props.user.loading || props.user.fetchingNotes ? <Spinner /> : <Notes />} /> }
+      { props.user.loading || props.user.fetchingNotes ? <Spinner /> : <Notes /> }
     </>
   );
-}
+};
 
 const mapStateToProps = state => ({
   user: state.user
