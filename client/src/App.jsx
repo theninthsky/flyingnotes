@@ -18,7 +18,7 @@ const App = props => {
 
   return (
     <>
-      <NavigationBar theme={props.user.theme} />
+      <NavigationBar user={props.user} />
       <Switch>
         <Route exact path="/" component={props.user.loading ? Spinner : Notes} />
         <Redirect to="/" />

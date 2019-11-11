@@ -8,14 +8,23 @@ import userLogo from '../../assets/images/user-astronaut.svg';
 
 const Auth = props => {
   const [action, setAction] = useState('Login');
-  const [name, setName] = useState('');
+  const [updateMode, setUpdateMode] = useState(false);
+  const [name, setName] = useState(props.user.name || '');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
 
   const actionChangedHandler = event => {
     setAction(event.target.innerHTML);
     setName('');
     setPassword('');
+    props.clearError();
+    props.toggleAuth(true);
+  };
+
+  const updateModeHandler = mode => {
+    setUpdateMode(mode);
+    setAction('Update');
   };
 
   const nameHanlder = event => setName(event.target.value);
@@ -24,10 +33,13 @@ const Auth = props => {
 
   const passwordHanlder = event => setPassword(event.target.value);
 
-  const submitFormHandler = event => {
+  const newPasswordHandler = event => setNewPassword(event.target.value);
+
+  const submitFormHandler = async event => {
     event.preventDefault();
-    props.onFormSubmit({ name: name.trim(), email, password }, action.toLowerCase());
-    props.toggleAuth();
+    props.onFormSubmit({ name: name.trim(), email, password, newPassword }, action.toLowerCase());
+    props.clearError();
+    props.toggleAuth(false);
   };
 
   const backgroundTheme = {
@@ -37,7 +49,7 @@ const Auth = props => {
   
   return (
     <>
-      <Backdrop className={styles.animated} theme={props.theme} toggleAuth={props.toggleAuth} />
+      <Backdrop className={styles.animated} theme={props.theme} toggleAuth={() => props.toggleAuth(false)} clearError={props.clearError} />
       <div className={styles.auth} style={backgroundTheme}>
         { props.user.name ?
          <>
@@ -47,10 +59,22 @@ const Auth = props => {
             alt="User" 
             style={{filter: `invert(${props.theme === 'light' ? '0%' : '100%'})`}}
           />
-          <div className={styles.greeting}>{'Hello, ' + props.user.name}</div>
-          <form>
-            <input className={styles.logout} type="submit" value="Logout" onClick={() => { props.onLogout(); props.toggleAuth(); }} />
-          </form>
+          { updateMode ? 
+            <form onSubmit={submitFormHandler}>
+              { props.user.errorMessage ? <p className={styles.errorMessage}>{props.user.errorMessage}</p> : null }
+              <input type="text" value={name} placeholder="Name" required onChange={nameHanlder} />
+              <input type="password" value={password} placeholder="Current Password" minLength="8" required  onChange={passwordHanlder} />
+              <input type="password" value={newPassword} placeholder="New Password" minLength="8" required  onChange={newPasswordHandler} />
+              <input className={styles.update} type="submit" value={action} />
+            </form> : 
+            <>
+              <h1 className={styles.greeting}>{'Hello, ' + props.user.name}
+                <button className={styles.updateButton} title="Change name or password" onClick={updateModeHandler}>
+                  (<span className={styles.updateText}>Update</span>)
+                </button>
+              </h1>
+              <input className={styles.logout} type="submit" value="Logout" onClick={() => { props.onLogout(); props.toggleAuth(); }} />
+            </> }
          </> : 
           <>
             <div className={styles.title}>
@@ -71,11 +95,12 @@ const Auth = props => {
             </h1>
           </div>
           <form onSubmit={submitFormHandler}>
-            {action === 'Register' ? 
-                <input type="text" value={name} name="name" placeholder="Name" required onChange={nameHanlder} /> :
-                <p>Login so your notes could fly on the cloud</p>}
-            <input type="email" value={email} name="email" placeholder="Email" onChange={emailHanlder} required />
-            <input type="password" value={password} name="password" placeholder="Password" minLength="8" onChange={passwordHanlder} required />
+            { props.user.errorMessage ? <p className={styles.errorMessage}>{props.user.errorMessage}</p> : null }
+            { action === 'Register' ? 
+                <input type="text" value={name} placeholder="Name" required onChange={nameHanlder} /> :
+                <p>Login so your notes could fly on the cloud</p> }
+            <input type="email" value={email} placeholder="Email" required onChange={emailHanlder} />
+            <input type="password" value={password} placeholder="Password" minLength="8" required onChange={passwordHanlder} />
             <input className={styles.login_register} type="submit" value={action} />
           </form>
           </> }
@@ -90,7 +115,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onFormSubmit: (credentials, action) => dispatch(actions[action](credentials)),
-  onLogout: () => dispatch(actions.logout())
+  onLogout: () => dispatch(actions.logout()),
+  clearError: () => dispatch(actions.clearError())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Auth);

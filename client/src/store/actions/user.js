@@ -5,14 +5,14 @@ import * as actionTypes from './actionTypes';
 
 export const register = credentials => {
     return async dispatch => {
-        dispatch({ type: actionTypes.LOADING });
-        const { data: { userId, name, notes } } = await axios.post(process.env.REACT_APP_SERVER_URL + '/register', { 
-            ...credentials, 
-            notes: localStorage.notes ? 
-                JSON.parse(localStorage.notes).map(note => ({ ...note, _id: null })) : // _id is removed to prevent ObjectId errors on server side
-                []
-        });
-        if (userId) {
+        dispatch({ type: actionTypes.LOADING, loading: true });
+        try {
+            const { data: { userId, name, notes } } = await axios.post(process.env.REACT_APP_SERVER_URL + '/register', { 
+                ...credentials, 
+                notes: localStorage.notes ? 
+                    JSON.parse(localStorage.notes).map(note => ({ ...note, _id: null })) : // _id is removed to prevent ObjectId errors on server side
+                    []
+            });
             localStorage.clear();
             localStorage.setItem('userId', userId);
             localStorage.setItem('name', name);
@@ -20,27 +20,46 @@ export const register = credentials => {
                 dispatch({ type: actionTypes.REGISTER, userId, name });
                 dispatch({ type: actionTypes.SET_NOTES, notes });
             });
-        } else {
-            //show response to user...
         }
+        catch ({ response: { data } }) {
+            dispatch({ type: actionTypes.ERROR, errorMessage: data });
+        }
+        dispatch({ type: actionTypes.LOADING, loading: false });
     };
 };
 
 export const login = credentials => {
     return async dispatch => {
-        dispatch({ type: actionTypes.LOADING });
-        const { data: { userId, name, notes } } = await axios.post(process.env.REACT_APP_SERVER_URL + '/login', credentials);
-        if (userId) {
+        dispatch({ type: actionTypes.LOADING, loading: true });
+        try {
+            const { data: { userId, name, notes } } = await axios.post(process.env.REACT_APP_SERVER_URL + '/login', credentials);
             localStorage.setItem('userId', userId);
             localStorage.setItem('name', name);
             batch(() => {
                 dispatch({ type: actionTypes.LOGIN, userId, name });
                 dispatch({ type: actionTypes.SET_NOTES, notes });
             });
-        } else {
-            // show response to user...
+        } 
+        catch ({ response: { data } }) {
+            dispatch({ type: actionTypes.ERROR, errorMessage: data });
         }
-    }
+        dispatch({ type: actionTypes.LOADING, loading: false });
+    };
+};
+
+export const update = credentials => {
+    return async dispatch => {
+        dispatch({ type: actionTypes.LOADING, loading: true });
+        try {
+            const { data: { name } } = await axios.put(process.env.REACT_APP_SERVER_URL + '/register', { ...credentials, userId: localStorage.userId });
+            localStorage.setItem('name', name);
+            dispatch({ type: actionTypes.UPDATE, name });
+        }
+        catch ({ response: { data } }) {
+            dispatch({ type: actionTypes.ERROR, errorMessage: data });
+        }
+        dispatch({ type: actionTypes.LOADING, loading: false });
+    };
 };
 
 export const logout = () => {
@@ -58,3 +77,5 @@ export const changeTheme = theme => {
     localStorage.setItem('theme', theme);
     return { type: actionTypes.CHANGE_THEME, theme };
 };
+
+export const clearError = () => ({ type: actionTypes.ERROR, errorMessage: false });

@@ -1,8 +1,10 @@
 export {
     register,
     login,
+    update,
     logout,
-    changeTheme
+    changeTheme,
+    clearError
 } from './user';
 
 export {

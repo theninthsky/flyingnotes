@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
 
 import Auth from '../../containers/Auth/Auth';
 import Theme from './Theme';
@@ -7,35 +6,31 @@ import styles from './NavigationBar.module.scss';
 import userImage from '../../assets/images/user-astronaut.svg';
 
 const NavigationBar = props => {
+    const { name, theme, loading, errorMessage } = props.user;
+    
     const [showAuth, setShowAuth] = useState(false);
 
-    const toggleAuthHandler = () => {
-        setShowAuth(prev => prev ? false : true);
-    }
+    const toggleAuthHandler = mode => setShowAuth(mode);
     
     return (
         <>
-            <div className={styles.navBar} style={{color: props.theme === 'light' ? 'inherit' : 'white'}}>
+            <div className={styles.navBar} style={{color: theme === 'light' ? 'inherit' : 'white'}}>
                 <Theme />
-                <h1 className={styles.name}>{props.name ? props.name + `'s Notes` : `Local Notes`}</h1>
+                <h1 className={styles.name}>{name ? name + `'s Notes` : `Local Notes`}</h1>
                 <div className={styles.login} onClick={toggleAuthHandler}>
-                    { props.name ? 
+                    { name ? 
                         <img
                             src={userImage} 
                             alt="Account" 
                             title="Account" 
-                            style={{width: '20px', filter: `invert(${props.theme === 'light' ? '0%' : '100%'})`}} 
+                            style={{width: '20px', filter: `invert(${theme === 'light' ? '0%' : '100%'})`}} 
                         /> : 
                         'Login' }
                 </div>
             </div>
-            {showAuth ? <Auth theme={props.theme} toggleAuth={toggleAuthHandler} /> : null}
+            {showAuth || loading || errorMessage ? <Auth theme={theme} toggleAuth={toggleAuthHandler} /> : null}
         </>
     );
 };
 
-const mapStateToProps = state => ({
-    name: state.user.name
-});
-
-export default connect(mapStateToProps)(NavigationBar);
+export default NavigationBar;

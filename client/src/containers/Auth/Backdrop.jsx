@@ -7,7 +7,7 @@ const Backdrop = props => {
         <div 
             className="backdrop" 
             style={{ backgroundColor: `rgba(${props.theme === 'light' ? '255, 255, 255' : '0, 0, 0'}, 0.75)` }} 
-            onClick={props.toggleAuth} 
+            onClick={() => { props.toggleAuth(); props.clearError(); }} 
         />
     );
 };

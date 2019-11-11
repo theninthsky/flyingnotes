@@ -10,7 +10,6 @@ const Spinner = () => {
             <div className="shape shape-3"></div>
             <div className="shape shape-4"></div>
         </div>
-
     );
 };
 
