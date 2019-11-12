@@ -7,7 +7,8 @@ import styles from './NewNote.module.scss';
 import colorPalette from '../../assets/images/color-palette.svg';
 
 const colorsArray = [
-    '#bdc3c7', '#c0392b', '#d35400', '#f39c12', '#27ae60', '#16a085', '#2980b9', '#8e44ad', '#7f8c8d', '#2c3e50'
+    '#c0392b', '#d35400', '#f39c12', '#27ae60', '#16a085', 
+    '#2980b9', '#8e44ad', '#2c3e50', '#7f8c8d', '#bdc3c7'
 ];
 
 const NewNote = props => {

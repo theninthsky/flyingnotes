@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import Options from './Options';
 import NewNote from './NewNote';
@@ -8,8 +8,6 @@ const Note = props => {
     const [showOptions, setShowOptions] = useState(false);
     const [editMode, setEditMode] = useState(false);
     const [showConfirmMessage, setShowConfirmMessage] = useState(false);
-    
-    useEffect(() => console.log('[Note] rendered!'));
 
     const toggleOptionsHandler = mode => setShowOptions(mode);
 

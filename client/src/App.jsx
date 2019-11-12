@@ -11,7 +11,6 @@ const darkTheme = 'linear-gradient(#202020, #404040) fixed';
 
 const App = props => {
   useEffect(() => {
-    console.log('[App] rendered!');
     document.body.style.background = props.user.theme === 'light' ? lightTheme : darkTheme;
   }, [props.user.theme]);
 

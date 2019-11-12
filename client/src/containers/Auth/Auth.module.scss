@@ -80,20 +80,17 @@
   }
 
   .updateButton {
+    display: block;
     margin: 0 auto;
     border: none;
     font-size: 14px;
-    color: inherit;
+    color: gray;
     background-color: transparent;
     cursor: pointer;
 
     &:hover {
       opacity: 0.5;
     }
-  }
-
-  .updateText {
-    color: #28a745;
   }
 
   .showNewPassword {

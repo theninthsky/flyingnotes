@@ -75,9 +75,9 @@ const Auth = props => {
               <input className={styles.update} type="submit" value={action} />
             </form> : 
             <>
-              <h1 className={styles.greeting}>{'Hello, ' + props.user.name}
+              <h1 className={styles.greeting}>{'Logged in as ' + props.user.name}
                 <button className={styles.updateButton} title="Change name or password" onClick={updateModeHandler}>
-                  (<span className={styles.updateText}>Update</span>)
+                  Update
                 </button>
               </h1>
               <input className={styles.logout} type="submit" value="Logout" onClick={() => { props.onLogout(); props.toggleAuth(); }} />

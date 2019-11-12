@@ -13,7 +13,6 @@ const Notes = props => {
     const [searchFilter, setSeachFilter] = useState('');
 
     useEffect(() => {
-        console.log('[Notes] rendered!');
         if (!notesFetched) {
             fetchNotes();
         }
