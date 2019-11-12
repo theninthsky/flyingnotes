@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import NavigationBar from './components/Navigation/NavigationBar';
-import Notes from './containers/Notes/Notes';
+import Notes from './components/Note/Notes';
 import Spinner from './components/UI/Spinner';
 import './App.scss';
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-import Auth from '../../containers/Auth/Auth';
-import Theme from './Theme';
+import Auth from '../Auth/Auth';
+import Theme from '../UI/Theme';
 import styles from './NavigationBar.module.scss';
 import userImage from '../../assets/images/user-astronaut.svg';
 

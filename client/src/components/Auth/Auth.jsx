@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
-import Backdrop from './Backdrop';
+import Backdrop from '../UI/Backdrop';
 import styles from './Auth.module.scss';
 import * as actions from '../../store/actions/index';
 import userLogo from '../../assets/images/user-astronaut.svg';
