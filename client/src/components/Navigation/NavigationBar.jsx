@@ -16,7 +16,7 @@ const NavigationBar = props => {
         <>
             <div className={styles.navBar} style={{color: theme === 'light' ? 'inherit' : 'white'}}>
                 <Theme />
-                <h1 className={styles.name}>{name ? name + `'s Notes` : `Local Notes`}</h1>
+                <h1 className={styles.title}>Flying Notes</h1>
                 <div className={styles.login} onClick={toggleAuthHandler}>
                     { name ? 
                         <img

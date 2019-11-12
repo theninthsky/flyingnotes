@@ -22,23 +22,22 @@
   }
   
   .title {
-    margin: 0;
+    margin: 2.5% 0 0 0;
     padding: 0 5%;
     text-align: center;
     font-size: 26px;
     font-weight: normal;
     word-break: break-word;
-    font-family: 'Gloria Hallelujah', cursive;
   }
   
   .content {
     flex-grow: 1;
-    padding:  5%;
+    margin-top: 2.5%;
+    padding: 0 5% 5% 5%;
     box-sizing: border-box;
     white-space: pre;
     overflow: auto;
-    font-size: 14px;
-    font-family: 'Gloria Hallelujah', cursive;
+    font-size: 16px;
   }
 
   .date, .confirmMessage {
