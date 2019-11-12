@@ -4,7 +4,7 @@
   min-width: 15%;
   max-width: 30%;
   min-height: 20vh;
-  max-height: 40vh;
+  max-height: 35vh;
   display: flex;
   flex-direction: column;
   border-radius: 4px;
@@ -61,16 +61,20 @@
 @media (max-width: 768px) {
   .note {
     margin: 4vw;
-    min-width: 20%;
-    max-width: 40%;
+    min-width: 30%;
+    max-width: 42.5%;
+    min-height: 40vh;
+    max-height: 60vh;
   }
 }
 
 @media (max-width: 480px) {
   .note {
     margin: 2vh 0;
-    max-width: none;
     width: 100%;
+    max-width: none;
+    min-height: 0;
+    max-height: 50vh;
 
     .title {
       font-size: 22px;
