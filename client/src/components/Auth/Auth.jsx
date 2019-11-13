@@ -80,7 +80,12 @@ const Auth = props => {
                   Update
                 </button>
               </h1>
-              <input className={styles.logout} type="submit" value="Logout" onClick={() => { props.onLogout(); props.toggleAuth(); }} />
+              <input 
+                className={styles.logout} 
+                type="submit" 
+                value="Logout" 
+                onClick={() => { props.onLogout(); props.toggleAuth(false); props.toggleCookiesMessage(true); }} 
+              />
             </> }
          </> : 
           <>
@@ -105,7 +110,7 @@ const Auth = props => {
             { props.user.errorMessage ? <p className={styles.errorMessage}>{props.user.errorMessage}</p> : null }
             { action === 'Register' ? 
                 <input type="text" value={name} placeholder="Name" required onChange={nameHanlder} /> :
-                <p>Login so your notes could fly on the cloud</p> }
+                <p>Login to have your notes saved on the cloud</p> }
             <input type="email" value={email} placeholder="Email" required onChange={emailHanlder} />
             <input type="password" value={password} placeholder="Password" minLength="8" required onChange={passwordHanlder} />
             <input className={styles.login_register} type="submit" value={action} />

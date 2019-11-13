@@ -5,9 +5,9 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  animation: show 0.75s;
+  animation: showBackdrop 0.75s;
 
-  @keyframes show {
+  @keyframes showBackdrop {
     from {opacity: 0;}
     to {opacity: 1;}
   }
