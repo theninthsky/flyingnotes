@@ -16,7 +16,7 @@ const Notes = props => {
         if (!notesFetched) {
             fetchNotes();
         }
-    }, [ userId, notesFetched, notes, fetchNotes, theme ]);
+    }, [userId, notesFetched, notes, fetchNotes, theme]);
 
     const categoryFilterHandler = event => setCategoryFilter(event.target.value);
     

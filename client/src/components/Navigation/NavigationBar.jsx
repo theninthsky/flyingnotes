@@ -34,7 +34,7 @@ const NavigationBar = props => {
             { showAuth || loading || errorMessage ? 
                 <Auth theme={theme} toggleAuth={toggleAuthHandler} toggleCookiesMessage={toggleCookiesMessageHandler} /> : 
                 null }
-            { showCookiesMessage ? <CookiesMessage theme={theme} toggle={toggleCookiesMessageHandler} /> : null }
+            { showCookiesMessage && !name ? <CookiesMessage theme={theme} toggle={toggleCookiesMessageHandler} /> : null }
         </>
     );
 };
