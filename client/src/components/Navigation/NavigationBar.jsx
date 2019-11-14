@@ -4,6 +4,7 @@ import CookiesMessage from './CookiesMessage';
 import Auth from '../Auth/Auth';
 import Theme from '../UI/Theme';
 import styles from './NavigationBar.module.scss';
+import logo from '../../assets/images/logo.png';
 import userImage from '../../assets/images/user-astronaut.svg';
 
 const NavigationBar = props => {
@@ -19,7 +20,11 @@ const NavigationBar = props => {
         <>
             <div className={styles.navBar} style={{color: theme === 'light' ? 'inherit' : 'white'}}>
                 <Theme />
-                <h1 className={styles.title}>Flying Notes</h1>
+                <img className={styles.title} 
+                    style={{filter: `invert(${theme === 'light' ? '0%' : '100%'})`}} 
+                    src={logo} 
+                    alt="Flying Notes"
+                ></img>
                 <div className={styles.login} onClick={() => { toggleAuthHandler(true); toggleCookiesMessageHandler(false) }}>
                     { name ? 
                         <img

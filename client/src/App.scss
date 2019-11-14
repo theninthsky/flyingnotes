@@ -5,4 +5,10 @@ html {
 body {
     margin: 0;
     color: rgb(80, 80, 80);
+    animation: showApp 1s;
+
+    @keyframes showApp {
+        from {opacity: 0;}
+        to {opacity: 1};
+    }
 }

@@ -72,9 +72,8 @@ const NewNote = props => {
                 <input className={styles.title} type="text" dir="auto" placeholder="Title" value={title} title="Optional" maxLength="60" onChange={titleHandler} />
                 { showContent ? 
                     <textarea 
-                        className={styles.content} 
-                        dir="auto" 
-                        placeholder=". . ." 
+                        className={styles.content}
+                        dir="auto"
                         value={content} 
                         title="Note's content" 
                         required

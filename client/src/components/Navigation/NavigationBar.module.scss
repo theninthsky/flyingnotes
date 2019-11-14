@@ -6,11 +6,8 @@
     align-items: flex-start;
 
     .title {
+        width: 20vw;
         margin: 4vh 0 2vh 0;
-        font-size: 60px;
-        font-weight: normal;
-        text-shadow: 1px 1px 0 lightblue;
-        font-family: 'Tangerine', cursive;
     }
 
     .login {
@@ -30,6 +27,7 @@
         width: 92vw;
 
         .title {
+            width: 60vw;
             margin-top: 6vh;
         }
     }
