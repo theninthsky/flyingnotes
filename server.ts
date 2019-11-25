@@ -26,7 +26,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 app.use(userRoutes);
 app.use(noteRoutes);
-app.get('*', (_, res: Response) => res.sendFile(path.join(__dirname, '../client/build', 'index.html')));
+app.use((_, res: Response) => res.sendFile(path.join(__dirname, '../client/build', 'index.html')));
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${process.env.PORT}...`);
