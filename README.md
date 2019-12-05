@@ -1,4 +1,7 @@
 # Flying Notes
+
+![Logo](/client/public/favicon.ico)</br>
+
 A MERN stack application for taking notes.
 
 The app is deployed here: http://flyingnotes.herokuapp.com/
