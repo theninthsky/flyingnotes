@@ -1,5 +1,7 @@
 # Flying Notes
-A MERN stack Progressive Web Application for taking notes.
+A MERN stack application for taking notes.
+
+The app is deployed here: http://flyingnotes.herokuapp.com/
 
 ## Environment Variables
 You should create a donenv file (https://www.npmjs.com/package/dotenv) at the root directory which will specify the following variables:</br>
