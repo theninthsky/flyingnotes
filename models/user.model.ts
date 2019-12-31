@@ -43,7 +43,6 @@ const userSchema: Schema = new Schema({
     },
     password: {
         type: String,
-        minlength: 8,
         required: true
     },
     notes: [noteSchema]
