@@ -3,6 +3,8 @@ import axios from 'axios';
 
 import * as actionTypes from './actionTypes';
 
+axios.defaults.withCredentials = true;
+
 export const register = credentials => {
     return async dispatch => {
         dispatch({ type: actionTypes.LOADING, loading: true });

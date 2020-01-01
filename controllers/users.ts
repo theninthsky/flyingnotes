@@ -24,6 +24,11 @@ export const loginUser = (req: Request, res: Response) => {
             return bcrypt.compare(req.body.password, hashedPassword)
                 .then(match => {
                     if (match) {
+                        req.session.userId = _id;
+                        res.cookie('loggedin', 'true');
+                        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+                        res.setHeader('Access-Control-Allow-Credentials', 'true');
+                        // res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
                         return res.json({ userId: _id, name: name, notes });
                     }
                     throw Error;
