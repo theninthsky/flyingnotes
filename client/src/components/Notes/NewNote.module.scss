@@ -4,9 +4,8 @@
   width: 20%;
   display: flex;
   flex-direction: column;
-  background-color: rgb(250, 249, 244);
-  border-radius: 4px;
-  box-shadow: 0px 0px 6px 0px rgba(0, 0 ,0 , 0.25);
+  border-radius: 2px;
+  box-shadow: 0 0 8px 0 rgba(0, 0 ,0 , 0.5) inset;
   animation: show 0.5s;
 
   .colorPicker {
@@ -31,7 +30,7 @@
     -webkit-tap-highlight-color: transparent;
   }
   
-  .category, .title, .content, .save {
+  .category, .categoryBackground, .title, .content, .save {
     display: block;
     width: 100%;
     border: none;
@@ -43,8 +42,8 @@
   }
 
   .category {
-    padding: 4px 0;
-    border-radius: 4px 4px 0 0;
+    position: absolute;
+    top: 2.5px;
     font-size: 12px;
     letter-spacing: 3px;
     color: white;
@@ -52,6 +51,11 @@
     &::placeholder {
       color: #ffffffaf;
     }
+  }
+
+  .categoryBackground {
+    padding: 2px 0;
+    filter: blur(4px);
   }
 
   .title {
@@ -106,5 +110,13 @@
   .note {
     margin: 2vh 0;
     width: 100%;
+  }
+}
+
+.noteDark {
+  color: white;
+
+  .titleDark::placeholder {
+      color: rgb(200, 200, 200);
   }
 }

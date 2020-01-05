@@ -10,7 +10,7 @@ const Notes = props => {
     const { user: { userId, notesFetched, theme }, notes, fetchNotes } = props;
 
     const [categoryFilter, setCategoryFilter] = useState('');
-    const [searchFilter, setSeachFilter] = useState('');
+    const [searchFilter, setSearchFilter] = useState('');
 
     useEffect(() => {
         if (!notesFetched) {
@@ -20,12 +20,7 @@ const Notes = props => {
 
     const categoryFilterHandler = event => setCategoryFilter(event.target.value);
     
-    const searchFilterHandler = event => setSeachFilter(event.target.value.toLowerCase());
-
-    const backgroundTheme = {
-        color: theme === 'light' ? 'inherit' : 'white',
-        backgroundColor: `rgb(${theme === 'light' ? '250, 249, 244' : '64, 64 ,64'})`
-    };
+    const searchFilterHandler = event => setSearchFilter(event.target.value.toLowerCase());
 
     const filteredNotes = useMemo(() => [...notes]
         .filter(({ category }) => !categoryFilter ? true : category === categoryFilter)
@@ -35,21 +30,20 @@ const Notes = props => {
             <Note 
                 key={note._id} 
                 id={note._id} 
-                theme={backgroundTheme}
+                theme={theme}
                 color={note.color} 
                 category={note.category} 
                 title={note.title} 
                 content={note.content} 
                 date={note.date} 
             />
-    ), [notes, categoryFilter, searchFilter, backgroundTheme]);
+    ), [notes, theme, categoryFilter, searchFilter]);
 
     return (
         <>
-        <div className={styles.filters}>
+        <div className={`${styles.filters} ${theme === 'dark' ? styles.filtersDark : ''}`}>
             <select 
-                className={styles.categoryFilter} 
-                style={{color: backgroundTheme.color, backgroundColor: theme === 'light' ? '#fff' : '#262626'}}
+                className={`${styles.categoryFilter} ${theme === 'dark' ? styles.categoryFilterDark : ''}`}
                 title="Category" 
                 onChange={categoryFilterHandler}
             >
@@ -59,11 +53,10 @@ const Notes = props => {
                     .filter(({ category }, ind, notes) => category && category !== (notes[ind + 1] && notes[ind + 1].category))
                     .map(({ category, _id }) => <option key={_id}>{category}</option>) }
             </select>
-            <div className={styles.searchFilter}>
+            <div className={`${styles.searchFilter} ${theme === 'dark' ? styles.searchFilterDark : ''}`}>
                 <i className={'fa fa-search ' +  styles.searchIcon}></i>
                 <input 
-                    className={styles.searchBox} 
-                    style={{color: backgroundTheme.color}} 
+                    className={styles.searchBox}
                     type="search" 
                     value={searchFilter} 
                     placeholder="Search..." 
@@ -72,7 +65,7 @@ const Notes = props => {
             </div>
         </div>
         <div className={styles.notesContainer}>
-            <NewNote theme={backgroundTheme}/>
+            <NewNote theme={theme}/>
             { filteredNotes }
         </div>
         </>

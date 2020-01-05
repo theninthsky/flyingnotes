@@ -22,6 +22,17 @@
     }
 }
 
+.navBarDark {
+    .titleDark {
+        filter: invert(100%);
+    }
+
+    .loginDark {
+        color: black;
+        filter: invert(100%);
+    }
+}
+
 @media (max-width: 480px) {
     .navBar {
         width: 92vw;

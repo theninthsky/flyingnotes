@@ -5,10 +5,15 @@
   left: 0;
   width: 100vw;
   height: 100vh;
+  background-color: rgba(255, 255, 255, 0.75);
   animation: showBackdrop 0.75s;
 
   @keyframes showBackdrop {
     from {opacity: 0;}
     to {opacity: 1;}
   }
+}
+
+.backdropDark {
+  background-color: rgba(0, 0, 0, 0.75);
 }

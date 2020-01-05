@@ -7,7 +7,7 @@ import styles from './NewNote.module.scss';
 import colorPalette from '../../assets/images/color-palette.svg';
 
 const colorsArray = [
-    '#c0392b', '#d35400', '#f39c12', '#27ae60', '#16a085', 
+    '#c0392b', '#d35400', '#f39c12', '#27ae60', '#16a085',
     '#2980b9', '#8e44ad', '#2c3e50', '#7f8c8d', '#bdc3c7'
 ];
 
@@ -23,13 +23,13 @@ const NewNote = props => {
         setColor(color.hex);
         setShowColorPicker(false);
     };
-    
+
     const categoryHanlder = event => setCategory(event.target.value.toUpperCase().slice(0, 24)); // forces maxLength on mobile
 
     const titleHandler = event => setTitle(event.target.value);
 
     const contentHandler = event => setContent(event.target.value);
-    
+
     const saveNoteHandler = event => {
         event.preventDefault();
         const note = { _id: props.id, color, category: category.trim(), title: title.trim(), content };
@@ -45,42 +45,55 @@ const NewNote = props => {
             setContent('');
         }
     };
-    
+
     return (
-        <div className={styles.note} style={props.theme} onMouseMove={() => setShowContent(true)}>
+        <div className={`${styles.note} ${props.theme === 'dark' ? styles.noteDark : ''}`} onMouseMove={() => setShowContent(true)}>
             <form onSubmit={saveNoteHandler} autoComplete="off">
                 <img className={styles.colorPalette} src={colorPalette} alt="Choose color" onClick={() => setShowColorPicker(!showColorPicker)} />
-                { showColorPicker ? 
-                    <GithubPicker 
-                        className={styles.colorPicker} 
-                        width="262px" 
-                        triangle="hide" 
-                        colors={colorsArray} 
+                {showColorPicker ?
+                    <GithubPicker
+                        className={styles.colorPicker}
+                        width="262px"
+                        triangle="hide"
+                        colors={colorsArray}
                         onChangeComplete={colorHanlder}
-                    /> : 
-                    <input 
-                        className={styles.category} 
-                        type="text" 
-                        value={category}
-                        dir="auto" 
-                        placeholder="CATEGORY" 
-                        maxLength="24" 
-                        title="Optional" 
-                        style={{backgroundColor: color}} 
-                        onChange={categoryHanlder} 
-                    />  }
-                <input className={styles.title} type="text" dir="auto" placeholder="Title" value={title} title="Optional" maxLength="60" onChange={titleHandler} />
-                { showContent ? 
-                    <textarea 
+                    /> :
+                    <>
+                        <div className={styles.categoryBackground} style={{ backgroundColor: color }}>
+                            &nbsp;
+                        </div>
+                        <input
+                            className={styles.category}
+                            type="text"
+                            value={category}
+                            dir="auto"
+                            placeholder="CATEGORY"
+                            maxLength="24"
+                            title="Optional"
+                            onChange={categoryHanlder}
+                        />
+                    </>}
+                <input
+                    className={`${styles.title} ${props.theme === 'dark' ? styles.titleDark : ''}`}
+                    type="text"
+                    dir="auto"
+                    placeholder="Title"
+                    value={title}
+                    title="Optional"
+                    maxLength="60"
+                    onChange={titleHandler}
+                />
+                {showContent ?
+                    <textarea
                         className={styles.content}
                         dir="auto"
-                        value={content} 
-                        title="Note's content" 
+                        value={content}
+                        title="Note's content"
                         required
                         onChange={contentHandler}
                     >
-                    </textarea> : 
-                null}
+                    </textarea> :
+                    null}
                 <input className={styles.save} type="submit" value="SAVE" />
             </form>
         </div>

@@ -9,37 +9,39 @@ import userImage from '../../assets/images/user-astronaut.svg';
 
 const NavigationBar = props => {
     const { name, theme, loading, errorMessage } = props.user;
-    
+
     const [showCookiesMessage, setShowCookiesMessage] = useState(true);
     const [showAuth, setShowAuth] = useState(false);
 
     const toggleCookiesMessageHandler = mode => setShowCookiesMessage(mode);
     const toggleAuthHandler = mode => setShowAuth(mode);
-    
+
     return (
         <>
-            <div className={styles.navBar} style={{color: theme === 'light' ? 'inherit' : 'white'}}>
+            <div className={`${styles.navBar} ${theme === 'dark' ? styles.navBarDark : ''}`}>
                 <Theme />
-                <img className={styles.title} 
-                    style={{filter: `invert(${theme === 'light' ? '0%' : '100%'})`}} 
-                    src={logo} 
+                <img className={`${styles.title} ${theme === 'dark' ? styles.titleDark : ''}`}
+                    src={logo}
                     alt="Flying Notes"
                 ></img>
-                <div className={styles.login} onClick={() => { toggleAuthHandler(true); toggleCookiesMessageHandler(false) }}>
-                    { name ? 
+                <div
+                    className={`${styles.login} ${theme === 'dark' ? styles.loginDark : ''}`}
+                    onClick={() => { toggleAuthHandler(true); toggleCookiesMessageHandler(false) }}
+                >
+                    {name ?
                         <img
-                            src={userImage} 
-                            alt="Account" 
-                            title="Account" 
-                            style={{width: '20px', filter: `invert(${theme === 'light' ? '0%' : '100%'})`}} 
-                        /> : 
-                        'Login' }
+                            src={userImage}
+                            alt="Account"
+                            title="Account"
+                            style={{ width: '20px' }}
+                        /> :
+                        'Login'}
                 </div>
             </div>
-            { showAuth || loading || errorMessage ? 
-                <Auth theme={theme} toggleAuth={toggleAuthHandler} toggleCookiesMessage={toggleCookiesMessageHandler} /> : 
-                null }
-            { showCookiesMessage && !name ? <CookiesMessage theme={theme} toggle={toggleCookiesMessageHandler} /> : null }
+            {showAuth || loading || errorMessage ?
+                <Auth theme={theme} toggleAuth={toggleAuthHandler} toggleCookiesMessage={toggleCookiesMessageHandler} /> :
+                null}
+            {showCookiesMessage && !name ? <CookiesMessage theme={theme} toggle={toggleCookiesMessageHandler} /> : null}
         </>
     );
 };

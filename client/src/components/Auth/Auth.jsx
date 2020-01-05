@@ -45,77 +45,69 @@ const Auth = props => {
     props.toggleAuth(false);
   };
 
-  const backgroundTheme = {
-    color: props.theme === 'light' ? 'inherit' : 'white',
-    backgroundColor: props.theme === 'light' ? 'white' : 'rgb(32, 32, 32)'
-  };
-  
   return (
     <>
       <Backdrop className={styles.animated} theme={props.theme} toggleAuth={() => props.toggleAuth(false)} clearError={props.clearError} />
-      <div className={styles.auth} style={backgroundTheme}>
-        { props.user.name ?
-         <>
-          <img 
-            className={styles.userLogo} 
-            src={userLogo} 
-            alt="User" 
-            style={{filter: `invert(${props.theme === 'light' ? '0%' : '100%'})`}}
-          />
-          { updateMode ? 
-            <form onSubmit={submitFormHandler}>
-              { props.user.errorMessage ? <p className={styles.errorMessage}>{props.user.errorMessage}</p> : null }
-              <input type="text" value={name} placeholder="Name" required onChange={nameHanlder} />
-              <input type="password" value={password} placeholder="Password" minLength="8" required onChange={passwordHanlder} />
-              { showNewPassword ? 
-                <input type="password" value={newPassword} placeholder="New Password" minLength="8" onChange={newPasswordHandler} /> :
-                <button className={styles.showNewPassword} onClick={showNewPasswordHandler} style={{color: backgroundTheme.color}}>
-                  ➤ Change password
-                </button> }
-              <input className={styles.update} type="submit" value={action} />
-            </form> : 
-            <>
-              <h1 className={styles.greeting}>{'Logged in as ' + props.user.name}
-                <button className={styles.updateButton} title="Change name or password" onClick={updateModeHandler}>
-                  Update
+      <div className={`${styles.auth} ${props.theme === 'dark' ? styles.authDark : ''}`}>
+        {props.user.name ?
+          <>
+            <img
+              className={`${styles.userLogo} ${props.theme === 'dark' ? styles.userLogoDark : ''}`}
+              src={userLogo}
+              alt="User"
+            />
+            {updateMode ?
+              <form onSubmit={submitFormHandler}>
+                {props.user.errorMessage ? <p className={styles.errorMessage}>{props.user.errorMessage}</p> : null}
+                <input type="text" value={name} placeholder="Name" required onChange={nameHanlder} />
+                <input type="password" value={password} placeholder="Password" minLength="8" required onChange={passwordHanlder} />
+                {showNewPassword ?
+                  <input type="password" value={newPassword} placeholder="New Password" minLength="8" onChange={newPasswordHandler} /> :
+                  <button className={`${styles.showNewPassword} ${props.theme === 'dark' ? styles.showNewPasswordDark : ''}`} onClick={showNewPasswordHandler}>
+                    ➤ Change password
+                </button>}
+                <input className={styles.update} type="submit" value={action} />
+              </form> :
+              <>
+                <h1 className={styles.greeting}>{'Logged in as ' + props.user.name}
+                  <button className={styles.updateButton} title="Change name or password" onClick={updateModeHandler}>
+                    Update
                 </button>
-              </h1>
-              <input 
-                className={styles.logout} 
-                type="submit" 
-                value="Logout" 
-                onClick={() => { props.onLogout(); props.toggleAuth(false); props.toggleCookiesMessage(true); }} 
-              />
-            </> }
-         </> : 
+                </h1>
+                <input
+                  className={styles.logout}
+                  type="submit"
+                  value="Logout"
+                  onClick={() => { props.onLogout(); props.toggleAuth(false); props.toggleCookiesMessage(true); }}
+                />
+              </>}
+          </> :
           <>
             <div className={styles.title}>
-            <h1 
-              className={action === 'Login' ? null : styles.notActive}
-              style={{ color: backgroundTheme.color }}
-              onClick={actionChangedHandler}
-            >
-              Login
+              <h1
+                className={action === 'Login' ? null : styles.notActive}
+                onClick={actionChangedHandler}
+              >
+                Login
             </h1>
-            <div className={styles.divider}></div>
-            <h1 
-              className={action === 'Register' ? null : styles.notActive}
-              style={{ color: backgroundTheme.color }}
-              onClick={actionChangedHandler}
-            >
-              Register
+              <div className={styles.divider}></div>
+              <h1
+                className={action === 'Register' ? null : styles.notActive}
+                onClick={actionChangedHandler}
+              >
+                Register
             </h1>
-          </div>
-          <form onSubmit={submitFormHandler}>
-            { props.user.errorMessage ? <p className={styles.errorMessage}>{props.user.errorMessage}</p> : null }
-            { action === 'Register' ? 
+            </div>
+            <form onSubmit={submitFormHandler}>
+              {props.user.errorMessage ? <p className={styles.errorMessage}>{props.user.errorMessage}</p> : null}
+              {action === 'Register' ?
                 <input type="text" value={name} placeholder="Name" required onChange={nameHanlder} /> :
-                <p>Login to have your notes saved on the cloud</p> }
-            <input type="email" value={email} placeholder="Email" required onChange={emailHanlder} />
-            <input type="password" value={password} placeholder="Password" minLength="8" required onChange={passwordHanlder} />
-            <input className={styles.login_register} type="submit" value={action} />
-          </form>
-          </> }
+                <p>Login to have your notes saved on the cloud</p>}
+              <input type="email" value={email} placeholder="Email" required onChange={emailHanlder} />
+              <input type="password" value={password} placeholder="Password" minLength="8" required onChange={passwordHanlder} />
+              <input className={styles.login_register} type="submit" value={action} />
+            </form>
+          </>}
       </div>
     </>
   );

@@ -3,13 +3,13 @@
     position: fixed;
     bottom: 2%;
     left: 25vw;
-    width: 50vw;
+    width: 45vw;
     padding: 10px;
-    border-radius: 4px;
     box-sizing: border-box;
     box-shadow: 0 0 4px gray;
     text-align: center;
     color: rgb(112, 112 ,112);
+    background-color: rgb(240, 240, 240);
     cursor: pointer;
     user-select: none;
     animation: showCookiesMessage 8s;
@@ -19,6 +19,11 @@
         80% {opacity: 0;}
         100% {opacity: 1;}
     }
+}
+
+.cookiesMessageDark {
+    color: rgb(200, 200, 200);
+    background-color: rgb(48, 48 ,48);
 }
 
 @media (max-width: 768px) {
