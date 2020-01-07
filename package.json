@@ -1,7 +1,7 @@
 {
   "name": "flying-notes",
   "version": "1.0.0",
-  "description": "an application for notes management.",
+  "description": "an application for taking notes.",
   "main": "dist/server.js",
   "scripts": {
     "start": "tsc && node ./dist/server.js",

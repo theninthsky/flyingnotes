@@ -43,7 +43,7 @@
 
   .category {
     position: absolute;
-    top: 2.5px;
+    top: 4px;
     font-size: 12px;
     letter-spacing: 3px;
     color: white;
@@ -54,8 +54,9 @@
   }
 
   .categoryBackground {
-    padding: 2px 0;
-    filter: blur(4px);
+    width: 98%;
+    margin: 4px auto;
+    filter: blur(3px);
   }
 
   .title {
@@ -99,6 +100,14 @@
   }
 }
 
+.noteDark {
+  color: white;
+
+  .titleDark::placeholder {
+      color: rgb(200, 200, 200);
+  }
+}
+
 @media (max-width: 768px) {
   .note {
     margin: 4vw;
@@ -110,13 +119,5 @@
   .note {
     margin: 2vh 0;
     width: 100%;
-  }
-}
-
-.noteDark {
-  color: white;
-
-  .titleDark::placeholder {
-      color: rgb(200, 200, 200);
   }
 }

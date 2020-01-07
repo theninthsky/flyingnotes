@@ -12,8 +12,8 @@ const Options = props => {
     const [showConfirmIcons, setShowConfirmIcons] = useState(false);
 
     const deletePressedHandler = mode => {
-        setShowConfirmIcons(mode);
         props.toggleConfirmMessage(mode);
+        setShowConfirmIcons(mode);
     };
     
     return (

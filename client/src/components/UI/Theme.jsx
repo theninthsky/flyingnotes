@@ -8,8 +8,8 @@ import moonSymbol from '../../assets/images/moon.svg';
 
 const Theme = props => {
     return props.theme === 'light' ?
-        <img className={styles.symbol + ' ' + styles.sun} src={sunSymbol} alt="Light" title="Theme" onClick={() => props.onChangeTheme('dark')} /> :
-        <img className={styles.symbol + ' ' + styles.moon} src={moonSymbol} alt="Dark" title="Theme" onClick={() => props.onChangeTheme('light')} />;
+        <img className={styles.symbol + ' ' + styles.sun} src={sunSymbol} alt="Light" title="Change Theme" onClick={() => props.onChangeTheme('dark')} /> :
+        <img className={styles.symbol + ' ' + styles.moon} src={moonSymbol} alt="Dark" title="Change Theme" onClick={() => props.onChangeTheme('light')} />;
 };
 
 const mapStateToProps = state => ({
