@@ -1,16 +1,19 @@
-import express from 'express';
+import express from 'express'
 
-import { registerUser, loginUser, updateUser } from '../controllers/users';
+import { registerUser, loginUser, updateUser, logoutUser } from '../controllers/users'
 
-const router = express.Router();
+const router = express.Router()
 
 /* REGISTER */
-router.post('/register', registerUser);
+router.post('/register', registerUser)
 
 /* LOGIN */
-router.post('/login', loginUser);
+router.post('/login', loginUser)
 
 /* UPDATE */
-router.put('/register', updateUser);
+router.put('/register', updateUser)
 
-export default router;
+/* LOGOUT */
+router.post('/logout', logoutUser)
+
+export default router
