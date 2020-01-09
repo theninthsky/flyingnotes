@@ -1,19 +1,19 @@
-import express from 'express';
+import express from 'express'
 
-import { createNote, getNotes, updateNote, deleteNote } from '../controllers/notes';
+import { createNote, getNotes, updateNote, deleteNote } from '../controllers/notes'
 
-const router = express.Router();
+const router = express.Router()
 
 /* CREATE */
-router.post('/:userId/notes', createNote);
+router.post('/:userId/notes', createNote)
 
 /* READ */
-router.get('/:userId/notes', getNotes);
+router.get('/:userId/notes', getNotes)
 
 /* UPDATE */
-router.put('/:userId/notes', updateNote);
+router.put('/:userId/notes', updateNote)
 
 /* DELETE */
-router.delete('/:userId/notes', deleteNote);
+router.delete('/:userId/notes', deleteNote)
 
-export default router;
+export default router

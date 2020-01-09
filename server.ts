@@ -1,36 +1,65 @@
-import http from 'http';
-import { join } from 'path';
-import express, { Response } from 'express';
-import mongoose from 'mongoose';
-import cors from 'cors';
+import http from 'http'
+import { join } from 'path'
+import express from 'express'
+import session from 'express-session'
+import mongoose from 'mongoose'
+import connectMongo from 'connect-mongo'
+// import cors from 'cors'
 
-require('dotenv').config();
+import userRoutes from './routes/users'
+import noteRoutes from './routes/notes'
 
-import userRoutes from './routes/users';
-import noteRoutes from './routes/notes';
+require('dotenv').config()
 
-const app = express();
+const {
+    PORT = 5000,
+    MONGODB_URI,
+    SESSION_SECRET,
+    SESSION_LIFETIME = 1000 * 3600 * 24 * 365,
+    HEROKUAPP_URL
+} = process.env
 
-app.use(express.static(join(__dirname, '..', 'client', 'build')));
-app.use(express.json());
-app.use(cors());
+const app = express()
 
-mongoose.connect(process.env.MONGODB_URI, {
+const MongoStore = connectMongo(session)
+
+mongoose.connect(MONGODB_URI, {
     useNewUrlParser: true,
     useFindAndModify: false,
     useCreateIndex: true,
     useUnifiedTopology: true
 })
     .then(() => console.log('MongoDB is connected...'))
-    .catch(err => console.log(err));
+    .catch(err => console.log(err))
 
-app.use(userRoutes);
-app.use(noteRoutes);
-app.use((_, res: Response) => res.sendFile(join(__dirname, '..', 'client', 'build', 'index.html')));
+app.use(express.static(join(__dirname, '..', 'client', 'build')))
+app.use(express.json())
+// app.use(cors())
 
-app.listen(process.env.PORT, () => {
-    console.log(`Server is running on port ${process.env.PORT}...`);
+app.use(session({
+    cookie: { maxAge: +SESSION_LIFETIME, sameSite: true },
+    secret: SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: new MongoStore({ mongooseConnection: mongoose.connection })
+}))
+
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Credentials', 'true')
+    res.setHeader('Access-Control-Allow-Headers', 'X-PINGOTHER, Content-Type')
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS')
+    res.setHeader('Access-Control-Allow-Origin', req.headers.origin)
+    // res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept')
+    next()
 });
 
+app.use(userRoutes)
+app.use(noteRoutes)
+app.use((_, res) => res.sendFile(join(__dirname, '..', 'client', 'build', 'index.html')))
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}...`)
+})
+
 /* Keep Heroku App Awake */
-setInterval(() => http.get(process.env.HEROKUAPP_URL), 900000);
+setInterval(() => http.get(HEROKUAPP_URL), 900000)
