@@ -42,7 +42,7 @@ app.use(session({
     store: new MongoStore({ mongooseConnection: mongoose.connection })
 }))
 
-app.use((req, res, next) => {
+app.use((_, res, next) => {
     res.setHeader('Access-Control-Allow-Credentials', 'true')
     res.setHeader('Access-Control-Allow-Headers', 'X-PINGOTHER, Content-Type')
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS')

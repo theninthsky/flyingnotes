@@ -67,7 +67,6 @@
   }
 
   .content {
-    flex-basis: 100%;
     padding: 0 5% 20vh 5%;
     box-sizing: border-box;
     resize: none;
@@ -76,6 +75,10 @@
     text-align: unset;
     font-size: 16px;
     animation: showContent 0.25s;
+
+    &:hover {
+      overflow: auto;
+    }
 
     @keyframes showContent {
       from { padding-bottom: 0 }
@@ -119,5 +122,22 @@
   .note {
     margin: 2vh 0;
     width: 100%;
+  }
+}
+
+/* Desktop Only */
+@media (pointer:fine) {
+  .content {
+    overflow: hidden;
+    
+    &::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 6px;
+      background: #999;
+    }
   }
 }

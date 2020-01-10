@@ -38,12 +38,16 @@
   
   .content {
     flex-grow: 1;
-    margin-top: 2.5%;
+    margin: 2.5% 2.5% 0 2.5%;
     padding: 0 5% 5% 5%;
     box-sizing: border-box;
     white-space: pre;
     overflow: auto;
     font-size: 16px;
+
+    &:hover {
+      overflow: auto;
+    }
   }
 
   .date, .confirmMessage {
@@ -66,10 +70,6 @@
 
 .noteDark {
   color: white;
-
-  .dateDark {
-    color: rgb(180, 180, 180);
-  }
 }
 
 @media (max-width: 768px) {
@@ -96,6 +96,23 @@
 
     .date, .confirmMessage {
       font-size: 12px;
+    }
+  }
+}
+
+/* Desktop Only */
+@media (pointer:fine) {
+  .content {
+    overflow: hidden;
+    
+    &::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 6px;
+      background: #999;
     }
   }
 }
