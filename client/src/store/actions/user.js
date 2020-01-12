@@ -11,7 +11,7 @@ export const register = credentials => {
     return async dispatch => {
         dispatch({ type: actionTypes.LOADING, loading: true });
         try {
-            const { data: { name, notes } } = await axios.post(REACT_APP_SERVER_URL + '/register', {
+            const { data: { name, notes } } = await axios.post(`${REACT_APP_SERVER_URL}/register`, {
                 ...credentials,
                 notes: localStorage.notes ?
                     JSON.parse(localStorage.notes).map(note => ({ ...note, _id: null })) : // _id is removed to prevent ObjectId errors on server side
@@ -35,7 +35,7 @@ export const login = credentials => {
     return async dispatch => {
         dispatch({ type: actionTypes.LOADING, loading: true });
         try {
-            const { data: { name, notes } } = await axios.post(REACT_APP_SERVER_URL + '/login', credentials);
+            const { data: { name, notes } } = await axios.post(`${REACT_APP_SERVER_URL}/login`, credentials);
             localStorage.setItem('name', name);
             batch(() => {
                 dispatch({ type: actionTypes.LOGIN, name });
@@ -53,7 +53,7 @@ export const update = credentials => {
     return async dispatch => {
         dispatch({ type: actionTypes.LOADING, loading: true });
         try {
-            const { data: { name } } = await axios.put(REACT_APP_SERVER_URL + '/register', credentials);
+            const { data: { name } } = await axios.put(`${REACT_APP_SERVER_URL}/register`, credentials);
             localStorage.setItem('name', name);
             dispatch({ type: actionTypes.UPDATE, name });
         }
@@ -65,7 +65,7 @@ export const update = credentials => {
 };
 
 export const logout = () => {
-    axios.post(REACT_APP_SERVER_URL + '/logout');
+    axios.post(`${REACT_APP_SERVER_URL}/logout`);
     return dispatch => {
         localStorage.removeItem('name');
         batch(() => {

@@ -32,7 +32,7 @@ mongoose.connect(MONGODB_URI, {
     .catch(err => console.log(err))
 
 app.use(express.static(join(__dirname, '..', 'client', 'build')))
-app.use(express.json())
+app.use(express.json({ limit: '2621440' })) // 2.5MB
 
 app.use(session({
     cookie: { maxAge: +SESSION_LIFETIME, sameSite: true },

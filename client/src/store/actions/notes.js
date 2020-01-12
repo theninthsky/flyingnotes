@@ -12,7 +12,7 @@ export const fetchNotes = () => {
         dispatch({ type: actionTypes.FETCHING_NOTES, fetching: true });
         let notes;
         if (localStorage.name) {
-            const { data } = await axios.get(REACT_APP_SERVER_URL + '/notes');
+            const { data } = await axios.get(`${REACT_APP_SERVER_URL}/notes`);
             notes = data.notes;
         } else if (localStorage.notes) {
             notes = JSON.parse(localStorage.notes);
@@ -29,7 +29,7 @@ export const addNote = newNote => {
     return async dispatch => {
         dispatch({ type: actionTypes.FETCHING_NOTES, fetching: true });
         if (localStorage.name) {
-            const { data } = await axios.post(REACT_APP_SERVER_URL + '/notes', { newNote });
+            const { data } = await axios.post(`${REACT_APP_SERVER_URL}/notes`, { newNote });
             newNote = data;
         } else {
             newNote = { ...newNote, _id: Date.now(), date: Date.now() }
@@ -46,7 +46,7 @@ export const updateNote = updatedNote => {
     return async dispatch => {
         dispatch({ type: actionTypes.FETCHING_NOTES, fetching: true });
         if (localStorage.name) {
-            const { data } = await axios.put(REACT_APP_SERVER_URL + '/notes', { updatedNote });
+            const { data } = await axios.put(`${REACT_APP_SERVER_URL}/notes`, { updatedNote });
             updatedNote = data.updatedNote;
         } else {
             updatedNote.date = Date.now();
@@ -65,7 +65,7 @@ export const deleteNote = noteId => {
     return async dispatch => {
         dispatch({ type: actionTypes.FETCHING_NOTES, fetching: true });
         if (localStorage.name) {
-            const { status } = await axios.delete(REACT_APP_SERVER_URL + '/notes', { data: { noteId } });
+            const { status } = await axios.delete(`${REACT_APP_SERVER_URL}/notes`, { data: { noteId } });
             if (status !== 200) {
                 noteId = '';
             }

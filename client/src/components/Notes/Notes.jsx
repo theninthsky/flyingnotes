@@ -35,7 +35,8 @@ const Notes = props => {
                 category={note.category} 
                 title={note.title} 
                 content={note.content} 
-                date={note.date} 
+                date={note.date}
+                file={note.file}
             />
     ), [notes, theme, categoryFilter, searchFilter]);
 

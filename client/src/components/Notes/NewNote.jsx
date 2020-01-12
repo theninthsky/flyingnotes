@@ -5,11 +5,19 @@ import { GithubPicker } from 'react-color';
 import * as actions from '../../store/actions/index';
 import styles from './NewNote.module.scss';
 import colorPalette from '../../assets/images/color-palette.svg';
+import paperClip from '../../assets/images/paper-clip.svg';
 
 const colorsArray = [
     '#c0392b', '#d35400', '#f39c12', '#27ae60', '#16a085',
     '#2980b9', '#8e44ad', '#2c3e50', '#7f8c8d', '#bdc3c7'
 ];
+
+const fileToBase64 = file => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+});
 
 const NewNote = props => {
     const [showColorPicker, setShowColorPicker] = useState(false);
@@ -18,6 +26,7 @@ const NewNote = props => {
     const [title, setTitle] = useState(props.title || '');
     const [showContent, setShowContent] = useState(props.id ? true : false);
     const [content, setContent] = useState(props.content || '');
+    const [selectedFile, setSelectedFile] = useState(props.file || null);
 
     const colorHanlder = color => {
         setColor(color.hex);
@@ -30,9 +39,24 @@ const NewNote = props => {
 
     const contentHandler = event => setContent(event.target.value);
 
+    const fileHandler = event => {
+        const file = event.target.files[0];
+        if (file) {
+            if (file.size <= 2 * 1024 * 1024) {
+                fileToBase64(file).then(encoded => setSelectedFile({ name: file.name, content: encoded }));
+            } else {
+                alert('File size exceeds 2MB');
+                setSelectedFile(null);
+                document.querySelector('input[type="file"]').value = '';
+            }
+        } else {
+            setSelectedFile(null);
+        }
+    };
+
     const saveNoteHandler = event => {
         event.preventDefault();
-        const note = { _id: props.id, color, category: category.trim(), title: title.trim(), content };
+        const note = { _id: props.id, color, category: category.trim(), title: title.trim(), content, file: selectedFile };
         if (props.update) {
             props.updateNote(note);
             props.toggleEditMode();
@@ -84,15 +108,24 @@ const NewNote = props => {
                     onChange={titleHandler}
                 />
                 {showContent ?
-                    <textarea
-                        className={styles.content}
-                        dir="auto"
-                        value={content}
-                        title="Note's content"
-                        required
-                        onChange={contentHandler}
-                    >
-                    </textarea> :
+                    <>
+                        <textarea
+                            className={styles.content}
+                            dir="auto"
+                            value={content}
+                            title="Note's content"
+                            required
+                            onChange={contentHandler}
+                        >
+                        </textarea>
+                        <input className={styles.file} type="file" onChange={fileHandler} />
+                        <img
+                            className={`${styles.paperClip} ${props.theme === 'dark' ? styles.paperClipDark : ''}`}
+                            src={paperClip}
+                            alt="Upload a File"
+                            title="Upload a File"
+                        />
+                    </> :
                     null}
                 <input className={styles.save} type="submit" value="SAVE" />
             </form>

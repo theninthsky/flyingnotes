@@ -68,7 +68,7 @@
 
   .content {
     width: 90%;
-    margin: 2% 4% 0 4%;
+    margin: 2% 4% 1% 4%;
     padding-bottom: 20vh;
     resize: none;
     white-space: pre;
@@ -93,6 +93,23 @@
     }
   }
 
+  .file {
+    z-index: 1;
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+    width: 16px;
+    opacity: 0;
+  }
+
+  .paperClip {
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+    width: 16px;
+    opacity: 0.4;
+  }
+
   .save {
     margin: 0 auto;
     width: 25%;
@@ -115,6 +132,10 @@
 
   .titleDark::placeholder {
       color: rgb(200, 200, 200);
+  }
+
+  .paperClipDark {
+    filter: invert(100%);
   }
 }
 
