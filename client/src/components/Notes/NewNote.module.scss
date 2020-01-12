@@ -67,8 +67,9 @@
   }
 
   .content {
-    padding: 0 5% 20vh 5%;
-    box-sizing: border-box;
+    width: 90%;
+    margin: 2% 4% 0 4%;
+    padding-bottom: 20vh;
     resize: none;
     white-space: pre;
     overflow: auto;
@@ -76,8 +77,14 @@
     font-size: 16px;
     animation: showContent 0.25s;
 
+    &::-webkit-scrollbar-thumb {
+      visibility: hidden;
+    }
+
     &:hover {
-      overflow: auto;
+      &::-webkit-scrollbar-thumb {
+        visibility: visible;
+      }
     }
 
     @keyframes showContent {
@@ -127,17 +134,17 @@
 
 /* Desktop Only */
 @media (pointer:fine) {
-  .content {
-    overflow: hidden;
-    
-    &::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      border-radius: 6px;
-      background: #999;
+  .note {
+    .content {
+      &::-webkit-scrollbar {
+        width: 4px;
+        height: 4px;
+      }
+  
+      &::-webkit-scrollbar-thumb {
+        border-radius: 8px;
+        background: #999;
+      }
     }
   }
 }

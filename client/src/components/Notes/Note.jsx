@@ -33,7 +33,7 @@ const Note = props => {
                     <div className={styles.category} dir="auto">{props.category}</div>
                 </> : null}
             {props.title ? <h1 className={styles.title} dir="auto">{props.title}</h1> : null}
-            <div className={`${styles.content} ${props.theme === 'dark' ? styles.contentDark : ''}`} dir="auto">{props.content}</div>
+            <div className={styles.content} dir="auto">{props.content}</div>
             {showOptions ? <Options id={props.id} edit={toggleEditModeHandler} toggleConfirmMessage={toggleConfirmMessageHanlder} /> : null}
             {showConfirmMessage ?
                 <div className={styles.confirmMessage}>Delete this note?</div> :
