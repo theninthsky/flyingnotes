@@ -8,6 +8,8 @@ const reducer = (state = initialState, action) => {
             return action.notes || [];
         case actionTypes.ADD_NOTE:
             return [...state, action.newNote];
+        case actionTypes.POPULATE_FILE:
+            return state.map(note => note._id === action.note._id ? action.note : note);
         case actionTypes.UPDATE_NOTE:
             return state.map(note => note._id === action.updatedNote._id ? action.updatedNote : note);
         case actionTypes.DELETE_NOTE:

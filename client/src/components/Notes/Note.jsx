@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { saveAs } from 'file-saver';
 
+import * as actions from '../../store/actions/index';
 import Options from './Options';
 import NewNote from './NewNote';
+import Spinner from '../UI/Spinner';
 import styles from './Note.module.scss';
 
 import paperClip from '../../assets/images/paper-clip.svg';
@@ -30,9 +33,14 @@ const Note = props => {
     const toggleEditModeHandler = () => setEditMode(!editMode);
 
     const downloadFileHandler = () => {
-        const type = props.file.content.split`,`[0].split`:`[1];
-        const content = base64ToFile(props.file.content, type);
-        saveAs(content, props.file.name);
+        if (props.file.content) {
+            const type = props.file.content.split`,`[0].split`:`[1];
+            const content = base64ToFile(props.file.content, type);
+            saveAs(content, props.file.name);
+        } else {
+            const { id: _id, color, category, title, content, date } = props;
+            props.fetchFile({ _id, color, category, title, content, date });
+        }
     };
 
     const note = editMode ?
@@ -55,13 +63,16 @@ const Note = props => {
             {props.title ? <h1 className={styles.title} dir="auto">{props.title}</h1> : null}
             <div className={styles.content} dir="auto">{props.content}</div>
             {props.file ?
-                <img
-                    className={`${styles.paperClip} ${props.theme === 'dark' ? styles.paperClipDark : ''}`}
-                    src={paperClip}
-                    alt={props.file.name}
-                    title={props.file.name}
-                    onClick={downloadFileHandler}
-                /> : null}
+                props.fetchingFile ?
+                    <Spinner /> :
+                    <img
+                        className={`${styles.paperClip} ${props.theme === 'dark' ? styles.paperClipDark : ''}`}
+                        src={paperClip}
+                        alt={props.file.name}
+                        title={props.file.name}
+                        onClick={downloadFileHandler}
+                    /> :
+                null}
 
             {showOptions ? <Options id={props.id} edit={toggleEditModeHandler} toggleConfirmMessage={toggleConfirmMessageHanlder} /> : null}
             {showConfirmMessage ?
@@ -75,4 +86,12 @@ const Note = props => {
     return note;
 };
 
-export default Note;
+const mapStateToProps = state => ({
+    fetchingFile: state.user.fetchingFile
+});
+
+const mapDispatchToProps = dispatch => ({
+    fetchFile: note => dispatch(actions.fetchFile(note))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Note);

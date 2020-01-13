@@ -9,6 +9,7 @@ export {
 
 export {
     fetchNotes,
+    fetchFile,
     addNote,
     updateNote,
     deleteNote

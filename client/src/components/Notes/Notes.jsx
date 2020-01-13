@@ -7,7 +7,7 @@ import * as actions from '../../store/actions/index';
 import styles from './Notes.module.scss';
 
 const Notes = props => {
-    const { user: { userId, notesFetched, theme }, notes, fetchNotes } = props;
+    const { user: { notesFetched, theme }, notes, fetchNotes } = props;
 
     const [categoryFilter, setCategoryFilter] = useState('');
     const [searchFilter, setSearchFilter] = useState('');
@@ -16,59 +16,59 @@ const Notes = props => {
         if (!notesFetched) {
             fetchNotes();
         }
-    }, [userId, notesFetched, notes, fetchNotes, theme]);
+    }, [notesFetched, notes, fetchNotes, theme]);
 
     const categoryFilterHandler = event => setCategoryFilter(event.target.value);
-    
+
     const searchFilterHandler = event => setSearchFilter(event.target.value.toLowerCase());
 
     const filteredNotes = useMemo(() => [...notes]
         .filter(({ category }) => !categoryFilter ? true : category === categoryFilter)
         .filter(({ title, content }) => (title + ' ' + content).toLowerCase().includes(searchFilter))
         .sort((a, b) => b.date - a.date)
-        .map(note => 
-            <Note 
-                key={note._id} 
-                id={note._id} 
+        .map(note =>
+            <Note
+                key={note._id}
+                id={note._id}
                 theme={theme}
-                color={note.color} 
-                category={note.category} 
-                title={note.title} 
-                content={note.content} 
+                color={note.color}
+                category={note.category}
+                title={note.title}
+                content={note.content}
                 date={note.date}
                 file={note.file}
             />
-    ), [notes, theme, categoryFilter, searchFilter]);
+        ), [notes, theme, categoryFilter, searchFilter]);
 
     return (
         <>
-        <div className={`${styles.filters} ${theme === 'dark' ? styles.filtersDark : ''}`}>
-            <select 
-                className={`${styles.categoryFilter} ${theme === 'dark' ? styles.categoryFilterDark : ''}`}
-                title="Category" 
-                onChange={categoryFilterHandler}
-            >
-                <option defaultValue value="">ALL</option>
-                { notes
-                    .sort((a, b) => a.category.localeCompare(b.category))
-                    .filter(({ category }, ind, notes) => category && category !== (notes[ind + 1] && notes[ind + 1].category))
-                    .map(({ category, _id }) => <option key={_id}>{category}</option>) }
-            </select>
-            <div className={`${styles.searchFilter} ${theme === 'dark' ? styles.searchFilterDark : ''}`}>
-                <i className={'fa fa-search ' +  styles.searchIcon}></i>
-                <input 
-                    className={styles.searchBox}
-                    type="search" 
-                    value={searchFilter} 
-                    placeholder="Search..." 
-                    onChange={searchFilterHandler} 
-                />
+            <div className={`${styles.filters} ${theme === 'dark' ? styles.filtersDark : ''}`}>
+                <select
+                    className={`${styles.categoryFilter} ${theme === 'dark' ? styles.categoryFilterDark : ''}`}
+                    title="Category"
+                    onChange={categoryFilterHandler}
+                >
+                    <option defaultValue value="">ALL</option>
+                    {notes
+                        .sort((a, b) => a.category.localeCompare(b.category))
+                        .filter(({ category }, ind, notes) => category && category !== (notes[ind + 1] && notes[ind + 1].category))
+                        .map(({ category, _id }) => <option key={_id}>{category}</option>)}
+                </select>
+                <div className={`${styles.searchFilter} ${theme === 'dark' ? styles.searchFilterDark : ''}`}>
+                    <i className={'fa fa-search ' + styles.searchIcon}></i>
+                    <input
+                        className={styles.searchBox}
+                        type="search"
+                        value={searchFilter}
+                        placeholder="Search..."
+                        onChange={searchFilterHandler}
+                    />
+                </div>
             </div>
-        </div>
-        <div className={styles.notesContainer}>
-            <NewNote theme={theme}/>
-            { filteredNotes }
-        </div>
+            <div className={styles.notesContainer}>
+                <NewNote theme={theme} />
+                {filteredNotes}
+            </div>
         </>
     );
 };
@@ -76,11 +76,11 @@ const Notes = props => {
 const mapStateToProps = state => ({
     user: state.user,
     notes: state.notes
-  });
-  
-  const mapDispatchToProps = dispatch => ({
+});
+
+const mapDispatchToProps = dispatch => ({
     fetchNotes: () => dispatch(actions.fetchNotes())
-  });
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Notes);
 

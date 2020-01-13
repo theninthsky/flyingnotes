@@ -6,6 +6,7 @@ const initialState = {
     loading: false, // user related asynchronous actions
     fetchingNotes: false, // notes related asynchronous actions
     notesFetched: false,
+    fetchingFile: false,
     errorMessage: false
 };
 
@@ -20,6 +21,8 @@ const reducer = (state = initialState, action) => {
             return { ...state, fetchingNotes: action.fetching };
         case actionTypes.NOTES_FETCHED:
             return { ...state, notesFetched: true, loading: false };
+        case actionTypes.FETCHING_FILE:
+            return { ...state, fetchingFile: action.status };
         case actionTypes.UPDATE:
             return { ...state, name: action.name, loading: false };
         case actionTypes.LOGOUT:

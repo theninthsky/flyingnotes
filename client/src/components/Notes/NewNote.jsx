@@ -118,13 +118,17 @@ const NewNote = props => {
                             onChange={contentHandler}
                         >
                         </textarea>
-                        <input className={styles.file} type="file" onChange={fileHandler} />
-                        <img
-                            className={`${styles.paperClip} ${props.theme === 'dark' ? styles.paperClipDark : ''}`}
-                            src={paperClip}
-                            alt="Upload a File"
-                            title="Upload a File"
-                        />
+                        {localStorage.name ?
+                            <>
+                                <input className={styles.file} type="file" onChange={fileHandler} />
+                                <img
+                                    className={`${styles.paperClip} ${props.theme === 'dark' ? styles.paperClipDark : ''}`}
+                                    src={paperClip}
+                                    alt="Upload a File"
+                                    title="Upload a File"
+                                />
+                            </> :
+                            null}
                     </> :
                     null}
                 <input className={styles.save} type="submit" value="SAVE" />

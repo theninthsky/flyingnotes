@@ -56,7 +56,7 @@ $amount: 30px;
   }
   @for $i from 1 through 4 {
     .shape-#{$i} {
-      animation: shape#{$i} 2s infinite reverse;
+      animation: shape#{$i} 1.5s infinite reverse;
     }
   }
 }

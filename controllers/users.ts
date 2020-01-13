@@ -22,7 +22,7 @@ export const registerUser = (req: Request, res: Response) => {
 export const loginUser = (req: Request, res: Response) => {
     const { email, password } = req.body
     
-    User.findOne({ email })
+    User.findOne({ email }, { 'notes.file.content': 0 })
         .then(async ({ _id, password: hashedPassword, name, notes }) => {
             return bcrypt.compare(password, hashedPassword)
                 .then(match => {
