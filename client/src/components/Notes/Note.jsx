@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { saveAs } from 'file-saver';
 
@@ -33,7 +33,7 @@ const Note = props => {
 
     const toggleEditModeHandler = () => setEditMode(!editMode);
 
-    const downloadFileHandler = useCallback(() => {
+    const downloadFileHandler = () => {
         if (props.file) {
             const type = props.file.split`,`[0].split`:`[1];
             const file = base64ToFile(props.file, type);
@@ -42,13 +42,7 @@ const Note = props => {
             const { id: _id, color, category, title, content, date, fileName } = props;
             props.fetchFile({ _id, color, category, title, content, date, fileName });
         }
-    }, [props]);
-
-    useEffect(() => {
-        if (props.file) {
-            downloadFileHandler();
-        }
-    }, [props.file, downloadFileHandler]);
+    };
 
     const note = editMode ?
         <NewNote
