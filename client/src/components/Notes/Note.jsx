@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { saveAs } from 'file-saver';
 
 import * as actions from '../../store/actions/index';
 import Options from './Options';
 import NewNote from './NewNote';
-import Spinner from '../UI/Spinner';
+import FileSpinner from '../UI/FileSpinner';
 import styles from './Note.module.scss';
 
-import paperClip from '../../assets/images/paper-clip.svg';
+import paperClipIcon from '../../assets/images/paper-clip.svg';
+import downdloadIcon from '../../assets/images/download.svg';
 
 const base64ToFile = (content, type) => {
     const byteString = atob(content.split`,`[1]);
@@ -32,16 +33,22 @@ const Note = props => {
 
     const toggleEditModeHandler = () => setEditMode(!editMode);
 
-    const downloadFileHandler = () => {
-        if (props.file.content) {
-            const type = props.file.content.split`,`[0].split`:`[1];
-            const content = base64ToFile(props.file.content, type);
-            saveAs(content, props.file.name);
+    const downloadFileHandler = useCallback(() => {
+        if (props.file) {
+            const type = props.file.split`,`[0].split`:`[1];
+            const file = base64ToFile(props.file, type);
+            saveAs(file, props.fileName);
         } else {
-            const { id: _id, color, category, title, content, date } = props;
-            props.fetchFile({ _id, color, category, title, content, date });
+            const { id: _id, color, category, title, content, date, fileName } = props;
+            props.fetchFile({ _id, color, category, title, content, date, fileName });
         }
-    };
+    }, [props]);
+
+    useEffect(() => {
+        if (props.file) {
+            downloadFileHandler();
+        }
+    }, [props.file, downloadFileHandler]);
 
     const note = editMode ?
         <NewNote
@@ -62,17 +69,27 @@ const Note = props => {
                 </> : null}
             {props.title ? <h1 className={styles.title} dir="auto">{props.title}</h1> : null}
             <div className={styles.content} dir="auto">{props.content}</div>
+
             {props.file ?
-                props.fetchingFile ?
-                    <Spinner /> :
-                    <img
-                        className={`${styles.paperClip} ${props.theme === 'dark' ? styles.paperClipDark : ''}`}
-                        src={paperClip}
-                        alt={props.file.name}
-                        title={props.file.name}
-                        onClick={downloadFileHandler}
-                    /> :
-                null}
+                <img
+                    className={styles.download}
+                    src={downdloadIcon}
+                    alt="Download"
+                    title="Download"
+                    onClick={downloadFileHandler}
+                /> :
+                props.fileName ?
+                    props.fetchingFile ?
+                        <FileSpinner /> :
+                        <img
+                            className={`${styles.paperClip} ${props.theme === 'dark' ? styles.paperClipDark : ''}`}
+                            src={paperClipIcon}
+                            alt={props.fileName}
+                            title={props.fileName}
+                            onClick={downloadFileHandler}
+                        /> :
+                    null}
+
 
             {showOptions ? <Options id={props.id} edit={toggleEditModeHandler} toggleConfirmMessage={toggleConfirmMessageHanlder} /> : null}
             {showConfirmMessage ?

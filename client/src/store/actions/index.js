@@ -9,8 +9,11 @@ export {
 
 export {
     fetchNotes,
-    fetchFile,
     addNote,
     updateNote,
     deleteNote
 } from './notes';
+
+export {
+    fetchFile
+} from './files';

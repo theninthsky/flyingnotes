@@ -26,7 +26,7 @@ const NewNote = props => {
     const [title, setTitle] = useState(props.title || '');
     const [showContent, setShowContent] = useState(props.id ? true : false);
     const [content, setContent] = useState(props.content || '');
-    const [selectedFile, setSelectedFile] = useState(props.file || null);
+    const [selectedFile, setSelectedFile] = useState(props.fileName ? { fileName: props.fileName } : null);
 
     const colorHanlder = color => {
         setColor(color.hex);
@@ -43,7 +43,7 @@ const NewNote = props => {
         const file = event.target.files[0];
         if (file) {
             if (file.size <= 2 * 1024 * 1024) {
-                fileToBase64(file).then(encoded => setSelectedFile({ name: file.name, content: encoded }));
+                fileToBase64(file).then(encoded => setSelectedFile({ fileName: file.name, file: encoded }));
             } else {
                 alert('File size exceeds 2MB');
                 setSelectedFile(null);
@@ -56,7 +56,7 @@ const NewNote = props => {
 
     const saveNoteHandler = event => {
         event.preventDefault();
-        const note = { _id: props.id, color, category: category.trim(), title: title.trim(), content, file: selectedFile };
+        const note = { _id: props.id, color, category: category.trim(), title: title.trim(), content, ...selectedFile };
         if (props.update) {
             props.updateNote(note);
             props.toggleEditMode();

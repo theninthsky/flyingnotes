@@ -1,22 +1,12 @@
 import mongoose, { Document, Schema } from 'mongoose'
 
-interface IFile extends Document {
-    name: string
-    content: string
-}
-
-const fileSchema: Schema = new Schema({
-    name: String,
-    content: String
-})
-
 interface INote extends Document {
     color?: string
     category?: string
     title?: string
     content: string
     date: Date
-    file?: IFile
+    fileName?: string
 }
 
 const noteSchema: Schema = new Schema({
@@ -31,7 +21,7 @@ const noteSchema: Schema = new Schema({
         type: Number,
         required: true
     },
-    file: fileSchema
+    fileName: String
 })
 
 interface IUser extends Document {

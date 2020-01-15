@@ -7,6 +7,7 @@ import connectMongo from 'connect-mongo'
 
 import userRoutes from './routes/users'
 import noteRoutes from './routes/notes'
+import fileRoutes from './routes/files'
 
 require('dotenv').config()
 
@@ -51,6 +52,7 @@ app.use((_, res, next) => {
 
 app.use(userRoutes)
 app.use(noteRoutes)
+app.use(fileRoutes)
 app.use((_, res) => res.sendFile(join(__dirname, '..', 'client', 'build', 'index.html')))
 
 app.listen(PORT, () => {

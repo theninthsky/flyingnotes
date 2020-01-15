@@ -5,9 +5,9 @@ import User from '../models/user.model'
 
 export const registerUser = (req: Request, res: Response) => {
     const { name, email, password, notes = [] } = req.body
-    const newUser = new User({ name, email, password: bcrypt.hashSync(password), notes })
 
-    newUser.save()
+    new User({ name, email, password: bcrypt.hashSync(password), notes })
+        .save()
         .then(async ({ _id, name, notes }) => {
             console.log(name + ' registered!')
             req.session.userId = _id
@@ -21,8 +21,8 @@ export const registerUser = (req: Request, res: Response) => {
 
 export const loginUser = (req: Request, res: Response) => {
     const { email, password } = req.body
-    
-    User.findOne({ email }, { 'notes.file.content': 0 })
+
+    User.findOne({ email })
         .then(async ({ _id, password: hashedPassword, name, notes }) => {
             return bcrypt.compare(password, hashedPassword)
                 .then(match => {
@@ -38,7 +38,7 @@ export const loginUser = (req: Request, res: Response) => {
 
 export const updateUser = (req: Request, res: Response) => {
     const { name, password, newPassword } = req.body
-    
+
     User.findById(req.session.userId)
         .then(user => {
             return bcrypt.compare(password, user.password)

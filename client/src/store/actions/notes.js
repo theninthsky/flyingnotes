@@ -25,18 +25,6 @@ export const fetchNotes = () => {
     };
 };
 
-export const fetchFile = note => {
-    return async dispatch => {
-        dispatch({ type: actionTypes.FETCHING_FILE, status: true });
-        const { data } = await axios.get(`${REACT_APP_SERVER_URL}/${note._id}/file`);
-        note.file = data.file;
-        batch(() => {
-            dispatch({ type: actionTypes.POPULATE_FILE, note });
-            dispatch({ type: actionTypes.FETCHING_FILE, status: false });
-        });
-    };
-};
-
 export const addNote = newNote => {
     return async dispatch => {
         dispatch({ type: actionTypes.FETCHING_NOTES, fetching: true });
