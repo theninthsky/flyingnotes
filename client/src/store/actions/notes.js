@@ -27,7 +27,7 @@ export const fetchNotes = () => {
 
 export const addNote = newNote => {
     return async dispatch => {
-        dispatch({ type: actionTypes.FETCHING_NOTES, fetching: true });
+        dispatch({ type: actionTypes.ADDING_NOTE, status: true });
         if (localStorage.name) {
             const { data } = await axios.post(`${REACT_APP_SERVER_URL}/notes`, { newNote });
             newNote = data;
@@ -37,14 +37,14 @@ export const addNote = newNote => {
         }
         batch(() => {
             dispatch({ type: actionTypes.ADD_NOTE, newNote });
-            dispatch({ type: actionTypes.FETCHING_NOTES, fetching: false });
+            dispatch({ type: actionTypes.ADDING_NOTE, status: false });
         });
     };
 };
 
 export const updateNote = updatedNote => {
     return async dispatch => {
-        dispatch({ type: actionTypes.FETCHING_NOTES, fetching: true });
+        dispatch({ type: actionTypes.UPDATING_NOTE, noteId: updatedNote._id });
         if (localStorage.name) {
             const { data } = await axios.put(`${REACT_APP_SERVER_URL}/notes`, { updatedNote });
             updatedNote = data.updatedNote;
@@ -56,14 +56,14 @@ export const updateNote = updatedNote => {
         }
         batch(() => {
             dispatch({ type: actionTypes.UPDATE_NOTE, updatedNote });
-            dispatch({ type: actionTypes.FETCHING_NOTES, fetching: false });
+            dispatch({ type: actionTypes.UPDATING_NOTE, noteId: '' });
         });
     };
 };
 
 export const deleteNote = noteId => {
     return async dispatch => {
-        dispatch({ type: actionTypes.FETCHING_NOTES, fetching: true });
+        dispatch({ type: actionTypes.DELETING_NOTE, noteId });
         if (localStorage.name) {
             const { status } = await axios.delete(`${REACT_APP_SERVER_URL}/notes`, { data: { noteId } });
             if (status !== 200) {
@@ -75,7 +75,7 @@ export const deleteNote = noteId => {
         }
         batch(() => {
             dispatch({ type: actionTypes.DELETE_NOTE, noteId });
-            dispatch({ type: actionTypes.FETCHING_NOTES, fetching: false });
+            dispatch({ type: actionTypes.DELETING_NOTE, noteId: '' });
         });
     };
 };

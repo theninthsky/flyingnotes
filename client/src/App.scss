@@ -12,3 +12,8 @@ body {
         to {opacity: 1};
     }
 }
+
+img {
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}

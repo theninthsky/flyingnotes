@@ -1,12 +1,12 @@
 .FileSpinner {
   position: absolute;
-  bottom: 2.5%;
-  right: 2.5%;
+  bottom: 6px;
+  right: 6px;
   transform: translate(-50%, -50%);
   width: 15px;
   height: 15px;
-  border-top: 3px solid rgba(dodgerblue, 0.5);
-  border-right: 3px solid transparent;
+  border-top: 2px solid rgba(dodgerblue, 0.5);
+  border-right: 2px solid transparent;
   border-radius: 50%;
   animation: rotation 1s linear infinite;
 }

@@ -5,10 +5,11 @@ import { saveAs } from 'file-saver';
 import * as actions from '../../store/actions/index';
 import Options from './Options';
 import NewNote from './NewNote';
+import NoteSpinner from '../UI/NoteSpinner';
 import FileSpinner from '../UI/FileSpinner';
 import styles from './Note.module.scss';
 
-import paperClipIcon from '../../assets/images/paper-clip.svg';
+import fileIcon from '../../assets/images/file.svg';
 import downdloadIcon from '../../assets/images/download.svg';
 
 const base64ToFile = (content, type) => {
@@ -23,6 +24,10 @@ const base64ToFile = (content, type) => {
 };
 
 const Note = props => {
+    const { _id, color, category, title, content, date, fileName, file } = props;
+    const { theme, fetchingFile, updatingNote, deletingNote } = props.user;
+    const { fetchFile } = props;
+
     const [showOptions, setShowOptions] = useState(false);
     const [editMode, setEditMode] = useState(false);
     const [showConfirmMessage, setShowConfirmMessage] = useState(false);
@@ -34,13 +39,12 @@ const Note = props => {
     const toggleEditModeHandler = () => setEditMode(!editMode);
 
     const downloadFileHandler = () => {
-        if (props.file) {
-            const type = props.file.split`,`[0].split`:`[1];
-            const file = base64ToFile(props.file, type);
-            saveAs(file, props.fileName);
+        if (file) {
+            const type = file.split`,`[0].split`:`[1];
+            const builtFile = base64ToFile(file, type);
+            saveAs(builtFile, fileName);
         } else {
-            const { id: _id, color, category, title, content, date, fileName } = props;
-            props.fetchFile({ _id, color, category, title, content, date, fileName });
+            fetchFile({ _id, color, category, title, content, date, fileName });
         }
     };
 
@@ -52,45 +56,51 @@ const Note = props => {
             update
         /> :
         <div
-            className={`${styles.note} ${props.theme === 'dark' ? styles.noteDark : ''}`}
+            className={`${styles.note} ${theme === 'dark' ? styles.noteDark : ''}`}
             onMouseMove={() => toggleOptionsHandler(true)}
             onMouseLeave={() => toggleOptionsHandler(false)}
         >
-            {props.category ?
+            {category ?
                 <>
-                    <div className={styles.categoryBackground} style={{ backgroundColor: props.color }}>&nbsp;</div>
-                    <div className={styles.category} dir="auto">{props.category}</div>
+                    <div className={styles.categoryBackground} style={{ backgroundColor: color }}>&nbsp;</div>
+                    <div className={styles.category} dir="auto">{category}</div>
                 </> : null}
-            {props.title ? <h1 className={styles.title} dir="auto">{props.title}</h1> : null}
-            <div className={styles.content} dir="auto">{props.content}</div>
 
-            {props.file ?
+            {title ? <h1 className={styles.title} dir="auto">{title}</h1> : null}
+
+            <div className={styles.content} dir="auto">{content}</div>
+
+            {file ?
                 <img
                     className={styles.download}
                     src={downdloadIcon}
-                    alt="Download"
-                    title="Download"
+                    alt={fileName}
+                    title={fileName}
                     onClick={downloadFileHandler}
                 /> :
-                props.fileName ?
-                    props.fetchingFile ?
+                fileName ?
+                    (fetchingFile === _id ?
                         <FileSpinner /> :
                         <img
-                            className={`${styles.paperClip} ${props.theme === 'dark' ? styles.paperClipDark : ''}`}
-                            src={paperClipIcon}
-                            alt={props.fileName}
-                            title={props.fileName}
+                            className={`${styles.file} ${theme === 'dark' ? styles.fileDark : ''}`}
+                            src={fileIcon}
+                            alt={fileName}
+                            title={fileName}
                             onClick={downloadFileHandler}
-                        /> :
+                        />) :
                     null}
 
 
-            {showOptions ? <Options id={props.id} edit={toggleEditModeHandler} toggleConfirmMessage={toggleConfirmMessageHanlder} /> : null}
-            {showConfirmMessage ?
+            {updatingNote === _id || deletingNote === _id ?
+                <NoteSpinner /> :
+                (showOptions ? <Options id={_id} edit={toggleEditModeHandler} toggleConfirmMessage={toggleConfirmMessageHanlder} /> :
+                    null)}
+
+            {showConfirmMessage && updatingNote !== _id && deletingNote !== _id ?
                 <div className={styles.confirmMessage}>Delete this note?</div> :
                 <div
                     className={styles.date}>
-                    {new Date(props.date).toLocaleString('en-GB').replace(',', '').slice(0, -3)}
+                    {new Date(date).toLocaleString('en-GB').replace(',', '').slice(0, -3)}
                 </div>}
         </div>;
 
@@ -98,7 +108,7 @@ const Note = props => {
 };
 
 const mapStateToProps = state => ({
-    fetchingFile: state.user.fetchingFile
+    user: state.user
 });
 
 const mapDispatchToProps = dispatch => ({

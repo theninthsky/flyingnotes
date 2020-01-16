@@ -29,8 +29,7 @@ const Notes = props => {
         .map(note =>
             <Note
                 key={note._id}
-                id={note._id}
-                theme={theme}
+                _id={note._id}
                 color={note.color}
                 category={note.category}
                 title={note.title}
@@ -39,7 +38,7 @@ const Notes = props => {
                 fileName={note.fileName}
                 file={note.file}
             />
-        ), [notes, theme, categoryFilter, searchFilter]);
+        ), [notes, categoryFilter, searchFilter]);
 
     return (
         <>

@@ -14,13 +14,13 @@
 
     .edit, .delete, .confirm, .cancel {
         position: absolute;
-        top: 12.5%;
+        bottom: 6px;
         height: 75%;
-        user-select: none;
+        opacity: 0.5;
         cursor: pointer;
 
         &:hover {
-            opacity: 0.5;
+            opacity: 1;
         }
     }
 
@@ -37,7 +37,6 @@
     .options {
         .edit, .delete, .confirm, .cancel {
             top: 17.5%;
-            -webkit-tap-highlight-color: transparent;
 
             &:hover {
                 opacity: unset;

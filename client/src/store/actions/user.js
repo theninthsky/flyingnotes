@@ -55,7 +55,7 @@ export const update = credentials => {
         try {
             const { data: { name } } = await axios.put(`${REACT_APP_SERVER_URL}/register`, credentials);
             localStorage.setItem('name', name);
-            dispatch({ type: actionTypes.UPDATE, name });
+            dispatch({ type: actionTypes.UPDATE_USER, name });
         }
         catch ({ response: { data } }) {
             dispatch({ type: actionTypes.ERROR, errorMessage: data });

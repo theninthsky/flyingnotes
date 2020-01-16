@@ -6,7 +6,10 @@ const initialState = {
     loading: false, // user related asynchronous actions
     fetchingNotes: false, // notes related asynchronous actions
     notesFetched: false,
-    fetchingFile: false,
+    fetchingFile: '', // recieves note id
+    addingNote: false,
+    updatingNote: '', // recieves note id
+    deletingNote: '', // recieves note id
     errorMessage: false
 };
 
@@ -22,8 +25,14 @@ const reducer = (state = initialState, action) => {
         case actionTypes.NOTES_FETCHED:
             return { ...state, notesFetched: true, loading: false };
         case actionTypes.FETCHING_FILE:
-            return { ...state, fetchingFile: action.status };
-        case actionTypes.UPDATE:
+            return { ...state, fetchingFile: action.noteId };
+        case actionTypes.ADDING_NOTE:
+            return { ...state, addingNote: action.status };
+        case actionTypes.UPDATING_NOTE:
+            return { ...state, updatingNote: action.noteId };
+        case actionTypes.DELETING_NOTE:
+            return { ...state, deletingNote: action.noteId };
+        case actionTypes.UPDATE_USER:
             return { ...state, name: action.name, loading: false };
         case actionTypes.LOGOUT:
             return { theme: state.theme, notesFetched: true };

@@ -2,8 +2,8 @@ import React from 'react';
 
 import styles from './FileSpinner.module.scss';
 
-const Spinner = () => {
+const FileSpinner = () => {
     return <div className={styles.FileSpinner}></div>;
 };
 
-export default Spinner;
+export default FileSpinner;

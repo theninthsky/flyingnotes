@@ -3,9 +3,11 @@ import { connect } from 'react-redux';
 import { GithubPicker } from 'react-color';
 
 import * as actions from '../../store/actions/index';
+import NoteSpinner from '../UI/NoteSpinner';
 import styles from './NewNote.module.scss';
-import colorPalette from '../../assets/images/color-palette.svg';
-import paperClip from '../../assets/images/paper-clip.svg';
+
+import colorPaletteIcon from '../../assets/images/color-palette.svg';
+import uploadIcon from '../../assets/images/upload.svg';
 
 const colorsArray = [
     '#c0392b', '#d35400', '#f39c12', '#27ae60', '#16a085',
@@ -24,7 +26,6 @@ const NewNote = props => {
     const [color, setColor] = useState(props.color || colorsArray[Math.floor(Math.random() * 10)]);
     const [category, setCategory] = useState(props.category || '');
     const [title, setTitle] = useState(props.title || '');
-    const [showContent, setShowContent] = useState(props.id ? true : false);
     const [content, setContent] = useState(props.content || '');
     const [selectedFile, setSelectedFile] = useState(props.fileName ? { fileName: props.fileName } : null);
 
@@ -56,7 +57,7 @@ const NewNote = props => {
 
     const saveNoteHandler = event => {
         event.preventDefault();
-        const note = { _id: props.id, color, category: category.trim(), title: title.trim(), content, ...selectedFile };
+        const note = { _id: props._id, color, category: category.trim(), title: title.trim(), content, ...selectedFile };
         if (props.update) {
             props.updateNote(note);
             props.toggleEditMode();
@@ -67,13 +68,14 @@ const NewNote = props => {
             setCategory('');
             setTitle('');
             setContent('');
+            setSelectedFile(null);
         }
     };
 
     return (
-        <div className={`${styles.note} ${props.theme === 'dark' ? styles.noteDark : ''}`} onMouseMove={() => setShowContent(true)}>
+        <div className={`${styles.note} ${props.theme === 'dark' ? styles.noteDark : ''}`}>
             <form onSubmit={saveNoteHandler} autoComplete="off">
-                <img className={styles.colorPalette} src={colorPalette} alt="Choose color" onClick={() => setShowColorPicker(!showColorPicker)} />
+                <img className={styles.colorPalette} src={colorPaletteIcon} alt="Choose color" onClick={() => setShowColorPicker(!showColorPicker)} />
                 {showColorPicker ?
                     <GithubPicker
                         className={styles.colorPicker}
@@ -107,39 +109,45 @@ const NewNote = props => {
                     maxLength="60"
                     onChange={titleHandler}
                 />
-                {showContent ?
-                    <>
-                        <textarea
-                            className={styles.content}
-                            dir="auto"
-                            value={content}
-                            title="Note's content"
-                            required
-                            onChange={contentHandler}
-                        >
-                        </textarea>
-                        {localStorage.name ?
-                            <>
-                                <input className={styles.file} type="file" onChange={fileHandler} />
+                <>
+                    <textarea
+                        className={styles.content}
+                        dir="auto"
+                        value={content}
+                        title="Note's content"
+                        required
+                        onChange={contentHandler}
+                    >
+                    </textarea>
+                    {localStorage.name ?
+                        <>
+                            <label for="file-input">
                                 <img
-                                    className={`${styles.paperClip} ${props.theme === 'dark' ? styles.paperClipDark : ''}`}
-                                    src={paperClip}
-                                    alt="Upload a File"
-                                    title="Upload a File"
+                                    className={styles.upload}
+                                    src={uploadIcon}
+                                    alt={selectedFile ? selectedFile.fileName : "Upload a File"}
+                                    title={selectedFile ? selectedFile.fileName : "Upload a File"}
+                                    onClick={() => { }}
                                 />
-                            </> :
-                            null}
-                    </> :
-                    null}
+                            </label>
+                            <input className={styles.fileInput} id="file-input" type="file" onChange={fileHandler} />
+                        </> :
+                        null}
+                </>
                 <input className={styles.save} type="submit" value="SAVE" />
+                {props.addingNote ? <NoteSpinner /> : null}
             </form>
         </div>
     );
 };
+
+const mapStateToProps = state => ({
+    addingNote: state.user.addingNote
+});
 
 const mapDispatchToProps = dispatch => ({
     addNote: note => dispatch(actions.addNote(note)),
     updateNote: note => dispatch(actions.updateNote(note))
 });
 
-export default connect(null, mapDispatchToProps)(NewNote);
+export default connect(mapStateToProps, mapDispatchToProps)(NewNote);

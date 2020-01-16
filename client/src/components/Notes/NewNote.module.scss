@@ -69,13 +69,12 @@
   .content {
     width: 90%;
     margin: 2% 4% 1% 4%;
-    padding-bottom: 20vh;
+    padding-bottom: 12.5vh;
     resize: none;
     white-space: pre;
     overflow: auto;
     text-align: unset;
     font-size: 16px;
-    animation: showContent 0.25s;
 
     &::-webkit-scrollbar-thumb {
       visibility: hidden;
@@ -86,28 +85,23 @@
         visibility: visible;
       }
     }
+  }
 
-    @keyframes showContent {
-      from { padding-bottom: 0 }
-      to { padding-bottom: 20vh }
+  .fileInput {
+    display: none;
+  }
+
+  .upload {
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+    width: 16px;
+    opacity: 0.5;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 1;
     }
-  }
-
-  .file {
-    z-index: 1;
-    position: absolute;
-    bottom: 6px;
-    right: 6px;
-    width: 16px;
-    opacity: 0;
-  }
-
-  .paperClip {
-    position: absolute;
-    bottom: 6px;
-    right: 6px;
-    width: 16px;
-    opacity: 0.4;
   }
 
   .save {
@@ -119,6 +113,10 @@
     font-size: 16px;
     background-color: green;
     cursor: pointer;
+
+    &:hover {
+      background-color: rgb(44, 179, 44);
+    }
   }
 
   @keyframes show {
@@ -132,10 +130,6 @@
 
   .titleDark::placeholder {
       color: rgb(200, 200, 200);
-  }
-
-  .paperClipDark {
-    filter: invert(100%);
   }
 }
 
