@@ -32,15 +32,3 @@
         left: 15%;
     }
 }
-
-@media (max-width: 480px) {
-    .options {
-        .edit, .delete, .confirm, .cancel {
-            top: 17.5%;
-
-            &:hover {
-                opacity: unset;
-            }
-        }
-    }
-}
