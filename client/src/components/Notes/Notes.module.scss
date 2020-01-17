@@ -1,6 +1,17 @@
-.filters {
+.filtersContainer {
+    display: flex;
     margin: 2vh auto;
-    width: 20vw;
+    margin-top: 5vh;
+    width: 18vw;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    width: 65px;
+}
+
+.filters {
     display: flex;
     justify-content: center;
 
@@ -11,8 +22,9 @@
     }
 
     .categoryFilter {
-        width: 15%;
+        width: 20%;
         outline: none;
+        cursor: pointer;
         
         option {
             background-color: transparent;
@@ -65,14 +77,18 @@
 }
 
 @media (max-width: 768px) {
-    .filters {
+    .filtersContainer {
         width: 70vw;
     }
 }
 
 @media (max-width: 480px) {
-    .filters {
+    .filtersContainer {
         width: 90vw;
+
+        .logo {
+            width: 45px;
+        }
     }
     
     .notesContainer {

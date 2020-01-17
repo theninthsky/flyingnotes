@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import Note from './Note';
 import NewNote from './NewNote';
+import logo from '../../assets/images/logo.svg';
 import * as actions from '../../store/actions/index';
 import styles from './Notes.module.scss';
 
@@ -42,29 +43,36 @@ const Notes = props => {
 
     return (
         <>
-            <div className={`${styles.filters} ${theme === 'dark' ? styles.filtersDark : ''}`}>
-                <select
-                    className={`${styles.categoryFilter} ${theme === 'dark' ? styles.categoryFilterDark : ''}`}
-                    title="Category"
-                    onChange={categoryFilterHandler}
-                >
-                    <option defaultValue value="">ALL</option>
-                    {notes
-                        .sort((a, b) => a.category.localeCompare(b.category))
-                        .filter(({ category }, ind, notes) => category && category !== (notes[ind + 1] && notes[ind + 1].category))
-                        .map(({ category, _id }) => <option key={_id}>{category}</option>)}
-                </select>
-                <div className={`${styles.searchFilter} ${theme === 'dark' ? styles.searchFilterDark : ''}`}>
-                    <i className={'fa fa-search ' + styles.searchIcon}></i>
-                    <input
-                        className={styles.searchBox}
-                        type="search"
-                        value={searchFilter}
-                        placeholder="Search..."
-                        onChange={searchFilterHandler}
-                    />
+            <div className={styles.filtersContainer}>
+                <img className={styles.logo}
+                    src={logo}
+                    alt="Flying Notes"
+                />
+                <div className={`${styles.filters} ${theme === 'dark' ? styles.filtersDark : ''}`}>
+                    <select
+                        className={`${styles.categoryFilter} ${theme === 'dark' ? styles.categoryFilterDark : ''}`}
+                        title="Category"
+                        onChange={categoryFilterHandler}
+                    >
+                        <option defaultValue value="">ALL</option>
+                        {notes
+                            .sort((a, b) => a.category.localeCompare(b.category))
+                            .filter(({ category }, ind, notes) => category && category !== (notes[ind + 1] && notes[ind + 1].category))
+                            .map(({ category, _id }) => <option key={_id}>{category}</option>)}
+                    </select>
+                    <div className={`${styles.searchFilter} ${theme === 'dark' ? styles.searchFilterDark : ''}`}>
+                        <i className={'fa fa-search ' + styles.searchIcon}></i>
+                        <input
+                            className={styles.searchBox}
+                            type="search"
+                            value={searchFilter}
+                            placeholder="Search..."
+                            onChange={searchFilterHandler}
+                        />
+                    </div>
                 </div>
             </div>
+
             <div className={styles.notesContainer}>
                 <NewNote theme={theme} />
                 {filteredNotes}

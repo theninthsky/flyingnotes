@@ -1,16 +1,15 @@
 .navBar {
-    margin: 2vh auto;
-    width: 98vw;
     display: flex;
+    margin: 0 auto;
+    padding: 2px 10px;
+    width: 100%;
+    box-sizing: border-box;
     justify-content: space-between;
     align-items: flex-start;
-
-    .title {
-        width: 15vw;
-        margin: 2vh 0;
-    }
+    box-shadow: 0 0 8px 0 rgba(0, 0 ,0 , 0.2) inset;
 
     .login {
+        margin-left: 10px;
         color: inherit;
         cursor: pointer;
     
@@ -21,23 +20,8 @@
 }
 
 .navBarDark {
-    .titleDark {
-        filter: invert(100%);
-    }
-
     .loginDark {
         color: black;
         filter: invert(100%);
-    }
-}
-
-@media (max-width: 480px) {
-    .navBar {
-        width: 92vw;
-
-        .title {
-            width: 60vw;
-            margin-top: 6vh;
-        }
     }
 }

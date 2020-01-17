@@ -121,7 +121,7 @@ const NewNote = props => {
                     </textarea>
                     {localStorage.name ?
                         <>
-                            <label for="file-input">
+                            <label htmlFor="file-input">
                                 <img
                                     className={styles.upload}
                                     src={uploadIcon}

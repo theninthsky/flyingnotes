@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 
 import CookiesMessage from './CookiesMessage';
 import Auth from '../Auth/Auth';
-import Theme from '../UI/Theme';
+import Theme from './Theme';
 import styles from './NavigationBar.module.scss';
-import logo from '../../assets/images/logo.png';
 import userImage from '../../assets/images/user-astronaut.svg';
 
 const NavigationBar = props => {
@@ -20,10 +19,6 @@ const NavigationBar = props => {
         <>
             <div className={`${styles.navBar} ${theme === 'dark' ? styles.navBarDark : ''}`}>
                 <Theme />
-                <img className={`${styles.title} ${theme === 'dark' ? styles.titleDark : ''}`}
-                    src={logo}
-                    alt="Flying Notes"
-                ></img>
                 <div
                     className={`${styles.login} ${theme === 'dark' ? styles.loginDark : ''}`}
                     onClick={() => { toggleAuthHandler(true); toggleCookiesMessageHandler(false) }}
@@ -32,7 +27,7 @@ const NavigationBar = props => {
                         <img
                             src={userImage}
                             alt="Account"
-                            title="Account"
+                            title={name}
                             style={{ width: '20px' }}
                         /> :
                         'Login'}
