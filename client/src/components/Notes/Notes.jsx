@@ -69,7 +69,7 @@ const Notes = props => {
                     </div>
 
                     <div className={styles.notesContainer}>
-                        <NewNote theme={theme} />
+                        <NewNote />
                         {filteredNotes}
                     </div>
                 </> :

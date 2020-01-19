@@ -6,6 +6,8 @@ A MERN stack application for taking notes.
 
 Visit the website here: http://flyingnotes.herokuapp.com/
 
+![Notes](/images/notes.png)</br>
+
 ## Environment Variables
 You should create a donenv file (https://www.npmjs.com/package/dotenv) at the root directory which will specify the following variables:</br>
 

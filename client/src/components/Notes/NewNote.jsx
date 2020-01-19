@@ -22,6 +22,10 @@ const fileToBase64 = file => new Promise((resolve, reject) => {
 });
 
 const NewNote = props => {
+    const { update, toggleEditMode, closeOptions } = props;
+    const { theme, addingNote } = props.user;
+    const { addNote, updateNote } = props;
+
     const [showColorPicker, setShowColorPicker] = useState(false);
     const [color, setColor] = useState(props.color || colorsArray[Math.floor(Math.random() * 10)]);
     const [category, setCategory] = useState(props.category || '');
@@ -58,12 +62,12 @@ const NewNote = props => {
     const saveNoteHandler = event => {
         event.preventDefault();
         const note = { _id: props._id, color, category: category.trim(), title: title.trim(), content, ...selectedFile };
-        if (props.update) {
-            props.updateNote(note);
-            props.toggleEditMode();
-            props.closeOptions();
+        if (update) {
+            updateNote(note);
+            toggleEditMode();
+            closeOptions();
         } else {
-            props.addNote(note);
+            addNote(note);
             setColor('#006B76');
             setCategory('');
             setTitle('');
@@ -73,7 +77,7 @@ const NewNote = props => {
     };
 
     return (
-        <div className={`${styles.note} ${props.theme === 'dark' ? styles.noteDark : ''}`}>
+        <div className={`${styles.note} ${theme === 'dark' ? styles.noteDark : ''}`}>
             <form onSubmit={saveNoteHandler} autoComplete="off">
                 <img className={styles.colorPalette} src={colorPaletteIcon} alt="Choose color" onClick={() => setShowColorPicker(!showColorPicker)} />
                 {showColorPicker ?
@@ -100,7 +104,7 @@ const NewNote = props => {
                         />
                     </>}
                 <input
-                    className={`${styles.title} ${props.theme === 'dark' ? styles.titleDark : ''}`}
+                    className={`${styles.title} ${theme === 'dark' ? styles.titleDark : ''}`}
                     type="text"
                     dir="auto"
                     placeholder="Title"
@@ -135,14 +139,14 @@ const NewNote = props => {
                         null}
                 </>
                 <input className={styles.save} type="submit" value="SAVE" />
-                {props.addingNote ? <NoteSpinner /> : null}
+                {addingNote ? <NoteSpinner /> : null}
             </form>
         </div>
     );
 };
 
 const mapStateToProps = state => ({
-    addingNote: state.user.addingNote
+    user: state.user
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -24,6 +24,8 @@
 
     .theme { 
         padding: 0;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
 
         .icon {
             width: 22px;
