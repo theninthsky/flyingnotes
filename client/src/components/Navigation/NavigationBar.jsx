@@ -4,6 +4,9 @@ import { NavLink } from 'react-router-dom';
 import CookiesMessage from './CookiesMessage';
 import styles from './NavigationBar.module.scss';
 
+import sunIcon from '../../assets/images/sun.svg';
+import moonIcon from '../../assets/images/moon.svg';
+
 const NavigationBar = props => {
     const { name, theme } = props.user;
 
@@ -19,7 +22,11 @@ const NavigationBar = props => {
                     title="Change Theme"
                     onClick={props.changeTheme}
                 >
-                    {theme === 'light' ? 'Light' : 'Dark'}
+                    <img
+                        className={`${styles.icon} ${theme === 'dark' ? styles.iconDark : ''}`}
+                        src={theme === 'light' ? sunIcon : moonIcon}
+                        alt="Theme"
+                    />
                 </div>
 
                 <NavLink
@@ -33,7 +40,7 @@ const NavigationBar = props => {
                 <NavLink
                     className={`${styles.auth} ${theme === 'dark' ? styles.authDark : ''}`}
                     activeClassName={styles.active}
-                    title={name ? 'View Accound' : 'Login'}
+                    title={name ? 'View Account' : 'Login'}
                     to={name ? '/account' : '/auth'}
                 >
                     {name || 'Login'}

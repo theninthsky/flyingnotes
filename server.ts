@@ -48,7 +48,7 @@ app.use((_, res, next) => {
     res.setHeader('Access-Control-Allow-Headers', 'X-PINGOTHER, Content-Type')
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS')
     next()
-});
+})
 
 app.use(userRoutes)
 app.use(noteRoutes)

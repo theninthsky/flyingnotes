@@ -8,7 +8,7 @@
     justify-content: space-between;
     align-items: flex-start;
     box-shadow: 0 0 8px 0 rgba(0, 0 ,0 , 0.4);
-
+    
     .theme, .notes, .auth {
         padding: 6px;
         color: inherit;
@@ -22,6 +22,15 @@
         }
     }
 
+    .theme { 
+        padding: 0;
+
+        .icon {
+            width: 22px;
+            padding-top: 6px;
+        }
+    }
+
     .active {
         opacity: 1;
         box-shadow: 0 0 4px gray inset;
@@ -31,5 +40,11 @@
 .navBarDark {
     .themeDark, .notesDark, .authDark {
         color: white;
+    }
+
+    .themeDark {
+        .iconDark {
+            filter: invert(100%);
+        }
     }
 }
