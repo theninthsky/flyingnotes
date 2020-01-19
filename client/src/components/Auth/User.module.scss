@@ -1,0 +1,101 @@
+.user {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: auto;
+    width: 40vw;
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    border-radius: 2px;
+    box-shadow: 0 0 8px 0 rgba(0, 0 ,0 , 0.5) inset;
+    
+    input {
+      display: block;
+      margin: 1vh auto;
+      padding: 4px;
+      border: 1px solid rgb(200, 200, 200);
+      border-radius: 4px;
+    }
+  
+    .update, .logout {
+      margin-top: 10%;
+      padding: 6px;
+      border-width: 1.5px;
+      border-radius: 8px;
+      background-color: transparent;
+      color: inherit;
+      outline: none;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+  
+      &:hover {
+        background-color: rgb(192, 192, 192);
+      }
+    }
+  
+    .userLogo {
+      margin: 10px auto;
+      width: 20%;
+      border-radius: 100%;
+    }
+    
+    .info {
+      padding-left: 10%;
+    
+      h1 {
+        margin: 6px;
+        font-size: 20px;
+        font-weight: normal;
+      }
+    }
+  
+    .updateButton {
+      display: block;
+      margin: 0 auto;
+      border: none;
+      font-size: 14px;
+      color: gray;
+      background-color: transparent;
+      opacity: 0.5;
+      cursor: pointer;
+  
+      &:hover {
+        opacity: 1;
+      }
+    }
+  
+    .showNewPassword {
+      width: 100%;
+      border: none;
+      background-color: transparent;
+      outline: none;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+  
+    .showNewPasswordDark {
+      color: white;
+    }
+    
+    .errorMessage {
+      text-align: center;
+      color: red;
+    }
+  }
+  
+  .userDark {
+    color: white;
+  
+    .userLogoDark {
+      filter: invert(100%);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .user {
+      width: 90vw;
+    }
+  }

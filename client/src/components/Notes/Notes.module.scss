@@ -76,6 +76,12 @@
     align-items: center;
 }
 
+@media (max-width: 1024px) {
+    .filtersContainer {
+        width: 40vw;
+    }
+}
+
 @media (max-width: 768px) {
     .filtersContainer {
         width: 70vw;
@@ -84,10 +90,10 @@
 
 @media (max-width: 480px) {
     .filtersContainer {
-        width: 90vw;
+        width: 95vw;
 
         .logo {
-            width: 45px;
+            width: 40px;
         }
     }
     

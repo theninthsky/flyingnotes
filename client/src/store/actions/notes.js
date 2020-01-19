@@ -9,18 +9,19 @@ axios.defaults.withCredentials = true;
 
 export const fetchNotes = () => {
     return async dispatch => {
-        dispatch({ type: actionTypes.FETCHING_NOTES, fetching: true });
+        dispatch({ type: actionTypes.LOADING, loading: true });
         let notes;
         if (localStorage.name) {
             const { data } = await axios.get(`${REACT_APP_SERVER_URL}/notes`);
             notes = data.notes;
-        } else if (localStorage.notes) {
+            dispatch({ type: actionTypes.NOTES_FETCHED });
+        } else {
             notes = JSON.parse(localStorage.notes);
+            dispatch({ type: actionTypes.LOCAL_NOTES_SET });
         }
         batch(() => {
             dispatch({ type: actionTypes.SET_NOTES, notes });
-            dispatch({ type: actionTypes.FETCHING_NOTES, fetching: false });
-            dispatch({ type: actionTypes.NOTES_FETCHED });
+            dispatch({ type: actionTypes.LOADING, loading: false });
         });
     };
 };

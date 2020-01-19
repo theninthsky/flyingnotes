@@ -1,41 +1,46 @@
 import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 
 import CookiesMessage from './CookiesMessage';
-import Auth from '../Auth/Auth';
-import Theme from './Theme';
 import styles from './NavigationBar.module.scss';
-import userImage from '../../assets/images/user-astronaut.svg';
 
 const NavigationBar = props => {
-    const { name, theme, loading, errorMessage } = props.user;
+    const { name, theme } = props.user;
 
     const [showCookiesMessage, setShowCookiesMessage] = useState(true);
-    const [showAuth, setShowAuth] = useState(false);
 
     const toggleCookiesMessageHandler = mode => setShowCookiesMessage(mode);
-    const toggleAuthHandler = mode => setShowAuth(mode);
 
     return (
         <>
-            <div className={`${styles.navBar} ${theme === 'dark' ? styles.navBarDark : ''}`}>
-                <Theme />
+            <nav className={`${styles.navBar} ${theme === 'dark' ? styles.navBarDark : ''}`}>
                 <div
-                    className={`${styles.login} ${theme === 'dark' ? styles.loginDark : ''}`}
-                    onClick={() => { toggleAuthHandler(true); toggleCookiesMessageHandler(false) }}
+                    className={`${styles.theme} ${theme === 'dark' ? styles.themeDark : ''}`}
+                    title="Change Theme"
+                    onClick={props.changeTheme}
                 >
-                    {name ?
-                        <img
-                            src={userImage}
-                            alt="Account"
-                            title={name}
-                            style={{ width: '20px' }}
-                        /> :
-                        'Login'}
+                    {theme === 'light' ? 'Light' : 'Dark'}
                 </div>
-            </div>
-            {showAuth || loading || errorMessage ?
-                <Auth theme={theme} toggleAuth={toggleAuthHandler} toggleCookiesMessage={toggleCookiesMessageHandler} /> :
-                null}
+
+                <NavLink
+                    className={`${styles.notes} ${theme === 'dark' ? styles.notesDark : ''}`}
+                    activeClassName={styles.active}
+                    exact to="/"
+                >
+                    My Notes
+                </NavLink>
+
+                <NavLink
+                    className={`${styles.auth} ${theme === 'dark' ? styles.authDark : ''}`}
+                    activeClassName={styles.active}
+                    title={name ? 'View Accound' : 'Login'}
+                    to={name ? '/account' : '/auth'}
+                >
+                    {name ? `Hello, ${name}` : 'Login'}
+                </NavLink>
+
+            </nav>
+
             {showCookiesMessage && !name ? <CookiesMessage theme={theme} toggle={toggleCookiesMessageHandler} /> : null}
         </>
     );

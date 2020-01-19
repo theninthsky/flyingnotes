@@ -8,7 +8,7 @@ const CookiesMessage = props => {
             className={`cookiesMessage ${props.theme === 'dark' ? 'cookiesMessageDark' : ''}`}
             onClick={() => props.toggle(false)}
         >
-            Notes are saved as cookies and will be lost if you clear the browser's data. Login to have your notes saved on the cloud.
+            Notes are saved as cookies and will be lost if you clear the browser's data. Login to have your notes and files saved on the cloud.
         </div>
     );
 };

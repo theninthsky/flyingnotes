@@ -2,6 +2,7 @@ export const REGISTER = 'REGISTER';
 export const LOGIN = 'LOGIN';
 export const FETCHING_NOTES = 'FETCHING_NOTES';
 export const NOTES_FETCHED = 'NOTES_FETCHED';
+export const LOCAL_NOTES_SET = 'LOCAL_NOTES_SET';
 export const FETCHING_FILE = 'FETCHING_FILE';
 export const ADDING_NOTE = 'ADDING_NOTE';
 export const UPDATING_NOTE = 'UPDATING_NOTE';

@@ -65,17 +65,27 @@ export const update = credentials => {
 };
 
 export const logout = () => {
-    axios.post(`${REACT_APP_SERVER_URL}/logout`);
-    return dispatch => {
-        localStorage.removeItem('name');
-        batch(() => {
-            dispatch({ type: actionTypes.SET_NOTES, notes: JSON.parse(localStorage.notes || '[]') });
-            dispatch({ type: actionTypes.LOGOUT });
-        });
+    return async dispatch => {
+        dispatch({ type: actionTypes.LOADING, loading: true });
+        try {
+            const { status } = await axios.post(`${REACT_APP_SERVER_URL}/logout`);
+            if (status === 200) {
+                localStorage.removeItem('name');
+                batch(() => {
+                    dispatch({ type: actionTypes.SET_NOTES, notes: JSON.parse(localStorage.notes || '[]') });
+                    dispatch({ type: actionTypes.LOGOUT });
+                });
+            }
+        }
+        catch (err) {
+            dispatch({ type: actionTypes.ERROR, errorMessage: err });
+        }
+        dispatch({ type: actionTypes.LOADING, loading: false });
     };
 };
 
-export const changeTheme = theme => {
+export const changeTheme = () => {
+    const theme = localStorage.theme === 'light' ? 'dark' : 'light';
     localStorage.setItem('theme', theme);
     return { type: actionTypes.CHANGE_THEME, theme };
 };

@@ -17,3 +17,13 @@ img {
     user-select: none;
     -webkit-tap-highlight-color: transparent;
 }
+
+@media (pointer: none), (pointer: coarse) {
+    img {
+        opacity: 1 !important;
+
+        &:hover {
+            opacity: 1 !important;
+        }
+    }
+}

@@ -45,7 +45,7 @@ export const updateUser = (req: Request, res: Response) => {
                 .then(async match => {
                     if (match) {
                         user.name = name || user.name
-                        user.password = bcrypt.hashSync(newPassword) || user.password
+                        user.password =  newPassword ? bcrypt.hashSync(newPassword) : user.password
                         return res.json({ name: (await user.save()).name })
                     }
                     throw Error

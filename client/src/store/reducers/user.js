@@ -3,9 +3,9 @@ import * as actionTypes from '../actions/actionTypes';
 const initialState = {
     name: localStorage.name,
     theme: localStorage.theme || 'light',
-    loading: false, // user related asynchronous actions
-    fetchingNotes: false, // notes related asynchronous actions
+    loading: false,
     notesFetched: false,
+    localNotesSet: false,
     fetchingFile: '', // recieves note id
     addingNote: false,
     updatingNote: '', // recieves note id
@@ -20,10 +20,10 @@ const reducer = (state = initialState, action) => {
             return { ...state, name: action.name, notesFetched: true };
         case actionTypes.LOADING:
             return { ...state, loading: action.loading };
-        case actionTypes.FETCHING_NOTES:
-            return { ...state, fetchingNotes: action.fetching };
         case actionTypes.NOTES_FETCHED:
             return { ...state, notesFetched: true, loading: false };
+        case actionTypes.LOCAL_NOTES_SET:
+            return { ...state, localNotesSet: true };
         case actionTypes.FETCHING_FILE:
             return { ...state, fetchingFile: action.noteId };
         case actionTypes.ADDING_NOTE:
@@ -35,7 +35,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.UPDATE_USER:
             return { ...state, name: action.name, loading: false };
         case actionTypes.LOGOUT:
-            return { theme: state.theme, notesFetched: true };
+            return { theme: state.theme, notesFetched: false };
         case actionTypes.CHANGE_THEME:
             return { ...state, theme: action.theme };
         case actionTypes.ERROR:
