@@ -1,17 +1,6 @@
-.filtersContainer {
-    display: flex;
-    margin: 2vh auto;
-    margin-top: 5vh;
-    width: 18vw;
-    justify-content: center;
-    align-items: center;
-}
-
-.logo {
-    width: 65px;
-}
-
 .filters {
+    margin: 2vh auto;
+    width: 25vw;
     display: flex;
     justify-content: center;
 
@@ -22,9 +11,8 @@
     }
 
     .categoryFilter {
-        width: 20%;
+        width: 15%;
         outline: none;
-        cursor: pointer;
         
         option {
             background-color: transparent;
@@ -76,25 +64,15 @@
     align-items: center;
 }
 
-@media (max-width: 1024px) {
-    .filtersContainer {
-        width: 40vw;
-    }
-}
-
 @media (max-width: 768px) {
-    .filtersContainer {
+    .filters {
         width: 70vw;
     }
 }
 
 @media (max-width: 480px) {
-    .filtersContainer {
-        width: 95vw;
-
-        .logo {
-            width: 40px;
-        }
+    .filters {
+        width: 90vw;
     }
     
     .notesContainer {

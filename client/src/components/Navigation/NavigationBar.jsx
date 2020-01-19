@@ -36,7 +36,7 @@ const NavigationBar = props => {
                     title={name ? 'View Accound' : 'Login'}
                     to={name ? '/account' : '/auth'}
                 >
-                    {name ? `Hello, ${name}` : 'Login'}
+                    {name || 'Login'}
                 </NavLink>
 
             </nav>

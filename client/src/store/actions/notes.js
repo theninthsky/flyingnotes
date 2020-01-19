@@ -16,7 +16,7 @@ export const fetchNotes = () => {
             notes = data.notes;
             dispatch({ type: actionTypes.NOTES_FETCHED });
         } else {
-            notes = JSON.parse(localStorage.notes);
+            notes = JSON.parse(localStorage.notes || '[]');
             dispatch({ type: actionTypes.LOCAL_NOTES_SET });
         }
         batch(() => {
