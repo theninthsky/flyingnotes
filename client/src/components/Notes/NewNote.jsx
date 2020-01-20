@@ -46,6 +46,7 @@ const NewNote = props => {
 
     const fileHandler = event => {
         const file = event.target.files[0];
+        
         if (file) {
             if (file.size <= 2 * 1024 * 1024) {
                 fileToBase64(file).then(encoded => setSelectedFile({ fileName: file.name, file: encoded }));
@@ -125,7 +126,7 @@ const NewNote = props => {
                     </textarea>
                     {localStorage.name ?
                         <>
-                            <label htmlFor="file-input">
+                            <label htmlFor={`file-input-${props._id}`}>
                                 <img
                                     className={styles.upload}
                                     src={uploadIcon}
@@ -134,7 +135,7 @@ const NewNote = props => {
                                     onClick={() => { }}
                                 />
                             </label>
-                            <input className={styles.fileInput} id="file-input" type="file" onChange={fileHandler} />
+                            <input className={styles.fileInput} id={`file-input-${props._id}`} type="file" onChange={fileHandler} />
                         </> :
                         null}
                 </>

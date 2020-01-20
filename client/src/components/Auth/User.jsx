@@ -72,7 +72,6 @@ const User = props => {
 
                     <button
                         className={styles.updateButton}
-                        title="Change name or password"
                         onClick={updateModeHandler}>
                         Change Name or Password
                     </button>

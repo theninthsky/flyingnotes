@@ -24,7 +24,7 @@ const Notes = props => {
 
     const filteredNotes = useMemo(() => [...notes]
         .filter(({ category }) => !categoryFilter ? true : category === categoryFilter)
-        .filter(({ title, content }) => (title + ' ' + content).toLowerCase().includes(searchFilter))
+        .filter(({ title, content }) => (`${title} ${content}`).toLowerCase().includes(searchFilter))
         .sort((a, b) => b.date - a.date)
         .map(note =>
             <Note
