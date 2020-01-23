@@ -7,9 +7,9 @@
   max-height: 30vh;
   display: flex;
   flex-direction: column;
-  border-radius: 2px;
+  border-radius: 4px;
   box-shadow: 0 0 8px 0 rgba(0, 0 ,0 , 0.5) inset;
-  animation: show 0.5s;
+  animation: show 1s;
 
   .category {
     position: absolute;

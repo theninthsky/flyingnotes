@@ -6,6 +6,7 @@ import styles from './NavigationBar.module.scss';
 
 import sunIcon from '../../assets/images/sun.svg';
 import moonIcon from '../../assets/images/moon.svg';
+import userIcon from '../../assets/images/user-astronaut.svg';
 
 const NavigationBar = props => {
     const { name, theme } = props.user;
@@ -34,17 +35,28 @@ const NavigationBar = props => {
                     activeClassName={styles.active}
                     exact to="/"
                 >
-                    My Notes
+                    Notes
                 </NavLink>
 
-                <NavLink
-                    className={`${styles.auth} ${theme === 'dark' ? styles.authDark : ''}`}
-                    activeClassName={styles.active}
-                    title={name ? 'View Account' : 'Login'}
-                    to={name ? '/account' : '/auth'}
-                >
-                    {name || 'Login'}
-                </NavLink>
+                {name ?
+                    <NavLink
+                        className={`${styles.auth} ${theme === 'dark' ? styles.authDark : ''}`}
+                        activeClassName={styles.active}
+                        title={`Logged in as ${name}`}
+                        to={'/account'}
+                    >
+                        <img className={`${styles.user} ${theme === 'dark' ? styles.userDark : ''}`} src={userIcon} alt={name} />
+                    </NavLink> :
+
+                    <NavLink
+                        className={`${styles.auth} ${theme === 'dark' ? styles.authDark : ''}`}
+                        activeClassName={styles.active}
+                        title={'Login'}
+                        to={'/auth'}
+                    >
+                        {'Login'}
+                    </NavLink>
+                }
 
             </nav>
 

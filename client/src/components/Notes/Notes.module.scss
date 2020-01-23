@@ -35,15 +35,12 @@
 .filtersDark {
     color: white;
 
-    .categoryFilterDark {
+    .categoryFilterDark, .searchFilterDark {
         color: white;
-        background-color: #262626;
+        background-color: #222;
     }
 
     .searchFilterDark {
-        caret-color: white;
-        background-color: #262626;
-
         .searchBox {
             color: white;
 

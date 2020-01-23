@@ -1,52 +1,75 @@
 .navBar {
     display: flex;
-    margin: 0 auto;
+    margin: 1.5vh auto;
     margin-bottom: 5vh;
     padding: 0 10px;
-    width: 100%;
+    width: 98%;
     box-sizing: border-box;
     justify-content: space-between;
     align-items: flex-start;
-    box-shadow: 0 0 8px 0 rgba(0, 0 ,0 , 0.4);
     
-    .theme, .notes, .auth {
-        padding: 6px;
-        color: inherit;
-        text-decoration: none;
-        font-size: 20px;
-        opacity: 0.66;
-        cursor: pointer;
-
-        &:hover {
-            opacity: 1;
-        }
-    }
-
-    .theme { 
+    .theme {
+        max-width: 26px;
         padding: 0;
+        cursor: pointer;
         user-select: none;
         -webkit-tap-highlight-color: transparent;
 
         .icon {
-            width: 22px;
-            padding-top: 6px;
+            padding-top: 4px;
+            width: 26px;
+        }
+    }
+    
+    .notes, .auth {
+        box-sizing: border-box;
+        text-decoration: none;
+        font-size: 32px;
+        opacity: 0.66;
+        color: transparent;
+        background-color: black;
+        text-shadow: 0 0 2px white;
+        -webkit-background-clip: text;
+        -moz-background-clip: text;
+        background-clip: text;
+        cursor: pointer;
+
+        &:hover {
+            opacity: 1;
+            border-bottom: 1px solid rgba(gray, 0.25);
+        }
+    }
+
+    .auth {
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        
+        .user {
+            width: 24px;
         }
     }
 
     .active {
         opacity: 1;
-        box-shadow: 0 0 4px gray inset;
+        border-bottom: 1px solid rgba(gray, 0.25);
     }
 }
 
 .navBarDark {
-    .themeDark, .notesDark, .authDark {
-        color: white;
+    .notesDark, .authDark {
+        background-color: white;
+        text-shadow: 0 0 2px white;
+    }
+
+    .authDark {
+        .userDark {
+            filter: invert(100%);
+        }
     }
 
     .themeDark {
         .iconDark {
-            filter: invert(100%);
+           width: 24px;
         }
     }
 }

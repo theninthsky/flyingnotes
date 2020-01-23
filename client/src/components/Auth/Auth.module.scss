@@ -11,6 +11,7 @@
   justify-content: space-around;
   border-radius: 2px;
   box-shadow: 0 0 8px 0 rgba(0, 0 ,0 , 0.5) inset;
+  animation: show 1s;
 
   .title {
     display: flex;
@@ -71,6 +72,11 @@
   
   .errorMessage {
     color: red;
+  }
+
+  @keyframes show {
+    from { opacity: 0 }
+    to { opacity: 1 }
   }
 }
 

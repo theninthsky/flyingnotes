@@ -51,6 +51,8 @@ const User = props => {
                 alt="User"
             />
 
+            <h1 className={styles.name}>{name}</h1>
+
             {updateMode || errorMessage ?
                 <form onSubmit={submitFormHandler}>
                     {errorMessage ? <p className={styles.errorMessage}>{errorMessage}</p> : null}
@@ -65,16 +67,15 @@ const User = props => {
                 </form> :
 
                 <>
-                    <div className={styles.info}>
-                        <h1>{`Name: ${name}`}</h1>
-                        <h1>{`Number of Notes: ${notes.length}`}</h1>
-                    </div>
-
                     <button
                         className={styles.updateButton}
                         onClick={updateModeHandler}>
-                        Change Name or Password
+                        Change Name / Password
                     </button>
+                    <div className={styles.info}>
+                        <h1>{`Notes: ${notes.length}`}</h1>
+                    </div>
+
                     <input
                         className={styles.logout}
                         type="submit"
