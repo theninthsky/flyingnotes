@@ -9,16 +9,11 @@
     align-items: flex-start;
     
     .theme {
-        max-width: 26px;
+        width: 32px;
         padding: 0;
         cursor: pointer;
         user-select: none;
         -webkit-tap-highlight-color: transparent;
-
-        .icon {
-            padding-top: 4px;
-            width: 26px;
-        }
     }
     
     .notes, .auth {
@@ -68,8 +63,6 @@
     }
 
     .themeDark {
-        .iconDark {
-           width: 24px;
-        }
+        transform: rotateY(180deg);
     }
 }
