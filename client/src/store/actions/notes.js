@@ -5,8 +5,6 @@ import * as actionTypes from './actionTypes';
 
 const { REACT_APP_SERVER_URL } = process.env;
 
-axios.defaults.withCredentials = true;
-
 export const fetchNotes = () => {
     return async dispatch => {
         dispatch({ type: actionTypes.LOADING, loading: true });

@@ -33,7 +33,7 @@ mongoose.connect(MONGODB_URI, {
     .catch(err => console.log(err))
 
 app.use(express.static(join(__dirname, '..', 'client', 'build')))
-app.use(express.json({ limit: '2621440' })) // 2.5MB
+app.use(express.json({ limit: 2.5 * 1024 * 1024 })) // 2.5MB
 
 app.use(session({
     cookie: { maxAge: +SESSION_LIFETIME, sameSite: true },
@@ -43,10 +43,11 @@ app.use(session({
     store: new MongoStore({ mongooseConnection: mongoose.connection })
 }))
 
-app.use((_, res, next) => {
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*')
     res.setHeader('Access-Control-Allow-Credentials', 'true')
-    res.setHeader('Access-Control-Allow-Headers', 'X-PINGOTHER, Content-Type')
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS')
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
     next()
 })
 
