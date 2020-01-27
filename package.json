@@ -14,20 +14,20 @@
   "author": "Almog Gabay",
   "license": "ISC",
   "dependencies": {
-    "@types/bcryptjs": "^2.4.2",
-    "@types/express": "^4.17.2",
-    "@types/express-session": "^1.15.16",
-    "@types/mongoose": "^5.5.40",
     "bcryptjs": "^2.4.3",
     "connect-mongo": "^3.2.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
-    "mongoose": "^5.8.6",
-    "typescript": "^3.7.4"
+    "mongoose": "^5.8.6"
   },
   "devDependencies": {
-    "nodemon": "^1.19.4"
+    "@types/bcryptjs": "^2.4.2",
+    "@types/express": "^4.17.2",
+    "@types/express-session": "^1.15.16",
+    "@types/mongoose": "^5.5.43",
+    "nodemon": "^1.19.4",
+    "typescript": "^3.7.5"
   },
   "nodemonConfig": {
     "ignore": [

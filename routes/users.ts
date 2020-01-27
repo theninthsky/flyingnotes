@@ -1,6 +1,11 @@
 import express from 'express'
 
-import { registerUser, loginUser, updateUser, logoutUser } from '../controllers/users'
+import {
+  registerUser,
+  loginUser,
+  updateUser,
+  logoutUser
+} from '../controllers/users'
 
 const router = express.Router()
 

@@ -1,6 +1,11 @@
 import express from 'express'
 
-import { createNote, getNotes, updateNote, deleteNote } from '../controllers/notes'
+import {
+  createNote,
+  getNotes,
+  updateNote,
+  deleteNote
+} from '../controllers/notes'
 
 const router = express.Router()
 

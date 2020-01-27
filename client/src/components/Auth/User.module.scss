@@ -1,114 +1,119 @@
 .user {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    margin: auto;
-    width: 40vw;
-    height: 60vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    border-radius: 2px;
-    box-shadow: 0 0 8px 0 rgba(0, 0 ,0 , 0.5) inset;
-    animation: show 1s;
-    
-    .userLogo {
-      margin: 10px auto;
-      width: 20%;
-      border-radius: 100%;
-    }
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: auto;
+  width: 40vw;
+  height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  border-radius: 2px;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.5) inset;
+  animation: show 1s;
 
-    .name {
-      padding-left: 20px;
-      text-align: center;
-      text-transform: uppercase;
-      letter-spacing: 20px;
+  .userLogo {
+    margin: 10px auto;
+    width: 20%;
+    border-radius: 100%;
+  }
+
+  .name {
+    padding-left: 20px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 20px;
+    font-weight: normal;
+  }
+
+  input {
+    display: block;
+    margin: 1vh auto;
+    padding: 4px;
+    border: 1px solid rgb(200, 200, 200);
+    border-radius: 4px;
+  }
+
+  .update,
+  .logout {
+    margin-top: 10%;
+    padding: 6px;
+    border-width: 1px;
+    border-radius: 4px;
+    background-color: transparent;
+    color: inherit;
+    outline: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+
+    &:hover {
+      background-color: rgb(192, 192, 192);
+    }
+  }
+
+  .info {
+    h1 {
+      margin: 6px;
+      padding-left: 10%;
+      font-size: 20px;
       font-weight: normal;
     }
+  }
 
-    input {
-      display: block;
-      margin: 1vh auto;
-      padding: 4px;
-      border: 1px solid rgb(200, 200, 200);
-      border-radius: 4px;
-    }
-  
-    .update, .logout {
-      margin-top: 10%;
-      padding: 6px;
-      border-width: 1px;
-      border-radius: 4px;
-      background-color: transparent;
-      color: inherit;
-      outline: none;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-  
-      &:hover {
-        background-color: rgb(192, 192, 192);
-      }
-    }
-    
-    .info {
-      h1 {
-        margin: 6px;
-        padding-left: 10%;
-        font-size: 20px;
-        font-weight: normal;
-      }
-    }
-  
-    .updateButton {
-      display: block;
-      margin: 0 auto;
-      border: none;
-      font-size: 14px;
-      color: gray;
-      background-color: transparent;
-      opacity: 0.75;
-      cursor: pointer;
-  
-      &:hover {
-        opacity: 1;
-      }
-    }
-  
-    .showNewPassword {
-      width: 100%;
-      border: none;
-      background-color: transparent;
-      outline: none;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-    }
-  
-    .showNewPasswordDark {
-      color: white;
-    }
-    
-    .errorMessage {
-      text-align: center;
-      color: red;
-    }
+  .updateButton {
+    display: block;
+    margin: 0 auto;
+    border: none;
+    font-size: 14px;
+    color: gray;
+    background-color: transparent;
+    opacity: 0.75;
+    cursor: pointer;
 
-    @keyframes show {
-      from { opacity: 0 }
-      to { opacity: 1 }
+    &:hover {
+      opacity: 1;
     }
   }
-  
-  .userDark {
+
+  .showNewPassword {
+    width: 100%;
+    border: none;
+    background-color: transparent;
+    outline: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .showNewPasswordDark {
     color: white;
-  
-    .userLogoDark {
-      filter: invert(100%);
+  }
+
+  .errorMessage {
+    text-align: center;
+    color: red;
+  }
+
+  @keyframes show {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
     }
   }
-  
-  @media (max-width: 480px) {
-    .user {
-      width: 90vw;
-    }
+}
+
+.userDark {
+  color: white;
+
+  .userLogoDark {
+    filter: invert(100%);
   }
+}
+
+@media (max-width: 480px) {
+  .user {
+    width: 90vw;
+  }
+}

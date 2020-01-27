@@ -1,66 +1,68 @@
 .navBar {
-    display: flex;
-    margin: 1.5vh auto;
-    margin-bottom: 5vh;
-    padding: 0 10px;
-    width: 98%;
+  display: flex;
+  margin: 1.5vh auto;
+  margin-bottom: 5vh;
+  padding: 0 10px;
+  width: 98%;
+  box-sizing: border-box;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  .theme {
+    width: 32px;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .notes,
+  .auth {
     box-sizing: border-box;
-    justify-content: space-between;
-    align-items: flex-start;
-    
-    .theme {
-        width: 32px;
-        padding: 0;
-        cursor: pointer;
-    }
-    
-    .notes, .auth {
-        box-sizing: border-box;
-        text-decoration: none;
-        font-size: 32px;
-        opacity: 0.66;
-        color: transparent;
-        background-color: black;
-        text-shadow: 0 0 2px white;
-        -webkit-background-clip: text;
-        -moz-background-clip: text;
-        background-clip: text;
-        cursor: pointer;
+    text-decoration: none;
+    font-size: 28px;
+    opacity: 0.66;
+    color: transparent;
+    background-color: black;
+    text-shadow: 0 0 2px white;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+    cursor: pointer;
 
-        &:hover {
-            opacity: 1;
-            border-bottom: 1px solid rgba(gray, 0.25);
-        }
+    &:hover {
+      opacity: 1;
+      border-bottom: 1px solid rgba(gray, 0.25);
     }
+  }
 
-    .auth {
-        user-select: none;
-        -webkit-tap-highlight-color: transparent;
-        
-        .user {
-            width: 24px;
-        }
-    }
+  .auth {
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
 
-    .active {
-        opacity: 1;
-        border-bottom: 1px solid rgba(gray, 0.25);
+    .user {
+      width: 24px;
     }
+  }
+
+  .active {
+    opacity: 1;
+    border-bottom: 1px solid rgba(gray, 0.25);
+  }
 }
 
 .navBarDark {
-    .notesDark, .authDark {
-        background-color: white;
-        text-shadow: 0 0 2px white;
-    }
+  .notesDark,
+  .authDark {
+    background-color: white;
+    text-shadow: 0 0 2px white;
+  }
 
-    .authDark {
-        .userDark {
-            filter: invert(100%);
-        }
+  .authDark {
+    .userDark {
+      filter: invert(100%);
     }
+  }
 
-    .themeDark {
-        transform: rotateY(180deg);
-    }
+  .themeDark {
+    transform: rotateY(180deg);
+  }
 }
