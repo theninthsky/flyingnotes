@@ -4,11 +4,11 @@
   "description": "an application for taking notes.",
   "main": "dist/server.js",
   "scripts": {
-    "start": "tsc && node ./dist/server.js",
+    "start": "node ./dist/server.js",
     "dev": "tsc -w & nodemon ./dist/server.js",
     "client": "cd client && npm start",
-    "app": "cd client && npm run build && cd .. && npm start",
-    "heroku-postbuild": "cd client && npm install && npm run build",
+    "app": "tsc & cd client && npm run build && cd .. && npm start",
+    "heroku-postbuild": "tsc & cd client && npm install && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Almog Gabay",
