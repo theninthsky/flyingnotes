@@ -2,10 +2,13 @@
   "name": "flying-notes",
   "version": "1.0.0",
   "description": "an application for taking notes.",
+  "engines": {
+    "node": "13.7.0"
+  },
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js",
+    "start": "node server",
+    "dev": "nodemon server",
     "client": "cd client && npm start",
     "app": "cd client && npm run build && cd .. && npm start",
     "test": "jest",
