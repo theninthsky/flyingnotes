@@ -1,9 +1,8 @@
-import { Request, Response } from 'express'
-import bcrypt from 'bcryptjs'
+const bcrypt = require('bcryptjs')
 
-import User from '../models/user.model'
+const User = require('../models/user.model')
 
-export const registerUser = (req: Request, res: Response) => {
+exports.registerUser = (req, res) => {
   const { name, email, password, notes = [] } = req.body
 
   new User({ name, email, password: bcrypt.hashSync(password), notes })
@@ -21,7 +20,7 @@ export const registerUser = (req: Request, res: Response) => {
     })
 }
 
-export const loginUser = (req: Request, res: Response) => {
+exports.loginUser = (req, res) => {
   const { email, password } = req.body
 
   User.findOne({ email })
@@ -37,7 +36,7 @@ export const loginUser = (req: Request, res: Response) => {
     .catch(() => res.status(404).send('Incorrect email or password'))
 }
 
-export const updateUser = (req: Request, res: Response) => {
+exports.updateUser = (req, res) => {
   const { name, password, newPassword } = req.body
 
   User.findById(req.session.userId)
@@ -56,7 +55,7 @@ export const updateUser = (req: Request, res: Response) => {
     .catch(() => res.status(404).send('Incorrect password'))
 }
 
-export const logoutUser = (req: Request, res: Response) => {
+exports.logoutUser = (req, res) => {
   req.session.destroy(() => {
     res.clearCookie('connect.sid')
     res.sendStatus(200)

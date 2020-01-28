@@ -2,14 +2,15 @@
   "name": "flying-notes",
   "version": "1.0.0",
   "description": "an application for taking notes.",
-  "main": "dist/server.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node ./dist/server.js",
-    "dev": "tsc -w & nodemon ./dist/server.js",
+    "start": "node server.js",
+    "dev": "nodemon server.js",
     "client": "cd client && npm start",
-    "app": "tsc & cd client && npm run build && cd .. && npm start",
-    "heroku-postbuild": "tsc & cd client && npm install && npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "app": "cd client && npm run build && cd .. && npm start",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "author": "Almog Gabay",
   "license": "ISC",
@@ -19,15 +20,12 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
-    "mongoose": "^5.8.6"
+    "mongoose": "^5.8.9"
   },
   "devDependencies": {
-    "@types/bcryptjs": "^2.4.2",
-    "@types/express": "^4.17.2",
-    "@types/express-session": "^1.15.16",
-    "@types/mongoose": "^5.5.43",
-    "nodemon": "^1.19.4",
-    "typescript": "^3.7.5"
+    "jest": "^25.1.0",
+    "nodemon": "^2.0.2",
+    "supertest": "^4.0.2"
   },
   "nodemonConfig": {
     "ignore": [

@@ -1,13 +1,11 @@
-import express from 'express'
+const router = require('express').Router()
 
-import {
+const {
   registerUser,
   loginUser,
   updateUser,
   logoutUser
-} from '../controllers/users'
-
-const router = express.Router()
+} = require('../controllers/users')
 
 /* REGISTER */
 router.post('/register', registerUser)
@@ -21,4 +19,4 @@ router.put('/register', updateUser)
 /* LOGOUT */
 router.post('/logout', logoutUser)
 
-export default router
+module.exports = router

@@ -1,9 +1,7 @@
-import { Request, Response } from 'express'
+const User = require('../models/user.model')
+const File = require('../models/file.model')
 
-import User from '../models/user.model'
-import File from '../models/file.model'
-
-export const createNote = (req: Request, res: Response) => {
+exports.createNote = (req, res) => {
   const { file } = req.body.newNote
   delete req.body.newNote.file
 
@@ -21,13 +19,13 @@ export const createNote = (req: Request, res: Response) => {
     .catch(({ message, errmsg }) => console.log('Error: ' + message || errmsg))
 }
 
-export const getNotes = (req: Request, res: Response) => {
+exports.getNotes = (req, res) => {
   User.findById(req.session.userId)
     .then(({ notes }) => res.json({ notes }))
     .catch(({ message, errmsg }) => console.log('Error: ' + message || errmsg))
 }
 
-export const updateNote = (req: Request, res: Response) => {
+exports.updateNote = (req, res) => {
   const { updatedNote } = req.body
 
   User.findById(req.session.userId)
@@ -54,7 +52,7 @@ export const updateNote = (req: Request, res: Response) => {
   }
 }
 
-export const deleteNote = (req: Request, res: Response) => {
+exports.deleteNote = (req, res) => {
   User.findById(req.session.userId)
     .then(user => {
       user.notes = user.notes.filter(note => note._id != req.body.noteId)
