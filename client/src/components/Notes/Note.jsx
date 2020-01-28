@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { saveAs } from 'file-saver'
 
 import * as actions from '../../store/actions/index'
+import { base64ToFile } from '../../util/data_uri'
 import Options from './Options'
 import NewNote from './NewNote'
 import NoteSpinner from '../UI/NoteSpinner'
@@ -11,17 +12,6 @@ import styles from './Note.module.scss'
 
 import fileIcon from '../../assets/images/file.svg'
 import downdloadIcon from '../../assets/images/download.svg'
-
-const base64ToFile = (content, type) => {
-  const byteString = atob(content.split`,`[1])
-  const ab = new ArrayBuffer(byteString.length)
-  const ia = new Uint8Array(ab)
-  for (let i = 0; i < byteString.length; i += 1) {
-    ia[i] = byteString.charCodeAt(i)
-  }
-  const newBlob = new Blob([ab], { type })
-  return newBlob
-}
 
 const Note = props => {
   const { _id, color, category, title, content, date, fileName, file } = props

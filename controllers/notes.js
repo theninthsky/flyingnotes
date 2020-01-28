@@ -11,7 +11,7 @@ exports.createNote = (req, res) => {
       const { notes } = await user.save()
 
       if (file) {
-        new File({ noteId: notes[notes.length - 1]._id, base64: file }).save()
+        new File({ noteId: notes[notes.length - 1]._id, dataUri: file }).save()
       }
 
       res.json(notes[notes.length - 1])
@@ -46,7 +46,7 @@ exports.updateNote = (req, res) => {
       { base64: updatedNote.file }
     ).then(file => {
       if (!file) {
-        new File({ noteId: updatedNote._id, base64: updatedNote.file }).save()
+        new File({ noteId: updatedNote._id, dataUri: updatedNote.file }).save()
       }
     })
   }

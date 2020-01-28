@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { GithubPicker } from 'react-color'
 
 import * as actions from '../../store/actions/index'
+import { fileToBase64 } from '../../util/data_uri'
 import NoteSpinner from '../UI/NoteSpinner'
 import styles from './NewNote.module.scss'
 
@@ -21,14 +22,6 @@ const colorsArray = [
   '#7f8c8d',
   '#bdc3c7'
 ]
-
-const fileToBase64 = file =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.readAsDataURL(file)
-    reader.onload = () => resolve(reader.result)
-    reader.onerror = error => reject(error)
-  })
 
 const NewNote = props => {
   const { update, toggleEditMode, closeOptions } = props

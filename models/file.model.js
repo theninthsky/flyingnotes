@@ -4,7 +4,7 @@ const { Schema } = mongoose
 
 const fileSchema = new Schema({
   noteId: Schema.Types.ObjectId,
-  base64: String
+  dataUri: String
 })
 
 module.exports = mongoose.model('File', fileSchema)

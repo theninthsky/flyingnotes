@@ -2,7 +2,7 @@ const File = require('../models/file.model')
 
 exports.getFile = (req, res) => {
   File.findOne({ noteId: req.params.noteId })
-    .then(({ base64 }) => res.json({ file: base64 }))
+    .then(({ dataUri }) => res.json({ file: dataUri }))
     .catch(({ message, errmsg }) => console.log('Error: ' + message || errmsg))
 }
 
