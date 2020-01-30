@@ -31,7 +31,7 @@ export const addNote = newNote => {
       const { data } = await axios.post(`${REACT_APP_SERVER_URL}/notes`, {
         newNote
       })
-      newNote = data
+      newNote = data.newNote
     } else {
       newNote = { ...newNote, _id: Date.now(), date: Date.now() }
       localStorage.setItem(

@@ -14,7 +14,7 @@ exports.createNote = (req, res) => {
         new File({ noteId: notes[notes.length - 1]._id, dataUri: file }).save()
       }
 
-      res.json(notes[notes.length - 1])
+      res.json({ newNote: notes[notes.length - 1] })
     })
     .catch(({ message, errmsg }) => console.log('Error: ' + message || errmsg))
 }
@@ -43,7 +43,7 @@ exports.updateNote = (req, res) => {
   if (updatedNote.file) {
     File.findOneAndUpdate(
       { noteId: updatedNote._id },
-      { base64: updatedNote.file }
+      { dataUri: updatedNote.file }
     ).then(file => {
       if (!file) {
         new File({ noteId: updatedNote._id, dataUri: updatedNote.file }).save()
@@ -53,15 +53,20 @@ exports.updateNote = (req, res) => {
 }
 
 exports.deleteNote = (req, res) => {
+  const { noteId } = req.body
+
   User.findById(req.session.userId)
     .then(user => {
-      user.notes = user.notes.filter(note => note._id != req.body.noteId)
-      user.save().then(() => res.sendStatus(200))
+      if (user.notes.find(note => note._id == noteId)) {
+        user.notes = user.notes.filter(note => note._id != noteId)
+        return user.save().then(() => res.sendStatus(200))
+      }
+      throw Error
     })
     .catch(({ message, errmsg }) => {
       console.log('Error: ' + message || errmsg)
       res.sendStatus(404)
     })
 
-  File.findOneAndDelete({ noteId: req.body.noteId }).then(() => {})
+  File.findOneAndDelete({ noteId }).then(() => {})
 }

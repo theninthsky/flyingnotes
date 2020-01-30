@@ -7,7 +7,7 @@ exports.getFile = (req, res) => {
 }
 
 exports.deleteFile = (req, res) => {
-  File.findOneAndDelete({ noteId: req.body.noteId })
+  File.findOneAndDelete({ noteId: req.params.noteId })
     .then(() => res.sendStatus(200))
     .catch(() => res.sendStatus(404))
 }
