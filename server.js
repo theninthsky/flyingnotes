@@ -4,7 +4,6 @@ const express = require('express')
 const session = require('express-session')
 const mongoose = require('mongoose')
 const MongoStore = require('connect-mongo')(session)
-const { MongoMemoryServer } = require('mongodb-memory-server')
 
 const userRoutes = require('./routes/users')
 const noteRoutes = require('./routes/notes')
@@ -22,7 +21,6 @@ const {
 } = process.env
 
 const app = express()
-const mongoServer = new MongoMemoryServer()
 const mongooseOpts = {
   useNewUrlParser: true,
   useFindAndModify: false,
@@ -36,6 +34,9 @@ if (NODE_ENV != 'test') {
     .then(() => console.log('MongoDB is connected...'))
     .catch(err => console.log(err))
 } else {
+  const { MongoMemoryServer } = require('mongodb-memory-server')
+  const mongoServer = new MongoMemoryServer()
+
   mongoServer.getUri().then(mongoUri => {
     mongoose
       .connect(mongoUri, mongooseOpts)
