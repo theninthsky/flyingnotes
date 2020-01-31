@@ -1,36 +1,51 @@
-# Flying Notes
+# Flying Notes ![Logo](/client/public/favicon.ico)
 
-![Logo](/client/public/favicon.ico)</br>
+A MERN stack web application for taking notes.
 
-A MERN stack application for taking notes.
-
-Visit the website here: http://flyingnotes.herokuapp.com/
+The app is deployed here: http://flyingnotes.herokuapp.com/
 
 ![Notes](/images/notes.png)</br>
 
 ## Environment Variables
-You should create a donenv file (https://www.npmjs.com/package/dotenv) at the root directory which will specify the following variables:</br>
 
-PORT (default: 5000)</br>
+You should create a `.env` file (https://www.npmjs.com/package/dotenv) at the root directory which will specify the following variables:</br>
 
-MONGODB_URI</br>
+`MONGODB_URI (required)`</br>
 
-SESSION_SECRET</br>
+`SESSION_SECRET (required)`</br>
 
-HEROKUAPP_URL (optional, keeps heroku apps which are on the free plan awake)</br>
+`PORT (optional, default: 5000)`</br>
 
-REACT_APP_SERVER_URL (the backend server)</br>
+`HEROKUAPP_URL (optional, prevents heroku app from sleeping [depends on dynos])`</br>
+
+`REACT_APP_SERVER_URL (required)`</br>
 
 ## Available Scripts
 
 ### `npm start`
+
 Starts the server.</br>
 
 ### `npm run dev`
-Starts the server while listening to changes (nodemon).</br>
+
+Starts the server while listening to changes (`nodemon`).</br>
 
 ### `npm run client`
-Runs the react app (npm start).</br>
+
+Runs the react app (`npm start`).</br>
 
 ### `npm run app`
+
 Builds the react app and starts the server.
+
+### `npm run start:test`
+
+Starts there server in testing mode (mongodb memory server).</br>
+
+### `npm test`
+
+Performs server tests.</br>
+
+### `npm run test:watch`
+
+Performs tests in watch mode.
