@@ -20,6 +20,8 @@ You should create a `.env` file (https://www.npmjs.com/package/dotenv) at the ro
 
 `REACT_APP_SERVER_URL (required)`</br>
 
+`SKIP_PREFLIGHT_CHECK=true (required, prevents collision with Jest versions between React and the server)`</br>
+
 ## Available Scripts
 
 ### `npm start`
@@ -32,15 +34,15 @@ Starts the server while listening to changes (`nodemon`).</br>
 
 ### `npm run client`
 
-Runs the react app (`npm start`).</br>
+Runs the React app (`npm start`).</br>
 
 ### `npm run app`
 
-Builds the react app and starts the server.
+Builds the React app and starts the server.
 
 ### `npm run start:test`
 
-Starts there server in testing mode (mongodb memory server).</br>
+Starts the server in testing mode (MongoDB Memory Server).</br>
 
 ### `npm test`
 
