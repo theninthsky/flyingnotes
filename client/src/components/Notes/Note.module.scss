@@ -28,9 +28,11 @@
   }
 
   .title {
-    margin: 2.5% 0 0 0;
-    padding: 0 5%;
+    margin: 2.5% auto;
+    margin-bottom: 0;
+    width: 94%;
     text-align: center;
+    line-height: 0.85;
     font-size: 26px;
     font-weight: normal;
     word-break: break-word;
@@ -39,7 +41,7 @@
   .content {
     position: relative;
     flex-grow: 1;
-    margin: 2% 4% 1% 4%;
+    margin: 2.5% 4% 1% 4%;
     white-space: pre;
     overflow: auto;
     font-size: 16px;
