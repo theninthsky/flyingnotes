@@ -11,15 +11,21 @@
   .theme {
     width: 32px;
     padding: 0;
+    opacity: 0.5;
+    filter: saturate(25%);
     cursor: pointer;
+
+    &:hover {
+      opacity: 1;
+    }
   }
 
   .notes,
   .auth {
     box-sizing: border-box;
     text-decoration: none;
-    font-size: 28px;
-    opacity: 0.66;
+    font-size: 32px;
+    opacity: 0.5;
     color: transparent;
     background-color: black;
     text-shadow: 0 0 2px white;
@@ -27,17 +33,15 @@
     -moz-background-clip: text;
     background-clip: text;
     cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
 
     &:hover {
       opacity: 1;
-      border-bottom: 1px solid rgba(gray, 0.25);
     }
   }
 
   .auth {
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
-
     .user {
       width: 24px;
     }
@@ -45,7 +49,6 @@
 
   .active {
     opacity: 1;
-    border-bottom: 1px solid rgba(gray, 0.25);
   }
 }
 
@@ -53,7 +56,7 @@
   .notesDark,
   .authDark {
     background-color: white;
-    text-shadow: 0 0 2px white;
+    text-shadow: 0 0 2px #404040;
   }
 
   .authDark {
@@ -64,5 +67,24 @@
 
   .themeDark {
     transform: rotateY(180deg);
+  }
+}
+
+@media (max-width: 480px) {
+  .navBar {
+    .theme {
+      &:hover {
+        opacity: 0.5;
+      }
+
+      &:active {
+        opacity: 1;
+      }
+    }
+
+    .notes,
+    .auth {
+      font-size: 26px;
+    }
   }
 }

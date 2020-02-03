@@ -27,7 +27,7 @@ const NavigationBar = props => {
           }`}
           src={themeIcon}
           alt="Theme"
-          title="Change Theme"
+          title="Theme"
           onClick={props.changeTheme}
         />
 

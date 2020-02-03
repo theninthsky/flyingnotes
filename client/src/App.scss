@@ -1,29 +1,33 @@
 html {
-    height: 100vh; // fixes gradient on mobile
+  height: 100vh; // fixes gradient on mobile
 }
 
 body {
-    margin: 0;
-    color: rgb(80, 80, 80);
-    animation: showApp 1s;
+  margin: 0;
+  color: rgb(80, 80, 80);
+  animation: showApp 1s;
 
-    @keyframes showApp {
-        from {opacity: 0;}
-        to {opacity: 1};
+  @keyframes showApp {
+    from {
+      opacity: 0;
     }
+    to {
+      opacity: 1;
+    }
+  }
 }
 
 img {
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 @media (pointer: none), (pointer: coarse) {
-    img {
-        opacity: 1 !important;
+  img:not([title='Theme']) {
+    opacity: 1 !important;
 
-        &:hover {
-            opacity: 1 !important;
-        }
+    &:hover {
+      opacity: 1 !important;
     }
+  }
 }
