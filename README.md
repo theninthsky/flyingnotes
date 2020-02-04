@@ -10,17 +10,21 @@ The app is deployed here: http://flyingnotes.herokuapp.com/
 
 You should create a `.env` file (https://www.npmjs.com/package/dotenv) at the root directory which will specify the following variables:</br>
 
-`MONGODB_URI (required)`</br>
+`MONGODB_URI` (required)</br>
 
-`SESSION_SECRET (required)`</br>
+`SESSION_SECRET` (required)</br>
 
-`PORT (optional, default: 5000)`</br>
+`PORT` (optional, default: 5000)</br>
 
-`HEROKUAPP_URL (optional, prevents heroku app from sleeping [depends on dynos])`</br>
+`HEROKUAPP_URL` (optional, prevents heroku app from sleeping [depends on dynos])</br>
 
-`REACT_APP_SERVER_URL (required)`</br>
+`REACT_APP_SERVER_URL` (required, default: http://localhost:5000)</br>
 
-`SKIP_PREFLIGHT_CHECK=true (required, prevents collision with Jest versions between React and the server)`</br>
+</br>
+
+A `.env` file is also required at the root React directory (client) with the following variable:</br>
+
+`SKIP_PREFLIGHT_CHECK=true` (required, prevents collision with Jest versions between React and the server)</br>
 
 ## Available Scripts
 

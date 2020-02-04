@@ -44,8 +44,7 @@ const NewNote = props => {
     setShowColorPicker(false)
   }
 
-  const categoryHanlder = event =>
-    setCategory(event.target.value.toUpperCase().slice(0, 24)) // forces maxLength on mobile
+  const categoryHanlder = event => setCategory(event.target.value.slice(0, 24)) // forces maxLength on mobile
 
   const titleHandler = event => setTitle(event.target.value)
 
@@ -123,7 +122,7 @@ const NewNote = props => {
             <input
               className={styles.category}
               type="text"
-              value={category}
+              value={category.toUpperCase()}
               dir="auto"
               placeholder="CATEGORY"
               maxLength="24"

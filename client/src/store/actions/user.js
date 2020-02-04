@@ -3,7 +3,7 @@ import axios from 'axios'
 
 import * as actionTypes from './actionTypes'
 
-const { REACT_APP_SERVER_URL } = process.env
+const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
 
 axios.defaults.withCredentials = true
 

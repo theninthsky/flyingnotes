@@ -61,7 +61,7 @@ const Note = props => {
             &nbsp;
           </div>
           <div className={styles.category} dir="auto">
-            {category}
+            {category.toUpperCase()}
           </div>
         </>
       ) : null}

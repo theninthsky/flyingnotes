@@ -3,7 +3,16 @@ import axios from 'axios'
 
 import * as actionTypes from './actionTypes'
 
-const { REACT_APP_SERVER_URL } = process.env
+const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
+
+const exampleNote = {
+  _id: 'example',
+  color: '#8e44ad',
+  category: 'Demo',
+  title: 'Example',
+  content: 'This is an example note.',
+  date: Date.now()
+}
 
 export const fetchNotes = () => {
   return async dispatch => {
@@ -14,7 +23,9 @@ export const fetchNotes = () => {
       notes = data.notes
       dispatch({ type: actionTypes.NOTES_FETCHED })
     } else {
-      notes = JSON.parse(localStorage.notes || '[]')
+      notes = JSON.parse(
+        localStorage.notes || `[${JSON.stringify(exampleNote)}]`
+      )
       dispatch({ type: actionTypes.LOCAL_NOTES_SET })
     }
     batch(() => {
