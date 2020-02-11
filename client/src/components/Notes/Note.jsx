@@ -11,7 +11,7 @@ import FileSpinner from '../UI/FileSpinner'
 import styles from './Note.module.scss'
 
 import fileIcon from '../../assets/images/file.svg'
-import downdloadIcon from '../../assets/images/download.svg'
+import downloadIcon from '../../assets/images/download.svg'
 
 const Note = props => {
   const { _id, color, category, title, content, date, fileName, file } = props
@@ -31,9 +31,7 @@ const Note = props => {
 
   const downloadFileHandler = () => {
     if (file) {
-      const type = file.split`,`[0].split`:`[1]
-      const builtFile = base64ToFile(file, type)
-      saveAs(builtFile, fileName)
+      saveAs(base64ToFile(file), fileName)
     } else {
       fetchFile({ _id, color, category, title, content, date, fileName })
     }
@@ -79,7 +77,7 @@ const Note = props => {
       {file ? (
         <img
           className={styles.download}
-          src={downdloadIcon}
+          src={downloadIcon}
           alt={fileName}
           title={fileName}
           onClick={downloadFileHandler}

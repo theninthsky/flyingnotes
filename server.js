@@ -1,15 +1,14 @@
 const http = require('http')
-const join = require('path').join
 const express = require('express')
 const session = require('express-session')
 const mongoose = require('mongoose')
 const MongoStore = require('connect-mongo')(session)
 
+require('dotenv').config()
+
 const userRoutes = require('./routes/users')
 const noteRoutes = require('./routes/notes')
 const fileRoutes = require('./routes/files')
-
-require('dotenv').config()
 
 const {
   NODE_ENV,
@@ -45,7 +44,7 @@ if (NODE_ENV != 'test') {
   })
 }
 
-app.use(express.static(join(__dirname, 'client', 'build')))
+app.use(express.static(`${__dirname}/client/build`))
 app.use(express.json({ limit: 1024 * 1024 * 2.5 })) // 2.5MB
 
 app.use(
@@ -72,9 +71,7 @@ app.use((req, res, next) => {
 app.use(userRoutes)
 app.use(noteRoutes)
 app.use(fileRoutes)
-app.use((_, res) =>
-  res.sendFile(join(__dirname, 'client', 'build', 'index.html'))
-)
+app.use((_, res) => res.sendFile(`${__dirname}/client/build/index.html`))
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}...`)
