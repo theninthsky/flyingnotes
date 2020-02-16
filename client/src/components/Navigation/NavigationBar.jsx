@@ -4,7 +4,8 @@ import { NavLink } from 'react-router-dom'
 import CookiesMessage from './CookiesMessage'
 import styles from './NavigationBar.module.scss'
 
-import themeIcon from '../../assets/images/theme.svg'
+import lightThemeIcon from '../../assets/images/theme-light.svg'
+import darkThemeIcon from '../../assets/images/theme-dark.svg'
 import userIcon from '../../assets/images/user-astronaut.svg'
 
 const NavigationBar = props => {
@@ -25,7 +26,7 @@ const NavigationBar = props => {
           className={`${styles.theme} ${
             theme === 'dark' ? styles.themeDark : ''
           }`}
-          src={themeIcon}
+          src={theme === 'light' ? lightThemeIcon : darkThemeIcon}
           alt="Theme"
           title="Theme"
           onClick={props.changeTheme}

@@ -10,9 +10,6 @@ import Spinner from './components/UI/Spinner'
 import * as actions from './store/actions/index'
 import './App.scss'
 
-const lightTheme = 'white'
-const darkTheme = 'linear-gradient(#202020, #404040) fixed'
-
 const App = props => {
   const {
     user,
@@ -23,7 +20,9 @@ const App = props => {
   const history = useHistory()
 
   useEffect(() => {
-    document.body.style.background = theme === 'light' ? lightTheme : darkTheme
+    theme === 'dark'
+      ? document.body.classList.add('dark')
+      : document.body.classList.remove('dark')
   }, [theme])
 
   useEffect(() => {

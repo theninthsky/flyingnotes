@@ -3,58 +3,63 @@
   margin: 1.5vh auto;
   margin-bottom: 5vh;
   padding: 0 10px;
-  width: 98%;
+  width: 99%;
   box-sizing: border-box;
   justify-content: space-between;
   align-items: flex-start;
 
-  .theme {
-    width: 32px;
-    padding: 0;
-    opacity: 0.5;
-    filter: saturate(25%);
+  .theme,
+  .notes,
+  .auth {
     cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: background-color 0.2s;
 
     &:hover {
-      opacity: 1;
+      background-color: gray;
     }
   }
 
-  .notes,
-  .auth {
+  .theme {
+    width: 32px;
+    padding: 4px;
+    border-radius: 20px;
+  }
+
+  .notes {
+    padding: 2px 6px;
     box-sizing: border-box;
     text-decoration: none;
     font-size: 32px;
-    opacity: 0.5;
     color: transparent;
     background-color: black;
     text-shadow: 0 0 2px white;
     -webkit-background-clip: text;
     -moz-background-clip: text;
     background-clip: text;
-    cursor: pointer;
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
-
-    &:hover {
-      opacity: 1;
-    }
   }
 
   .auth {
+    padding: 4px;
+    border-radius: 20px;
+
     .user {
       width: 24px;
     }
   }
 
-  .active {
-    opacity: 1;
-  }
+  // .active {
+  //   box-shadow: 0 0 10px rgba(black, 0.15);
+  // }
 }
 
 .navBarDark {
-  .notesDark,
-  .authDark {
+  .themeDark {
+    filter: invert(100%);
+  }
+
+  .notesDark {
     background-color: white;
     text-shadow: 0 0 2px #404040;
   }
@@ -63,10 +68,6 @@
     .userDark {
       filter: invert(100%);
     }
-  }
-
-  .themeDark {
-    transform: rotateY(180deg);
   }
 }
 

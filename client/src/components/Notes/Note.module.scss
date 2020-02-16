@@ -7,6 +7,7 @@
   max-height: 30vh;
   display: flex;
   flex-direction: column;
+  background-color: rgba(white, 0.5);
   border-radius: 4px;
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.5) inset;
   animation: show 1s;
@@ -101,6 +102,7 @@
 
 .noteDark {
   color: white;
+  background-color: rgba(black, 0.5);
 
   .fileDark {
     filter: invert(100%);
