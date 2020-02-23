@@ -14,17 +14,15 @@
     cursor: pointer;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
-    transition: background-color 0.2s;
+    transition: opacity 0.2s;
 
     &:hover {
-      background-color: gray;
+      opacity: 0.5;
     }
   }
 
   .theme {
     width: 32px;
-    padding: 4px;
-    border-radius: 20px;
   }
 
   .notes {
@@ -41,9 +39,6 @@
   }
 
   .auth {
-    padding: 4px;
-    border-radius: 20px;
-
     .user {
       width: 24px;
     }
@@ -73,15 +68,19 @@
 
 @media (max-width: 480px) {
   .navBar {
-    .theme {
-      &:hover {
-        opacity: 0.5;
-      }
-    }
-
     .notes,
     .auth {
       font-size: 28px;
+    }
+  }
+}
+
+@media (pointer: none) and (pointer: coarse) {
+  .theme,
+  .notes,
+  .auth {
+    &:hover {
+      opacity: 1;
     }
   }
 }
