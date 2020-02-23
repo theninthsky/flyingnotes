@@ -4,9 +4,6 @@ html {
 
 body {
   margin: 0;
-  background-image: url(./assets/images/background-light.jpg);
-  background-size: cover;
-  background-attachment: fixed;
   color: rgb(80, 80, 80);
   animation: showApp 1s;
 
@@ -21,7 +18,7 @@ body {
 }
 
 .dark {
-  background-image: url(./assets//images/background-dark.jpg);
+  background: linear-gradient(#202020, #404040) fixed;
 }
 
 img {
