@@ -75,12 +75,14 @@
   }
 }
 
-@media (pointer: none) and (pointer: coarse) {
-  .theme,
-  .notes,
-  .auth {
-    &:hover {
-      opacity: 1;
+@media (pointer: none), (pointer: coarse) {
+  .navBar {
+    .theme,
+    .notes,
+    .auth {
+      &:hover {
+        opacity: 1;
+      }
     }
   }
 }
