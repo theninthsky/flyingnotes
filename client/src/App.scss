@@ -17,11 +17,17 @@ body {
   }
 }
 
-.dark {
-  background: linear-gradient(#202020, #404040) fixed;
-}
-
 img {
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  &:visited {
+    color: unset;
+  }
+}
+
+.dark {
+  background: linear-gradient(#202020, #404040) fixed;
 }

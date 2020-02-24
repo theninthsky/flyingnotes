@@ -4,7 +4,7 @@
   width: 20%;
   display: flex;
   flex-direction: column;
-  border-radius: 4px;
+  border-radius: 2px;
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.5) inset;
   animation: show 1s;
 
@@ -62,8 +62,8 @@
   }
 
   .categoryBackground {
-    width: 98%;
-    margin: 4px auto;
+    width: 99%;
+    margin: 3px auto;
     filter: blur(3px);
   }
 

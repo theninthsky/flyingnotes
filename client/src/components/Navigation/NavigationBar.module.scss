@@ -29,7 +29,7 @@
     padding: 2px 6px;
     box-sizing: border-box;
     text-decoration: none;
-    font-size: 32px;
+    font-size: 34px;
     color: transparent;
     background-color: black;
     text-shadow: 0 0 2px white;
@@ -39,6 +39,9 @@
   }
 
   .auth {
+    font-size: 24px;
+    text-decoration: none;
+
     .user {
       width: 24px;
     }
@@ -68,9 +71,19 @@
 
 @media (max-width: 480px) {
   .navBar {
+    .theme {
+      width: 26px;
+    }
+
     .notes,
     .auth {
-      font-size: 28px;
+      font-size: 20px;
+    }
+
+    .auth {
+      .user {
+        width: 20px;
+      }
     }
   }
 }
