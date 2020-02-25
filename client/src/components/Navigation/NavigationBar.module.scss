@@ -47,9 +47,13 @@
     }
   }
 
-  // .active {
-  //   box-shadow: 0 0 10px rgba(black, 0.15);
-  // }
+  .active {
+    cursor: default;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
 }
 
 .navBarDark {

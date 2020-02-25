@@ -1,11 +1,12 @@
 .user {
-  position: fixed;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   margin: auto;
   width: 40vw;
   height: 60vh;
+  min-height: 450px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -55,7 +56,8 @@
     -webkit-tap-highlight-color: transparent;
 
     &:hover {
-      background-color: rgb(192, 192, 192);
+      color: white;
+      background-color: gray;
     }
   }
 

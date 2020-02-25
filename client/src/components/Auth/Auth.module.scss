@@ -1,11 +1,12 @@
 .auth {
-  position: fixed;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   margin: auto;
   width: 30vw;
   height: 50vh;
+  min-height: 400px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -67,7 +68,8 @@
     -webkit-tap-highlight-color: transparent;
 
     &:hover {
-      background-color: rgb(192, 192, 192);
+      color: white;
+      background-color: gray;
     }
   }
 

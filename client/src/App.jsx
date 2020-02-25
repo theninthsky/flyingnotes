@@ -10,6 +10,8 @@ import Spinner from './components/UI/Spinner'
 import * as actions from './store/actions/index'
 import './App.scss'
 
+import images from './util/images'
+
 const App = props => {
   const {
     user,
@@ -28,6 +30,14 @@ const App = props => {
   useEffect(() => {
     history.push('/')
   }, [history, notesFetched])
+
+  /* Preload Images */
+  useEffect(() => {
+    images.forEach(image => {
+      const img = new Image()
+      img.src = image.fileName
+    })
+  }, [])
 
   return (
     <>
