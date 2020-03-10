@@ -71,6 +71,14 @@ app.use((req, res, next) => {
 app.use(userRoutes)
 app.use(noteRoutes)
 app.use(fileRoutes)
+
+if (NODE_ENV == 'test') {
+  app.use('/kill', (_, res) => {
+    res.sendStatus(200)
+    process.exit()
+  })
+}
+
 app.use((_, res) => res.sendFile(`${__dirname}/client/build/index.html`))
 
 app.listen(PORT, () => {

@@ -11,10 +11,12 @@
     "dev": "nodemon server",
     "client": "cd client && npm start",
     "app": "cd client && npm run build && cd .. && npm start",
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "npm run start:test & jest",
     "start:test": "NODE_ENV=test node server",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "deploy": "git push origin master & git push heroku master",
+    "test:watch": "WATCH=true jest --watch",
+    "deploy": "npm test && git push origin master & git push heroku master",
     "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "author": "Almog Gabay",
@@ -26,16 +28,31 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
-    "mongoose": "^5.8.11"
+    "mongoose": "^5.9.4"
   },
   "devDependencies": {
+    "eslint": "^6.8.0",
     "jest": "^25.1.0",
-    "mongodb-memory-server": "^6.2.4",
+    "mongodb-memory-server": "^6.3.2",
     "nodemon": "^2.0.2"
   },
   "nodemonConfig": {
     "ignore": [
       "client/**"
     ]
-  }
+  },
+  "eslintIgnore": [
+    "client"
+  ],
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theninthsky/flying-notes.git"
+  },
+  "bugs": {
+    "url": "https://github.com/theninthsky/flying-notes/issues"
+  },
+  "homepage": "https://github.com/theninthsky/flying-notes#readme"
 }

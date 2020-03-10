@@ -1,8 +1,8 @@
-/* These E2E tests require a test server (~$ npm run start:test) */
+/* E2E Tests */
 
 const axios = require('axios')
 
-const { PORT = 5000 } = process.env
+const { PORT = 5000, WATCH } = process.env
 const uri = `http://localhost:${PORT}`
 
 const randomUserName = ~~(Math.random() * 1000000)
@@ -268,4 +268,16 @@ describe('Delete File', () => {
 
     expect(status).toBe(200)
   })
+})
+
+/* Terminate Test Server */
+afterAll(async () => {
+  if (!WATCH) {
+    try {
+      await axios(`${uri}/kill`)
+      console.log('Test server successfully terminated')
+    } catch ({ message }) {
+      console.error(message)
+    }
+  }
 })
