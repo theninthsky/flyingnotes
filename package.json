@@ -5,19 +5,19 @@
   "engines": {
     "node": "13.7.0"
   },
-  "main": "server.js",
+  "main": "src/server.js",
   "scripts": {
-    "start": "node server",
-    "dev": "nodemon server",
-    "client": "cd client && npm start",
-    "app": "cd client && npm run build && cd .. && npm start",
+    "start": "node src/server",
+    "dev": "nodemon src/server",
+    "client": "cd src/client && npm start",
+    "app": "cd src/client && npm run build && cd .. && npm start",
     "lint": "eslint .",
     "pretest": "npm run lint",
     "test": "npm run start:test & jest",
     "start:test": "NODE_ENV=test node server",
     "test:watch": "WATCH=true jest --watch",
     "deploy": "npm test && git push origin master & git push heroku master",
-    "heroku-postbuild": "cd client && npm install && npm run build"
+    "heroku-postbuild": "cd src/client && npm install && npm run build"
   },
   "author": "Almog Gabay",
   "license": "ISC",
@@ -39,15 +39,12 @@
   },
   "nodemonConfig": {
     "ignore": [
-      "client/**"
+      "src/client/**"
     ]
   },
   "eslintIgnore": [
-    "client"
+    "src/client"
   ],
-  "directories": {
-    "test": "tests"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/theninthsky/flying-notes.git"

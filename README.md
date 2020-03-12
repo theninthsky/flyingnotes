@@ -1,4 +1,4 @@
-# Flying Notes ![Logo](/client/public/favicon.ico)
+# Flying Notes
 
 A MERN stack web application for taking notes.
 

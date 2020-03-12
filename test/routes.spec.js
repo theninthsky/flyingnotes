@@ -259,14 +259,6 @@ describe('Delete Note', () => {
 //   })
 // })
 
-describe('Delete File', () => {
-  it('should delete the file', async () => {
-    const { status } = await axios.delete(`${uri}/${file.noteId}/file`)
-
-    expect(status).toBe(200)
-  })
-})
-
 /* Terminate Test Server */
 afterAll(async () => {
   if (!WATCH) {

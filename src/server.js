@@ -17,6 +17,7 @@ const {
   SESSION_SECRET,
   SESSION_LIFETIME = 1000 * 3600 * 24 * 365,
   PORT = 5000,
+  CLIENT_PORT = 3000,
   HEROKUAPP_URL,
 } = process.env
 
@@ -59,8 +60,11 @@ app.use(
   }),
 )
 
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*')
+app.use((_, res, next) => {
+  res.setHeader(
+    'Access-Control-Allow-Origin',
+    `http://localhost:${CLIENT_PORT}`,
+  )
   res.setHeader('Access-Control-Allow-Credentials', 'true')
   res.setHeader(
     'Access-Control-Allow-Methods',
