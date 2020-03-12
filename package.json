@@ -14,7 +14,7 @@
     "lint": "eslint .",
     "pretest": "npm run lint",
     "test": "npm run start:test & jest",
-    "start:test": "NODE_ENV=test node server",
+    "start:test": "NODE_ENV=test node src/server",
     "test:watch": "WATCH=true jest --watch",
     "deploy": "npm test && git push origin master & git push heroku master",
     "heroku-postbuild": "cd src/client && npm install && npm run build"
