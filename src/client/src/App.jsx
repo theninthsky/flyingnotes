@@ -35,7 +35,7 @@ const App = props => {
   useEffect(() => {
     images.forEach(image => {
       const img = new Image()
-      img.src = image.fileName
+      img.src = image
     })
   }, [])
 

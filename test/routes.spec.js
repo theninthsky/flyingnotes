@@ -34,19 +34,12 @@ const newNote = {
   category: 'New Category',
   title: 'New Title',
   content: 'New Note.',
-  // file: 'data:audio/mp3;base64,SUQzAwAACFATBVRBTEIAAAAZAJ6L',
 }
 const updatedNote = {
   color: '#27ae60',
   category: 'Updated Category',
   title: 'Updated Title',
   content: 'Updated note.',
-  file: 'data:audio/mp3;base64,LFQzAwAACFJSBTOBTEI7g34KGR',
-}
-const file = {
-  noteId: null,
-  mimetype: null,
-  buffer: null,
 }
 
 let sessionId = ''
@@ -181,10 +174,6 @@ describe('Create Note', () => {
       },
     )
 
-    file.noteId = savedNewNote._id
-    file.dataUri = newNote.file
-    delete newNote.file
-
     expect(savedNewNote).toEqual(expect.objectContaining(newNote))
 
     user.notes.push(savedNewNote)
@@ -220,9 +209,6 @@ describe('Update Note', () => {
       },
     )
 
-    file.dataUri = updatedNote.file
-    delete updatedNote.file
-
     expect(savedUpdatedNote).toEqual(expect.objectContaining(updatedNote))
 
     user.notes[user.notes.length - 1] = savedUpdatedNote
@@ -247,17 +233,6 @@ describe('Delete Note', () => {
     }
   })
 })
-
-/* File Routes */
-// describe('Download File', () => {
-//   it('should send the file', async () => {
-//     const {
-//       data: { base64 },
-//     } = await axios.get(`${uri}/${file.noteId}/file`)
-
-//     expect(base64).toBe(newNote.file)
-//   })
-// })
 
 /* Terminate Test Server */
 afterAll(async () => {

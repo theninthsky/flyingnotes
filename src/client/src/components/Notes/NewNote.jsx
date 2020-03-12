@@ -24,7 +24,7 @@ const colorsArray = [
 
 const NewNote = props => {
   const { update, toggleEditMode, closeOptions } = props
-  const { theme, addingNote } = props.user
+  const { name, theme, addingNote } = props.user
   const { addNote, updateNote } = props
 
   const [showColorPicker, setShowColorPicker] = useState(false)
@@ -64,22 +64,45 @@ const NewNote = props => {
     }
   }
 
-  const saveNoteHandler = event => {
+  const saveNoteLocallyHandler = event => {
+    event.preventDefault()
+
+    const note = {
+      _id: props._id,
+      color,
+      category: category.trim(),
+      title: title.trim(),
+      content,
+    }
+    if (update) {
+      updateNote(note)
+      toggleEditMode()
+      closeOptions()
+    } else {
+      addNote(note)
+      setColor('#006B76')
+      setCategory('')
+      setTitle('')
+      setContent('')
+    }
+  }
+
+  const saveNoteOnCloudHandler = event => {
     event.preventDefault()
 
     const data = new FormData()
 
-    data.set('color', color)
-    data.set('category', category.trim())
-    data.set('title', title.trim())
-    data.set('content', content)
+    data.append('color', color)
+    data.append('category', category.trim())
+    data.append('title', title.trim())
+    data.append('content', content)
 
     if (selectedFile) {
       data.append('file', selectedFile, selectedFile.name)
     }
 
     if (update) {
-      data.set('_id', props._id)
+      data.append('_id', props._id)
       updateNote(data)
       toggleEditMode()
       closeOptions()
@@ -97,7 +120,10 @@ const NewNote = props => {
     <div
       className={`${styles.note} ${theme === 'dark' ? styles.noteDark : ''}`}
     >
-      <form onSubmit={saveNoteHandler} autoComplete="off">
+      <form
+        onSubmit={name ? saveNoteOnCloudHandler : saveNoteLocallyHandler}
+        autoComplete="off"
+      >
         <img
           className={styles.colorPalette}
           src={colorPaletteIcon}
