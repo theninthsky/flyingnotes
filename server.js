@@ -1,6 +1,7 @@
 const http = require('http')
 const express = require('express')
 const session = require('express-session')
+const multer = require('multer')
 const mongoose = require('mongoose')
 const MongoStore = require('connect-mongo')(session)
 
@@ -16,7 +17,7 @@ const {
   SESSION_SECRET,
   SESSION_LIFETIME = 1000 * 3600 * 24 * 365,
   PORT = 5000,
-  HEROKUAPP_URL
+  HEROKUAPP_URL,
 } = process.env
 
 const app = express()
@@ -24,7 +25,7 @@ const mongooseOpts = {
   useNewUrlParser: true,
   useFindAndModify: false,
   useCreateIndex: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
 }
 
 if (NODE_ENV != 'test') {
@@ -45,7 +46,8 @@ if (NODE_ENV != 'test') {
 }
 
 app.use(express.static(`${__dirname}/client/build`))
-app.use(express.json({ limit: 1024 * 1024 * 2.5 })) // 2.5MB
+app.use(express.json())
+app.use(multer({ limits: { fileSize: 1024 * 1024 * 2.5 } }).single('file'))
 
 app.use(
   session({
@@ -53,8 +55,8 @@ app.use(
     secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    store: new MongoStore({ mongooseConnection: mongoose.connection })
-  })
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
+  }),
 )
 
 app.use((req, res, next) => {
@@ -62,7 +64,7 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Credentials', 'true')
   res.setHeader(
     'Access-Control-Allow-Methods',
-    'GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS'
+    'GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS',
   )
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
   next()

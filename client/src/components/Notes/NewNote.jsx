@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { GithubPicker } from 'react-color'
 
 import * as actions from '../../store/actions/index'
-import { fileToBase64 } from '../../util/data_uri'
 import NoteSpinner from '../UI/NoteSpinner'
 import styles from './NewNote.module.scss'
 
@@ -20,7 +19,7 @@ const colorsArray = [
   '#8e44ad',
   '#2c3e50',
   '#7f8c8d',
-  '#bdc3c7'
+  '#bdc3c7',
 ]
 
 const NewNote = props => {
@@ -30,14 +29,12 @@ const NewNote = props => {
 
   const [showColorPicker, setShowColorPicker] = useState(false)
   const [color, setColor] = useState(
-    props.color || colorsArray[Math.floor(Math.random() * 10)]
+    props.color || colorsArray[Math.floor(Math.random() * 10)],
   )
   const [category, setCategory] = useState(props.category || '')
   const [title, setTitle] = useState(props.title || '')
   const [content, setContent] = useState(props.content || '')
-  const [selectedFile, setSelectedFile] = useState(
-    props.fileName ? { fileName: props.fileName } : null
-  )
+  const [selectedFile, setSelectedFile] = useState()
 
   const colorHanlder = color => {
     setColor(color.hex)
@@ -52,13 +49,11 @@ const NewNote = props => {
   const contentHandler = event => setContent(event.target.value)
 
   const fileHandler = event => {
-    const file = event.target.files[0]
+    const [file] = event.target.files
 
     if (file) {
       if (file.size <= 2 * 1024 * 1024) {
-        fileToBase64(file).then(encoded =>
-          setSelectedFile({ fileName: file.name, file: encoded })
-        )
+        setSelectedFile(file)
       } else {
         alert('File size exceeds 2MB')
         setSelectedFile(null)
@@ -71,20 +66,25 @@ const NewNote = props => {
 
   const saveNoteHandler = event => {
     event.preventDefault()
-    const note = {
-      _id: props._id,
-      color,
-      category: category.trim(),
-      title: title.trim(),
-      content,
-      ...selectedFile
+
+    const data = new FormData()
+
+    data.set('color', color)
+    data.set('category', category.trim())
+    data.set('title', title.trim())
+    data.set('content', content)
+
+    if (selectedFile) {
+      data.append('file', selectedFile, selectedFile.name)
     }
+
     if (update) {
-      updateNote(note)
+      data.set('_id', props._id)
+      updateNote(data)
       toggleEditMode()
       closeOptions()
     } else {
-      addNote(note)
+      addNote(data)
       setColor('#006B76')
       setCategory('')
       setTitle('')
@@ -159,8 +159,16 @@ const NewNote = props => {
                 <img
                   className={styles.upload}
                   src={uploadIcon}
-                  alt={selectedFile ? selectedFile.fileName : 'Upload a File'}
-                  title={selectedFile ? selectedFile.fileName : 'Upload a File'}
+                  alt={
+                    selectedFile
+                      ? selectedFile.name
+                      : props.fileName || 'Upload a File'
+                  }
+                  title={
+                    selectedFile
+                      ? selectedFile.name
+                      : props.fileName || 'Upload a File'
+                  }
                   onClick={() => {}}
                 />
               </label>
@@ -181,12 +189,12 @@ const NewNote = props => {
 }
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user,
 })
 
 const mapDispatchToProps = dispatch => ({
   addNote: note => dispatch(actions.addNote(note)),
-  updateNote: note => dispatch(actions.updateNote(note))
+  updateNote: note => dispatch(actions.updateNote(note)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewNote)

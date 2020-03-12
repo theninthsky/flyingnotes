@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { saveAs } from 'file-saver'
 
 import * as actions from '../../store/actions/index'
-import { base64ToFile } from '../../util/data_uri'
+import base64ToFile from '../../util/base64'
 import Options from './Options'
 import NewNote from './NewNote'
 import NoteSpinner from '../UI/NoteSpinner'
@@ -125,11 +125,11 @@ const Note = props => {
 }
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user,
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchFile: note => dispatch(actions.fetchFile(note))
+  fetchFile: note => dispatch(actions.fetchFile(note)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Note)

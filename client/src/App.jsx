@@ -16,7 +16,7 @@ const App = props => {
   const {
     user,
     user: { theme, loading, notesFetched },
-    onChangeTheme
+    onChangeTheme,
   } = props
 
   const history = useHistory()
@@ -57,11 +57,11 @@ const App = props => {
 }
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user,
 })
 
 const mapDispatchToProps = dispatch => ({
-  onChangeTheme: () => dispatch(actions.changeTheme())
+  onChangeTheme: () => dispatch(actions.changeTheme()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

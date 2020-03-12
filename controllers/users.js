@@ -13,7 +13,7 @@ exports.registerUser = (req, res) => {
       res.json({ name, notes })
     })
     .catch(({ message, errmsg }) => {
-      console.log('Error: ' + message || errmsg)
+      console.error('Error: ' + message || errmsg)
       res
         .status(409)
         .send('This email address is already registered, try login instead')

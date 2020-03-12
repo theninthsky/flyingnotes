@@ -17,16 +17,16 @@ let user = {
       category: 'Test Category 1',
       title: 'Test Title 1',
       content: 'A simple test 1.',
-      date: Date.now()
+      date: Date.now(),
     },
     {
       color: '#d35400',
       category: 'Test Category 2',
       title: 'Test Title 2',
       content: 'A simple test 2.',
-      date: Date.now()
-    }
-  ]
+      date: Date.now(),
+    },
+  ],
 }
 
 const newNote = {
@@ -34,20 +34,19 @@ const newNote = {
   category: 'New Category',
   title: 'New Title',
   content: 'New Note.',
-  fileName: 'Für Elise.mp3',
-  file: 'data:audio/mp3;base64,SUQzAwAACFATBVRBTEIAAAAZAJ6L'
+  // file: 'data:audio/mp3;base64,SUQzAwAACFATBVRBTEIAAAAZAJ6L',
 }
 const updatedNote = {
   color: '#27ae60',
   category: 'Updated Category',
   title: 'Updated Title',
   content: 'Updated note.',
-  fileName: 'Lacrymosa.mp3',
-  file: 'data:audio/mp3;base64,LFQzAwAACFJSBTOBTEI7g34KGR'
+  file: 'data:audio/mp3;base64,LFQzAwAACFJSBTOBTEI7g34KGR',
 }
 const file = {
   noteId: null,
-  dataUri: null
+  mimetype: null,
+  buffer: null,
 }
 
 let sessionId = ''
@@ -66,14 +65,14 @@ describe('Register', () => {
   it('should create and save a user', async () => {
     const {
       headers: { 'set-cookie': cookies },
-      data: { name: savedName, notes: savedNotes }
+      data: { name: savedName, notes: savedNotes },
     } = await axios.post(`${uri}/register`, user)
 
     expect(savedName).toBe(user.name)
 
     for (const note of savedNotes) {
       expect(note).toEqual(
-        expect.objectContaining(user.notes[savedNotes.indexOf(note)])
+        expect.objectContaining(user.notes[savedNotes.indexOf(note)]),
       )
     }
 
@@ -87,7 +86,7 @@ describe('Register', () => {
       await axios.post(`${uri}/register`, user)
     } catch ({ response }) {
       expect(response.data).toBe(
-        'This email address is already registered, try login instead'
+        'This email address is already registered, try login instead',
       )
     }
   })
@@ -97,14 +96,14 @@ describe('Login', () => {
   it('should login and return the name and notes', async () => {
     const {
       headers: { 'set-cookie': cookies },
-      data: { name, notes }
+      data: { name, notes },
     } = await axios.post(`${uri}/login`, user)
 
     expect(name).toBe(user.name)
 
     for (const note of notes) {
       expect(note).toEqual(
-        expect.objectContaining(user.notes[notes.indexOf(note)])
+        expect.objectContaining(user.notes[notes.indexOf(note)]),
       )
     }
 
@@ -117,7 +116,7 @@ describe('Login', () => {
     try {
       await axios.post(`${uri}/login`, {
         ...user,
-        password: 'incorrectpassword'
+        password: 'incorrectpassword',
       })
     } catch ({ response }) {
       expect(response.data).toBe('Incorrect email or password')
@@ -128,15 +127,15 @@ describe('Login', () => {
 describe('Update', () => {
   it('should update the name and password', async () => {
     const {
-      data: { name }
+      data: { name },
     } = await axios.put(
       `${uri}/register`,
       {
         name: 'Updated Test User',
         password: user.password,
-        newPassword: '987654321'
+        newPassword: '987654321',
       },
-      { headers: { cookie: sessionId } }
+      { headers: { cookie: sessionId } },
     )
 
     expect(name).toBe('Updated Test User')
@@ -149,7 +148,7 @@ describe('Update', () => {
     try {
       await axios.put(`${uri}/register`, {
         password: 'incorrectpassword',
-        newPassword: '198237645'
+        newPassword: '198237645',
       })
     } catch ({ response }) {
       expect(response.data).toBe('Incorrect password')
@@ -161,7 +160,7 @@ describe('Logout', () => {
   it('should remove the session id', async () => {
     const {
       headers: { 'set-cookie': cookies },
-      status
+      status,
     } = await axios.post(`${uri}/logout`)
 
     expect(cookies[0]).toMatch(/connect.sid=;/)
@@ -173,13 +172,13 @@ describe('Logout', () => {
 describe('Create Note', () => {
   it('should create and save a note', async () => {
     const {
-      data: { newNote: savedNewNote }
+      data: { newNote: savedNewNote },
     } = await axios.post(
       `${uri}/notes`,
-      { newNote },
+      { ...newNote },
       {
-        headers: { cookie: sessionId }
-      }
+        headers: { cookie: sessionId },
+      },
     )
 
     file.noteId = savedNewNote._id
@@ -195,9 +194,9 @@ describe('Create Note', () => {
 describe('Fetch Notes', () => {
   it('should return all notes', async () => {
     const {
-      data: { notes }
+      data: { notes },
     } = await axios.get(`${uri}/notes`, {
-      headers: { cookie: sessionId }
+      headers: { cookie: sessionId },
     })
 
     for (const note of notes) {
@@ -209,18 +208,16 @@ describe('Fetch Notes', () => {
 describe('Update Note', () => {
   it('should replace the recieved note with the existing one', async () => {
     const {
-      data: { updatedNote: savedUpdatedNote }
+      data: { updatedNote: savedUpdatedNote },
     } = await axios.put(
       `${uri}/notes`,
       {
-        updatedNote: {
-          _id: user.notes[user.notes.length - 1]._id,
-          ...updatedNote
-        }
+        _id: user.notes[user.notes.length - 1]._id,
+        ...updatedNote,
       },
       {
-        headers: { cookie: sessionId }
-      }
+        headers: { cookie: sessionId },
+      },
     )
 
     file.dataUri = updatedNote.file
@@ -236,7 +233,7 @@ describe('Delete Note', () => {
   it('should delete a note', async () => {
     const { status } = await axios.delete(`${uri}/notes`, {
       data: { noteId: user.notes[0]._id },
-      headers: { cookie: sessionId }
+      headers: { cookie: sessionId },
     })
 
     expect(status).toBe(200)
@@ -252,15 +249,15 @@ describe('Delete Note', () => {
 })
 
 /* File Routes */
-describe('Download File', () => {
-  it('should send the file', async () => {
-    const {
-      data: { file: dataUri }
-    } = await axios.get(`${uri}/${file.noteId}/file`)
+// describe('Download File', () => {
+//   it('should send the file', async () => {
+//     const {
+//       data: { base64 },
+//     } = await axios.get(`${uri}/${file.noteId}/file`)
 
-    expect(dataUri).toBe(file.dataUri)
-  })
-})
+//     expect(base64).toBe(newNote.file)
+//   })
+// })
 
 describe('Delete File', () => {
   it('should delete the file', async () => {
