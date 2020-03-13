@@ -82,7 +82,9 @@ exports.deleteNote = (req, res) => {
     .then(user => {
       if (user.notes.find(note => note._id == noteId)) {
         user.notes = user.notes.filter(note => note._id != noteId)
-        return user.save().then(() => res.sendStatus(200))
+        user.save().then(() => res.sendStatus(200))
+
+        return File.findOneAndDelete({ noteId }).then(() => {})
       }
       throw Error
     })
@@ -90,6 +92,4 @@ exports.deleteNote = (req, res) => {
       console.error('Error: ' + message || errmsg)
       res.sendStatus(404)
     })
-
-  File.findOneAndDelete({ noteId }).then(() => {})
 }

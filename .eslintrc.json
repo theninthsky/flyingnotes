@@ -13,5 +13,6 @@
   "parserOptions": {
     "ecmaVersion": 2018
   },
+  "ignorePatterns": ["src/client"],
   "rules": {}
 }

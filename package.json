@@ -33,6 +33,7 @@
   },
   "devDependencies": {
     "eslint": "^6.8.0",
+    "form-data": "^3.0.0",
     "jest": "^25.1.0",
     "mongodb-memory-server": "^6.3.2",
     "nodemon": "^2.0.2"
@@ -42,9 +43,6 @@
       "src/client/**"
     ]
   },
-  "eslintIgnore": [
-    "src/client"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/theninthsky/flying-notes.git"

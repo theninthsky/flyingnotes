@@ -74,6 +74,7 @@ const NewNote = props => {
       title: title.trim(),
       content,
     }
+
     if (update) {
       updateNote(note)
       toggleEditMode()

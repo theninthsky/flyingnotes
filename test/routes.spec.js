@@ -1,6 +1,9 @@
 /* E2E Tests */
 
+const { createReadStream } = require('fs')
+
 const axios = require('axios')
+const FormData = require('form-data')
 
 const { PORT = 5000, WATCH } = process.env
 const uri = `http://localhost:${PORT}`
@@ -35,11 +38,21 @@ const newNote = {
   title: 'New Title',
   content: 'New Note.',
 }
+const newFile = {
+  fileName: 'file1',
+  file: createReadStream('test/file1'),
+}
+
 const updatedNote = {
   color: '#27ae60',
   category: 'Updated Category',
   title: 'Updated Title',
   content: 'Updated note.',
+}
+
+const updatedFile = {
+  fileName: 'file2',
+  file: createReadStream('test/file2'),
 }
 
 let sessionId = ''
@@ -164,17 +177,25 @@ describe('Logout', () => {
 /* Notes Routes */
 describe('Create Note', () => {
   it('should create and save a note', async () => {
+    const { color, category, title, content } = newNote
+    const { fileName, file } = newFile
+
+    const form = new FormData()
+
+    form.append('color', color)
+    form.append('category', category)
+    form.append('title', title)
+    form.append('content', content)
+    form.append('file', file)
+
     const {
       data: { newNote: savedNewNote },
-    } = await axios.post(
-      `${uri}/notes`,
-      { ...newNote },
-      {
-        headers: { cookie: sessionId },
-      },
-    )
+    } = await axios.post(`${uri}/notes`, form, {
+      headers: { cookie: sessionId, ...form.getHeaders() },
+    })
 
     expect(savedNewNote).toEqual(expect.objectContaining(newNote))
+    expect(savedNewNote.fileName).toBe(fileName)
 
     user.notes.push(savedNewNote)
   })
@@ -191,25 +212,33 @@ describe('Fetch Notes', () => {
     for (const note of notes) {
       expect(note).toEqual(user.notes[notes.indexOf(note)])
     }
+
+    expect(notes.length).toBe(3)
   })
 })
 
 describe('Update Note', () => {
   it('should replace the recieved note with the existing one', async () => {
+    const { color, category, title, content } = updatedNote
+    const { fileName, file } = updatedFile
+
+    const form = new FormData()
+
+    form.append('_id', user.notes[user.notes.length - 1]._id)
+    form.append('color', color)
+    form.append('category', category)
+    form.append('title', title)
+    form.append('content', content)
+    form.append('file', file)
+
     const {
       data: { updatedNote: savedUpdatedNote },
-    } = await axios.put(
-      `${uri}/notes`,
-      {
-        _id: user.notes[user.notes.length - 1]._id,
-        ...updatedNote,
-      },
-      {
-        headers: { cookie: sessionId },
-      },
-    )
+    } = await axios.put(`${uri}/notes`, form, {
+      headers: { cookie: sessionId, ...form.getHeaders() },
+    })
 
     expect(savedUpdatedNote).toEqual(expect.objectContaining(updatedNote))
+    expect(savedUpdatedNote.fileName).toBe(fileName)
 
     user.notes[user.notes.length - 1] = savedUpdatedNote
   })
@@ -218,7 +247,7 @@ describe('Update Note', () => {
 describe('Delete Note', () => {
   it('should delete a note', async () => {
     const { status } = await axios.delete(`${uri}/notes`, {
-      data: { noteId: user.notes[0]._id },
+      data: { noteId: user.notes[1]._id },
       headers: { cookie: sessionId },
     })
 
@@ -227,10 +256,27 @@ describe('Delete Note', () => {
 
   it('should return a 404 status code for an invalid note id', async () => {
     try {
-      await axios.delete(`${uri}/notes`)
+      await axios.delete(`${uri}/notes`, {
+        data: { noteId: 'invalid' },
+        headers: { cookie: sessionId },
+      })
     } catch ({ response }) {
       expect(response.status).toBe(404)
     }
+  })
+})
+
+/* Files Routes */
+describe('Download', () => {
+  it('should send a file', async () => {
+    const {
+      data: { base64, mimetype },
+    } = await axios.get(`${uri}/${user.notes[2]._id}/file`, {
+      headers: { cookie: sessionId },
+    })
+
+    expect(base64).toMatch(/VGhpcy/)
+    expect(mimetype).toBe('application/octet-stream')
   })
 })
 
