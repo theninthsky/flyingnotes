@@ -269,14 +269,12 @@ describe('Delete Note', () => {
 /* Files Routes */
 describe('Download', () => {
   it('should send a file', async () => {
-    const {
-      data: { base64, mimetype },
-    } = await axios.get(`${uri}/${user.notes[2]._id}/file`, {
+    const { data } = await axios.get(`${uri}/${user.notes[2]._id}/file`, {
       headers: { cookie: sessionId },
+      responseType: 'blob',
     })
 
-    expect(base64).toMatch(/VGhpcy/)
-    expect(mimetype).toBe('application/octet-stream')
+    expect(data).toMatch('This is an another dummy text file')
   })
 })
 

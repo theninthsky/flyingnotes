@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { saveAs } from 'file-saver'
 
 import * as actions from '../../store/actions/index'
-import base64ToFile from '../../util/base64'
 import Options from './Options'
 import NewNote from './NewNote'
 import NoteSpinner from '../UI/NoteSpinner'
@@ -31,7 +29,12 @@ const Note = props => {
 
   const downloadFileHandler = () => {
     if (file) {
-      saveAs(base64ToFile(file), fileName)
+      const link = document.createElement('a')
+      link.href = window.URL.createObjectURL(new Blob([file]))
+      link.setAttribute('download', fileName)
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
     } else {
       fetchFile({ _id, color, category, title, content, date, fileName })
     }

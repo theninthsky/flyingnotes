@@ -16,7 +16,7 @@ You should create a `.env` file (https://www.npmjs.com/package/dotenv) at the ro
 
 `PORT` (optional, default: 5000)
 
-`CLIENT_PORT` - to prevets CORS issues during developement - (optional, default: 3000)
+`CLIENT_PORT` - to prevent CORS issues during developement - (optional, default: 3000)
 
 `HEROKUAPP_URL` - to prevent heroku app from sleeping [depends on dynos] - (optional)
 
