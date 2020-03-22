@@ -35,6 +35,7 @@ if (NODE_ENV != 'test') {
     .then(() => console.log('MongoDB is connected...'))
     .catch(err => console.log(err))
 } else {
+  // @ts-ignore
   import('mongodb-memory-server').then(({ MongoMemoryServer }) => {
     const mongoServer = new MongoMemoryServer()
 
