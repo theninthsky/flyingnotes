@@ -78,6 +78,8 @@ app.use((_, res, next) => {
 })
 
 if (NODE_ENV == 'test') {
+  process.on('exit', () => console.log(`Test server successfully terminated`))
+
   app.use('/kill', (_, res) => {
     res.sendStatus(200)
     process.exit()
@@ -96,7 +98,7 @@ app.post('/notes', notesController.createNote)
 app.put('/notes', notesController.updateNote)
 app.delete('/notes', notesController.deleteNote)
 
-/* File Routes */
+/* Files Routes */
 app.get('/:noteId/file', filesController.getFile)
 
 app.use((_, res) => res.sendFile(`${__dirname}/client/build/index.html`))

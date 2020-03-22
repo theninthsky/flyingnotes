@@ -14,13 +14,8 @@ describe('Notes Tests', () => notesTests())
 
 describe('Files Tests', () => filesTests())
 
-afterAll(async () => {
+afterAll(() => {
   if (!WATCH) {
-    try {
-      await axios(`${uri}/kill`)
-      console.log('Test server successfully terminated')
-    } catch ({ message }) {
-      console.error(message)
-    }
+    axios(`${uri}/kill`)
   }
 })
