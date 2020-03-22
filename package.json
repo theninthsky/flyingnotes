@@ -16,7 +16,7 @@
     "test": "npm run start:test & jest",
     "start:test": "NODE_ENV=test ts-node src/server",
     "test:watch": "WATCH=true jest --watch",
-    "deploy": "npm test && git push origin master & git push heroku master",
+    "deploy": "git push origin master & git push heroku master",
     "heroku-postbuild": "cd src/client && npm install && npm run build"
   },
   "author": "Almog Gabay",
