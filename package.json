@@ -13,10 +13,10 @@
     "app": "cd src/client && npm run build && cd .. && npm start",
     "lint": "tsc --noEmit && eslint '*/**/*.ts'",
     "pretest": "npm run lint",
-    "test": "npm run start:test & jest",
+    "test": "npm run start:test & sleep 4 && jest",
     "start:test": "NODE_ENV=test ts-node src/server",
-    "test:watch": "WATCH=true jest --watch",
-    "deploy": "git push origin master & git push heroku master",
+    "test:watch": "npm run start:test & sleep 4 && WATCH=true jest --watch",
+    "deploy": "npm test && git push origin master && git push heroku master",
     "heroku-postbuild": "cd src/client && npm install && npm run build"
   },
   "author": "Almog Gabay",
@@ -39,6 +39,7 @@
     "typescript": "^3.8.3"
   },
   "devDependencies": {
+    "@types/form-data": "^2.5.0",
     "@types/jest": "^25.1.4",
     "@typescript-eslint/eslint-plugin": "^2.24.0",
     "@typescript-eslint/parser": "^2.24.0",

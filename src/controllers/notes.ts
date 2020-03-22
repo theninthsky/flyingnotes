@@ -96,11 +96,13 @@ export const deleteNote = (req: Request, res: Response) => {
           user.save().then(() => res.sendStatus(200))
 
           File.findOneAndDelete({ noteId }).then(() => {})
+        } else {
+          res.sendStatus(404)
         }
       }
     })
     .catch(({ message, errmsg }) => {
       console.error(`Error: ${message || errmsg}`)
-      res.sendStatus(404)
+      res.redirect('/')
     })
 }
