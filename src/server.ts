@@ -1,12 +1,27 @@
+import cluster from 'cluster'
+import os from 'os'
 import http from 'http'
 
-import app from './app'
+const { NODE_ENV, PORT = 5000, HEROKUAPP_URL = '' } = process.env
 
-const { PORT = 5000, HEROKUAPP_URL = '' } = process.env
+if (cluster.isMaster && NODE_ENV == 'production') {
+  console.log(`Master is running...`)
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}...`)
-})
+  // eslint-disable-next-line
+  for (const _ of os.cpus()) {
+    cluster.fork()
+  }
 
-/* Keep Heroku App Awake */
-setInterval(() => http.get(HEROKUAPP_URL), 900000)
+  cluster.on('exit', worker => {
+    console.log(`Worker ${worker.process.pid} died`)
+    cluster.fork()
+  })
+
+  setInterval(() => http.get(HEROKUAPP_URL), 900000) // Keep Heroku app awake
+} else {
+  import('./app').then(({ default: app }) => {
+    app.listen(PORT, () => {
+      console.log(`[worker ${process.pid}] Listening on port ${PORT}...`)
+    })
+  })
+}

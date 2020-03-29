@@ -32,7 +32,7 @@ const mongooseOpts = {
 if (NODE_ENV != 'test') {
   mongoose
     .connect(MONGODB_URI, mongooseOpts)
-    .then(() => console.log('MongoDB is connected...'))
+    .then(() => console.log(`[worker ${process.pid}] MongoDB is connected...`))
     .catch(err => console.log(err))
 } else {
   // @ts-ignore
