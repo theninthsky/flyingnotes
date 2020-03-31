@@ -1,12 +1,10 @@
-import { Request, Response } from 'express'
-
 import User from '../models/User'
 import File from '../models/File'
 
-export const createNote = (req: Request, res: Response) => {
+export const createNote = (req, res) => {
   const { file } = req
 
-  User.findById(req.session!.userId)
+  User.findById(req.session.userId)
     .then(async user => {
       if (user) {
         user.notes.push({
@@ -34,8 +32,8 @@ export const createNote = (req: Request, res: Response) => {
     )
 }
 
-export const getNotes = (req: Request, res: Response) => {
-  User.findById(req.session!.userId)
+export const getNotes = (req, res) => {
+  User.findById(req.session.userId)
     .then(user => {
       if (user) {
         res.json({ notes: user.notes })
@@ -47,10 +45,10 @@ export const getNotes = (req: Request, res: Response) => {
     })
 }
 
-export const updateNote = (req: Request, res: Response) => {
+export const updateNote = (req, res) => {
   const { file } = req
 
-  User.findById(req.session!.userId)
+  User.findById(req.session.userId)
     .then(async user => {
       if (user) {
         user.notes = user.notes.map(note =>
@@ -85,10 +83,10 @@ export const updateNote = (req: Request, res: Response) => {
     )
 }
 
-export const deleteNote = (req: Request, res: Response) => {
+export const deleteNote = (req, res) => {
   const { noteId } = req.body
 
-  User.findById(req.session!.userId)
+  User.findById(req.session.userId)
     .then(user => {
       if (user) {
         if (user.notes.find(note => note._id == noteId)) {

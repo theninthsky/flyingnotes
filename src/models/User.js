@@ -1,13 +1,6 @@
 import mongoose from 'mongoose'
 
-import { NoteDocument, noteSchema } from './Note'
-
-type UserDocument = mongoose.Document & {
-  name: string
-  email: string
-  password: string
-  notes: NoteDocument[]
-}
+import { noteSchema } from './Note'
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -19,7 +12,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
     required: true,
     lowercase: true,
-    validate: (value: string) => value.includes('@'),
+    validate: value => value.includes('@'),
   },
   password: {
     type: String,
@@ -28,4 +21,4 @@ const userSchema = new mongoose.Schema({
   notes: [noteSchema],
 })
 
-export default mongoose.model<UserDocument>('User', userSchema)
+export default mongoose.model('User', userSchema)

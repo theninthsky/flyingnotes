@@ -1,8 +1,8 @@
-import axios from 'axios'
+const axios = require('axios')
 
-import { uri, user, session } from '../data'
+const { uri, user, session } = require('../data')
 
-export default () => {
+exports.userTests = () => {
   describe('Default Route', () => {
     it('should respond with an html file and a 200 status code', async () => {
       const { status, headers } = await axios.get(uri)

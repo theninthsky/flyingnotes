@@ -1,10 +1,12 @@
 import express from 'express'
 import session from 'express-session'
-import multer from 'multer'
 import mongoose from 'mongoose'
 import connectMongo from 'connect-mongo'
+import multer from 'multer'
 
 require('dotenv').config()
+
+import cors from './config/cors'
 
 import * as userController from './controllers/user'
 import * as notesController from './controllers/notes'
@@ -15,7 +17,6 @@ const {
   MONGODB_URI = 'mongodb://localhost/main',
   SESSION_SECRET = 'keyboard cat',
   SESSION_LIFETIME = 1000 * 3600 * 24 * 365,
-  CLIENT_PORT = 3000,
 } = process.env
 
 const MongoStore = connectMongo(session)
@@ -35,11 +36,10 @@ if (NODE_ENV != 'test') {
     .then(() => console.log(`[worker ${process.pid}] MongoDB is connected...`))
     .catch(err => console.log(err))
 } else {
-  // @ts-ignore
   import('mongodb-memory-server').then(({ MongoMemoryServer }) => {
     const mongoServer = new MongoMemoryServer()
 
-    mongoServer.getUri().then((mongoURI: string) => {
+    mongoServer.getUri().then(mongoURI => {
       mongoose
         .connect(mongoURI, mongooseOpts)
         .then(() => console.log('MongoDB Memory Server is connected...'))
@@ -50,7 +50,7 @@ if (NODE_ENV != 'test') {
 
 app.use(express.static(`${__dirname}/client/build`))
 app.use(express.json())
-app.use(multer({ limits: { fileSize: 1024 * 1024 * 2.5 } }).single('file'))
+app.use(multer({ limits: { fileSize: 1024 * 1024 * 2 } }).single('file'))
 
 app.use(
   session({
@@ -62,28 +62,17 @@ app.use(
   }),
 )
 
-app.use((_, res, next) => {
-  res.setHeader(
-    'Access-Control-Allow-Origin',
-    `http://localhost:${CLIENT_PORT}`,
-  )
-  res.setHeader('Access-Control-Allow-Credentials', 'true')
-  res.setHeader(
-    'Access-Control-Allow-Methods',
-    'GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS',
-  )
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+if (NODE_ENV != 'production') {
+  app.use(cors)
 
-  next()
-})
+  if (NODE_ENV == 'test') {
+    process.on('exit', () => console.log(`Test server successfully terminated`))
 
-if (NODE_ENV == 'test') {
-  process.on('exit', () => console.log(`Test server successfully terminated`))
-
-  app.use('/kill', (_, res) => {
-    res.sendStatus(200)
-    process.exit()
-  })
+    app.use('/kill', (_, res) => {
+      res.sendStatus(200)
+      process.exit()
+    })
+  }
 }
 
 /* User Routes */

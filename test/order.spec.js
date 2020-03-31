@@ -1,10 +1,10 @@
-import axios from 'axios'
+const axios = require('axios')
 
-import { uri } from './data'
+const { uri } = require('./data')
 
-import userTests from './suites/user'
-import notesTests from './suites/notes'
-import filesTests from './suites/files'
+const { userTests } = require('./suites/user')
+const { notesTests } = require('./suites/notes')
+const { filesTests } = require('./suites/files')
 
 const { WATCH } = process.env
 

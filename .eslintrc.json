@@ -5,22 +5,15 @@
     "node": true,
     "jest": true
   },
-  "parser": "@typescript-eslint/parser",
-  "extends": ["plugin:@typescript-eslint/recommended"],
+  "extends": "eslint:recommended",
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
   },
   "parserOptions": {
-    "ecmaVersion": 2018,
+    "ecmaVersion": 2020,
     "sourceType": "module"
   },
   "ignorePatterns": ["src/client"],
-  "rules": {
-    "@typescript-eslint/no-empty-function": "off",
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/no-non-null-assertion": "off",
-    "@typescript-eslint/member-delimiter-style": "off",
-    "@typescript-eslint/ban-ts-ignore": "off"
-  }
+  "rules": {}
 }

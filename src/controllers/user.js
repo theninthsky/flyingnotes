@@ -1,16 +1,15 @@
-import { Request, Response } from 'express'
 import bcrypt from 'bcryptjs'
 
 import User from '../models/User'
 
-export const registerUser = (req: Request, res: Response) => {
+export const registerUser = (req, res) => {
   const { name, email, password, notes = [] } = req.body
 
   new User({ name, email, password: bcrypt.hashSync(password), notes })
     .save()
     .then(async ({ _id, name, notes }) => {
       console.log(name + ' registered')
-      req.session!.userId = _id
+      req.session.userId = _id
       res.json({ name, notes })
     })
     .catch(({ message, errmsg }) => {
@@ -21,7 +20,7 @@ export const registerUser = (req: Request, res: Response) => {
     })
 }
 
-export const loginUser = (req: Request, res: Response) => {
+export const loginUser = (req, res) => {
   const { email, password } = req.body
 
   User.findOne({ email: email.toLowerCase() })
@@ -33,7 +32,7 @@ export const loginUser = (req: Request, res: Response) => {
           const match = await bcrypt.compare(password, hashedPassword)
 
           if (match) {
-            req.session!.userId = _id
+            req.session.userId = _id
             res.json({ name, notes })
           } else {
             res.status(404).send('Incorrect email or password')
@@ -50,10 +49,10 @@ export const loginUser = (req: Request, res: Response) => {
     )
 }
 
-export const updateUser = (req: Request, res: Response) => {
+export const updateUser = (req, res) => {
   const { name, password, newPassword } = req.body
 
-  User.findById(req.session!.userId)
+  User.findById(req.session.userId)
     .then(async user => {
       if (user) {
         try {
@@ -80,8 +79,8 @@ export const updateUser = (req: Request, res: Response) => {
     )
 }
 
-export const logoutUser = (req: Request, res: Response) => {
-  req.session!.destroy(() => {
+export const logoutUser = (req, res) => {
+  req.session.destroy(() => {
     res.clearCookie('connect.sid')
     res.sendStatus(200)
   })

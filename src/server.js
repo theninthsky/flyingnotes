@@ -12,7 +12,6 @@ const {
 if (cluster.isMaster && NODE_ENV == 'production') {
   console.log(`Master is running...`)
 
-  // eslint-disable-next-line
   for (let i = 0; i < workers; i++) {
     cluster.fork()
   }

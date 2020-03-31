@@ -1,8 +1,6 @@
-import { Request, Response } from 'express'
-
 import File from '../models/File'
 
-export const getFile = (req: Request, res: Response) => {
+export const getFile = (req, res) => {
   File.findOne({ noteId: req.params.noteId })
     .then(file => {
       if (file) {
