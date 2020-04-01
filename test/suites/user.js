@@ -60,7 +60,7 @@ exports.userTests = () => {
 
       expect(cookies[0]).toMatch(/Bearer=/)
 
-      token.bearer = cookies[0]
+      token.bearer = cookies[0].split(';')[0]
     })
 
     it('should not allow an incorrect email or password', async () => {
