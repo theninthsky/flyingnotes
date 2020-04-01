@@ -1,27 +1,21 @@
 import express from 'express'
-import session from 'express-session'
 import mongoose from 'mongoose'
-import connectMongo from 'connect-mongo'
 import multer from 'multer'
 
-require('dotenv').config()
-
-import cors from './config/cors'
+import cors from './middleware/cors'
+import validateToken from './middleware/jwt'
 
 import * as userController from './controllers/user'
 import * as notesController from './controllers/notes'
 import * as filesController from './controllers/files'
 
-const {
-  NODE_ENV,
-  MONGODB_URI = 'mongodb://localhost/main',
-  SESSION_SECRET = 'keyboard cat',
-  SESSION_LIFETIME = 1000 * 3600 * 24 * 365,
-} = process.env
-
-const MongoStore = connectMongo(session)
+const { NODE_ENV, MONGODB_URI = 'mongodb://localhost/main' } = process.env
 
 const app = express()
+
+app.use(express.static(`${__dirname}/client/build`))
+app.use(express.json())
+app.use(multer({ limits: { fileSize: 1024 * 1024 * 10 } }).single('file'))
 
 const mongooseOpts = {
   useNewUrlParser: true,
@@ -48,20 +42,6 @@ if (NODE_ENV != 'test') {
   })
 }
 
-app.use(express.static(`${__dirname}/client/build`))
-app.use(express.json())
-app.use(multer({ limits: { fileSize: 1024 * 1024 * 2 } }).single('file'))
-
-app.use(
-  session({
-    cookie: { maxAge: +SESSION_LIFETIME, sameSite: true },
-    secret: SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    store: new MongoStore({ mongooseConnection: mongoose.connection }),
-  }),
-)
-
 if (NODE_ENV != 'production') {
   app.use(cors)
 
@@ -74,6 +54,8 @@ if (NODE_ENV != 'production') {
     })
   }
 }
+
+app.use(validateToken)
 
 /* User Routes */
 app.post('/register', userController.registerUser)
@@ -90,6 +72,7 @@ app.delete('/notes', notesController.deleteNote)
 /* Files Routes */
 app.get('/:noteId/file', filesController.getFile)
 
+/* Default Route */
 app.use((_, res) => res.sendFile(`${__dirname}/client/build/index.html`))
 
 export default app

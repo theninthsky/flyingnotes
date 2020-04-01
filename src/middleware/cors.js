@@ -1,10 +1,5 @@
-const { CLIENT_PORT = 3000 } = process.env
-
-export default (_, res, next) => {
-  res.setHeader(
-    'Access-Control-Allow-Origin',
-    `http://localhost:${CLIENT_PORT}`,
-  )
+export default (req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*')
   res.setHeader('Access-Control-Allow-Credentials', 'true')
   res.setHeader(
     'Access-Control-Allow-Methods',

@@ -1,6 +1,6 @@
 const axios = require('axios')
 
-const { uri, user, session } = require('../data')
+const { uri, user, token } = require('../data')
 
 exports.userTests = () => {
   describe('Default Route', () => {
@@ -29,7 +29,7 @@ exports.userTests = () => {
 
       user.notes = savedNotes
 
-      expect(cookies[0]).toMatch(/connect.sid=s%/)
+      expect(cookies[0]).toMatch(/Bearer=/)
     })
 
     it('should not allow creating a duplicate user', async () => {
@@ -58,16 +58,16 @@ exports.userTests = () => {
         )
       }
 
-      expect(cookies[0]).toMatch(/connect.sid=s%/)
+      expect(cookies[0]).toMatch(/Bearer=/)
 
-      session.id = cookies[0]
+      token.bearer = cookies[0]
     })
 
     it('should not allow an incorrect email or password', async () => {
       try {
         await axios.post(`${uri}/login`, {
           ...user,
-          password: 'incorrectpassword',
+          password: 'incorrect_password',
         })
       } catch ({ response }) {
         expect(response.data).toBe('Incorrect email or password')
@@ -86,7 +86,7 @@ exports.userTests = () => {
           password: user.password,
           newPassword: '987654321',
         },
-        { headers: { cookie: session.id } },
+        { headers: { cookie: token.bearer } },
       )
 
       expect(name).toBe('Updated Test User')
@@ -103,7 +103,7 @@ exports.userTests = () => {
             password: 'incorrectpassword',
             newPassword: '198237645',
           },
-          { headers: { cookie: session.id } },
+          { headers: { cookie: token.bearer } },
         )
       } catch ({ response }) {
         expect(response.data).toBe('Incorrect password')
@@ -118,7 +118,7 @@ exports.userTests = () => {
         status,
       } = await axios.post(`${uri}/logout`)
 
-      expect(cookies[0]).toMatch(/connect.sid=;/)
+      expect(cookies[0]).toMatch(/Bearer=/)
       expect(status).toBe(200)
     })
   })

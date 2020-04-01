@@ -4,7 +4,7 @@ const { PORT = 5000 } = process.env
 
 exports.uri = `http://localhost:${PORT}`
 
-exports.session = { id: '' }
+exports.token = { bearer: '' }
 
 const randomUserName = ~~(Math.random() * 1000000)
 

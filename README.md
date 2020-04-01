@@ -12,11 +12,11 @@ You should create a `.env` file (https://www.npmjs.com/package/dotenv) at the ro
 
 `MONGODB_URI` (required)
 
-`SESSION_SECRET` (required)
+`ACCESS_TOKEN_SECRET` (required)
+
+`ACCESS_TOKEN_EXPIRES_IN` (optional, default: 1 year)
 
 `PORT` (optional, default: 5000)
-
-`CLIENT_PORT` - to prevent CORS issues during developement - (optional, default: 3000)
 
 `HEROKUAPP_URL` - to prevent heroku app from sleeping [depends on dynos] - (optional)
 

@@ -1,12 +1,12 @@
 const axios = require('axios')
 
-const { uri, session, user } = require('../data')
+const { uri, token, user } = require('../data')
 
 exports.filesTests = () => {
   describe('Download', () => {
     it('should send a file', async () => {
       const { data } = await axios.get(`${uri}/${user.notes[2]._id}/file`, {
-        headers: { cookie: session.id },
+        headers: { cookie: token.bearer },
         responseType: 'blob',
       })
 

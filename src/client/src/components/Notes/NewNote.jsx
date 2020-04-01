@@ -52,10 +52,10 @@ const NewNote = props => {
     const [file] = event.target.files
 
     if (file) {
-      if (file.size <= 2 * 1024 * 1024) {
+      if (file.size <= 1024 * 1024 * 10) {
         setSelectedFile(file)
       } else {
-        alert('File size exceeds 2MB')
+        alert('File size exceeds 10MB')
         setSelectedFile(null)
         document.querySelector('input[type="file"]').value = ''
       }

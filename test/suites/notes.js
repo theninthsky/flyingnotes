@@ -4,7 +4,7 @@ const FormData = require('form-data')
 
 const {
   uri,
-  session,
+  token,
   user,
   newNote,
   newFile,
@@ -29,7 +29,7 @@ exports.notesTests = () => {
       const {
         data: { newNote: savedNewNote },
       } = await axios.post(`${uri}/notes`, form, {
-        headers: { cookie: session.id, ...form.getHeaders() },
+        headers: { cookie: token.bearer, ...form.getHeaders() },
       })
 
       expect(savedNewNote).toEqual(expect.objectContaining(newNote))
@@ -44,7 +44,7 @@ exports.notesTests = () => {
       const {
         data: { notes },
       } = await axios.get(`${uri}/notes`, {
-        headers: { cookie: session.id },
+        headers: { cookie: token.bearer },
       })
 
       for (const note of notes) {
@@ -72,7 +72,7 @@ exports.notesTests = () => {
       const {
         data: { updatedNote: savedUpdatedNote },
       } = await axios.put(`${uri}/notes`, form, {
-        headers: { cookie: session.id, ...form.getHeaders() },
+        headers: { cookie: token.bearer, ...form.getHeaders() },
       })
 
       expect(savedUpdatedNote).toEqual(expect.objectContaining(updatedNote))
@@ -86,7 +86,7 @@ exports.notesTests = () => {
     it('should delete a note', async () => {
       const { status } = await axios.delete(`${uri}/notes`, {
         data: { noteId: user.notes[1]._id },
-        headers: { cookie: session.id },
+        headers: { cookie: token.bearer },
       })
 
       expect(status).toBe(200)
@@ -96,7 +96,7 @@ exports.notesTests = () => {
       try {
         await axios.delete(`${uri}/notes`, {
           data: { noteId: 'invalid' },
-          headers: { cookie: session.id },
+          headers: { cookie: token.bearer },
         })
       } catch ({ response }) {
         expect(response.status).toBe(404)

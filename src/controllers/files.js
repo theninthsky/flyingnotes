@@ -1,17 +1,19 @@
 import File from '../models/File'
 
 export const getFile = (req, res) => {
-  File.findOne({ noteId: req.params.noteId })
-    .then(file => {
-      if (file) {
-        const { mimetype, buffer } = file
+  if (req.userId) {
+    File.findOne({ noteId: req.params.noteId })
+      .then(file => {
+        if (file) {
+          const { mimetype, buffer } = file
 
-        res.setHeader('Content-Type', mimetype)
-        res.setHeader('Content-Disposition', 'attachment')
-        res.send(buffer)
-      }
-    })
-    .catch(({ message, errmsg }) =>
-      console.error(`Error: ${message || errmsg}`),
-    )
+          res.setHeader('Content-Type', mimetype)
+          res.setHeader('Content-Disposition', 'attachment')
+          res.send(buffer)
+        }
+      })
+      .catch(({ message, errmsg }) =>
+        console.error(`Error: ${message || errmsg}`),
+      )
+  }
 }

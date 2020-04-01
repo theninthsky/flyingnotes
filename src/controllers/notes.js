@@ -1,10 +1,23 @@
 import User from '../models/User'
 import File from '../models/File'
 
+export const getNotes = (req, res) => {
+  User.findById(req.userId)
+    .then(user => {
+      if (user) {
+        res.json({ notes: user.notes })
+      }
+    })
+    .catch(() => {
+      console.error('Error: Session expired')
+      res.status(401).send('Not authenticated')
+    })
+}
+
 export const createNote = (req, res) => {
   const { file } = req
 
-  User.findById(req.session.userId)
+  User.findById(req.userId)
     .then(async user => {
       if (user) {
         user.notes.push({
@@ -32,23 +45,10 @@ export const createNote = (req, res) => {
     )
 }
 
-export const getNotes = (req, res) => {
-  User.findById(req.session.userId)
-    .then(user => {
-      if (user) {
-        res.json({ notes: user.notes })
-      }
-    })
-    .catch(() => {
-      console.error('Error: Session expired')
-      res.status(401).send('Not authenticated')
-    })
-}
-
 export const updateNote = (req, res) => {
   const { file } = req
 
-  User.findById(req.session.userId)
+  User.findById(req.userId)
     .then(async user => {
       if (user) {
         user.notes = user.notes.map(note =>
@@ -86,7 +86,7 @@ export const updateNote = (req, res) => {
 export const deleteNote = (req, res) => {
   const { noteId } = req.body
 
-  User.findById(req.session.userId)
+  User.findById(req.userId)
     .then(user => {
       if (user) {
         if (user.notes.find(note => note._id == noteId)) {
