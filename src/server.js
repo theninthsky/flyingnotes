@@ -2,6 +2,8 @@ import os from 'os'
 import cluster from 'cluster'
 import http from 'http'
 
+import app from './app'
+
 const {
   NODE_ENV,
   WEB_CONCURRENCY: workers = os.cpus().length, // set by Heroku
@@ -23,9 +25,7 @@ if (cluster.isMaster && NODE_ENV == 'production') {
 
   setInterval(() => http.get(HEROKUAPP_URL), 900000) // keep Heroku app awake
 } else {
-  import('./app').then(({ default: app }) => {
-    app.listen(PORT, () => {
-      console.log(`[worker ${process.pid}] Listening on port ${PORT}...`)
-    })
+  app.listen(PORT, () => {
+    console.log(`[worker ${process.pid}] Listening on port ${PORT}...`)
   })
 }
