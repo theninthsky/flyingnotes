@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "an application for taking notes.",
   "engines": {
-    "node": "13.12.0"
+    "node": "13.11.0"
   },
   "type": "module",
   "main": "src/server.js",
