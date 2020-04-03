@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-export const noteSchema = new mongoose.Schema({
+export default new mongoose.Schema({
   color: String,
   category: String,
   title: String,

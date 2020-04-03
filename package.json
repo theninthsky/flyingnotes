@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "description": "an application for taking notes.",
   "engines": {
-    "node": "13.7.0"
+    "node": "13.12.0"
   },
+  "type": "module",
   "main": "src/server.js",
   "scripts": {
-    "start": "node -r esm -r dotenv/config src/server",
-    "dev": "nodemon -r esm -r dotenv/config src/server",
+    "start": "node -r dotenv/config src/server",
+    "dev": "nodemon -r dotenv/config src/server",
     "client": "cd src/client && npm start",
     "app": "cd src/client && npm run build && cd .. && npm start",
     "lint": "eslint .",
@@ -16,7 +17,7 @@
     "test": "npm run start:test & sleep 1 && jest",
     "start:test": "NODE_ENV=test npm run start",
     "test:watch": "npm run start:test & sleep 1 && WATCH=true jest --watch",
-    "deploy": "npm test && git push origin master && git push heroku master",
+    "deploy": "npm run lint && git push origin master && git push heroku master",
     "heroku-postbuild": "cd src/client && npm install && npm run build"
   },
   "author": "Almog Gabay",
@@ -25,17 +26,17 @@
     "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
     "dotenv": "^8.2.0",
-    "esm": "^3.2.25",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.7",
     "multer": "^1.4.2"
   },
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
     "eslint": "^6.8.0",
     "form-data": "^3.0.0",
-    "jest": "^25.2.4",
-    "mongodb-memory-server": "^6.5.0",
+    "jest": "^25.2.6",
+    "mongodb-memory-server": "^6.5.1",
     "nodemon": "^2.0.2"
   },
   "repository": {

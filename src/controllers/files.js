@@ -1,4 +1,4 @@
-import File from '../models/File'
+import File from '../models/File.js'
 
 export const getFile = (req, res) => {
   if (req.userId) {

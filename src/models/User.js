@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-import { noteSchema } from './Note'
+import noteSchema from './Note.js'
 
 const userSchema = new mongoose.Schema({
   name: {

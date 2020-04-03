@@ -1,17 +1,20 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import multer from 'multer'
+import { dirname } from 'path'
+import { fileURLToPath } from 'url'
 
-import cors from './middleware/cors'
-import validateToken from './middleware/jwt'
+import cors from './middleware/cors.js'
+import validateToken from './middleware/jwt.js'
 
-import * as userController from './controllers/user'
-import * as notesController from './controllers/notes'
-import * as filesController from './controllers/files'
+import * as userController from './controllers/user.js'
+import * as notesController from './controllers/notes.js'
+import * as filesController from './controllers/files.js'
 
 const { NODE_ENV, MONGODB_URI = 'mongodb://localhost/main' } = process.env
 
 const app = express()
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 app.use(express.static(`${__dirname}/client/build`))
 app.use(express.json())
@@ -28,16 +31,16 @@ if (NODE_ENV != 'test') {
   mongoose
     .connect(MONGODB_URI, mongooseOpts)
     .then(() => console.log(`[worker ${process.pid}] MongoDB is connected...`))
-    .catch(err => console.log(err))
+    .catch(err => console.error(err))
 } else {
-  import('mongodb-memory-server').then(({ MongoMemoryServer }) => {
+  import('mongodb-memory-server').then(({ default: { MongoMemoryServer } }) => {
     const mongoServer = new MongoMemoryServer()
 
     mongoServer.getUri().then(mongoURI => {
       mongoose
         .connect(mongoURI, mongooseOpts)
         .then(() => console.log('MongoDB Memory Server is connected...'))
-        .catch(err => console.log(err))
+        .catch(err => console.error(err))
     })
   })
 }
