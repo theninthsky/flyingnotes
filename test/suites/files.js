@@ -1,8 +1,8 @@
-const axios = require('axios')
+import axios from 'axios'
 
-const { uri, token, user } = require('../data')
+import { uri, token, user } from '../data'
 
-exports.filesTests = () => {
+export default () => {
   describe('Download', () => {
     it('should send a file', async () => {
       const { data } = await axios.get(`${uri}/${user.notes[2]._id}/file`, {

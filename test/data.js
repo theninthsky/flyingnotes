@@ -1,14 +1,14 @@
-const { createReadStream } = require('fs')
+import { createReadStream } from 'fs'
 
 const { PORT = 5000 } = process.env
 
-exports.uri = `http://localhost:${PORT}`
+export const uri = `http://localhost:${PORT}`
 
-exports.token = { bearer: '' }
+export const token = { bearer: '' }
 
 const randomUserName = ~~(Math.random() * 1000000)
 
-exports.user = {
+export const user = {
   name: `Test User No. ${randomUserName}`,
   email: `${randomUserName}@test.com`,
   password: '123456789',
@@ -30,25 +30,25 @@ exports.user = {
   ],
 }
 
-exports.newNote = {
+export const newNote = {
   color: '#f39c12',
   category: 'New Category',
   title: 'New Title',
   content: 'New Note.',
 }
-exports.newFile = {
+export const newFile = {
   fileName: 'file1',
   file: createReadStream('test/assets/file1'),
 }
 
-exports.updatedNote = {
+export const updatedNote = {
   color: '#27ae60',
   category: 'Updated Category',
   title: 'Updated Title',
   content: 'Updated note.',
 }
 
-exports.updatedFile = {
+export const updatedFile = {
   fileName: 'file2',
   file: createReadStream('test/assets/file2'),
 }

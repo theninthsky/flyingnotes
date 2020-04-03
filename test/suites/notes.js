@@ -1,8 +1,8 @@
-const axios = require('axios')
+import axios from 'axios'
 
-const FormData = require('form-data')
+import FormData from 'form-data'
 
-const {
+import {
   uri,
   token,
   user,
@@ -10,9 +10,9 @@ const {
   newFile,
   updatedNote,
   updatedFile,
-} = require('../data')
+} from '../data'
 
-exports.notesTests = () => {
+export default () => {
   describe('Create Note', () => {
     it('should create and save a note', async () => {
       const { color, category, title, content } = newNote
