@@ -6,8 +6,8 @@ import * as actions from '../../store/actions/index'
 import styles from './Auth.module.scss'
 
 const Auth = props => {
-  const { theme, errorMessage } = props.user
-  const { onFormSubmit, clearError } = props
+  const { theme, errorMessage } = props.app
+  const { onFormSubmit } = props
 
   const [action, setAction] = useState('Login')
   const [name, setName] = useState(props.user.name || '')
@@ -26,7 +26,6 @@ const Auth = props => {
     setAction(event.target.innerHTML)
     setName('')
     setPassword('')
-    clearError()
   }
 
   const nameHanlder = event => setName(event.target.value)
@@ -38,7 +37,6 @@ const Auth = props => {
   const submitFormHandler = async event => {
     event.preventDefault()
     onFormSubmit({ name: name.trim(), email, password }, action.toLowerCase())
-    clearError()
   }
 
   return (
@@ -98,12 +96,13 @@ const Auth = props => {
 }
 
 const mapStateToProps = state => ({
-  user: state.user
+  app: state.app,
+  user: state.user,
 })
 
 const mapDispatchToProps = dispatch => ({
-  onFormSubmit: (credentials, action) => dispatch(actions[action](credentials)),
-  clearError: () => dispatch(actions.clearError())
+  onFormSubmit: (credentials, action) =>
+    dispatch(actions[action.toLowerCase()](credentials)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Auth)

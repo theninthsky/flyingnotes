@@ -31,7 +31,7 @@ export const createNote = (req, res) => {
           const { mimetype, buffer } = file
 
           await new File({
-            noteId: notes[notes.length - 1]._id,
+            noteID: notes[notes.length - 1]._id,
             mimetype,
             buffer,
           }).save()
@@ -66,7 +66,7 @@ export const updateNote = (req, res) => {
           const { mimetype, buffer } = file
 
           await File.findOneAndUpdate(
-            { noteId: req.body._id },
+            { noteID: req.body._id },
             { mimetype, buffer },
           ).then(file => {
             if (!file) {
@@ -84,16 +84,16 @@ export const updateNote = (req, res) => {
 }
 
 export const deleteNote = (req, res) => {
-  const { noteId } = req.body
+  const { noteID } = req.body
 
   User.findById(req.userId)
     .then(user => {
       if (user) {
-        if (user.notes.find(note => note._id == noteId)) {
-          user.notes = user.notes.filter(note => note._id != noteId)
+        if (user.notes.find(note => note._id == noteID)) {
+          user.notes = user.notes.filter(note => note._id != noteID)
           user.save().then(() => res.sendStatus(200))
 
-          File.findOneAndDelete({ noteId }).then(() => {})
+          File.findOneAndDelete({ noteID }).then(() => {})
         } else {
           res.sendStatus(404)
         }

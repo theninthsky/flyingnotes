@@ -15,7 +15,7 @@ import images from './util/images'
 const App = props => {
   const {
     user,
-    user: { theme, loading, notesFetched },
+    app: { theme, loading, notesFetched },
     onChangeTheme,
   } = props
 
@@ -57,11 +57,12 @@ const App = props => {
 }
 
 const mapStateToProps = state => ({
+  app: state.app,
   user: state.user,
 })
 
 const mapDispatchToProps = dispatch => ({
-  onChangeTheme: () => dispatch(actions.changeTheme()),
+  onChangeTheme: () => dispatch(actions.requestChangeTheme()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

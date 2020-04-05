@@ -2,7 +2,7 @@ import File from '../models/File.js'
 
 export const getFile = (req, res) => {
   if (req.userId) {
-    File.findOne({ noteId: req.params.noteId })
+    File.findOne({ noteID: req.params.noteID })
       .then(file => {
         if (file) {
           const { mimetype, buffer } = file

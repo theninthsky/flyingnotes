@@ -30,7 +30,7 @@ const mongooseOpts = {
 if (NODE_ENV != 'test') {
   mongoose
     .connect(MONGODB_URI, mongooseOpts)
-    .then(() => console.log(`[worker ${process.pid}] MongoDB is connected...`))
+    .then(() => console.log(`[Worker ${process.pid}] MongoDB is connected...`))
     .catch(err => console.error(err))
 } else {
   import('mongodb-memory-server').then(({ default: { MongoMemoryServer } }) => {
@@ -73,7 +73,7 @@ app.put('/notes', notesController.updateNote)
 app.delete('/notes', notesController.deleteNote)
 
 /* Files Routes */
-app.get('/:noteId/file', filesController.getFile)
+app.get('/:noteID/file', filesController.getFile)
 
 /* Default Route */
 app.use((_, res) => res.sendFile(`${__dirname}/client/build/index.html`))

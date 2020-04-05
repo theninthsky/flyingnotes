@@ -13,7 +13,7 @@ import downloadIcon from '../../assets/images/download.svg'
 
 const Note = props => {
   const { _id, color, category, title, content, date, fileName, file } = props
-  const { theme, fetchingFile, updatingNote, deletingNote } = props.user
+  const { theme, fetchingFile, updatingNote, deletingNote } = props.app
   const { fetchFile } = props
 
   const [showOptions, setShowOptions] = useState(false)
@@ -128,7 +128,7 @@ const Note = props => {
 }
 
 const mapStateToProps = state => ({
-  user: state.user,
+  app: state.app,
 })
 
 const mapDispatchToProps = dispatch => ({

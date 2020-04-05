@@ -1,101 +1,21 @@
-import { batch } from 'react-redux'
-import axios from 'axios'
-
 import * as actionTypes from './actionTypes'
 
-const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
-
-axios.defaults.withCredentials = true
-
-export const register = credentials => {
-  return async dispatch => {
-    dispatch({ type: actionTypes.LOADING, loading: true })
-    try {
-      const {
-        data: { name, notes }
-      } = await axios.post(`${REACT_APP_SERVER_URL}/register`, {
-        ...credentials,
-        notes: localStorage.notes
-          ? JSON.parse(localStorage.notes).map(note => ({ ...note, _id: null })) // _id is removed to prevent ObjectId errors on server side
-          : []
-      })
-      localStorage.clear()
-      localStorage.setItem('name', name)
-      batch(() => {
-        dispatch({ type: actionTypes.REGISTER, name })
-        dispatch({ type: actionTypes.SET_NOTES, notes })
-      })
-    } catch ({ response: { data } }) {
-      dispatch({ type: actionTypes.ERROR, errorMessage: data })
-    }
-    dispatch({ type: actionTypes.LOADING, loading: false })
-  }
-}
-
-export const login = credentials => {
-  return async dispatch => {
-    dispatch({ type: actionTypes.LOADING, loading: true })
-    try {
-      const {
-        data: { name, notes }
-      } = await axios.post(`${REACT_APP_SERVER_URL}/login`, credentials)
-      localStorage.setItem('name', name)
-      batch(() => {
-        dispatch({ type: actionTypes.LOGIN, name })
-        dispatch({ type: actionTypes.SET_NOTES, notes })
-      })
-    } catch ({ response: { data } }) {
-      dispatch({ type: actionTypes.ERROR, errorMessage: data })
-    }
-    dispatch({ type: actionTypes.LOADING, loading: false })
-  }
-}
-
-export const update = credentials => {
-  return async dispatch => {
-    dispatch({ type: actionTypes.LOADING, loading: true })
-    try {
-      const {
-        data: { name }
-      } = await axios.put(`${REACT_APP_SERVER_URL}/register`, credentials)
-      localStorage.setItem('name', name)
-      dispatch({ type: actionTypes.UPDATE_USER, name })
-    } catch ({ response: { data } }) {
-      dispatch({ type: actionTypes.ERROR, errorMessage: data })
-    }
-    dispatch({ type: actionTypes.LOADING, loading: false })
-  }
-}
-
-export const logout = () => {
-  return async dispatch => {
-    dispatch({ type: actionTypes.LOADING, loading: true })
-    try {
-      const { status } = await axios.post(`${REACT_APP_SERVER_URL}/logout`)
-      if (status === 200) {
-        localStorage.removeItem('name')
-        batch(() => {
-          dispatch({
-            type: actionTypes.SET_NOTES,
-            notes: JSON.parse(localStorage.notes || '[]')
-          })
-          dispatch({ type: actionTypes.LOGOUT })
-        })
-      }
-    } catch (err) {
-      dispatch({ type: actionTypes.ERROR, errorMessage: err })
-    }
-    dispatch({ type: actionTypes.LOADING, loading: false })
-  }
-}
-
-export const changeTheme = () => {
-  const theme = localStorage.theme === 'light' ? 'dark' : 'light'
-  localStorage.setItem('theme', theme)
-  return { type: actionTypes.CHANGE_THEME, theme }
-}
-
-export const clearError = () => ({
-  type: actionTypes.ERROR,
-  errorMessage: false
+export const register = credentials => ({
+  type: actionTypes.REGISTER,
+  credentials,
 })
+
+export const login = credentials => ({
+  type: actionTypes.LOGIN,
+  credentials,
+})
+
+export const update = credentials => ({
+  type: actionTypes.UPDATE_USER,
+  credentials,
+})
+
+export const setName = name => ({ type: actionTypes.SET_NAME, name })
+
+export const requestLogout = () => ({ type: actionTypes.REQUEST_LOGOUT })
+export const logout = () => ({ type: actionTypes.LOGOUT })

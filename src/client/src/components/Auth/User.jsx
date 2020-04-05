@@ -8,9 +8,9 @@ import styles from './User.module.scss'
 import userLogo from '../../assets/images/user-astronaut.svg'
 
 const User = props => {
-  const { theme, errorMessage } = props.user
+  const { theme, errorMessage } = props.app
   const { notes } = props
-  const { onFormSubmit, onLogout, clearError } = props
+  const { onFormSubmit, onLogout } = props
 
   const [name, setName] = useState(props.user.name)
   const [password, setPassword] = useState('')
@@ -39,7 +39,6 @@ const User = props => {
   const submitFormHandler = async event => {
     event.preventDefault()
     onFormSubmit({ name: name.trim(), password, newPassword })
-    clearError()
   }
 
   return (
@@ -118,14 +117,14 @@ const User = props => {
 }
 
 const mapStateToProps = state => ({
+  app: state.app,
   user: state.user,
-  notes: state.notes
+  notes: state.notes,
 })
 
 const mapDispatchToProps = dispatch => ({
   onFormSubmit: credentials => dispatch(actions.update(credentials)),
-  onLogout: () => dispatch(actions.logout()),
-  clearError: () => dispatch(actions.clearError())
+  onLogout: () => dispatch(actions.requestLogout()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)

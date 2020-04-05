@@ -24,7 +24,7 @@ const colorsArray = [
 
 const NewNote = props => {
   const { update, toggleEditMode, closeOptions } = props
-  const { name, theme, addingNote } = props.user
+  const { theme, addingNote } = props.app
   const { addNote, updateNote } = props
 
   const [showColorPicker, setShowColorPicker] = useState(false)
@@ -122,7 +122,9 @@ const NewNote = props => {
       className={`${styles.note} ${theme === 'dark' ? styles.noteDark : ''}`}
     >
       <form
-        onSubmit={name ? saveNoteOnCloudHandler : saveNoteLocallyHandler}
+        onSubmit={
+          props.user.name ? saveNoteOnCloudHandler : saveNoteLocallyHandler
+        }
         autoComplete="off"
       >
         <img
@@ -216,12 +218,13 @@ const NewNote = props => {
 }
 
 const mapStateToProps = state => ({
+  app: state.app,
   user: state.user,
 })
 
 const mapDispatchToProps = dispatch => ({
-  addNote: note => dispatch(actions.addNote(note)),
-  updateNote: note => dispatch(actions.updateNote(note)),
+  addNote: note => dispatch(actions.requestAddNote(note)),
+  updateNote: note => dispatch(actions.requestUpdateNote(note)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewNote)

@@ -5,7 +5,7 @@ html {
 body {
   margin: 0;
   color: rgb(80, 80, 80);
-  animation: showApp 1s;
+  animation: showApp 0.5s;
 
   @keyframes showApp {
     from {

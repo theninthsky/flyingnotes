@@ -8,9 +8,9 @@ import styles from './Notes.module.scss'
 
 const Notes = props => {
   const {
-    user: { theme, loading, notesFetched, localNotesSet },
+    app: { theme, loading, notesFetched, localNotesSet },
     notes,
-    fetchNotes
+    fetchNotes,
   } = props
 
   const [categoryFilter, setCategoryFilter] = useState('')
@@ -31,10 +31,10 @@ const Notes = props => {
     () =>
       [...notes]
         .filter(({ category }) =>
-          !categoryFilter ? true : category === categoryFilter
+          !categoryFilter ? true : category === categoryFilter,
         )
         .filter(({ title, content }) =>
-          `${title} ${content}`.toLowerCase().includes(searchFilter)
+          `${title} ${content}`.toLowerCase().includes(searchFilter),
         )
         .sort((a, b) => b.date - a.date)
         .map(note => (
@@ -50,7 +50,7 @@ const Notes = props => {
             file={note.file}
           />
         )),
-    [notes, categoryFilter, searchFilter]
+    [notes, categoryFilter, searchFilter],
   )
 
   return (
@@ -77,7 +77,7 @@ const Notes = props => {
                 .filter(
                   ({ category }, ind, notes) =>
                     category &&
-                    category !== (notes[ind + 1] && notes[ind + 1].category)
+                    category !== (notes[ind + 1] && notes[ind + 1].category),
                 )
                 .map(({ category, _id }) => (
                   <option key={_id}>{category}</option>
@@ -110,12 +110,12 @@ const Notes = props => {
 }
 
 const mapStateToProps = state => ({
-  user: state.user,
-  notes: state.notes
+  app: state.app,
+  notes: state.notes,
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchNotes: () => dispatch(actions.fetchNotes())
+  fetchNotes: () => dispatch(actions.fetchNotes()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Notes)

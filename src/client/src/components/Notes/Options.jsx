@@ -58,7 +58,7 @@ const Options = props => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  deleteNote: noteId => dispatch(actions.deleteNote(noteId))
+  deleteNote: noteID => dispatch(actions.requestDeleteNote(noteID)),
 })
 
 export default connect(null, mapDispatchToProps)(Options)

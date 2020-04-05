@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 
 const fileSchema = new mongoose.Schema({
-  noteId: mongoose.Schema.Types.ObjectId,
+  noteID: mongoose.Schema.Types.ObjectId,
   mimetype: String,
   buffer: Buffer,
 })
