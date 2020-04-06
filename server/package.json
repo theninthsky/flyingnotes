@@ -1,0 +1,46 @@
+{
+  "name": "flying-notes-server",
+  "version": "1.0.0",
+  "description": "flying note's server",
+  "engines": {
+    "node": "13.11.0"
+  },
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node -r dotenv/config src/server",
+    "dev": "nodemon -r dotenv/config src/server",
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "npm run start:test & sleep 1 && jest",
+    "start:test": "NODE_ENV=test npm run start",
+    "test:watch": "npm run start:test & sleep 1 && WATCH=true jest --watch"
+  },
+  "author": "Almog Gabay",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.7",
+    "multer": "^1.4.2"
+  },
+  "devDependencies": {
+    "axios": "^0.19.2",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.8.0",
+    "form-data": "^3.0.0",
+    "jest": "^25.2.7",
+    "mongodb-memory-server": "^6.5.2",
+    "nodemon": "^2.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theninthsky/flying-notes.git"
+  },
+  "bugs": {
+    "url": "https://github.com/theninthsky/flying-notes/issues"
+  },
+  "homepage": "https://github.com/theninthsky/flying-notes#readme"
+}

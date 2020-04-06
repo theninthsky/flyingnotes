@@ -1,7 +1,7 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import multer from 'multer'
-import { dirname } from 'path'
+import { dirname, join } from 'path'
 import { fileURLToPath } from 'url'
 
 import cors from './middleware/cors.js'
@@ -16,7 +16,7 @@ const { NODE_ENV, MONGODB_URI = 'mongodb://localhost/main' } = process.env
 const app = express()
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
-app.use(express.static(`${__dirname}/client/build`))
+app.use(express.static(join(__dirname, '..', '..', 'client', 'build')))
 app.use(express.json())
 app.use(multer({ limits: { fileSize: 1024 * 1024 * 10 } }).single('file'))
 
@@ -76,6 +76,8 @@ app.delete('/notes', notesController.deleteNote)
 app.get('/:noteID/file', filesController.getFile)
 
 /* Default Route */
-app.use((_, res) => res.sendFile(`${__dirname}/client/build/index.html`))
+app.use((_, res) =>
+  res.sendFile(join(__dirname, '..', '..', 'client', 'build', 'index.html')),
+)
 
 export default app

@@ -1,3 +1,11 @@
+# Flying Notes React Client
+
+## Environment Variables
+
+A `.env` file (https://www.npmjs.com/package/dotenv) should be placed at the root directory which will specify the following variables:
+
+`REACT_APP_SERVER_URL` (required, default: http://localhost:5000)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
