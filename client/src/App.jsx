@@ -14,8 +14,8 @@ import images from './util/images'
 
 const App = props => {
   const {
-    user,
     app: { theme, loading, notesFetched },
+    user,
     onChangeTheme,
   } = props
 
@@ -41,7 +41,7 @@ const App = props => {
 
   return (
     <>
-      <NavigationBar user={user} changeTheme={onChangeTheme} />
+      <NavigationBar theme={theme} user={user} changeTheme={onChangeTheme} />
 
       {loading ? (
         <Spinner />

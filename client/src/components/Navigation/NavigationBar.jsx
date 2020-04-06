@@ -9,7 +9,7 @@ import darkThemeIcon from '../../assets/images/theme-dark.svg'
 import userIcon from '../../assets/images/user-astronaut.svg'
 
 const NavigationBar = props => {
-  const { name, theme } = props.user
+  const { theme, user } = props
 
   const [showCookiesMessage, setShowCookiesMessage] = useState(true)
 
@@ -43,13 +43,13 @@ const NavigationBar = props => {
           Notes
         </NavLink>
 
-        {name ? (
+        {user.name ? (
           <NavLink
             className={`${styles.auth} ${
               theme === 'dark' ? styles.authDark : ''
             }`}
             activeClassName={styles.active}
-            title={`Logged in as ${name}`}
+            title={`Logged in as ${user.name}`}
             to={'/account'}
           >
             <img
@@ -57,7 +57,7 @@ const NavigationBar = props => {
                 theme === 'dark' ? styles.userDark : ''
               }`}
               src={userIcon}
-              alt={name}
+              alt={user.name}
             />
           </NavLink>
         ) : (
@@ -74,7 +74,7 @@ const NavigationBar = props => {
         )}
       </nav>
 
-      {showCookiesMessage && !name ? (
+      {showCookiesMessage && !user.name ? (
         <CookiesMessage theme={theme} toggle={toggleCookiesMessageHandler} />
       ) : null}
     </>
