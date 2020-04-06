@@ -4,7 +4,7 @@ A MERN stack web application for taking notes.
 
 The app is deployed here: http://flyingnotes.herokuapp.com/
 
-![Notes](/images/notes.png)
+![Notes](notes.png)
 
 ## Available Scripts
 
