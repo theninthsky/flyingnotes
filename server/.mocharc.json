@@ -1,12 +1,9 @@
 {
   "spec": "test/**/*.spec.js",
   "file": [
-    "test/agent.js",
     "test/routes/user.spec.js",
     "test/routes/notes.spec.js",
     "test/routes/files.spec.js"
   ],
-  "recursive": true,
-  "delay": true,
   "exit": true
 }

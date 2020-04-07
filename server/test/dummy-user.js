@@ -28,7 +28,7 @@ export const newNote = {
 }
 export const newFile = {
   fileName: 'hello',
-  file: Buffer.from('Hello'),
+  buffer: Buffer.from('Hello'),
 }
 
 export const updatedNote = {
@@ -39,5 +39,5 @@ export const updatedNote = {
 }
 export const updatedFile = {
   fileName: 'world',
-  file: Buffer.from('World'),
+  buffer: Buffer.from('World'),
 }
