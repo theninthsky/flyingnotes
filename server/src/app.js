@@ -45,18 +45,7 @@ if (NODE_ENV != 'test') {
   })
 }
 
-if (NODE_ENV != 'production') {
-  app.use(cors)
-
-  if (NODE_ENV == 'test') {
-    process.on('exit', () => console.log(`Test server successfully terminated`))
-
-    app.use('/kill', (_, res) => {
-      res.sendStatus(200)
-      process.exit()
-    })
-  }
-}
+if (NODE_ENV != 'production') app.use(cors)
 
 app.use(validateToken)
 
@@ -76,8 +65,8 @@ app.delete('/notes', notesController.deleteNote)
 app.get('/:noteID/file', filesController.getFile)
 
 /* Default Route */
-app.use((_, res) =>
-  res.sendFile(join(__dirname, '..', '..', 'client', 'build', 'index.html')),
-)
+app.use((_, res) => {
+  res.sendFile(join(__dirname, '..', '..', 'client', 'build', 'index.html'))
+})
 
 export default app

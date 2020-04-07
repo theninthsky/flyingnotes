@@ -1,16 +1,6 @@
-import { createReadStream } from 'fs'
-
-const { PORT = 5000 } = process.env
-
-export const uri = `http://localhost:${PORT}`
-
-export const token = { bearer: '' }
-
-const randomUserName = ~~(Math.random() * 1000000)
-
 export const user = {
-  name: `Test User No. ${randomUserName}`,
-  email: `${randomUserName}@test.com`,
+  name: 'Test User',
+  email: 'user@test.com',
   password: '123456789',
   notes: [
     {
@@ -37,8 +27,8 @@ export const newNote = {
   content: 'New Note.',
 }
 export const newFile = {
-  fileName: 'file1',
-  file: createReadStream('test/assets/file1'),
+  fileName: 'hello',
+  file: Buffer.from('Hello'),
 }
 
 export const updatedNote = {
@@ -47,8 +37,7 @@ export const updatedNote = {
   title: 'Updated Title',
   content: 'Updated note.',
 }
-
 export const updatedFile = {
-  fileName: 'file2',
-  file: createReadStream('test/assets/file2'),
+  fileName: 'world',
+  file: Buffer.from('World'),
 }

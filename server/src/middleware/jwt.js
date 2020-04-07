@@ -16,7 +16,7 @@ export default (req, res, next) => {
         )
         res.redirect('/')
       } else {
-        req.userId = user._id
+        req.userID = user._id
       }
     })
   }

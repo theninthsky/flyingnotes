@@ -79,7 +79,7 @@ export const loginUser = (req, res) => {
 export const updateUser = (req, res) => {
   const { name, password, newPassword } = req.body
 
-  User.findById(req.userId)
+  User.findById(req.userID)
     .then(async user => {
       if (user) {
         try {

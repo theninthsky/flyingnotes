@@ -9,7 +9,7 @@
   "scripts": {
     "start": "cd server && npm start",
     "app": "cd client && npm run build && cd ../server && npm start",
-    "test:server": "cd server && npm run lint",
+    "test:server": "cd server && npm test",
     "install:server": "cd server && npm i",
     "install:client": "cd client && npm i && npm run build",
     "deploy": "npm run test:server && git push origin master && git push heroku master",

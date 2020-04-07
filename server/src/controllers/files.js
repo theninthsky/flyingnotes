@@ -1,7 +1,7 @@
 import File from '../models/File.js'
 
 export const getFile = (req, res) => {
-  if (req.userId) {
+  if (req.userID) {
     File.findOne({ noteID: req.params.noteID })
       .then(file => {
         if (file) {

@@ -2,7 +2,7 @@ import User from '../models/User.js'
 import File from '../models/File.js'
 
 export const getNotes = (req, res) => {
-  User.findById(req.userId)
+  User.findById(req.userID)
     .then(user => {
       if (user) {
         res.json({ notes: user.notes })
@@ -17,7 +17,7 @@ export const getNotes = (req, res) => {
 export const createNote = (req, res) => {
   const { file } = req
 
-  User.findById(req.userId)
+  User.findById(req.userID)
     .then(async user => {
       if (user) {
         user.notes.push({
@@ -48,7 +48,7 @@ export const createNote = (req, res) => {
 export const updateNote = (req, res) => {
   const { file } = req
 
-  User.findById(req.userId)
+  User.findById(req.userID)
     .then(async user => {
       if (user) {
         user.notes = user.notes.map(note =>
@@ -70,7 +70,7 @@ export const updateNote = (req, res) => {
             { mimetype, buffer },
           ).then(file => {
             if (!file) {
-              new File({ noteId: req.body._id, mimetype, buffer }).save()
+              new File({ noteID: req.body._id, mimetype, buffer }).save()
             }
           })
         }
@@ -86,7 +86,7 @@ export const updateNote = (req, res) => {
 export const deleteNote = (req, res) => {
   const { noteID } = req.body
 
-  User.findById(req.userId)
+  User.findById(req.userID)
     .then(user => {
       if (user) {
         if (user.notes.find(note => note._id == noteID)) {
