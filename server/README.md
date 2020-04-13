@@ -6,9 +6,9 @@ A `.env` file (https://www.npmjs.com/package/dotenv) should be placed at the roo
 
 `MONGODB_URI` (required)
 
-`ACCESS_TOKEN_SECRET` (required)
+`SESSION_SECRET` (required)
 
-`ACCESS_TOKEN_EXPIRES_IN` (optional, default: 1 year)
+`SESSION_LIFETIME` (optional, default: 1 year)
 
 `PORT` (optional, default: 5000)
 
