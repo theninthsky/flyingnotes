@@ -1,30 +1,6 @@
 import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
 
 import User from '../models/User.js'
-
-const {
-  ACCESS_TOKEN_SECRET,
-  ACCESS_TOKEN_EXPIRES_IN = 3600 * 24 * 365, // 1 year
-} = process.env
-
-const generateToken = (res, _id, name, email) => {
-  const payload = {
-    iss: 'flyingnotes',
-    _id,
-    name,
-    email,
-  }
-
-  const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, {
-    expiresIn: ACCESS_TOKEN_EXPIRES_IN,
-  })
-
-  res.setHeader(
-    'Set-Cookie',
-    `Bearer=${accessToken}; Max-Age=${ACCESS_TOKEN_EXPIRES_IN}; SameSite=Strict; HttpOnly;`,
-  )
-}
 
 export const registerUser = (req, res) => {
   const { name, email, password, notes = [] } = req.body
@@ -34,8 +10,7 @@ export const registerUser = (req, res) => {
     .then(async ({ _id, name, notes }) => {
       console.log(name + ' registered')
 
-      generateToken(res, _id, name, email)
-
+      req.session.userID = _id
       res.json({ name, notes })
     })
     .catch(({ message, errmsg }) => {
@@ -58,8 +33,7 @@ export const loginUser = (req, res) => {
           const match = await bcrypt.compare(password, hashedPassword)
 
           if (match) {
-            generateToken(res, _id, name, email)
-
+            req.session.userID = _id
             res.json({ name, notes })
           } else {
             res.status(404).send('Incorrect email or password')
@@ -106,10 +80,9 @@ export const updateUser = (req, res) => {
     )
 }
 
-export const logoutUser = (_, res) => {
-  res.setHeader(
-    'Set-Cookie',
-    'Bearer=deleted; expires=Thu, Jan 01 1970 00:00:00 UTC',
-  )
-  res.sendStatus(200)
+export const logoutUser = (req, res) => {
+  req.session.destroy(() => {
+    res.clearCookie('connect.sid')
+    res.sendStatus(200)
+  })
 }

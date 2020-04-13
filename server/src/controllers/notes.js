@@ -6,11 +6,12 @@ export const getNotes = (req, res) => {
     .then(user => {
       if (user) {
         res.json({ notes: user.notes })
+      } else {
+        res.status(401).send('Session expired')
       }
     })
-    .catch(() => {
-      console.error('Error: Session expired')
-      res.status(401).send('Not authenticated')
+    .catch(({ message, errmsg }) => {
+      console.error(`Error: ${message || errmsg}`)
     })
 }
 

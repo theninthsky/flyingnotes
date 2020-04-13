@@ -1,20 +1,28 @@
 import express from 'express'
+import session from 'express-session'
 import mongoose from 'mongoose'
+import connectMongo from 'connect-mongo'
 import multer from 'multer'
 import { dirname, join } from 'path'
 import { fileURLToPath } from 'url'
 
+import auth from './middleware/auth.js'
 import cors from './middleware/cors.js'
-import validateToken from './middleware/jwt.js'
 
 import * as userController from './controllers/user.js'
 import * as notesController from './controllers/notes.js'
 import * as filesController from './controllers/files.js'
 
-const { NODE_ENV, MONGODB_URI = 'mongodb://localhost/main' } = process.env
+const {
+  NODE_ENV,
+  MONGODB_URI = 'mongodb://localhost/main',
+  SESSION_SECRET,
+  SESSION_LIFETIME = 1000 * 3600 * 24 * 365,
+} = process.env
 
 const app = express()
 const __dirname = dirname(fileURLToPath(import.meta.url))
+const MongoStore = connectMongo(session)
 
 app.use(express.static(join(__dirname, '..', '..', 'client', 'build')))
 app.use(express.json())
@@ -45,9 +53,19 @@ if (NODE_ENV != 'test') {
   })
 }
 
-if (NODE_ENV != 'production') app.use(cors)
+app.use(
+  session({
+    cookie: { maxAge: +SESSION_LIFETIME, sameSite: true },
+    secret: SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
+  }),
+)
 
-app.use(validateToken)
+app.use(auth)
+
+if (NODE_ENV != 'production') app.use(cors)
 
 /* User Routes */
 app.post('/register', userController.registerUser)

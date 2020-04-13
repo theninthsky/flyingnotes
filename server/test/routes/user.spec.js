@@ -18,7 +18,7 @@ describe('Register', function () {
   it('should create and save a user', async function () {
     const res = await agent.post('/register').send(user)
 
-    expect(res).to.have.cookie('Bearer')
+    expect(res).to.have.cookie('connect.sid')
     expect(res.body.name).to.equal(user.name)
 
     for (const note of res.body.notes) {
@@ -84,7 +84,7 @@ describe('Logout', function () {
   it('should remove the bearer token', async function () {
     const res = await agent.post('/logout')
 
-    expect(res).to.have.header('set-cookie', /Bearer=deleted/)
+    expect(res).to.have.header('set-cookie', /connect.sid=;/)
     expect(res).to.have.status(200)
   })
 })
