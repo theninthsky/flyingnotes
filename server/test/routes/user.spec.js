@@ -59,13 +59,22 @@ describe('Login', function () {
 
 describe('Update', function () {
   it('should update the name and password', async function () {
-    const res = await agent.put('/register').send({
+    const res = await agent.put('/update').send({
       name: 'Updated Test User',
+    })
+
+    expect(res).to.have.status(200)
+  })
+})
+
+describe('Change Password', function () {
+  it('should update the name and password', async function () {
+    const res = await agent.put('/register').send({
       password: user.password,
       newPassword: '987654321',
     })
 
-    expect(res.body.name).to.equal('Updated Test User')
+    expect(res).to.have.status(200)
 
     user.password = '987654321'
   })
@@ -76,12 +85,13 @@ describe('Update', function () {
       newPassword: '198237645',
     })
 
+    expect(res).to.have.status(404)
     expect(res.text).to.equal('Incorrect password')
   })
 })
 
 describe('Logout', function () {
-  it('should remove the bearer token', async function () {
+  it('should remove the session cookie', async function () {
     const res = await agent.post('/logout')
 
     expect(res).to.have.header('set-cookie', /connect.sid=;/)
