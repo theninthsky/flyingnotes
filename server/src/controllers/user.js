@@ -51,7 +51,23 @@ export const loginUser = (req, res) => {
 }
 
 export const updateUser = (req, res) => {
-  const { name, password, newPassword } = req.body
+  User.findById(req.userID)
+    .then(async user => {
+      if (user) {
+        user.name = req.body.name
+        await user.save()
+        res.sendStatus(200)
+      } else {
+        res.sendStatus(404)
+      }
+    })
+    .catch(({ message, errmsg }) =>
+      console.error(`Error: ${message || errmsg}`),
+    )
+}
+
+export const changePassword = (req, res) => {
+  const { password, newPassword } = req.body
 
   User.findById(req.userID)
     .then(async user => {
@@ -60,11 +76,9 @@ export const updateUser = (req, res) => {
           const match = await bcrypt.compare(password, user.password)
 
           if (match) {
-            user.name = name || user.name
-            user.password = newPassword
-              ? bcrypt.hashSync(newPassword)
-              : user.password
-            res.json({ name: (await user.save()).name })
+            user.password = bcrypt.hashSync(newPassword)
+            await user.save()
+            res.sendStatus(200)
           } else {
             res.status(404).send('Incorrect password')
           }
@@ -72,7 +86,7 @@ export const updateUser = (req, res) => {
           throw Error(message)
         }
       } else {
-        res.status(404).send('No such user exists, try registering instead')
+        res.sendStatus(404)
       }
     })
     .catch(({ message, errmsg }) =>

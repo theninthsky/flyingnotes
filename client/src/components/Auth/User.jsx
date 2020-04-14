@@ -10,12 +10,11 @@ import userLogo from '../../assets/images/user-astronaut.svg'
 const User = props => {
   const { theme, errorMessage } = props.app
   const { notes } = props
-  const { onFormSubmit, onLogout } = props
+  const { onUpdate, onFormSubmit, onLogout } = props
 
   const [name, setName] = useState(props.user.name)
   const [password, setPassword] = useState('')
-  const [updateMode, setUpdateMode] = useState(false)
-  const [showNewPassword, setShowNewPassword] = useState(false)
+  const [changePasswordMode, setChangePasswordMode] = useState(false)
   const [newPassword, setNewPassword] = useState()
 
   const history = useHistory()
@@ -26,19 +25,20 @@ const User = props => {
     }
   }, [props.user.name, history])
 
-  const nameHanlder = event => setName(event.target.value)
+  const nameHanlder = event => {
+    setName(event.currentTarget.textContent)
+    onUpdate(event.currentTarget.textContent)
+  }
 
   const passwordHanlder = event => setPassword(event.target.value)
 
-  const updateModeHandler = () => setUpdateMode(true)
-
-  const showNewPasswordHandler = () => setShowNewPassword(true)
+  const changePasswordModeHandler = mode => setChangePasswordMode(mode)
 
   const newPasswordHandler = event => setNewPassword(event.target.value)
 
   const submitFormHandler = async event => {
     event.preventDefault()
-    onFormSubmit({ name: name.trim(), password, newPassword })
+    onFormSubmit({ password, newPassword })
   }
 
   return (
@@ -53,20 +53,21 @@ const User = props => {
         alt="User"
       />
 
-      <h1 className={styles.name}>{name}</h1>
+      <h1
+        className={styles.name}
+        contentEditable
+        suppressContentEditableWarning={true}
+        spellCheck="false"
+        onBlur={nameHanlder}
+      >
+        {name}
+      </h1>
 
-      {updateMode || errorMessage ? (
+      {changePasswordMode || errorMessage ? (
         <form onSubmit={submitFormHandler}>
           {errorMessage ? (
             <p className={styles.errorMessage}>{errorMessage}</p>
           ) : null}
-          <input
-            type="text"
-            value={name}
-            placeholder="Name"
-            required
-            onChange={nameHanlder}
-          />
           <input
             type="password"
             value={password}
@@ -75,30 +76,24 @@ const User = props => {
             required
             onChange={passwordHanlder}
           />
-          {showNewPassword ? (
-            <input
-              type="password"
-              value={newPassword}
-              placeholder="New Password"
-              minLength="8"
-              onChange={newPasswordHandler}
-            />
-          ) : (
-            <button
-              className={`${styles.showNewPassword} ${
-                theme === 'dark' ? styles.showNewPasswordDark : ''
-              }`}
-              onClick={showNewPasswordHandler}
-            >
-              ➤ Change password
-            </button>
-          )}
+
+          <input
+            type="password"
+            value={newPassword}
+            placeholder="New Password"
+            minLength="8"
+            onChange={newPasswordHandler}
+          />
+
           <input className={styles.update} type="submit" />
         </form>
       ) : (
         <>
-          <button className={styles.updateButton} onClick={updateModeHandler}>
-            Change Name / Password
+          <button
+            className={styles.updateButton}
+            onClick={() => changePasswordModeHandler(true)}
+          >
+            Change Password
           </button>
           <div className={styles.info}>
             <h1>{`Notes: ${notes.length}`}</h1>
@@ -123,7 +118,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  onFormSubmit: credentials => dispatch(actions.update(credentials)),
+  onUpdate: name => dispatch(actions.update(name)),
+  onFormSubmit: passwords => dispatch(actions.changePassword(passwords)),
   onLogout: () => dispatch(actions.requestLogout()),
 })
 

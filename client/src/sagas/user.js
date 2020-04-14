@@ -49,15 +49,17 @@ function* login({ credentials }) {
   yield put(actions.loading(false))
 }
 
-function* update({ credentials }) {
+function* update({ name }) {
+  yield axios.put(`${REACT_APP_SERVER_URL}/update`, { name })
+  localStorage.setItem('name', name)
+  yield put(actions.setName(name))
+}
+
+function* changePassword({ passwords }) {
   yield put(actions.loading(true))
   yield put(actions.clearError())
   try {
-    const {
-      data: { name },
-    } = yield axios.put(`${REACT_APP_SERVER_URL}/register`, credentials)
-    localStorage.setItem('name', name)
-    yield put(actions.setName(name))
+    yield axios.put(`${REACT_APP_SERVER_URL}/register`, passwords)
   } catch ({ response: { data } }) {
     yield put(actions.showError(data))
   }
@@ -85,7 +87,8 @@ export default function* rootSaga() {
   yield all([
     takeLatest(actionTypes.REGISTER, register),
     takeLatest(actionTypes.LOGIN, login),
-    takeLatest(actionTypes.UPDATE_USER, update),
+    takeLatest(actionTypes.UPDATE, update),
+    takeLatest(actionTypes.CHANGE_PASSWORD, changePassword),
     takeLatest(actionTypes.REQUEST_LOGOUT, logout),
   ])
 }

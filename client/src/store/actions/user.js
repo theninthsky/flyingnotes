@@ -10,9 +10,14 @@ export const login = credentials => ({
   credentials,
 })
 
-export const update = credentials => ({
-  type: actionTypes.UPDATE_USER,
-  credentials,
+export const update = name => ({
+  type: actionTypes.UPDATE,
+  name,
+})
+
+export const changePassword = passwords => ({
+  type: actionTypes.CHANGE_PASSWORD,
+  passwords,
 })
 
 export const setName = name => ({ type: actionTypes.SET_NAME, name })

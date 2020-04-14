@@ -70,7 +70,8 @@ if (NODE_ENV != 'production') app.use(cors)
 /* User Routes */
 app.post('/register', userController.registerUser)
 app.post('/login', userController.loginUser)
-app.put('/register', userController.updateUser)
+app.put('/update', userController.updateUser)
+app.put('/register', userController.changePassword)
 app.post('/logout', userController.logoutUser)
 
 /* Notes Routes */
