@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs'
 
 import User from '../models/User.js'
+import Session from '../models/Session.js'
 
 export const registerUser = (req, res) => {
   const { name, email, password, notes = [] } = req.body
@@ -79,6 +80,14 @@ export const changePassword = (req, res) => {
             user.password = bcrypt.hashSync(newPassword)
             await user.save()
             res.sendStatus(200)
+
+            Session.deleteMany(
+              {
+                _id: { $ne: req.sessionID },
+                session: { $regex: new RegExp(user._id) },
+              },
+              () => {},
+            )
           } else {
             res.status(404).send('Incorrect password')
           }
