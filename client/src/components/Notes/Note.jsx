@@ -49,7 +49,7 @@ const Note = props => {
     />
   ) : (
     <div
-      className={`${styles.note} ${theme === 'dark' ? styles.noteDark : ''}`}
+      className={styles.note}
       onMouseMove={() => toggleOptionsHandler(true)}
       onMouseLeave={() => toggleOptionsHandler(false)}
     >
@@ -115,10 +115,7 @@ const Note = props => {
         <div className={styles.confirmMessage}>Delete this note?</div>
       ) : (
         <div className={styles.date}>
-          {new Date(date)
-            .toLocaleString('en-GB')
-            .replace(',', '')
-            .slice(0, -3)}
+          {new Date(date).toLocaleString('en-GB').replace(',', '').slice(0, -3)}
         </div>
       )}
     </div>

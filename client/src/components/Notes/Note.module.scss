@@ -99,12 +99,8 @@
   }
 }
 
-.noteDark {
-  color: white;
-
-  .fileDark {
-    filter: invert(100%);
-  }
+.fileDark {
+  filter: invert(100%);
 }
 
 @media (max-width: 768px) {

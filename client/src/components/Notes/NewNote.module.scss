@@ -139,12 +139,8 @@
   }
 }
 
-.noteDark {
-  color: white;
-
-  .titleDark::placeholder {
-    color: rgb(200, 200, 200);
-  }
+.titleDark::placeholder {
+  color: rgb(200, 200, 200);
 }
 
 @media (max-width: 768px) {

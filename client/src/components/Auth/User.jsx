@@ -42,9 +42,7 @@ const User = props => {
   }
 
   return (
-    <div
-      className={`${styles.user} ${theme === 'dark' ? styles.userDark : ''}`}
-    >
+    <div className={styles.user}>
       <img
         className={`${styles.userLogo} ${
           theme === 'dark' ? styles.userLogoDark : ''
@@ -90,7 +88,7 @@ const User = props => {
       ) : (
         <>
           <button
-            className={styles.updateButton}
+            className={styles.changePassword}
             onClick={() => changePasswordModeHandler(true)}
           >
             Change Password

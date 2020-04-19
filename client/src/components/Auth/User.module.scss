@@ -71,14 +71,14 @@
     }
   }
 
-  .updateButton {
+  .changePassword {
     display: block;
     margin: 0 auto;
     border: none;
+    color: inherit;
     font-size: 14px;
-    color: gray;
     background-color: transparent;
-    opacity: 0.75;
+    opacity: 0.5;
     cursor: pointer;
 
     &:hover {
@@ -93,10 +93,6 @@
     outline: none;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
-  }
-
-  .showNewPasswordDark {
-    color: white;
   }
 
   .errorMessage {
@@ -114,12 +110,8 @@
   }
 }
 
-.userDark {
-  color: white;
-
-  .userLogoDark {
-    filter: invert(100%);
-  }
+.userLogoDark {
+  filter: invert(100%);
 }
 
 @media (max-width: 480px) {

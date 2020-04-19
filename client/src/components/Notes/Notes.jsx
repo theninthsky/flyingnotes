@@ -57,11 +57,7 @@ const Notes = props => {
     <>
       {!loading ? (
         <>
-          <div
-            className={`${styles.filters} ${
-              theme === 'dark' ? styles.filtersDark : ''
-            }`}
-          >
+          <div className={styles.filters}>
             <select
               className={`${styles.categoryFilter} ${
                 theme === 'dark' ? styles.categoryFilterDark : ''

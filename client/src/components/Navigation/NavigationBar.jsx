@@ -17,11 +17,7 @@ const NavigationBar = props => {
 
   return (
     <>
-      <nav
-        className={`${styles.navBar} ${
-          theme === 'dark' ? styles.navBarDark : ''
-        }`}
-      >
+      <nav className={styles.navBar}>
         <img
           className={`${styles.theme} ${
             theme === 'dark' ? styles.themeDark : ''
@@ -33,9 +29,7 @@ const NavigationBar = props => {
         />
 
         <NavLink
-          className={`${styles.notes} ${
-            theme === 'dark' ? styles.notesDark : ''
-          }`}
+          className={styles.notes}
           activeClassName={styles.active}
           exact
           to="/"
@@ -45,9 +39,7 @@ const NavigationBar = props => {
 
         {user.name ? (
           <NavLink
-            className={`${styles.auth} ${
-              theme === 'dark' ? styles.authDark : ''
-            }`}
+            className={styles.auth}
             activeClassName={styles.active}
             title={`Logged in as ${user.name}`}
             to={'/account'}
@@ -62,9 +54,7 @@ const NavigationBar = props => {
           </NavLink>
         ) : (
           <NavLink
-            className={`${styles.auth} ${
-              theme === 'dark' ? styles.authDark : ''
-            }`}
+            className={styles.auth}
             activeClassName={styles.active}
             title={'Login'}
             to={'/auth'}

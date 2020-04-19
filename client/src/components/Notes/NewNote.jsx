@@ -118,9 +118,7 @@ const NewNote = props => {
   }
 
   return (
-    <div
-      className={`${styles.note} ${theme === 'dark' ? styles.noteDark : ''}`}
-    >
+    <div className={styles.note}>
       <form
         onSubmit={
           props.user.name ? saveNoteOnCloudHandler : saveNoteLocallyHandler

@@ -6,7 +6,7 @@ import * as actions from '../../store/actions/index'
 import styles from './Auth.module.scss'
 
 const Auth = props => {
-  const { theme, errorMessage } = props.app
+  const { errorMessage } = props.app
   const { onFormSubmit } = props
 
   const [action, setAction] = useState('Login')
@@ -40,9 +40,7 @@ const Auth = props => {
   }
 
   return (
-    <div
-      className={`${styles.auth} ${theme === 'dark' ? styles.authDark : ''}`}
-    >
+    <div className={styles.auth}>
       <div className={styles.title}>
         <h1
           className={action === 'Login' ? null : styles.notActive}
