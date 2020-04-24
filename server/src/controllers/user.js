@@ -12,7 +12,7 @@ export const registerUser = (req, res) => {
       console.log(name + ' registered')
 
       req.session.userID = _id
-      res.json({ name, notes })
+      res.status(201).json({ name, notes })
     })
     .catch(({ message, errmsg }) => {
       console.error(`Error: ${message || errmsg}`)
@@ -106,6 +106,6 @@ export const changePassword = (req, res) => {
 export const logoutUser = (req, res) => {
   req.session.destroy(() => {
     res.clearCookie('connect.sid')
-    res.sendStatus(200)
+    res.sendStatus(204)
   })
 }

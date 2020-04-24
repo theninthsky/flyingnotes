@@ -18,6 +18,7 @@ describe('Register', function () {
   it('should create and save a user', async function () {
     const res = await agent.post('/register').send(user)
 
+    expect(res).to.have.status(201)
     expect(res).to.have.cookie('connect.sid')
     expect(res.body.name).to.equal(user.name)
 
@@ -94,7 +95,7 @@ describe('Logout', function () {
   it('should remove the session cookie', async function () {
     const res = await agent.post('/logout')
 
+    expect(res).to.have.status(204)
     expect(res).to.have.header('set-cookie', /connect.sid=;/)
-    expect(res).to.have.status(200)
   })
 })

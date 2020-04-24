@@ -38,7 +38,7 @@ export const createNote = (req, res) => {
           }).save()
         }
 
-        res.json({ newNote: notes[notes.length - 1] })
+        res.status(201).json({ newNote: notes[notes.length - 1] })
       }
     })
     .catch(({ message, errmsg }) =>
@@ -92,7 +92,7 @@ export const deleteNote = (req, res) => {
       if (user) {
         if (user.notes.find(note => note._id == noteID)) {
           user.notes = user.notes.filter(note => note._id != noteID)
-          user.save().then(() => res.sendStatus(200))
+          user.save().then(() => res.sendStatus(204))
 
           File.findOneAndDelete({ noteID }).then(() => {})
         } else {

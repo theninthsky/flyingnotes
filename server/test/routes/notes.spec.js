@@ -38,6 +38,7 @@ describe('Create Note', function () {
       .field('content', newNote.content)
       .attach('file', newFile.buffer, newFile.fileName)
 
+    expect(res).to.have.status(201)
     expect(res.body.newNote).to.deep.include(newNote)
     expect(res.body.newNote.fileName).to.equal(newFile.fileName)
 
@@ -68,12 +69,12 @@ describe('Delete Note', function () {
   it('should delete a note', async function () {
     const res = await agent.delete('/notes').send({ noteID: user.notes[0]._id })
 
-    expect(res).to.have.status(200)
+    expect(res).to.have.status(204)
 
     user.notes.shift()
   })
 
-  it('should return a 404 status code for an invalid note id', async function () {
+  it('should return a 404 status code for an invalid note ID', async function () {
     const res = await agent.delete('/notes').send({
       noteID: 'invalid',
     })
