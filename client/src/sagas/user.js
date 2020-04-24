@@ -69,13 +69,12 @@ function* changePassword({ passwords }) {
 function* logout() {
   yield put(actions.loading(true))
   try {
-    const { status } = yield axios.post(`${REACT_APP_SERVER_URL}/logout`)
-    if (status === 200) {
-      localStorage.removeItem('name')
+    yield axios.post(`${REACT_APP_SERVER_URL}/logout`)
 
-      yield put(actions.setNotes(JSON.parse(localStorage.notes || '[]')))
-      yield put(actions.logout())
-    }
+    localStorage.removeItem('name')
+
+    yield put(actions.setNotes(JSON.parse(localStorage.notes || '[]')))
+    yield put(actions.logout())
   } catch (err) {
     yield put(actions.showError(err))
   }

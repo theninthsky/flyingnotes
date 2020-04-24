@@ -101,11 +101,13 @@ function* updateNote({ updatedNote }) {
 function* deleteNote({ noteID }) {
   yield put(actions.deletingNote(noteID))
   if (localStorage.name) {
-    const { status } = yield axios.delete(`${REACT_APP_SERVER_URL}/notes`, {
-      data: { noteID },
-    })
-    if (status !== 200) {
+    try {
+      yield axios.delete(`${REACT_APP_SERVER_URL}/notes`, {
+        data: { noteID },
+      })
+    } catch (err) {
       noteID = ''
+      yield put(actions.showError(err))
     }
   } else {
     localStorage.setItem(
