@@ -19,7 +19,6 @@ export const LOGIN = 'LOGIN'
 export const SET_NAME = 'SET_NAME'
 export const UPDATE = 'UPDATE'
 export const CHANGE_PASSWORD = 'CHANGE_PASSWORD'
-export const REQUEST_LOGOUT = 'REQUEST_LOGOUT'
 export const LOGOUT = 'LOGOUT'
 
 /* Notes */

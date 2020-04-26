@@ -118,7 +118,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   onUpdate: name => dispatch(actions.update(name)),
   onFormSubmit: passwords => dispatch(actions.changePassword(passwords)),
-  onLogout: () => dispatch(actions.requestLogout()),
+  onLogout: () => dispatch(actions.logout()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)

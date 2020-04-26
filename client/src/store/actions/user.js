@@ -20,7 +20,6 @@ export const changePassword = passwords => ({
   passwords,
 })
 
-export const setName = name => ({ type: actionTypes.SET_NAME, name })
-
-export const requestLogout = () => ({ type: actionTypes.REQUEST_LOGOUT })
 export const logout = () => ({ type: actionTypes.LOGOUT })
+
+export const setName = name => ({ type: actionTypes.SET_NAME, name })

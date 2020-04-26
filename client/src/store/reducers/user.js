@@ -8,8 +8,6 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_NAME:
       return { name: action.name }
-    case actionTypes.LOGOUT:
-      return {}
     default:
       return state
   }

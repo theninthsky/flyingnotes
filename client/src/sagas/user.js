@@ -74,7 +74,7 @@ function* logout() {
     localStorage.removeItem('name')
 
     yield put(actions.setNotes(JSON.parse(localStorage.notes || '[]')))
-    yield put(actions.logout())
+    yield put(actions.setName(null))
   } catch (err) {
     yield put(actions.showError(err))
   }
@@ -88,6 +88,6 @@ export default function* rootSaga() {
     takeLatest(actionTypes.LOGIN, login),
     takeLatest(actionTypes.UPDATE, update),
     takeLatest(actionTypes.CHANGE_PASSWORD, changePassword),
-    takeLatest(actionTypes.REQUEST_LOGOUT, logout),
+    takeLatest(actionTypes.LOGOUT, logout),
   ])
 }
