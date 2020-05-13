@@ -1,10 +1,11 @@
+import { dirname, join } from 'path'
+import { fileURLToPath } from 'url'
 import express from 'express'
 import session from 'express-session'
 import mongoose from 'mongoose'
 import connectMongo from 'connect-mongo'
 import multer from 'multer'
-import { dirname, join } from 'path'
-import { fileURLToPath } from 'url'
+import helmet from 'helmet'
 
 import auth from './middleware/auth.js'
 import cors from './middleware/cors.js'
@@ -27,6 +28,7 @@ const MongoStore = connectMongo(session)
 app.use(express.static(join(__dirname, '..', '..', 'client', 'build')))
 app.use(express.json())
 app.use(multer({ limits: { fileSize: 1024 * 1024 * 10 } }).single('file'))
+app.use(helmet())
 
 const mongooseOpts = {
   useNewUrlParser: true,
@@ -39,7 +41,7 @@ if (NODE_ENV != 'test') {
   mongoose
     .connect(MONGODB_URI, mongooseOpts)
     .then(() => console.log(`[Worker ${process.pid}] MongoDB is connected...`))
-    .catch(err => console.error(err))
+    .catch(({ message }) => console.error(`Error: ${message}`))
 } else {
   import('mongodb-memory-server').then(({ default: { MongoMemoryServer } }) => {
     const mongoServer = new MongoMemoryServer()
@@ -48,7 +50,7 @@ if (NODE_ENV != 'test') {
       mongoose
         .connect(mongoURI, mongooseOpts)
         .then(() => console.log('MongoDB Memory Server is connected...'))
-        .catch(err => console.error(err))
+        .catch(({ message }) => console.error(`Error: ${message}`))
     })
   })
 }

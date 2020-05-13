@@ -1,7 +1,7 @@
 import chai from 'chai'
 
 import agent from '../agent.js'
-import { user } from '../dummy-user.js'
+import { user } from '../mocks.js'
 
 const { expect } = chai
 
