@@ -12,8 +12,6 @@ export const getFile = (req, res) => {
           res.send(buffer)
         }
       })
-      .catch(({ message, errmsg }) =>
-        console.error(`Error: ${message || errmsg}`),
-      )
+      .catch(({ message, errmsg }) => console.error(`Error: ${message || errmsg}`))
   }
 }

@@ -31,9 +31,7 @@ describe('Register', function () {
     const res = await agent.post('/register').send(user)
 
     expect(res).to.have.status(409)
-    expect(res.text).to.equal(
-      'This email address is already registered, try login instead',
-    )
+    expect(res.text).to.equal('This email address is already registered, try login instead')
   })
 })
 

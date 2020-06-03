@@ -6,6 +6,8 @@ A `.env` file (https://www.npmjs.com/package/dotenv) should be placed at the roo
 
 `MONGODB_URI` (required)
 
+`REDIS_URI` (required)
+
 `SESSION_SECRET` (required)
 
 `SESSION_LIFETIME` (optional, default: 1 year)

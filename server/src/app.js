@@ -3,7 +3,8 @@ import { fileURLToPath } from 'url'
 import express from 'express'
 import session from 'express-session'
 import mongoose from 'mongoose'
-import connectMongo from 'connect-mongo'
+import redis from 'redis'
+import connectRedis from 'connect-redis'
 import multer from 'multer'
 import helmet from 'helmet'
 
@@ -17,13 +18,16 @@ import * as filesController from './controllers/files.js'
 const {
   NODE_ENV,
   MONGODB_URI = 'mongodb://localhost/main',
+  REDIS_URI,
+  REDIS_PASSWORD,
   SESSION_SECRET,
   SESSION_LIFETIME = 1000 * 3600 * 24 * 365,
 } = process.env
 
 const app = express()
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const MongoStore = connectMongo(session)
+const RedisStore = connectRedis(session)
+const redisClient = redis.createClient(REDIS_URI)
 
 app.use(express.static(join(__dirname, '..', '..', 'client', 'build')))
 app.use(express.json())
@@ -55,13 +59,27 @@ if (NODE_ENV != 'test') {
   })
 }
 
+redisClient.auth(REDIS_PASSWORD)
+redisClient.on('connect', () => {
+  console.log(`[Worker ${process.pid}] Redis is connected...`)
+})
+redisClient.on('error', ({ message }) => console.error(`Error: ${message}`))
+
+// redisClient.monitor(function (err, res) {
+//   console.log('Entering monitoring mode.')
+// })
+
+// redisClient.on('monitor', function (time, args, rawReply) {
+//   console.log(args)
+// })
+
 app.use(
   session({
     cookie: { maxAge: +SESSION_LIFETIME, sameSite: true },
     secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    store: new MongoStore({ mongooseConnection: mongoose.connection }),
+    store: new RedisStore({ client: redisClient, disableTouch: true }),
   }),
 )
 

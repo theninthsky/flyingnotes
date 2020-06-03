@@ -41,9 +41,7 @@ export const createNote = (req, res) => {
         res.status(201).json({ newNote: notes[notes.length - 1] })
       }
     })
-    .catch(({ message, errmsg }) =>
-      console.error(`Error: ${message || errmsg}`),
-    )
+    .catch(({ message, errmsg }) => console.error(`Error: ${message || errmsg}`))
 }
 
 export const updateNote = (req, res) => {
@@ -66,10 +64,7 @@ export const updateNote = (req, res) => {
         if (file) {
           const { mimetype, buffer } = file
 
-          await File.findOneAndUpdate(
-            { noteID: req.body._id },
-            { mimetype, buffer },
-          ).then(file => {
+          await File.findOneAndUpdate({ noteID: req.body._id }, { mimetype, buffer }).then(file => {
             if (!file) {
               new File({ noteID: req.body._id, mimetype, buffer }).save()
             }
@@ -79,9 +74,7 @@ export const updateNote = (req, res) => {
         res.json({ updatedNote: notes.find(note => note._id == req.body._id) })
       }
     })
-    .catch(({ message, errmsg }) =>
-      console.error(`Error: ${message || errmsg}`),
-    )
+    .catch(({ message, errmsg }) => console.error(`Error: ${message || errmsg}`))
 }
 
 export const deleteNote = (req, res) => {

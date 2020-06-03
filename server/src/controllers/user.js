@@ -1,7 +1,6 @@
 import bcrypt from 'bcryptjs'
 
 import User from '../models/User.js'
-import Session from '../models/Session.js'
 
 export const registerUser = (req, res) => {
   const { name, email, password, notes = [] } = req.body
@@ -16,9 +15,7 @@ export const registerUser = (req, res) => {
     })
     .catch(({ message, errmsg }) => {
       console.error(`Error: ${message || errmsg}`)
-      res
-        .status(409)
-        .send('This email address is already registered, try login instead')
+      res.status(409).send('This email address is already registered, try login instead')
     })
 }
 
@@ -46,9 +43,7 @@ export const loginUser = (req, res) => {
         res.status(404).send('No such user exists')
       }
     })
-    .catch(({ message, errmsg }) =>
-      console.error(`Error: ${message || errmsg}`),
-    )
+    .catch(({ message, errmsg }) => console.error(`Error: ${message || errmsg}`))
 }
 
 export const updateUser = (req, res) => {
@@ -62,9 +57,7 @@ export const updateUser = (req, res) => {
         res.sendStatus(404)
       }
     })
-    .catch(({ message, errmsg }) =>
-      console.error(`Error: ${message || errmsg}`),
-    )
+    .catch(({ message, errmsg }) => console.error(`Error: ${message || errmsg}`))
 }
 
 export const changePassword = (req, res) => {
@@ -80,14 +73,6 @@ export const changePassword = (req, res) => {
             user.password = bcrypt.hashSync(newPassword)
             await user.save()
             res.sendStatus(200)
-
-            Session.deleteMany(
-              {
-                _id: { $ne: req.sessionID },
-                session: { $regex: new RegExp(user._id) },
-              },
-              () => {},
-            )
           } else {
             res.status(404).send('Incorrect password')
           }
@@ -98,9 +83,7 @@ export const changePassword = (req, res) => {
         res.sendStatus(404)
       }
     })
-    .catch(({ message, errmsg }) =>
-      console.error(`Error: ${message || errmsg}`),
-    )
+    .catch(({ message, errmsg }) => console.error(`Error: ${message || errmsg}`))
 }
 
 export const logoutUser = (req, res) => {
