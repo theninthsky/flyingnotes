@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs'
 
+// import { redisClient } from '../app.js'
 import User from '../models/User.js'
 
 export const registerUser = (req, res) => {
@@ -73,6 +74,7 @@ export const changePassword = (req, res) => {
             user.password = bcrypt.hashSync(newPassword)
             await user.save()
             res.sendStatus(200)
+            // redisClient.keys(req.userID, (err, res) => console.log(res))
           } else {
             res.status(404).send('Incorrect password')
           }

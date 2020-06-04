@@ -22,15 +22,23 @@ const colorsArray = [
   '#bdc3c7',
 ]
 
+const mapStateToProps = state => ({
+  app: state.app,
+  user: state.user,
+})
+
+const mapDispatchToProps = dispatch => ({
+  addNote: note => dispatch(actions.requestAddNote(note)),
+  updateNote: note => dispatch(actions.requestUpdateNote(note)),
+})
+
 const NewNote = props => {
   const { update, toggleEditMode, closeOptions } = props
   const { theme, addingNote } = props.app
   const { addNote, updateNote } = props
 
   const [showColorPicker, setShowColorPicker] = useState(false)
-  const [color, setColor] = useState(
-    props.color || colorsArray[Math.floor(Math.random() * 10)],
-  )
+  const [color, setColor] = useState(props.color || colorsArray[Math.floor(Math.random() * 10)])
   const [category, setCategory] = useState(props.category || '')
   const [title, setTitle] = useState(props.title || '')
   const [content, setContent] = useState(props.content || '')
@@ -40,13 +48,6 @@ const NewNote = props => {
     setColor(color.hex)
     setShowColorPicker(false)
   }
-
-  const categoryHanlder = event =>
-    setCategory(event.target.value.toUpperCase().slice(0, 24)) // forces maxLength on mobile
-
-  const titleHandler = event => setTitle(event.target.value)
-
-  const contentHandler = event => setContent(event.target.value)
 
   const fileHandler = event => {
     const [file] = event.target.files
@@ -119,12 +120,7 @@ const NewNote = props => {
 
   return (
     <div className={styles.note}>
-      <form
-        onSubmit={
-          props.user.name ? saveNoteOnCloudHandler : saveNoteLocallyHandler
-        }
-        autoComplete="off"
-      >
+      <form onSubmit={props.user.name ? saveNoteOnCloudHandler : saveNoteLocallyHandler} autoComplete="off">
         <img
           className={styles.colorPalette}
           src={colorPaletteIcon}
@@ -141,10 +137,7 @@ const NewNote = props => {
           />
         ) : (
           <>
-            <div
-              className={styles.categoryBackground}
-              style={{ backgroundColor: color }}
-            >
+            <div className={styles.categoryBackground} style={{ backgroundColor: color }}>
               &nbsp;
             </div>
             <input
@@ -155,21 +148,19 @@ const NewNote = props => {
               placeholder="CATEGORY"
               maxLength="24"
               title="Optional"
-              onChange={categoryHanlder}
+              onChange={event => setCategory(event.target.value.toUpperCase().slice(0, 24))} // forces maxLength on mobile devices
             />
           </>
         )}
         <input
-          className={`${styles.title} ${
-            theme === 'dark' ? styles.titleDark : ''
-          }`}
+          className={`${styles.title} ${theme === 'dark' ? styles.titleDark : ''}`}
           type="text"
           dir="auto"
           placeholder="Title"
           value={title}
           title="Optional"
           maxLength="60"
-          onChange={titleHandler}
+          onChange={event => setTitle(event.target.value)}
         />
         <>
           <textarea
@@ -178,51 +169,28 @@ const NewNote = props => {
             value={content}
             title="Note's content"
             required
-            onChange={contentHandler}
+            onChange={event => setContent(event.target.value)}
           ></textarea>
-          {localStorage.name ? (
+          {localStorage.name && (
             <>
               <label htmlFor={`file-input-${props._id}`}>
                 <img
                   className={styles.upload}
                   src={uploadIcon}
-                  alt={
-                    selectedFile
-                      ? selectedFile.name
-                      : props.fileName || 'Upload a File'
-                  }
-                  title={
-                    selectedFile
-                      ? selectedFile.name
-                      : props.fileName || 'Upload a File'
-                  }
+                  alt={selectedFile ? selectedFile.name : props.fileName || 'Upload a File'}
+                  title={selectedFile ? selectedFile.name : props.fileName || 'Upload a File'}
                   onClick={() => {}}
                 />
               </label>
-              <input
-                className={styles.fileInput}
-                id={`file-input-${props._id}`}
-                type="file"
-                onChange={fileHandler}
-              />
+              <input className={styles.fileInput} id={`file-input-${props._id}`} type="file" onChange={fileHandler} />
             </>
-          ) : null}
+          )}
         </>
         <input className={styles.save} type="submit" value="SAVE" />
-        {addingNote ? <NoteSpinner /> : null}
+        {addingNote && <NoteSpinner />}
       </form>
     </div>
   )
 }
-
-const mapStateToProps = state => ({
-  app: state.app,
-  user: state.user,
-})
-
-const mapDispatchToProps = dispatch => ({
-  addNote: note => dispatch(actions.requestAddNote(note)),
-  updateNote: note => dispatch(actions.requestUpdateNote(note)),
-})
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewNote)

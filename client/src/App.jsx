@@ -12,6 +12,15 @@ import './App.scss'
 
 import images from './util/images'
 
+const mapStateToProps = state => ({
+  app: state.app,
+  user: state.user,
+})
+
+const mapDispatchToProps = dispatch => ({
+  onChangeTheme: () => dispatch(actions.requestChangeTheme()),
+})
+
 const App = props => {
   const {
     app: { theme, loading, notesFetched },
@@ -22,9 +31,7 @@ const App = props => {
   const history = useHistory()
 
   useEffect(() => {
-    theme === 'dark'
-      ? document.body.classList.add('dark')
-      : document.body.classList.remove('dark')
+    theme === 'dark' ? document.body.classList.add('dark') : document.body.classList.remove('dark')
   }, [theme])
 
   useEffect(() => {
@@ -55,14 +62,5 @@ const App = props => {
     </>
   )
 }
-
-const mapStateToProps = state => ({
-  app: state.app,
-  user: state.user,
-})
-
-const mapDispatchToProps = dispatch => ({
-  onChangeTheme: () => dispatch(actions.requestChangeTheme()),
-})
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

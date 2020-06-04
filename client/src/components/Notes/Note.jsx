@@ -11,6 +11,14 @@ import styles from './Note.module.scss'
 import fileIcon from '../../assets/images/file.svg'
 import downloadIcon from '../../assets/images/download.svg'
 
+const mapStateToProps = state => ({
+  app: state.app,
+})
+
+const mapDispatchToProps = dispatch => ({
+  fetchFile: note => dispatch(actions.fetchFile(note)),
+})
+
 const Note = props => {
   const { _id, color, category, title, content, date, fileName, file } = props
   const { theme, fetchingFile, updatingNote, deletingNote } = props.app
@@ -19,13 +27,6 @@ const Note = props => {
   const [showOptions, setShowOptions] = useState(false)
   const [editMode, setEditMode] = useState(false)
   const [showConfirmMessage, setShowConfirmMessage] = useState(false)
-
-  const toggleOptionsHandler = mode =>
-    setShowOptions(showConfirmMessage ? true : mode)
-
-  const toggleConfirmMessageHanlder = mode => setShowConfirmMessage(mode)
-
-  const toggleEditModeHandler = () => setEditMode(!editMode)
 
   const downloadFileHandler = () => {
     if (file) {
@@ -40,38 +41,35 @@ const Note = props => {
     }
   }
 
-  const note = editMode ? (
+  return editMode ? (
     <NewNote
       {...props}
-      toggleEditMode={toggleEditModeHandler}
-      closeOptions={() => toggleOptionsHandler(false)}
+      toggleEditMode={() => setEditMode(!editMode)}
+      closeOptions={() => setShowOptions(showConfirmMessage)}
       update
     />
   ) : (
     <div
       className={styles.note}
-      onMouseMove={() => toggleOptionsHandler(true)}
-      onMouseLeave={() => toggleOptionsHandler(false)}
+      onMouseMove={() => setShowOptions(true)}
+      onMouseLeave={() => setShowOptions(showConfirmMessage)}
     >
-      {category ? (
+      {category && (
         <>
-          <div
-            className={styles.categoryBackground}
-            style={{ backgroundColor: color }}
-          >
+          <div className={styles.categoryBackground} style={{ backgroundColor: color }}>
             &nbsp;
           </div>
           <div className={styles.category} dir="auto">
             {category.toUpperCase()}
           </div>
         </>
-      ) : null}
+      )}
 
-      {title ? (
+      {title && (
         <h1 className={styles.title} dir="auto">
           {title}
         </h1>
-      ) : null}
+      )}
 
       <div className={styles.content} dir="auto">
         {content}
@@ -85,51 +83,40 @@ const Note = props => {
           title={fileName}
           onClick={downloadFileHandler}
         />
-      ) : fileName ? (
-        fetchingFile === _id ? (
+      ) : (
+        fileName &&
+        (fetchingFile === _id ? (
           <FileSpinner />
         ) : (
           <img
-            className={`${styles.file} ${
-              theme === 'dark' ? styles.fileDark : ''
-            }`}
+            className={`${styles.file} ${theme === 'dark' ? styles.fileDark : ''}`}
             src={fileIcon}
             alt={fileName}
             title={fileName}
             onClick={downloadFileHandler}
           />
-        )
-      ) : null}
+        ))
+      )}
 
       {updatingNote === _id || deletingNote === _id ? (
         <NoteSpinner />
-      ) : showOptions ? (
-        <Options
-          id={_id}
-          edit={toggleEditModeHandler}
-          toggleConfirmMessage={toggleConfirmMessageHanlder}
-        />
-      ) : null}
+      ) : (
+        showOptions && (
+          <Options
+            id={_id}
+            edit={() => setEditMode(!editMode)}
+            toggleConfirmMessage={mode => setShowConfirmMessage(mode)}
+          />
+        )
+      )}
 
       {showConfirmMessage && updatingNote !== _id && deletingNote !== _id ? (
         <div className={styles.confirmMessage}>Delete this note?</div>
       ) : (
-        <div className={styles.date}>
-          {new Date(date).toLocaleString('en-GB').replace(',', '').slice(0, -3)}
-        </div>
+        <div className={styles.date}>{new Date(date).toLocaleString('en-GB').replace(',', '').slice(0, -3)}</div>
       )}
     </div>
   )
-
-  return note
 }
-
-const mapStateToProps = state => ({
-  app: state.app,
-})
-
-const mapDispatchToProps = dispatch => ({
-  fetchFile: note => dispatch(actions.fetchFile(note)),
-})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Note)

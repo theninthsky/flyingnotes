@@ -8,12 +8,16 @@ import deleteSymbol from '../../assets/images/delete.svg'
 import confirmSymbol from '../../assets/images/confirm.svg'
 import cancelSymbol from '../../assets/images/cancel.svg'
 
-const Options = props => {
+const mapDispatchToProps = dispatch => ({
+  deleteNote: noteID => dispatch(actions.requestDeleteNote(noteID)),
+})
+
+const Options = ({ id, edit, deleteNote, toggleConfirmMessage }) => {
   const [showConfirmIcons, setShowConfirmIcons] = useState(false)
 
-  const deletePressedHandler = mode => {
-    props.toggleConfirmMessage(mode)
-    setShowConfirmIcons(mode)
+  const deletePressedHandler = bool => {
+    toggleConfirmMessage(bool)
+    setShowConfirmIcons(bool)
   }
 
   return (
@@ -25,7 +29,7 @@ const Options = props => {
             src={confirmSymbol}
             alt="Confirm"
             title="Confirm"
-            onClick={() => props.deleteNote(props.id)}
+            onClick={() => deleteNote(id)}
           />
           <img
             className={styles.cancel}
@@ -37,13 +41,7 @@ const Options = props => {
         </>
       ) : (
         <>
-          <img
-            className={styles.edit}
-            src={editSymbol}
-            alt="Edit"
-            title="Edit"
-            onClick={props.edit}
-          />
+          <img className={styles.edit} src={editSymbol} alt="Edit" title="Edit" onClick={edit} />
           <img
             className={styles.delete}
             src={deleteSymbol}
@@ -56,9 +54,5 @@ const Options = props => {
     </div>
   )
 }
-
-const mapDispatchToProps = dispatch => ({
-  deleteNote: noteID => dispatch(actions.requestDeleteNote(noteID)),
-})
 
 export default connect(null, mapDispatchToProps)(Options)

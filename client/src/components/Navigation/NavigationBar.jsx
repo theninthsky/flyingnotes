@@ -8,32 +8,21 @@ import lightThemeIcon from '../../assets/images/theme-light.svg'
 import darkThemeIcon from '../../assets/images/theme-dark.svg'
 import userIcon from '../../assets/images/user-astronaut.svg'
 
-const NavigationBar = props => {
-  const { theme, user } = props
-
+export default ({ theme, user, changeTheme }) => {
   const [showCookiesMessage, setShowCookiesMessage] = useState(true)
-
-  const toggleCookiesMessageHandler = mode => setShowCookiesMessage(mode)
 
   return (
     <>
       <nav className={styles.navBar}>
         <img
-          className={`${styles.theme} ${
-            theme === 'dark' ? styles.themeDark : ''
-          }`}
+          className={`${styles.theme} ${theme === 'dark' ? styles.themeDark : ''}`}
           src={theme === 'light' ? lightThemeIcon : darkThemeIcon}
           alt="Theme"
           title="Theme"
-          onClick={props.changeTheme}
+          onClick={changeTheme}
         />
 
-        <NavLink
-          className={styles.notes}
-          activeClassName={styles.active}
-          exact
-          to="/"
-        >
+        <NavLink className={styles.notes} activeClassName={styles.active} exact to="/">
           Notes
         </NavLink>
 
@@ -45,30 +34,21 @@ const NavigationBar = props => {
             to={'/account'}
           >
             <img
-              className={`${styles.user} ${
-                theme === 'dark' ? styles.userDark : ''
-              }`}
+              className={`${styles.user} ${theme === 'dark' ? styles.userDark : ''}`}
               src={userIcon}
               alt={user.name}
             />
           </NavLink>
         ) : (
-          <NavLink
-            className={styles.auth}
-            activeClassName={styles.active}
-            title={'Login'}
-            to={'/auth'}
-          >
+          <NavLink className={styles.auth} activeClassName={styles.active} title={'Login'} to={'/auth'}>
             {'Login'}
           </NavLink>
         )}
       </nav>
 
-      {showCookiesMessage && !user.name ? (
-        <CookiesMessage theme={theme} toggle={toggleCookiesMessageHandler} />
-      ) : null}
+      {showCookiesMessage && !user.name && (
+        <CookiesMessage theme={theme} toggle={mode => setShowCookiesMessage(mode)} />
+      )}
     </>
   )
 }
-
-export default NavigationBar

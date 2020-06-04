@@ -2,18 +2,16 @@ import React from 'react'
 
 import './CookiesMessage.scss'
 
-const CookiesMessage = props => {
+export default ({theme, toggle}) => {
   return (
     <div
       className={`cookiesMessage ${
-        props.theme === 'dark' ? 'cookiesMessageDark' : ''
+        theme === 'dark' ? 'cookiesMessageDark' : ''
       }`}
-      onClick={() => props.toggle(false)}
+      onClick={() => toggle(false)}
     >
       Notes are saved as cookies and will be lost if you clear the browser's
       data. Login to have your notes and files saved on the cloud.
     </div>
   )
 }
-
-export default CookiesMessage

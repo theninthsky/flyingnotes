@@ -27,7 +27,7 @@ const {
 const app = express()
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const RedisStore = connectRedis(session)
-const redisClient = redis.createClient(REDIS_URI)
+export const redisClient = redis.createClient(REDIS_URI)
 
 app.use(express.static(join(__dirname, '..', '..', 'client', 'build')))
 app.use(express.json())
@@ -65,11 +65,11 @@ redisClient.on('connect', () => {
 })
 redisClient.on('error', ({ message }) => console.error(`Error: ${message}`))
 
-// redisClient.monitor(function (err, res) {
-//   console.log('Entering monitoring mode.')
+// redisClient.monitor((err, res) => {
+//   console.log('Redis: Entering monitoring mode.')
 // })
 
-// redisClient.on('monitor', function (time, args, rawReply) {
+// redisClient.on('monitor', (time, args, rawReply) => {
 //   console.log(args)
 // })
 

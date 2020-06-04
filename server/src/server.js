@@ -24,8 +24,6 @@ if (cluster.isMaster && NODE_ENV == 'production') {
   setInterval(() => http.get(HEROKUAPP_URL), 900000) // keep Heroku app awake
 } else {
   import('./app.js').then(({ default: app }) => {
-    app.listen(PORT, () => {
-      console.log(`[Worker ${process.pid}] Listening on port ${PORT}...`)
-    })
+    app.listen(PORT, () => console.log(`[Worker ${process.pid}] Listening on port ${PORT}...`))
   })
 }
