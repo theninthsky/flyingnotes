@@ -2,15 +2,15 @@ import React, { useEffect } from 'react'
 import { Switch, Route, useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import NavigationBar from './components/Navigation/NavigationBar'
-import Auth from './components/Auth/Auth'
-import User from './components/Auth/User'
-import Notes from './components/Notes/Notes'
-import Spinner from './components/UI/Spinner'
-import * as actions from './store/actions/index'
+import NavigationBar from '../NavigationBar/NavigationBar'
+import Auth from '../Auth/Auth'
+import User from '../User/User'
+import Notes from '../Notes/Notes'
+import Spinner from '../UI/Spinner'
+import * as actions from '../../store/actions/index'
 import './App.scss'
 
-import images from './util/images'
+import images from '../../util/images'
 
 const mapStateToProps = state => ({
   app: state.app,

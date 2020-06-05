@@ -7,13 +7,4 @@ import fileIcon from '../assets/images/file.svg'
 import lightThemeIcon from '../assets/images/theme-light.svg'
 import darkThemeIcon from '../assets/images/theme-dark.svg'
 
-export default [
-  cancelIcon,
-  confirmIcon,
-  deleteIcon,
-  downloadIcon,
-  editIcon,
-  fileIcon,
-  lightThemeIcon,
-  darkThemeIcon
-]
+export default [cancelIcon, confirmIcon, deleteIcon, downloadIcon, editIcon, fileIcon, lightThemeIcon, darkThemeIcon]

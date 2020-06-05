@@ -1,5 +1,5 @@
-import * as actionTypes from './actionTypes'
+import { FETCH_FILE, POPULATE_FILE } from './constants'
 
-export const fetchFile = note => ({ type: actionTypes.FETCH_FILE, note })
+export const fetchFile = note => ({ type: FETCH_FILE, note })
 
-export const populateFile = note => ({ type: actionTypes.POPULATE_FILE, note })
+export const populateFile = note => ({ type: POPULATE_FILE, note })

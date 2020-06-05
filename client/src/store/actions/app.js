@@ -1,51 +1,62 @@
-import * as actionTypes from './actionTypes'
+import {
+  LOADING,
+  REQUEST_CHANGE_THEME,
+  CHANGE_THEME,
+  ERROR,
+  NOTES_FETCHED,
+  LOCAL_NOTES_SET,
+  ADDING_NOTE,
+  UPDATING_NOTE,
+  DELETING_NOTE,
+  FETCHING_FILE,
+} from './constants'
 
 export const loading = state => ({
-  type: actionTypes.LOADING,
+  type: LOADING,
   loading: state,
 })
 
 export const requestChangeTheme = () => ({
-  type: actionTypes.REQUEST_CHANGE_THEME,
+  type: REQUEST_CHANGE_THEME,
 })
 export const changeTheme = theme => ({
-  type: actionTypes.CHANGE_THEME,
+  type: CHANGE_THEME,
   theme,
 })
 
 export const showError = errorMessage => ({
-  type: actionTypes.ERROR,
+  type: ERROR,
   errorMessage,
 })
 
 export const clearError = () => ({
-  type: actionTypes.ERROR,
+  type: ERROR,
   errorMessage: false,
 })
 
 export const notesFetched = status => ({
-  type: actionTypes.NOTES_FETCHED,
+  type: NOTES_FETCHED,
   status,
 })
 
-export const localNotesSet = () => ({ type: actionTypes.LOCAL_NOTES_SET })
+export const localNotesSet = () => ({ type: LOCAL_NOTES_SET })
 
 export const addingNote = status => ({
-  type: actionTypes.ADDING_NOTE,
+  type: ADDING_NOTE,
   status,
 })
 
 export const updatingNote = noteID => ({
-  type: actionTypes.UPDATING_NOTE,
+  type: UPDATING_NOTE,
   noteID,
 })
 
 export const deletingNote = noteID => ({
-  type: actionTypes.DELETING_NOTE,
+  type: DELETING_NOTE,
   noteID,
 })
 
 export const fetchingFile = noteID => ({
-  type: actionTypes.FETCHING_FILE,
+  type: FETCHING_FILE,
   noteID,
 })

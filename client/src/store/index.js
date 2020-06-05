@@ -11,14 +11,9 @@ import filesSaga from '../sagas/files'
 const sagaMiddleware = createSagaMiddleware()
 
 const composeEnhancers =
-  process.env.NODE_ENV === 'development'
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-    : compose
+  process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose : compose
 
-export default createStore(
-  rootReducer,
-  composeEnhancers(applyMiddleware(sagaMiddleware)),
-)
+export default createStore(rootReducer, composeEnhancers(applyMiddleware(sagaMiddleware)))
 
 sagaMiddleware.run(appSaga)
 sagaMiddleware.run(userSaga)

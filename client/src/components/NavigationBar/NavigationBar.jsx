@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 
-import CookiesMessage from './CookiesMessage'
+import CookiesMessage from '../CookiesMessage/CookiesMessage'
 import styles from './NavigationBar.module.scss'
 
 import lightThemeIcon from '../../assets/images/theme-light.svg'

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { connect } from 'react-redux'
 
-import Note from './Note'
-import NewNote from './NewNote'
+import Note from '../Note/Note'
+import NewNote from '../NewNote/NewNote'
 import * as actions from '../../store/actions/index'
 import styles from './Notes.module.scss'
 

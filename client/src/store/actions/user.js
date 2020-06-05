@@ -1,25 +1,25 @@
-import * as actionTypes from './actionTypes'
+import { REGISTER, LOGIN, UPDATE, CHANGE_PASSWORD, LOGOUT, SET_NAME } from './constants'
 
 export const register = credentials => ({
-  type: actionTypes.REGISTER,
+  type: REGISTER,
   credentials,
 })
 
 export const login = credentials => ({
-  type: actionTypes.LOGIN,
+  type: LOGIN,
   credentials,
 })
 
 export const update = name => ({
-  type: actionTypes.UPDATE,
+  type: UPDATE,
   name,
 })
 
 export const changePassword = passwords => ({
-  type: actionTypes.CHANGE_PASSWORD,
+  type: CHANGE_PASSWORD,
   passwords,
 })
 
-export const logout = () => ({ type: actionTypes.LOGOUT })
+export const logout = () => ({ type: LOGOUT })
 
-export const setName = name => ({ type: actionTypes.SET_NAME, name })
+export const setName = name => ({ type: SET_NAME, name })

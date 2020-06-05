@@ -1,7 +1,7 @@
 import { all, put, takeLatest } from 'redux-saga/effects'
 import axios from 'axios'
 
-import * as actionTypes from '../store/actions/actionTypes'
+import { FETCH_NOTES, REQUEST_ADD_NOTE, REQUEST_UPDATE_NOTE, REQUEST_DELETE_NOTE } from '../store/actions/constants'
 import * as actions from '../store/actions/index'
 
 const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
@@ -26,9 +26,7 @@ function* fetchNotes() {
       notes = data.notes
       yield put(actions.notesFetched(true))
     } else {
-      notes = JSON.parse(
-        localStorage.notes || `[${JSON.stringify(exampleNote)}]`,
-      )
+      notes = JSON.parse(localStorage.notes || `[${JSON.stringify(exampleNote)}]`)
       yield put(actions.localNotesSet())
     }
 
@@ -43,25 +41,17 @@ function* fetchNotes() {
 function* addNote({ newNote }) {
   yield put(actions.addingNote(true))
   if (localStorage.name) {
-    const { data } = yield axios.post(
-      `${REACT_APP_SERVER_URL}/notes`,
-      newNote,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+    const { data } = yield axios.post(`${REACT_APP_SERVER_URL}/notes`, newNote, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
       },
-    )
+    })
     newNote = data.newNote
   } else {
     newNote = { ...newNote, _id: Date.now(), date: Date.now() }
     localStorage.setItem(
       'notes',
-      JSON.stringify(
-        localStorage.notes
-          ? [...JSON.parse(localStorage.notes), newNote]
-          : [newNote],
-      ),
+      JSON.stringify(localStorage.notes ? [...JSON.parse(localStorage.notes), newNote] : [newNote]),
     )
   }
 
@@ -72,25 +62,17 @@ function* addNote({ newNote }) {
 function* updateNote({ updatedNote }) {
   yield put(actions.updatingNote(updatedNote.get('_id')))
   if (localStorage.name) {
-    const { data } = yield axios.put(
-      `${REACT_APP_SERVER_URL}/notes`,
-      updatedNote,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+    const { data } = yield axios.put(`${REACT_APP_SERVER_URL}/notes`, updatedNote, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
       },
-    )
+    })
     updatedNote = data.updatedNote
   } else {
     updatedNote.date = Date.now()
     localStorage.setItem(
       'notes',
-      JSON.stringify(
-        JSON.parse(localStorage.notes).map(note =>
-          note._id === updatedNote._id ? updatedNote : note,
-        ),
-      ),
+      JSON.stringify(JSON.parse(localStorage.notes).map(note => (note._id === updatedNote._id ? updatedNote : note))),
     )
   }
 
@@ -110,12 +92,7 @@ function* deleteNote({ noteID }) {
       yield put(actions.showError(err))
     }
   } else {
-    localStorage.setItem(
-      'notes',
-      JSON.stringify(
-        JSON.parse(localStorage.notes).filter(note => note._id !== noteID),
-      ),
-    )
+    localStorage.setItem('notes', JSON.stringify(JSON.parse(localStorage.notes).filter(note => note._id !== noteID)))
   }
 
   yield put(actions.deleteNote(noteID))
@@ -124,9 +101,9 @@ function* deleteNote({ noteID }) {
 
 export default function* rootSaga() {
   yield all([
-    takeLatest(actionTypes.FETCH_NOTES, fetchNotes),
-    takeLatest(actionTypes.REQUEST_ADD_NOTE, addNote),
-    takeLatest(actionTypes.REQUEST_UPDATE_NOTE, updateNote),
-    takeLatest(actionTypes.REQUEST_DELETE_NOTE, deleteNote),
+    takeLatest(FETCH_NOTES, fetchNotes),
+    takeLatest(REQUEST_ADD_NOTE, addNote),
+    takeLatest(REQUEST_UPDATE_NOTE, updateNote),
+    takeLatest(REQUEST_DELETE_NOTE, deleteNote),
   ])
 }

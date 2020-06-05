@@ -1,4 +1,4 @@
-import * as actionTypes from '../actions/actionTypes'
+import { SET_NAME } from '../actions/constants'
 
 const initialState = {
   name: localStorage.name,
@@ -6,7 +6,7 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.SET_NAME:
+    case SET_NAME:
       return { name: action.name }
     default:
       return state

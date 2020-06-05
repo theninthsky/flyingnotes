@@ -1,29 +1,38 @@
-import * as actionTypes from './actionTypes'
+import {
+  SET_NOTES,
+  FETCH_NOTES,
+  REQUEST_ADD_NOTE,
+  ADD_NOTE,
+  REQUEST_UPDATE_NOTE,
+  UPDATE_NOTE,
+  REQUEST_DELETE_NOTE,
+  DELETE_NOTE,
+} from './constants'
 
-export const setNotes = notes => ({ type: actionTypes.SET_NOTES, notes })
+export const setNotes = notes => ({ type: SET_NOTES, notes })
 
-export const fetchNotes = () => ({ type: actionTypes.FETCH_NOTES })
+export const fetchNotes = () => ({ type: FETCH_NOTES })
 
 export const requestAddNote = newNote => ({
-  type: actionTypes.REQUEST_ADD_NOTE,
+  type: REQUEST_ADD_NOTE,
   newNote,
 })
-export const addNote = newNote => ({ type: actionTypes.ADD_NOTE, newNote })
+export const addNote = newNote => ({ type: ADD_NOTE, newNote })
 
 export const requestUpdateNote = updatedNote => ({
-  type: actionTypes.REQUEST_UPDATE_NOTE,
+  type: REQUEST_UPDATE_NOTE,
   updatedNote,
 })
 export const updateNote = updatedNote => ({
-  type: actionTypes.UPDATE_NOTE,
+  type: UPDATE_NOTE,
   updatedNote,
 })
 
 export const requestDeleteNote = noteID => ({
-  type: actionTypes.REQUEST_DELETE_NOTE,
+  type: REQUEST_DELETE_NOTE,
   noteID,
 })
 export const deleteNote = noteID => ({
-  type: actionTypes.DELETE_NOTE,
+  type: DELETE_NOTE,
   noteID,
 })

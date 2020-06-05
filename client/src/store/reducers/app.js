@@ -1,4 +1,14 @@
-import * as actionTypes from '../actions/actionTypes'
+import {
+  CHANGE_THEME,
+  LOADING,
+  ERROR,
+  NOTES_FETCHED,
+  LOCAL_NOTES_SET,
+  ADDING_NOTE,
+  UPDATING_NOTE,
+  DELETING_NOTE,
+  FETCHING_FILE,
+} from '../actions/constants'
 
 const initialState = {
   theme: localStorage.theme || 'light',
@@ -14,23 +24,23 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.CHANGE_THEME:
+    case CHANGE_THEME:
       return { ...state, theme: action.theme }
-    case actionTypes.LOADING:
+    case LOADING:
       return { ...state, loading: action.loading }
-    case actionTypes.ERROR:
+    case ERROR:
       return { ...state, errorMessage: action.errorMessage }
-    case actionTypes.NOTES_FETCHED:
+    case NOTES_FETCHED:
       return { ...state, notesFetched: action.status }
-    case actionTypes.LOCAL_NOTES_SET:
+    case LOCAL_NOTES_SET:
       return { ...state, localNotesSet: true }
-    case actionTypes.ADDING_NOTE:
+    case ADDING_NOTE:
       return { ...state, addingNote: action.status }
-    case actionTypes.UPDATING_NOTE:
+    case UPDATING_NOTE:
       return { ...state, updatingNote: action.noteID }
-    case actionTypes.DELETING_NOTE:
+    case DELETING_NOTE:
       return { ...state, deletingNote: action.noteID }
-    case actionTypes.FETCHING_FILE:
+    case FETCHING_FILE:
       return { ...state, fetchingFile: action.noteID }
 
     default:

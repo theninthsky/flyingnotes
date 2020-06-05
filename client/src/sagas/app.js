@@ -1,6 +1,6 @@
 import { put, takeEvery } from 'redux-saga/effects'
 
-import * as actionTypes from '../store/actions/actionTypes'
+import { REQUEST_CHANGE_THEME } from '../store/actions/constants'
 import * as actions from '../store/actions/index'
 
 function* changeTheme() {
@@ -10,5 +10,5 @@ function* changeTheme() {
 }
 
 export default function* rootSaga() {
-  yield takeEvery(actionTypes.REQUEST_CHANGE_THEME, changeTheme)
+  yield takeEvery(REQUEST_CHANGE_THEME, changeTheme)
 }

@@ -1,7 +1,7 @@
 import { put, takeLatest } from 'redux-saga/effects'
 import axios from 'axios'
 
-import * as actionTypes from '../store/actions/actionTypes'
+import { FETCH_FILE } from '../store/actions/constants'
 import * as actions from '../store/actions/index'
 
 const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
@@ -31,5 +31,5 @@ function* fetchFile({ note }) {
 }
 
 export default function* rootSaga() {
-  yield takeLatest(actionTypes.FETCH_FILE, fetchFile)
+  yield takeLatest(FETCH_FILE, fetchFile)
 }

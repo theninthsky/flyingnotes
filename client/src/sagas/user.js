@@ -1,7 +1,7 @@
 import { all, put, takeLatest } from 'redux-saga/effects'
 import axios from 'axios'
 
-import * as actionTypes from '../store/actions/actionTypes'
+import { REGISTER, LOGIN, UPDATE, CHANGE_PASSWORD, LOGOUT } from '../store/actions/constants'
 import * as actions from '../store/actions/index'
 
 const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
@@ -84,10 +84,10 @@ function* logout() {
 
 export default function* rootSaga() {
   yield all([
-    takeLatest(actionTypes.REGISTER, register),
-    takeLatest(actionTypes.LOGIN, login),
-    takeLatest(actionTypes.UPDATE, update),
-    takeLatest(actionTypes.CHANGE_PASSWORD, changePassword),
-    takeLatest(actionTypes.LOGOUT, logout),
+    takeLatest(REGISTER, register),
+    takeLatest(LOGIN, login),
+    takeLatest(UPDATE, update),
+    takeLatest(CHANGE_PASSWORD, changePassword),
+    takeLatest(LOGOUT, logout),
   ])
 }
