@@ -79,7 +79,7 @@ app.use(
     secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    store: new RedisStore({ client: redisClient, disableTouch: true }),
+    store: NODE_ENV != 'test' ? new RedisStore({ client: redisClient, disableTouch: true }) : undefined,
   }),
 )
 
