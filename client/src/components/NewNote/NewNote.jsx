@@ -14,8 +14,8 @@ const colorsArray = [
   '#d35400',
   '#f39c12',
   '#27ae60',
-  '#16a085',
   '#2980b9',
+  '#006B76',
   '#8e44ad',
   '#2c3e50',
   '#7f8c8d',
@@ -38,7 +38,7 @@ const NewNote = props => {
   const { addNote, updateNote } = props
 
   const [showColorPicker, setShowColorPicker] = useState(false)
-  const [color, setColor] = useState(props.color || colorsArray[Math.floor(Math.random() * 10)])
+  const [color, setColor] = useState(props.color || colorsArray[~~(Math.random() * 10)])
   const [category, setCategory] = useState(props.category || '')
   const [title, setTitle] = useState(props.title || '')
   const [content, setContent] = useState(props.content || '')
@@ -82,7 +82,7 @@ const NewNote = props => {
       closeOptions()
     } else {
       addNote(note)
-      setColor('#006B76')
+      setColor(colorsArray[~~(Math.random() * 10)])
       setCategory('')
       setTitle('')
       setContent('')
@@ -110,7 +110,7 @@ const NewNote = props => {
       closeOptions()
     } else {
       addNote(data)
-      setColor('#006B76')
+      setColor(colorsArray[~~(Math.random() * 10)])
       setCategory('')
       setTitle('')
       setContent('')
