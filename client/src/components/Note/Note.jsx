@@ -1,28 +1,37 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 
-import * as actions from '../../store/actions/index'
+import { fetchFile } from '../../store/actions/index'
 import Options from '../Options/Options'
 import NewNote from '../NewNote/NewNote'
 import NoteSpinner from '../UI/NoteSpinner'
 import FileSpinner from '../UI/FileSpinner'
-import styles from './Note.module.scss'
 
 import fileIcon from '../../assets/images/file.svg'
 import downloadIcon from '../../assets/images/download.svg'
+import style from './Note.module.scss'
 
 const mapStateToProps = state => ({
   app: state.app,
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchFile: note => dispatch(actions.fetchFile(note)),
+  fetchFile: note => dispatch(fetchFile(note)),
 })
 
 const Note = props => {
-  const { _id, color, category, title, content, date, fileName, file } = props
-  const { theme, fetchingFile, updatingNote, deletingNote } = props.app
-  const { fetchFile } = props
+  const {
+    _id,
+    color,
+    category,
+    title,
+    content,
+    date,
+    fileName,
+    file,
+    app: { theme, fetchingFile, updatingNote, deletingNote },
+    fetchFile,
+  } = props
 
   const [showOptions, setShowOptions] = useState(false)
   const [editMode, setEditMode] = useState(false)
@@ -50,34 +59,35 @@ const Note = props => {
     />
   ) : (
     <div
-      className={styles.note}
+      className={style.note}
+      style={updatingNote === _id || deletingNote === _id ? { opacity: '0.5' } : {}}
       onMouseMove={() => setShowOptions(true)}
       onMouseLeave={() => setShowOptions(showConfirmMessage)}
     >
       {category && (
         <>
-          <div className={styles.categoryBackground} style={{ backgroundColor: color }}>
+          <div className={style.categoryBackground} style={{ backgroundColor: color }}>
             &nbsp;
           </div>
-          <div className={styles.category} dir="auto">
+          <div className={style.category} dir="auto">
             {category.toUpperCase()}
           </div>
         </>
       )}
 
       {title && (
-        <h1 className={styles.title} dir="auto">
+        <h1 className={style.title} dir="auto">
           {title}
         </h1>
       )}
 
-      <div className={styles.content} dir="auto">
+      <div className={style.content} dir="auto">
         {content}
       </div>
 
       {file ? (
         <img
-          className={styles.download}
+          className={style.download}
           src={downloadIcon}
           alt={fileName}
           title={fileName}
@@ -89,7 +99,7 @@ const Note = props => {
           <FileSpinner />
         ) : (
           <img
-            className={`${styles.file} ${theme === 'dark' ? styles.fileDark : ''}`}
+            className={`${style.file} ${theme === 'dark' ? style.fileDark : ''}`}
             src={fileIcon}
             alt={fileName}
             title={fileName}
@@ -111,9 +121,9 @@ const Note = props => {
       )}
 
       {showConfirmMessage && updatingNote !== _id && deletingNote !== _id ? (
-        <div className={styles.confirmMessage}>Delete this note?</div>
+        <div className={style.confirmMessage}>Delete this note?</div>
       ) : (
-        <div className={styles.date}>{new Date(date).toLocaleString('en-GB').replace(',', '').slice(0, -3)}</div>
+        <div className={style.date}>{new Date(date).toLocaleString('en-GB').replace(',', '').slice(0, -3)}</div>
       )}
     </div>
   )

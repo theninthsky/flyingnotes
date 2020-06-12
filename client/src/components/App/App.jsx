@@ -2,15 +2,15 @@ import React, { useEffect } from 'react'
 import { Switch, Route, useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 
+import { requestChangeTheme } from '../../store/actions/index'
 import NavigationBar from '../NavigationBar/NavigationBar'
 import Auth from '../Auth/Auth'
 import User from '../User/User'
 import Notes from '../Notes/Notes'
 import Spinner from '../UI/Spinner'
-import * as actions from '../../store/actions/index'
-import './App.scss'
-
 import images from '../../util/images'
+
+import './App.scss'
 
 const mapStateToProps = state => ({
   app: state.app,
@@ -18,20 +18,14 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  onChangeTheme: () => dispatch(actions.requestChangeTheme()),
+  onChangeTheme: () => dispatch(requestChangeTheme()),
 })
 
-const App = props => {
-  const {
-    app: { theme, loading, notesFetched },
-    user,
-    onChangeTheme,
-  } = props
-
+const App = ({ app: { theme, loading, notesFetched }, user, onChangeTheme }) => {
   const history = useHistory()
 
   useEffect(() => {
-    theme === 'dark' ? document.body.classList.add('dark') : document.body.classList.remove('dark')
+    document.body.classList[`${theme === 'dark' ? 'add' : 'remove'}`]('dark')
   }, [theme])
 
   useEffect(() => {

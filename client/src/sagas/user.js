@@ -2,15 +2,15 @@ import { all, put, takeLatest } from 'redux-saga/effects'
 import axios from 'axios'
 
 import { REGISTER, LOGIN, UPDATE, CHANGE_PASSWORD, LOGOUT } from '../store/actions/constants'
-import * as actions from '../store/actions/index'
+import { loading, clearError, setName, setNotes, notesFetched, showError } from '../store/actions/index'
 
 const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
 
 axios.defaults.withCredentials = true
 
-function* register({ credentials }) {
-  yield put(actions.loading(true))
-  yield put(actions.clearError())
+function* handleRegister({ credentials }) {
+  yield put(loading(true))
+  yield put(clearError())
   try {
     const {
       data: { name, notes },
@@ -22,72 +22,72 @@ function* register({ credentials }) {
     })
     localStorage.clear()
     localStorage.setItem('name', name)
-    yield put(actions.setName(name))
-    yield put(actions.setNotes(notes))
-    yield put(actions.notesFetched(true))
+    yield put(setName(name))
+    yield put(setNotes(notes))
+    yield put(notesFetched(true))
   } catch ({ response: { data } }) {
-    yield put(actions.showError(data))
+    yield put(showError(data))
   }
-  yield put(actions.loading(false))
+  yield put(loading(false))
 }
 
-function* login({ credentials }) {
-  yield put(actions.loading(true))
-  yield put(actions.clearError())
+function* handleLogin({ credentials }) {
+  yield put(loading(true))
+  yield put(clearError())
   try {
     const {
       data: { name, notes },
     } = yield axios.post(`${REACT_APP_SERVER_URL}/login`, credentials)
     localStorage.setItem('name', name)
 
-    yield put(actions.setName(name))
-    yield put(actions.setNotes(notes))
-    yield put(actions.notesFetched(true))
+    yield put(setName(name))
+    yield put(setNotes(notes))
+    yield put(notesFetched(true))
   } catch ({ response: { data } }) {
-    yield put(actions.showError(data))
+    yield put(showError(data))
   }
-  yield put(actions.loading(false))
+  yield put(loading(false))
 }
 
-function* update({ name }) {
+function* handleUpdate({ name }) {
   yield axios.put(`${REACT_APP_SERVER_URL}/update`, { name })
   localStorage.setItem('name', name)
-  yield put(actions.setName(name))
+  yield put(setName(name))
 }
 
-function* changePassword({ passwords }) {
-  yield put(actions.loading(true))
-  yield put(actions.clearError())
+function* handleChangePassword({ passwords }) {
+  yield put(loading(true))
+  yield put(clearError())
   try {
     yield axios.put(`${REACT_APP_SERVER_URL}/register`, passwords)
   } catch ({ response: { data } }) {
-    yield put(actions.showError(data))
+    yield put(showError(data))
   }
-  yield put(actions.loading(false))
+  yield put(loading(false))
 }
 
-function* logout() {
-  yield put(actions.loading(true))
+function* handleLogout() {
+  yield put(loading(true))
   try {
     yield axios.post(`${REACT_APP_SERVER_URL}/logout`)
 
     localStorage.removeItem('name')
 
-    yield put(actions.setNotes(JSON.parse(localStorage.notes || '[]')))
-    yield put(actions.setName(null))
+    yield put(setNotes(JSON.parse(localStorage.notes || '[]')))
+    yield put(setName(null))
   } catch (err) {
-    yield put(actions.showError(err))
+    yield put(showError(err))
   }
-  yield put(actions.loading(false))
-  yield put(actions.notesFetched(false))
+  yield put(loading(false))
+  yield put(notesFetched(false))
 }
 
 export default function* rootSaga() {
   yield all([
-    takeLatest(REGISTER, register),
-    takeLatest(LOGIN, login),
-    takeLatest(UPDATE, update),
-    takeLatest(CHANGE_PASSWORD, changePassword),
-    takeLatest(LOGOUT, logout),
+    takeLatest(REGISTER, handleRegister),
+    takeLatest(LOGIN, handleLogin),
+    takeLatest(UPDATE, handleUpdate),
+    takeLatest(CHANGE_PASSWORD, handleChangePassword),
+    takeLatest(LOGOUT, handleLogout),
   ])
 }

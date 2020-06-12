@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import * as actions from '../../store/actions/index'
-import styles from './Auth.module.scss'
+import style from './Auth.module.scss'
 
 const mapStateToProps = state => ({
   app: state.app,
@@ -40,19 +40,19 @@ const Auth = ({ app: { errorMessage }, user, onFormSubmit }) => {
   }
 
   return (
-    <div className={styles.auth}>
-      <div className={styles.title}>
-        <h1 className={action === 'Login' ? null : styles.notActive} onClick={actionChangedHandler}>
+    <div className={style.auth}>
+      <div className={style.title}>
+        <h1 className={action === 'Login' ? null : style.notActive} onClick={actionChangedHandler}>
           Login
         </h1>
-        <div className={styles.divider}></div>
-        <h1 className={action === 'Register' ? null : styles.notActive} onClick={actionChangedHandler}>
+        <div className={style.divider}></div>
+        <h1 className={action === 'Register' ? null : style.notActive} onClick={actionChangedHandler}>
           Register
         </h1>
       </div>
 
       <form onSubmit={submitFormHandler}>
-        {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
+        {errorMessage && <p className={style.errorMessage}>{errorMessage}</p>}
         {action === 'Register' ? (
           <input type="text" value={name} placeholder="Name" required onChange={event => setName(event.target.value)} />
         ) : (
@@ -73,7 +73,7 @@ const Auth = ({ app: { errorMessage }, user, onFormSubmit }) => {
           required
           onChange={event => setPassword(event.target.value)}
         />
-        <input className={styles.login_register} type="submit" value={action} />
+        <input className={style.login_register} type="submit" value={action} />
       </form>
     </div>
   )

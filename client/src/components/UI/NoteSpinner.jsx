@@ -1,7 +1,7 @@
 import React from 'react'
 
-import styles from './NoteSpinner.module.scss'
+import style from './NoteSpinner.module.scss'
 
 export default () => {
-  return <div className={styles.NoteSpinner}></div>
+  return <div className={style.NoteSpinner}></div>
 }

@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { connect } from 'react-redux'
 
+import { fetchNotes } from '../../store/actions/index'
 import Note from '../Note/Note'
 import NewNote from '../NewNote/NewNote'
-import * as actions from '../../store/actions/index'
-import styles from './Notes.module.scss'
+
+import style from './Notes.module.scss'
 
 const mapStateToProps = state => ({
   app: state.app,
@@ -12,7 +13,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchNotes: () => dispatch(actions.fetchNotes()),
+  fetchNotes: () => dispatch(fetchNotes()),
 })
 
 const Notes = ({ app: { theme, loading, notesFetched, localNotesSet }, notes, fetchNotes }) => {
@@ -51,9 +52,9 @@ const Notes = ({ app: { theme, loading, notesFetched, localNotesSet }, notes, fe
     <>
       {loading || (
         <>
-          <div className={styles.filters}>
+          <div className={style.filters}>
             <select
-              className={`${styles.categoryFilter} ${theme === 'dark' ? styles.categoryFilterDark : ''}`}
+              className={`${style.categoryFilter} ${theme === 'dark' ? style.categoryFilterDark : ''}`}
               title="Category"
               onChange={event => setCategoryFilter(event.target.value)}
             >
@@ -70,10 +71,10 @@ const Notes = ({ app: { theme, loading, notesFetched, localNotesSet }, notes, fe
                 ))}
             </select>
 
-            <div className={`${styles.searchFilter} ${theme === 'dark' ? styles.searchFilterDark : ''}`}>
-              <i className={'fa fa-search ' + styles.searchIcon}></i>
+            <div className={`${style.searchFilter} ${theme === 'dark' ? style.searchFilterDark : ''}`}>
+              <i className={'fa fa-search ' + style.searchIcon}></i>
               <input
-                className={styles.searchBox}
+                className={style.searchBox}
                 type="search"
                 value={searchFilter}
                 placeholder="Search..."
@@ -82,7 +83,7 @@ const Notes = ({ app: { theme, loading, notesFetched, localNotesSet }, notes, fe
             </div>
           </div>
 
-          <div className={styles.notesContainer}>
+          <div className={style.notesContainer}>
             <NewNote />
             {filteredNotes}
           </div>

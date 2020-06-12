@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { GithubPicker } from 'react-color'
 
-import * as actions from '../../store/actions/index'
+import { requestAddNote, requestUpdateNote } from '../../store/actions/index'
 import NoteSpinner from '../UI/NoteSpinner'
-import styles from './NewNote.module.scss'
 
 import colorPaletteIcon from '../../assets/images/color-palette.svg'
 import uploadIcon from '../../assets/images/upload.svg'
+import style from './NewNote.module.scss'
 
 const colorsArray = [
   '#c0392b',
@@ -28,14 +28,19 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  addNote: note => dispatch(actions.requestAddNote(note)),
-  updateNote: note => dispatch(actions.requestUpdateNote(note)),
+  addNote: note => dispatch(requestAddNote(note)),
+  updateNote: note => dispatch(requestUpdateNote(note)),
 })
 
 const NewNote = props => {
-  const { update, toggleEditMode, closeOptions } = props
-  const { theme, addingNote } = props.app
-  const { addNote, updateNote } = props
+  const {
+    update,
+    toggleEditMode,
+    closeOptions,
+    app: { theme, addingNote },
+    addNote,
+    updateNote,
+  } = props
 
   const [showColorPicker, setShowColorPicker] = useState(false)
   const [color, setColor] = useState(props.color || colorsArray[~~(Math.random() * 10)])
@@ -119,17 +124,17 @@ const NewNote = props => {
   }
 
   return (
-    <div className={styles.note}>
+    <div className={style.note} style={addingNote ? { opacity: '0.5' } : {}}>
       <form onSubmit={props.user.name ? saveNoteOnCloudHandler : saveNoteLocallyHandler} autoComplete="off">
         <img
-          className={styles.colorPalette}
+          className={style.colorPalette}
           src={colorPaletteIcon}
           alt="Choose color"
           onClick={() => setShowColorPicker(!showColorPicker)}
         />
         {showColorPicker ? (
           <GithubPicker
-            className={styles.colorPicker}
+            className={style.colorPicker}
             width="262px"
             triangle="hide"
             colors={colorsArray}
@@ -137,11 +142,11 @@ const NewNote = props => {
           />
         ) : (
           <>
-            <div className={styles.categoryBackground} style={{ backgroundColor: color }}>
+            <div className={style.categoryBackground} style={{ backgroundColor: color }}>
               &nbsp;
             </div>
             <input
-              className={styles.category}
+              className={style.category}
               type="text"
               value={category.toUpperCase()}
               dir="auto"
@@ -153,7 +158,7 @@ const NewNote = props => {
           </>
         )}
         <input
-          className={`${styles.title} ${theme === 'dark' ? styles.titleDark : ''}`}
+          className={`${style.title} ${theme === 'dark' ? style.titleDark : ''}`}
           type="text"
           dir="auto"
           placeholder="Title"
@@ -164,7 +169,7 @@ const NewNote = props => {
         />
         <>
           <textarea
-            className={styles.content}
+            className={style.content}
             dir="auto"
             value={content}
             title="Note's content"
@@ -175,18 +180,18 @@ const NewNote = props => {
             <>
               <label htmlFor={`file-input-${props._id}`}>
                 <img
-                  className={styles.upload}
+                  className={style.upload}
                   src={uploadIcon}
                   alt={selectedFile ? selectedFile.name : props.fileName || 'Upload a File'}
                   title={selectedFile ? selectedFile.name : props.fileName || 'Upload a File'}
                   onClick={() => {}}
                 />
               </label>
-              <input className={styles.fileInput} id={`file-input-${props._id}`} type="file" onChange={fileHandler} />
+              <input className={style.fileInput} id={`file-input-${props._id}`} type="file" onChange={fileHandler} />
             </>
           )}
         </>
-        <input className={styles.save} type="submit" value="SAVE" />
+        <input className={style.save} type="submit" value="SAVE" />
         {addingNote && <NoteSpinner />}
       </form>
     </div>

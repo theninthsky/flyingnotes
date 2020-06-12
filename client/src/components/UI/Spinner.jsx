@@ -1,7 +1,7 @@
 import React from 'react'
 
-import styles from './Spinner.module.scss'
+import style from './Spinner.module.scss'
 
 export default () => {
-  return <div className={styles.Spinner}></div>
+  return <div className={style.Spinner}></div>
 }

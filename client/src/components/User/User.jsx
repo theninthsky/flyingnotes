@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import * as actions from '../../store/actions/index'
-import styles from './User.module.scss'
+import { update, changePassword, logout } from '../../store/actions/index'
 
 import userLogo from '../../assets/images/user-astronaut.svg'
+import style from './User.module.scss'
 
 const mapStateToProps = state => ({
   app: state.app,
@@ -14,9 +14,9 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  onUpdate: name => dispatch(actions.update(name)),
-  onFormSubmit: passwords => dispatch(actions.changePassword(passwords)),
-  onLogout: () => dispatch(actions.logout()),
+  onUpdate: name => dispatch(update(name)),
+  onFormSubmit: passwords => dispatch(changePassword(passwords)),
+  onLogout: () => dispatch(logout()),
 })
 
 const User = ({ app: { theme, errorMessage }, user, notes, onUpdate, onFormSubmit, onLogout }) => {
@@ -44,11 +44,11 @@ const User = ({ app: { theme, errorMessage }, user, notes, onUpdate, onFormSubmi
   }
 
   return (
-    <div className={styles.user}>
-      <img className={`${styles.userLogo} ${theme === 'dark' ? styles.userLogoDark : ''}`} src={userLogo} alt="User" />
+    <div className={style.user}>
+      <img className={`${style.userLogo} ${theme === 'dark' ? style.userLogoDark : ''}`} src={userLogo} alt="User" />
 
       <h1
-        className={styles.name}
+        className={style.name}
         contentEditable
         suppressContentEditableWarning={true}
         spellCheck="false"
@@ -59,7 +59,7 @@ const User = ({ app: { theme, errorMessage }, user, notes, onUpdate, onFormSubmi
 
       {changePasswordMode || errorMessage ? (
         <form onSubmit={submitFormHandler}>
-          {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
+          {errorMessage && <p className={style.errorMessage}>{errorMessage}</p>}
           <input
             type="password"
             value={password}
@@ -77,18 +77,18 @@ const User = ({ app: { theme, errorMessage }, user, notes, onUpdate, onFormSubmi
             onChange={event => setNewPassword(event.target.value)}
           />
 
-          <input className={styles.update} type="submit" />
+          <input className={style.update} type="submit" />
         </form>
       ) : (
         <>
-          <button className={styles.changePassword} onClick={() => setChangePasswordMode(true)}>
+          <button className={style.changePassword} onClick={() => setChangePasswordMode(true)}>
             Change Password
           </button>
-          <div className={styles.info}>
+          <div className={style.info}>
             <h1>{`Notes: ${notes.length}`}</h1>
           </div>
 
-          <input className={styles.logout} type="submit" value="Logout" onClick={onLogout} />
+          <input className={style.logout} type="submit" value="Logout" onClick={onLogout} />
         </>
       )}
     </div>

@@ -4,9 +4,14 @@
   width: 20%;
   display: flex;
   flex-direction: column;
-  border-radius: 2px;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5) inset;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.2s;
   animation: show 0.5s;
+
+  &:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  }
 
   .colorPicker {
     z-index: 2;

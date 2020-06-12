@@ -2,7 +2,19 @@ import { all, put, takeLatest } from 'redux-saga/effects'
 import axios from 'axios'
 
 import { FETCH_NOTES, REQUEST_ADD_NOTE, REQUEST_UPDATE_NOTE, REQUEST_DELETE_NOTE } from '../store/actions/constants'
-import * as actions from '../store/actions/index'
+import {
+  loading,
+  notesFetched,
+  localNotesSet,
+  setNotes,
+  addingNote,
+  addNote,
+  updatingNote,
+  updateNote,
+  deletingNote,
+  deleteNote,
+  showError,
+} from '../store/actions/index'
 
 const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
 
@@ -17,29 +29,29 @@ const exampleNote = {
   date: Date.now(),
 }
 
-function* fetchNotes() {
+function* handleFetchNotes() {
   try {
-    yield put(actions.loading(true))
+    yield put(loading(true))
     let notes
     if (localStorage.name) {
       const { data } = yield axios.get(`${REACT_APP_SERVER_URL}/notes`)
       notes = data.notes
-      yield put(actions.notesFetched(true))
+      yield put(notesFetched(true))
     } else {
       notes = JSON.parse(localStorage.notes || `[${JSON.stringify(exampleNote)}]`)
-      yield put(actions.localNotesSet())
+      yield put(localNotesSet())
     }
 
-    yield put(actions.setNotes(notes))
-    yield put(actions.loading(false))
+    yield put(setNotes(notes))
+    yield put(loading(false))
   } catch (err) {
     localStorage.removeItem('name')
     window.location.reload()
   }
 }
 
-function* addNote({ newNote }) {
-  yield put(actions.addingNote(true))
+function* handleAddNote({ newNote }) {
+  yield put(addingNote(true))
   if (localStorage.name) {
     const { data } = yield axios.post(`${REACT_APP_SERVER_URL}/notes`, newNote, {
       headers: {
@@ -55,12 +67,12 @@ function* addNote({ newNote }) {
     )
   }
 
-  yield put(actions.addNote(newNote))
-  yield put(actions.addingNote(false))
+  yield put(addNote(newNote))
+  yield put(addingNote(false))
 }
 
-function* updateNote({ updatedNote }) {
-  yield put(actions.updatingNote(updatedNote.get('_id')))
+function* handleUpdateNote({ updatedNote }) {
+  yield put(updatingNote(updatedNote.get('_id')))
   if (localStorage.name) {
     const { data } = yield axios.put(`${REACT_APP_SERVER_URL}/notes`, updatedNote, {
       headers: {
@@ -76,12 +88,12 @@ function* updateNote({ updatedNote }) {
     )
   }
 
-  yield put(actions.updateNote(updatedNote))
-  yield put(actions.updatingNote(''))
+  yield put(updateNote(updatedNote))
+  yield put(updatingNote(''))
 }
 
-function* deleteNote({ noteID }) {
-  yield put(actions.deletingNote(noteID))
+function* handleDeleteNote({ noteID }) {
+  yield put(deletingNote(noteID))
   if (localStorage.name) {
     try {
       yield axios.delete(`${REACT_APP_SERVER_URL}/notes`, {
@@ -89,21 +101,21 @@ function* deleteNote({ noteID }) {
       })
     } catch (err) {
       noteID = ''
-      yield put(actions.showError(err))
+      yield put(showError(err))
     }
   } else {
     localStorage.setItem('notes', JSON.stringify(JSON.parse(localStorage.notes).filter(note => note._id !== noteID)))
   }
 
-  yield put(actions.deleteNote(noteID))
-  yield put(actions.deletingNote(''))
+  yield put(deleteNote(noteID))
+  yield put(deletingNote(''))
 }
 
 export default function* rootSaga() {
   yield all([
-    takeLatest(FETCH_NOTES, fetchNotes),
-    takeLatest(REQUEST_ADD_NOTE, addNote),
-    takeLatest(REQUEST_UPDATE_NOTE, updateNote),
-    takeLatest(REQUEST_DELETE_NOTE, deleteNote),
+    takeLatest(FETCH_NOTES, handleFetchNotes),
+    takeLatest(REQUEST_ADD_NOTE, handleAddNote),
+    takeLatest(REQUEST_UPDATE_NOTE, handleUpdateNote),
+    takeLatest(REQUEST_DELETE_NOTE, handleDeleteNote),
   ])
 }
