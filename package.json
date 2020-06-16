@@ -13,7 +13,7 @@
     "install:server": "cd server && npm i",
     "install:client": "cd client && npm i && npm run build",
     "publish": "npm run test:server && git push origin master",
-    "heroku-postbuild": "npm run install:server & npm run install:client"
+    "heroku-postbuild": "REACT_APP_SERVER_URL=https://flyingnotes.herokuapp.com npm run install:server & npm run install:client"
   },
   "repository": {
     "type": "git",
