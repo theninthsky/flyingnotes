@@ -1,9 +1,0 @@
-{
-  "spec": "test/**/*.spec.js",
-  "file": [
-    "test/routes/user.spec.js",
-    "test/routes/notes.spec.js",
-    "test/routes/files.spec.js"
-  ],
-  "exit": true
-}

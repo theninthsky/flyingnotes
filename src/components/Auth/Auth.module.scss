@@ -1,0 +1,99 @@
+.auth {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: auto;
+  width: 30vw;
+  height: 50vh;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  border-radius: 2px;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.5) inset;
+  animation: show 0.5s;
+
+  .title {
+    display: flex;
+    justify-content: space-evenly;
+    text-align: center;
+
+    h1 {
+      font-weight: normal;
+      cursor: pointer;
+    }
+
+    .notActive {
+      opacity: 0.4;
+    }
+
+    .divider {
+      margin-top: 5%;
+      height: 50px;
+      border: 0.5px solid rgb(128, 128, 128);
+    }
+  }
+
+  p {
+    margin-bottom: 10%;
+    text-align: center;
+  }
+
+  input {
+    display: block;
+    margin: 1vh auto;
+    padding: 4px;
+    border: none;
+    border-bottom: 1px solid lightgray;
+    outline: none;
+    font-size: 16px;
+
+    &:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0 100px white inset;
+    }
+  }
+
+  .login_register {
+    margin-top: 10%;
+    padding: 6px;
+    border: 1px solid gray;
+    border-width: 1px;
+    border-radius: 4px;
+    background-color: transparent;
+    color: inherit;
+    outline: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+
+    &:hover {
+      color: white;
+      background-color: gray;
+    }
+  }
+
+  .greeting {
+    text-align: center;
+    font-size: 18px;
+    font-weight: normal;
+  }
+
+  .errorMessage {
+    color: red;
+  }
+
+  @keyframes show {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .auth {
+    width: 90vw;
+  }
+}
