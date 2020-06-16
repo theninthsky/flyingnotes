@@ -4,7 +4,7 @@ import axios from 'axios'
 import { REGISTER, LOGIN, UPDATE, CHANGE_PASSWORD, LOGOUT } from '../store/actions/constants'
 import { loading, clearError, setName, setNotes, notesFetched, showError } from '../store/actions/index'
 
-const REACT_APP_SERVER_URL = 'https://flyingnotes.herokuapp.com'
+const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
 
 axios.defaults.withCredentials = true
 
@@ -20,8 +20,10 @@ function* handleRegister({ credentials }) {
         ? JSON.parse(localStorage.notes).map(note => ({ ...note, _id: null })) // _id is removed to prevent ObjectId errors on server side
         : [],
     })
+
     localStorage.clear()
     localStorage.setItem('name', name)
+
     yield put(setName(name))
     yield put(setNotes(notes))
     yield put(notesFetched(true))
@@ -34,6 +36,7 @@ function* handleRegister({ credentials }) {
 function* handleLogin({ credentials }) {
   yield put(loading(true))
   yield put(clearError())
+
   try {
     const {
       data: { name, notes },
@@ -46,6 +49,7 @@ function* handleLogin({ credentials }) {
   } catch ({ response: { data } }) {
     yield put(showError(data))
   }
+
   yield put(loading(false))
 }
 
