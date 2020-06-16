@@ -4,7 +4,7 @@ import axios from 'axios'
 import { FETCH_FILE } from '../store/actions/constants'
 import { fetchingFile, populateFile } from '../store/actions/index'
 
-const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
+const REACT_APP_SERVER_URL = 'https://flyingnotes.herokuapp.com'
 
 axios.defaults.withCredentials = true
 

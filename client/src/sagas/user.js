@@ -4,7 +4,7 @@ import axios from 'axios'
 import { REGISTER, LOGIN, UPDATE, CHANGE_PASSWORD, LOGOUT } from '../store/actions/constants'
 import { loading, clearError, setName, setNotes, notesFetched, showError } from '../store/actions/index'
 
-const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
+const REACT_APP_SERVER_URL = 'https://flyingnotes.herokuapp.com'
 
 axios.defaults.withCredentials = true
 

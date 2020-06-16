@@ -16,7 +16,7 @@ import {
   showError,
 } from '../store/actions/index'
 
-const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
+const REACT_APP_SERVER_URL = 'https://flyingnotes.herokuapp.com'
 
 axios.defaults.withCredentials = true
 
@@ -45,6 +45,7 @@ function* handleFetchNotes() {
     yield put(setNotes(notes))
     yield put(loading(false))
   } catch (err) {
+    debugger
     localStorage.removeItem('name')
     window.location.reload()
   }
