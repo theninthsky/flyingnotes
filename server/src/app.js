@@ -65,14 +65,6 @@ redisClient.on('connect', () => {
 })
 redisClient.on('error', ({ message }) => console.error(`Error: ${message}`))
 
-// redisClient.monitor((err, res) => {
-//   console.log('Redis: Entering monitoring mode.')
-// })
-
-// redisClient.on('monitor', (time, args, rawReply) => {
-//   console.log(args)
-// })
-
 app.use(
   session({
     cookie: { maxAge: +SESSION_LIFETIME, sameSite: true },
