@@ -9,13 +9,17 @@ const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
 axios.defaults.withCredentials = true
 
 function* handleFetchFile({ note }) {
-  const { _id, fileName } = note
+  const { _id: noteID, fileName } = note
 
-  yield put(fetchingFile(_id))
+  yield put(fetchingFile(noteID))
 
-  const { data } = yield axios.get(`${REACT_APP_SERVER_URL}/${_id}/file`, {
-    responseType: 'blob',
-  })
+  const { data } = yield axios.post(
+    `${REACT_APP_SERVER_URL}/file`,
+    { noteID },
+    {
+      responseType: 'blob',
+    },
+  )
 
   const link = document.createElement('a')
 
