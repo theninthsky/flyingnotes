@@ -31,7 +31,7 @@ const Notes = ({ app: { theme, loading, notesFetched, localNotesSet }, notes, fe
       [...notes]
         .filter(({ category }) => (!categoryFilter ? true : category === categoryFilter))
         .filter(({ title, content }) => `${title} ${content}`.toLowerCase().includes(searchFilter))
-        .sort((a, b) => b.date - a.date)
+        .sort((a, b) => new Date(b.date) - new Date(a.date))
         .map(note => (
           <Note
             key={note._id}
