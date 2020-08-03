@@ -1,10 +1,10 @@
 .note {
   position: relative;
   margin: 1vw;
-  min-width: 15vw;
-  max-width: 30vw;
-  min-height: 17.5vh;
-  max-height: 30vh;
+  min-width: 200px;
+  max-width: 400px;
+  min-height: 125px;
+  max-height: 250px;
   display: flex;
   flex-direction: column;
   border-radius: 4px;
@@ -108,23 +108,13 @@
   filter: invert(100%);
 }
 
-@media (max-width: 768px) {
-  .note {
-    margin: 4vw;
-    min-width: 30%;
-    max-width: 42.5%;
-    min-height: 40vh;
-    max-height: 60vh;
-  }
-}
-
 @media (max-width: 480px) {
   .note {
     margin: 2vh 0;
     width: 100%;
     max-width: none;
-    min-height: 20vh;
-    max-height: 50vh;
+    min-height: 100px;
+    max-height: 250px;
 
     .title {
       font-size: 22px;
