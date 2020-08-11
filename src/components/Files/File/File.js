@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import { downloadFile } from '../../../store/actions'
@@ -23,12 +23,12 @@ const mapDispatchToProps = { downloadFile }
 
 const File = ({
   file: { _id, category, name, extension, date, attachment },
-  app: { theme, downloadingFileID } = {},
+  app: { downloadingFileID } = {},
   downloadFile,
 }) => {
   useEffect(() => {
     if (attachment) saveFile(name, extension, attachment)
-  }, [attachment])
+  }, [attachment, name, extension])
 
   const downloadFileHandler = () => {
     if (!attachment) return downloadFile(_id)
@@ -60,7 +60,7 @@ const File = ({
       {downloadingFileID === _id ? (
         <FileSpinner />
       ) : (
-        <img className={style.download} src={downloadIcon} onClick={downloadFileHandler} />
+        <img className={style.download} alt="Download" src={downloadIcon} onClick={downloadFileHandler} />
       )}
     </div>
   )

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import NewFile from './NewFile/NewFile'
 import File from './File/File'
-import { fetchFiles, changeTheme } from '.././../store/actions'
+import { fetchFiles } from '.././../store/actions'
 
 import style from './Files.module.scss'
 
