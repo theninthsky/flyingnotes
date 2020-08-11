@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 
-import { requestDeleteNote } from '../../store/actions/index'
+import { requestDeleteNote } from '../../../../store/actions/index'
 
-import editSymbol from '../../assets/images/edit.svg'
-import deleteSymbol from '../../assets/images/delete.svg'
-import confirmSymbol from '../../assets/images/confirm.svg'
-import cancelSymbol from '../../assets/images/cancel.svg'
+import editSymbol from '../../../../assets/images/edit.svg'
+import deleteSymbol from '../../../../assets/images/delete.svg'
+import confirmSymbol from '../../../../assets/images/confirm.svg'
+import cancelSymbol from '../../../../assets/images/cancel.svg'
 import style from './Options.module.scss'
 
 const mapDispatchToProps = dispatch => ({

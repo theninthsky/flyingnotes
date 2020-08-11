@@ -13,32 +13,6 @@
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
   }
 
-  .colorPicker {
-    z-index: 2;
-    margin: 0 auto;
-    box-sizing: border-box;
-    animation: show 0.5s;
-
-    @keyframes show {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
-  }
-
-  .colorPalette {
-    z-index: 1;
-    position: absolute;
-    top: 4px;
-    right: 5px;
-    width: 15px;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-  }
-
   .category,
   .categoryBackground,
   .title,
@@ -54,22 +28,22 @@
     color: inherit;
   }
 
-  .category {
-    position: absolute;
-    top: 4px;
-    font-size: 12px;
-    letter-spacing: 3px;
-    color: white;
-
-    &::placeholder {
-      color: #ffffffaf;
-    }
+  .categoryBackground {
+    padding: 2px 0;
+    background-color: #ffffde;
+    border-radius: 4px 4px 0 0;
   }
 
-  .categoryBackground {
-    width: 99%;
-    margin: 3px auto;
-    filter: blur(3px);
+  .category {
+    position: absolute;
+    top: 3px;
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: rgb(150, 150, 150);
+
+    &::placeholder {
+      color: rgb(190, 190, 190);
+    }
   }
 
   .title {
@@ -101,30 +75,13 @@
     }
   }
 
-  .fileInput {
-    display: none;
-  }
-
-  .upload {
-    position: absolute;
-    bottom: 6px;
-    right: 6px;
-    width: 16px;
-    opacity: 0.5;
-    cursor: pointer;
-
-    &:hover {
-      opacity: 1;
-    }
-  }
-
   .save {
     margin: 0 auto;
     width: 25%;
     min-height: 2vh;
     border-radius: 8px 8px 0 0;
     color: white;
-    font-size: 16px;
+    font-size: 14px;
     background-color: green;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
@@ -141,6 +98,20 @@
     to {
       opacity: 1;
     }
+  }
+}
+
+.saving {
+  opacity: 0.5;
+  cursor: wait;
+
+  .category,
+  .categoryBackground,
+  .title,
+  .content,
+  .save {
+    cursor: wait;
+    pointer-events: none;
   }
 }
 

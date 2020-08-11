@@ -1,40 +1,57 @@
 import { put, takeLatest } from 'redux-saga/effects'
 import axios from 'axios'
 
-import { FETCH_FILE } from '../store/actions/constants'
-import { fetchingFile, populateFile } from '../store/actions/index'
+import { FETCH_FILES, UPLOAD_FILE, DOWNLOAD_FILE } from '../store/actions/constants'
+import { setFiles, addFile, downloadingFile, addAttachment } from '../store/actions'
 
 const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
 
 axios.defaults.withCredentials = true
 
-function* handleFetchFile({ note }) {
-  const { _id: noteID, fileName } = note
+function* fetchFiles() {
+  const {
+    data: { files },
+  } = yield axios.get(`${REACT_APP_SERVER_URL}/files`)
 
-  yield put(fetchingFile(noteID))
+  yield put(setFiles(files))
+}
+
+function* uploadFile({ file: { category, name, extension, selectedFile } }) {
+  const formData = new FormData()
+
+  formData.append('category', category.trim())
+  formData.append('name', name.trim())
+  formData.append('extension', extension)
+  formData.append('file', selectedFile, selectedFile.name)
+
+  const {
+    data: { newFile },
+  } = yield axios.post(`${REACT_APP_SERVER_URL}/files`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  })
+
+  yield put(addFile(newFile))
+}
+
+function* downloadFile({ fileID }) {
+  yield put(downloadingFile(fileID))
 
   const { data } = yield axios.post(
     `${REACT_APP_SERVER_URL}/file`,
-    { noteID },
+    { fileID },
     {
       responseType: 'blob',
     },
   )
 
-  const link = document.createElement('a')
-
-  link.href = window.URL.createObjectURL(new Blob([data]))
-  link.setAttribute('download', fileName)
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
-
-  note.file = new Blob([data])
-
-  yield put(populateFile(note))
-  yield put(fetchingFile(''))
+  yield put(downloadingFile(null))
+  yield put(addAttachment({ fileID, attachment: data }))
 }
 
 export default function* rootSaga() {
-  yield takeLatest(FETCH_FILE, handleFetchFile)
+  yield takeLatest(FETCH_FILES, fetchFiles)
+  yield takeLatest(UPLOAD_FILE, uploadFile)
+  yield takeLatest(DOWNLOAD_FILE, downloadFile)
 }

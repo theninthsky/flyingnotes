@@ -14,32 +14,44 @@ export default ({ theme, user, changeTheme }) => {
   return (
     <>
       <nav className={style.navBar}>
-        <img
-          className={`${style.theme} ${theme === 'dark' ? style.themeDark : ''}`}
-          src={theme === 'light' ? lightThemeIcon : darkThemeIcon}
-          alt="Theme"
-          title="Theme"
-          onClick={changeTheme}
-        />
-
-        <NavLink className={style.notes} activeClassName={style.active} exact to="/">
-          Notes
-        </NavLink>
-
-        {user.name ? (
-          <NavLink
-            className={style.auth}
-            activeClassName={style.active}
-            title={`Logged in as ${user.name}`}
-            to={'/account'}
-          >
-            <img className={`${style.user} ${theme === 'dark' ? style.userDark : ''}`} src={userIcon} alt={user.name} />
+        <div>
+          <NavLink className={style.item} activeClassName={style.active} exact to="/notes">
+            Notes
           </NavLink>
-        ) : (
-          <NavLink className={style.auth} activeClassName={style.active} title={'Login'} to={'/auth'}>
-            {'Login'}
+
+          <NavLink className={style.item} activeClassName={style.active} exact to="/files">
+            Files
           </NavLink>
-        )}
+        </div>
+
+        <div>
+          <img
+            className={`${style.theme} ${theme === 'dark' ? style.themeDark : ''}`}
+            src={theme === 'light' ? lightThemeIcon : darkThemeIcon}
+            alt="Theme"
+            title="Change Theme"
+            onClick={changeTheme}
+          />
+
+          {user.name ? (
+            <NavLink
+              className={style.auth}
+              activeClassName={style.active}
+              title={`Logged in as ${user.name}`}
+              to={'/account'}
+            >
+              <img
+                className={`${style.user} ${theme === 'dark' ? style.userDark : ''}`}
+                src={userIcon}
+                alt={user.name}
+              />
+            </NavLink>
+          ) : (
+            <NavLink className={style.auth} activeClassName={style.active} title={'Login'} to={'/auth'}>
+              {'Login'}
+            </NavLink>
+          )}
+        </div>
       </nav>
 
       {showCookiesMessage && !user.name && (

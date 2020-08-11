@@ -2,8 +2,8 @@ import React, { useState, useEffect, useMemo } from 'react'
 import { connect } from 'react-redux'
 
 import { fetchNotes } from '../../store/actions/index'
-import Note from '../Note/Note'
-import NewNote from '../NewNote/NewNote'
+import Note from './Note/Note'
+import NewNote from './NewNote/NewNote'
 
 import style from './Notes.module.scss'
 
@@ -36,13 +36,10 @@ const Notes = ({ app: { theme, loading, notesFetched, localNotesSet }, notes, fe
           <Note
             key={note._id}
             _id={note._id}
-            color={note.color}
             category={note.category}
             title={note.title}
             content={note.content}
             date={note.date}
-            fileName={note.fileName}
-            file={note.file}
           />
         )),
     [notes, categoryFilter, searchFilter],

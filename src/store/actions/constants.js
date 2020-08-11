@@ -11,7 +11,7 @@ export const LOCAL_NOTES_SET = 'LOCAL_NOTES_SET'
 export const ADDING_NOTE = 'ADDING_NOTE'
 export const UPDATING_NOTE = 'UPDATING_NOTE'
 export const DELETING_NOTE = 'DELETING_NOTE'
-export const FETCHING_FILE = 'FETCHING_FILE'
+export const DOWNLOADING_FILE = 'DOWNLOADING_FILE'
 
 /* User */
 export const REGISTER = 'REGISTER'
@@ -22,8 +22,8 @@ export const CHANGE_PASSWORD = 'CHANGE_PASSWORD'
 export const LOGOUT = 'LOGOUT'
 
 /* Notes */
-export const SET_NOTES = 'SET_NOTES'
 export const FETCH_NOTES = 'FETCH_NOTES'
+export const SET_NOTES = 'SET_NOTES'
 export const REQUEST_ADD_NOTE = 'REQUEST_ADD_NOTE'
 export const ADD_NOTE = 'ADD_NOTE'
 export const REQUEST_UPDATE_NOTE = 'REQUEST_UPDATE_NOTE'
@@ -32,5 +32,9 @@ export const REQUEST_DELETE_NOTE = 'REQUEST_DELETE_NOTE'
 export const DELETE_NOTE = 'DELETE_NOTE'
 
 /* Files */
-export const FETCH_FILE = 'FETCH_FILE'
-export const POPULATE_FILE = 'POPULATE_FILE'
+export const FETCH_FILES = 'FETCH_FILES'
+export const SET_FILES = 'SET_FILES'
+export const UPLOAD_FILE = 'UPLOAD_FILE'
+export const ADD_FILE = 'ADD_FILE'
+export const DOWNLOAD_FILE = 'DOWNLOAD_FILE'
+export const ADD_ATTACHMENT = 'ADD_ATTACHMENT'

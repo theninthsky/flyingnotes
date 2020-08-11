@@ -14,7 +14,7 @@ import {
   deletingNote,
   deleteNote,
   showError,
-} from '../store/actions/index'
+} from '../store/actions'
 
 const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
 
@@ -22,7 +22,6 @@ axios.defaults.withCredentials = true
 
 const exampleNote = {
   _id: 'example',
-  color: '#8e44ad',
   category: 'Demo',
   title: 'Example',
   content: 'This is an example note.',
@@ -33,12 +32,15 @@ function* handleFetchNotes() {
   try {
     yield put(loading(true))
     let notes
+
     if (localStorage.name) {
       const { data } = yield axios.get(`${REACT_APP_SERVER_URL}/notes`)
+
       notes = data.notes
       yield put(notesFetched(true))
     } else {
       notes = JSON.parse(localStorage.notes || `[${JSON.stringify(exampleNote)}]`)
+
       yield put(localNotesSet())
     }
 
@@ -52,12 +54,10 @@ function* handleFetchNotes() {
 
 function* handleAddNote({ newNote }) {
   yield put(addingNote(true))
+
   if (localStorage.name) {
-    const { data } = yield axios.post(`${REACT_APP_SERVER_URL}/notes`, newNote, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
+    const { data } = yield axios.post(`${REACT_APP_SERVER_URL}/notes`, newNote)
+
     newNote = data.newNote
   } else {
     newNote = { ...newNote, _id: Date.now(), date: Date.now() }
@@ -72,13 +72,11 @@ function* handleAddNote({ newNote }) {
 }
 
 function* handleUpdateNote({ updatedNote }) {
-  yield put(updatingNote(updatedNote.get('_id')))
+  yield put(updatingNote(updatedNote._id))
+
   if (localStorage.name) {
-    const { data } = yield axios.put(`${REACT_APP_SERVER_URL}/notes`, updatedNote, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
+    const { data } = yield axios.put(`${REACT_APP_SERVER_URL}/notes`, updatedNote)
+
     updatedNote = data.updatedNote
   } else {
     updatedNote.date = Date.now()
@@ -94,6 +92,7 @@ function* handleUpdateNote({ updatedNote }) {
 
 function* handleDeleteNote({ noteID }) {
   yield put(deletingNote(noteID))
+
   if (localStorage.name) {
     try {
       yield axios.delete(`${REACT_APP_SERVER_URL}/notes`, {
@@ -101,6 +100,7 @@ function* handleDeleteNote({ noteID }) {
       })
     } catch (err) {
       noteID = ''
+
       yield put(showError(err))
     }
   } else {

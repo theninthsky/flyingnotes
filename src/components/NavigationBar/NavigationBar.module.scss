@@ -8,8 +8,8 @@
   justify-content: space-between;
   align-items: flex-start;
 
+  .item,
   .theme,
-  .notes,
   .auth {
     color: inherit;
     cursor: pointer;
@@ -22,32 +22,31 @@
     }
   }
 
-  .theme {
-    width: 32px;
-  }
-
-  .notes {
+  .item {
     padding: 2px 6px;
     box-sizing: border-box;
     text-decoration: none;
-    font-size: 34px;
+    font-size: 24px;
+  }
+
+  .theme {
+    width: 26px;
   }
 
   .auth {
-    font-size: 24px;
+    float: right;
+    margin-left: 10px;
+    font-size: 22px;
     text-decoration: none;
 
     .user {
-      width: 24px;
+      width: 22px;
     }
   }
 
   .active {
     cursor: default;
-
-    &:hover {
-      opacity: 1;
-    }
+    opacity: 0.75;
   }
 }
 

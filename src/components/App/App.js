@@ -7,9 +7,10 @@ import NavigationBar from '../NavigationBar/NavigationBar'
 import Auth from '../Auth/Auth'
 import User from '../User/User'
 import Notes from '../Notes/Notes'
+import Files from '../Files/Files'
 import Spinner from '../UI/Spinner'
-import images from '../../util/images'
 
+import images from '../../util/images'
 import './App.scss'
 
 const mapStateToProps = state => ({
@@ -48,7 +49,8 @@ const App = ({ app: { theme, loading, notesFetched }, user, onChangeTheme }) => 
         <Spinner />
       ) : (
         <Switch>
-          <Route exact path="/" component={Notes} />
+          <Route exact path={['/', '/notes']} component={Notes} />
+          <Route path="/files" component={Files} />
           <Route path="/auth" component={Auth} />
           <Route path="/account" component={User} />
         </Switch>

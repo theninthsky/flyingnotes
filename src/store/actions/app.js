@@ -8,7 +8,7 @@ import {
   ADDING_NOTE,
   UPDATING_NOTE,
   DELETING_NOTE,
-  FETCHING_FILE,
+  DOWNLOADING_FILE,
 } from './constants'
 
 export const loading = state => ({
@@ -56,7 +56,7 @@ export const deletingNote = noteID => ({
   noteID,
 })
 
-export const fetchingFile = noteID => ({
-  type: FETCHING_FILE,
-  noteID,
+export const downloadingFile = fileID => ({
+  type: DOWNLOADING_FILE,
+  fileID,
 })
