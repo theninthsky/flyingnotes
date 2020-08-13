@@ -1,6 +1,6 @@
 .note {
   position: relative;
-  margin: 1vw;
+  margin: 15px;
   min-width: 200px;
   max-width: 400px;
   min-height: 125px;
@@ -37,7 +37,7 @@
     margin-bottom: 0;
     width: 94%;
     text-align: center;
-    line-height: 0.85;
+    line-height: 0.95;
     font-size: 26px;
     font-weight: normal;
     word-break: break-word;
@@ -87,11 +87,11 @@
 
 @media (max-width: 480px) {
   .note {
-    margin: 2vh 0;
     width: 100%;
     max-width: none;
     min-height: 100px;
     max-height: 250px;
+    margin: 10px 0;
 
     .title {
       font-size: 22px;
