@@ -2,7 +2,7 @@ import { put, takeLatest } from 'redux-saga/effects'
 import axios from 'axios'
 
 import { FETCH_FILES, UPLOAD_FILE, DOWNLOAD_FILE } from '../store/actions/constants'
-import { setFiles, addFile, downloadingFile, addAttachment } from '../store/actions'
+import { setFiles, addFile, uploadingFile, downloadingFile, addAttachment } from '../store/actions'
 
 const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
 
@@ -24,6 +24,8 @@ function* uploadFile({ file: { category, name, extension, selectedFile } }) {
   formData.append('extension', extension)
   formData.append('file', selectedFile, selectedFile.name)
 
+  yield put(uploadingFile(true))
+
   const {
     data: { newFile },
   } = yield axios.post(`${REACT_APP_SERVER_URL}/files`, formData, {
@@ -33,6 +35,7 @@ function* uploadFile({ file: { category, name, extension, selectedFile } }) {
   })
 
   yield put(addFile(newFile))
+  yield put(uploadingFile(false))
 }
 
 function* downloadFile({ fileID }) {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import { requestAddNote, requestUpdateNote } from '../../../store/actions/index'
@@ -29,6 +29,14 @@ const NewNote = props => {
   const [title, setTitle] = useState(props.title || '')
   const [content, setContent] = useState(props.content || '')
 
+  useEffect(() => {
+    if (!addingNote) {
+      setCategory('')
+      setTitle('')
+      setContent('')
+    }
+  }, [addingNote])
+
   const saveNoteLocallyHandler = event => {
     event.preventDefault()
 
@@ -45,10 +53,6 @@ const NewNote = props => {
       closeOptions()
     } else {
       addNote(note)
-
-      setCategory('')
-      setTitle('')
-      setContent('')
     }
   }
 
@@ -61,21 +65,16 @@ const NewNote = props => {
       closeOptions()
     } else {
       addNote({ category, title, content })
-
-      setCategory('')
-      setTitle('')
-      setContent('')
     }
   }
 
   return (
     <div className={`${style.note} ${addingNote ? style.saving : ''}`}>
       <form onSubmit={props.user.name ? saveNoteOnCloudHandler : saveNoteLocallyHandler} autoComplete="off">
-        <div className={style.categoryBackground}>&nbsp;</div>
         <input
           className={style.category}
           type="text"
-          value={category.toUpperCase()}
+          value={category}
           dir="auto"
           placeholder="CATEGORY"
           maxLength="24"

@@ -40,9 +40,8 @@ const Note = props => {
     >
       {category && (
         <>
-          <div className={style.categoryBackground}>&nbsp;</div>
           <div className={style.category} dir="auto">
-            {category.toUpperCase()}
+            {category}
           </div>
         </>
       )}

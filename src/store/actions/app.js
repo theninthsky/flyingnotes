@@ -8,6 +8,7 @@ import {
   ADDING_NOTE,
   UPDATING_NOTE,
   DELETING_NOTE,
+  UPLOADING_FILE,
   DOWNLOADING_FILE,
 } from './constants'
 
@@ -54,6 +55,11 @@ export const updatingNote = noteID => ({
 export const deletingNote = noteID => ({
   type: DELETING_NOTE,
   noteID,
+})
+
+export const uploadingFile = bool => ({
+  type: UPLOADING_FILE,
+  bool,
 })
 
 export const downloadingFile = fileID => ({

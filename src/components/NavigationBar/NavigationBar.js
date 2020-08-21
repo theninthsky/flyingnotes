@@ -19,9 +19,11 @@ export default ({ theme, user, changeTheme }) => {
             Notes
           </NavLink>
 
-          <NavLink className={style.item} activeClassName={style.active} exact to="/files">
-            Files
-          </NavLink>
+          {user.name && (
+            <NavLink className={style.item} activeClassName={style.active} exact to="/files">
+              Files
+            </NavLink>
+          )}
         </div>
 
         <div>

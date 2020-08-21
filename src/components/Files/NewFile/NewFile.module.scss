@@ -1,10 +1,10 @@
 .file {
   display: flex;
   justify-content: space-between;
-  position: relative;
+  align-items: center;
   width: 500px;
   height: 26px;
-  padding-right: 7.5px;
+  margin: 20px;
   border-radius: 4px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.2s;
@@ -14,62 +14,46 @@
     box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.2);
   }
 
-  .categoryWrap {
-    position: relative;
-    flex-basis: 30%;
-
-    .category,
-    .categoryBackground {
-      position: absolute;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      float: left;
-      border: none;
-      outline: none;
-      font-family: inherit;
-      background-color: inherit;
-      text-align: center;
-      color: inherit;
-    }
-
-    .categoryBackground {
-      border-radius: 4px 0 0 4px;
-      background-color: #ffffde;
-    }
-
-    .category {
-      font-size: 12px;
-      letter-spacing: 3px;
-      color: rgb(150, 150, 150);
-
-      &::placeholder {
-        color: rgb(190, 190, 190);
-      }
-    }
-  }
-
+  .category,
   .name,
-  .extension,
   .upload {
-    height: 100%;
     border: none;
     outline: none;
     font-family: inherit;
     background-color: inherit;
-    text-align: center;
     color: inherit;
   }
 
-  .extension,
-  .selectFile,
-  .upload {
-    margin: 0 2.5px;
+  .category {
+    width: 25%;
+    padding: 5px 0;
+    text-align: center;
+    border-radius: 4px 0 0 4px;
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: rgb(150, 150, 150);
+    background-color: #ffffde;
+
+    &::placeholder {
+      color: rgb(190, 190, 190);
+    }
   }
 
   .name {
-    flex-basis: 40%;
+    padding: 0;
     font-size: 18px;
+  }
+
+  .infoWrap {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 25%;
+    height: 100%;
+  }
+
+  .fileLabel {
+    height: 15px;
   }
 
   .fileInput {
@@ -78,8 +62,6 @@
 
   .selectFile {
     width: 15px;
-    margin-top: 5px;
-    margin-bottom: 5px;
     opacity: 0.5;
     cursor: pointer;
 
@@ -116,10 +98,11 @@
   cursor: wait;
 
   .category,
-  .categoryBackground,
   .name,
+  .fileLabel,
+  .fileInput,
+  .selectFile,
   .upload {
-    cursor: wait;
     pointer-events: none;
   }
 }
@@ -130,8 +113,20 @@
 
 @media (max-width: 480px) {
   .file {
-    margin: 2vh 0;
     width: 100%;
-    height: 200px;
+    margin: 10px 0;
+  }
+
+  .name {
+    max-width: 50%;
+  }
+
+  .infoWrap {
+    width: 35%;
+    font-size: 12px;
+
+    .upload {
+      font-size: 10px;
+    }
   }
 }

@@ -38,30 +38,25 @@ const File = ({
 
   return (
     <div className={style.file}>
-      {category && (
-        <div className={style.categoryWrap}>
-          <div className={style.categoryBackground}>&nbsp;</div>
-          <div className={style.category} dir="auto">
-            {category.toUpperCase()}
-          </div>
-        </div>
-      )}
+      {category && <div className={style.category}>{category.toUpperCase()}</div>}
 
-      <h1 className={style.name} title={name} dir="auto">
+      <h1 className={style.name} title={name}>
         {name}
       </h1>
 
-      <div className={style.extension} title={extension}>
-        {extension}
+      <div className={style.infoWrap}>
+        <div className={style.extension} title={extension}>
+          {extension}
+        </div>
+
+        <div className={style.date}>{new Date(date).toLocaleString('en-GB').slice(0, 10)}</div>
+
+        {downloadingFileID === _id ? (
+          <FileSpinner />
+        ) : (
+          <img className={style.download} alt="Download" src={downloadIcon} onClick={downloadFileHandler} />
+        )}
       </div>
-
-      <div className={style.date}>{new Date(date).toLocaleString('en-GB').slice(0, 10)}</div>
-
-      {downloadingFileID === _id ? (
-        <FileSpinner />
-      ) : (
-        <img className={style.download} alt="Download" src={downloadIcon} onClick={downloadFileHandler} />
-      )}
     </div>
   )
 }

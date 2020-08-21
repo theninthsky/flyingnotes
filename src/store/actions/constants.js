@@ -11,6 +11,7 @@ export const LOCAL_NOTES_SET = 'LOCAL_NOTES_SET'
 export const ADDING_NOTE = 'ADDING_NOTE'
 export const UPDATING_NOTE = 'UPDATING_NOTE'
 export const DELETING_NOTE = 'DELETING_NOTE'
+export const UPLOADING_FILE = 'UPLOADING_FILE'
 export const DOWNLOADING_FILE = 'DOWNLOADING_FILE'
 
 /* User */

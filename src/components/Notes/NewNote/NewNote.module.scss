@@ -28,18 +28,13 @@
     color: inherit;
   }
 
-  .categoryBackground {
-    padding: 2px 0;
-    background-color: #ffffde;
-    border-radius: 4px 4px 0 0;
-  }
-
   .category {
-    position: absolute;
-    top: 3px;
+    padding: 2px 0;
+    border-radius: 4px 4px 0 0;
     font-size: 12px;
     letter-spacing: 3px;
     color: rgb(150, 150, 150);
+    background-color: #ffffde;
 
     &::placeholder {
       color: rgb(190, 190, 190);
@@ -51,7 +46,7 @@
     margin-bottom: 0;
     padding: 0 5%;
     box-sizing: border-box;
-    font-size: 26px;
+    font-size: 24px;
   }
 
   .content {
@@ -110,7 +105,6 @@
   .title,
   .content,
   .save {
-    cursor: wait;
     pointer-events: none;
   }
 }

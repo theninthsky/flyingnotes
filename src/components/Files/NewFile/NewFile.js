@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import { uploadFile } from '../../../store/actions/files'
+import { uploadFile } from '../../../store/actions'
 
 import uploadIcon from '../../../assets/images/upload.svg'
 import style from './NewFile.module.scss'
@@ -15,7 +15,7 @@ const mapDispatchToProps = { uploadFile }
 
 const NewFile = props => {
   const {
-    app: { theme },
+    app: { theme, uploadingFile },
     uploadFile,
   } = props
 
@@ -24,10 +24,19 @@ const NewFile = props => {
   const [extension, setExtension] = useState(props.extension || '')
   const [selectedFile, setSelectedFile] = useState()
 
+  useEffect(() => {
+    if (!uploadingFile) {
+      setCategory('')
+      setName('')
+      setExtension('')
+      setSelectedFile(null)
+    }
+  }, [uploadingFile])
+
   const fileHandler = event => {
     const [file] = event.target.files
 
-    if (!file) return setSelectedFile(null)
+    if (!file) return
 
     if (file.size <= 1024 * 1024 * 10) {
       const fileName = file.name.slice(0, file.name.lastIndexOf('.'))
@@ -38,8 +47,11 @@ const NewFile = props => {
       setSelectedFile(file)
     } else {
       alert('File size exceeds 10MB')
+      setCategory('')
+      setName('')
+      setExtension('')
       setSelectedFile(null)
-      document.querySelector('input[type="file"]').value = ''
+      document.querySelector('#file-input').value = ''
     }
   }
 
@@ -47,31 +59,23 @@ const NewFile = props => {
     event.preventDefault()
 
     if (!selectedFile) return alert('No file selected')
+    if (!name) return alert('File name is required')
 
     uploadFile({ category, name, extension, selectedFile })
-
-    setCategory('')
-    setName('')
-    setExtension('')
-    setSelectedFile(null)
   }
 
   return (
-    <form className={style.file} onSubmit={submitForm} autoComplete="off">
-      <div className={style.categoryWrap}>
-        <div className={style.categoryBackground}>&nbsp;</div>
-
-        <input
-          className={style.category}
-          type="text"
-          value={category.toUpperCase()}
-          dir="auto"
-          placeholder="CATEGORY"
-          maxLength="24"
-          title="Optional"
-          onChange={event => setCategory(event.target.value.toUpperCase().slice(0, 24))} // forces maxLength on mobile devices
-        />
-      </div>
+    <form className={`${style.file} ${uploadingFile ? style.uploading : ''}`} onSubmit={submitForm} autoComplete="off">
+      <input
+        className={style.category}
+        type="text"
+        value={category}
+        dir="auto"
+        placeholder="CATEGORY"
+        maxLength="24"
+        title="Optional"
+        onChange={event => setCategory(event.target.value.toUpperCase().slice(0, 24))} // forces maxLength on mobile devices
+      />
 
       <input
         className={`${style.name} ${theme === 'dark' ? style.nameDark : ''}`}
@@ -79,27 +83,26 @@ const NewFile = props => {
         dir="auto"
         placeholder="Name"
         value={name}
-        maxLength="60"
-        required
         onChange={event => setName(event.target.value)}
       />
 
-      <div className={style.extension} title={extension}>
-        {extension}
+      <div className={style.infoWrap}>
+        <div className={style.extension} title={extension}>
+          {extension}
+        </div>
+
+        <label className={style.fileLabel} htmlFor="file-input">
+          <img
+            className={style.selectFile}
+            src={uploadIcon}
+            alt={selectedFile ? selectedFile.name : props.name || 'Upload a File'}
+            title={selectedFile ? selectedFile.name : props.name || 'Upload a File'}
+          />
+        </label>
+        <input className={style.fileInput} id="file-input" type="file" onChange={fileHandler} />
+
+        <input className={style.upload} type="submit" value="UPLOAD" />
       </div>
-
-      <label htmlFor={`file-input-${props._id}`}>
-        <img
-          className={style.selectFile}
-          src={uploadIcon}
-          alt={selectedFile ? selectedFile.name : props.name || 'Upload a File'}
-          title={selectedFile ? selectedFile.name : props.name || 'Upload a File'}
-          onClick={() => {}}
-        />
-      </label>
-      <input className={style.fileInput} id={`file-input-${props._id}`} type="file" onChange={fileHandler} />
-
-      <input className={style.upload} type="submit" value="UPLOAD" />
     </form>
   )
 }

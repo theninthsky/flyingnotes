@@ -7,6 +7,7 @@ import {
   ADDING_NOTE,
   UPDATING_NOTE,
   DELETING_NOTE,
+  UPLOADING_FILE,
   DOWNLOADING_FILE,
 } from '../actions/constants'
 
@@ -18,6 +19,7 @@ const initialState = {
   addingNote: false,
   updatingNote: '', // recieves note id
   deletingNote: '', // recieves note id
+  uploadingFile: false,
   downloadingFileID: null,
   errorMessage: false,
 }
@@ -40,6 +42,8 @@ export default (state = initialState, action) => {
       return { ...state, updatingNote: action.noteID }
     case DELETING_NOTE:
       return { ...state, deletingNote: action.noteID }
+    case UPLOADING_FILE:
+      return { ...state, uploadingFile: action.bool }
     case DOWNLOADING_FILE:
       return { ...state, downloadingFileID: action.fileID }
     default:
