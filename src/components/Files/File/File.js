@@ -22,7 +22,7 @@ const mapStateToProp = state => ({ app: state.app })
 const mapDispatchToProps = { downloadFile }
 
 const File = ({
-  file: { _id, category, name, extension, date, attachment },
+  file: { _id, category, name, extension, attachment },
   app: { downloadingFileID } = {},
   downloadFile,
 }) => {
@@ -48,8 +48,6 @@ const File = ({
         <div className={style.extension} title={extension}>
           {extension}
         </div>
-
-        <div className={style.date}>{new Date(date).toLocaleString('en-GB').slice(0, 10)}</div>
 
         {downloadingFileID === _id ? (
           <FileSpinner />

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { connect } from 'react-redux'
 
 import NewFile from './NewFile/NewFile'
@@ -16,11 +16,13 @@ const Files = ({ files, fetchFiles }) => {
     fetchFiles()
   }, [fetchFiles])
 
+  const sortedFiles = useMemo(() => [...files].sort((a, b) => new Date(b.date) - new Date(a.date)), [files])
+
   return (
     <div className={style.filesContainer}>
       <NewFile />
 
-      {files.map(file => (
+      {sortedFiles.map(file => (
         <File key={file._id} file={file} />
       ))}
     </div>

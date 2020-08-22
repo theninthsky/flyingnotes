@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   width: 500px;
-  height: 26px;
+  height: 34px;
   margin: 20px;
   border-radius: 4px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -18,11 +18,13 @@
   }
 
   .category {
-    min-width: 20%;
-    padding: 5px 0;
+    width: 25%;
+    padding: 9px 5px;
     text-align: center;
     font-size: 12px;
     letter-spacing: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
     color: rgb(150, 150, 150);
     background-color: #ffffde;
   }
@@ -37,11 +39,15 @@
     font-weight: normal;
   }
 
+  .nameDark::placeholder {
+    color: rgb(200, 200, 200);
+  }
+
   .infoWrap {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    width: 30%;
+    width: 15%;
     height: 100%;
   }
 
@@ -65,21 +71,16 @@
   }
 }
 
-.nameDark::placeholder {
-  color: rgb(200, 200, 200);
-}
-
 @media (max-width: 480px) {
   .file {
     width: 100%;
     margin: 10px 0;
 
-    .name {
-      max-width: 50%;
+    .category {
+      max-width: 40%;
     }
 
-    .infoWrap {
-      width: 35%;
+    .extension {
       font-size: 12px;
     }
   }
