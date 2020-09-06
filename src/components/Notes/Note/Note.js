@@ -29,7 +29,7 @@ const Note = props => {
       {...props}
       toggleEditMode={() => setEditMode(!editMode)}
       closeOptions={() => setShowOptions(showConfirmMessage)}
-      update
+      updateMode
     />
   ) : (
     <div

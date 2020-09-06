@@ -16,11 +16,13 @@ const mapDispatchToProps = dispatch => ({
 })
 
 const NewNote = props => {
+  console.log(props)
+
   const {
-    update,
+    updateMode,
     toggleEditMode,
     closeOptions,
-    app: { theme, addingNote },
+    app: { theme, addingNote, updatingNote },
     addNote,
     updateNote,
   } = props
@@ -30,12 +32,12 @@ const NewNote = props => {
   const [content, setContent] = useState(props.content || '')
 
   useEffect(() => {
-    if (!addingNote) {
-      setCategory('')
-      setTitle('')
-      setContent('')
-    }
-  }, [addingNote])
+    if (updateMode || addingNote) return
+
+    setCategory('')
+    setTitle('')
+    setContent('')
+  }, [updateMode, addingNote])
 
   const saveNoteLocallyHandler = event => {
     event.preventDefault()
@@ -47,29 +49,25 @@ const NewNote = props => {
       content,
     }
 
-    if (update) {
-      updateNote(note)
-      toggleEditMode()
-      closeOptions()
-    } else {
-      addNote(note)
-    }
+    if (!updateMode) return addNote(note)
+
+    updateNote(note)
+    toggleEditMode()
+    closeOptions()
   }
 
   const saveNoteOnCloudHandler = event => {
     event.preventDefault()
 
-    if (update) {
-      updateNote({ _id: props._id, category, title, content })
-      toggleEditMode()
-      closeOptions()
-    } else {
-      addNote({ category, title, content })
-    }
+    if (!updateMode) return addNote({ category, title, content })
+
+    updateNote({ _id: props._id, category, title, content })
+    toggleEditMode()
+    closeOptions()
   }
 
   return (
-    <div className={`${style.note} ${addingNote ? style.saving : ''}`}>
+    <div className={`${style.note} ${addingNote || updatingNote === props._id ? style.saving : ''}`}>
       <form onSubmit={props.user.name ? saveNoteOnCloudHandler : saveNoteLocallyHandler} autoComplete="off">
         <input
           className={style.category}
