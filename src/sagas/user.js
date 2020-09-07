@@ -41,6 +41,7 @@ function* handleLogin({ credentials }) {
     const {
       data: { name, notes },
     } = yield axios.post(`${REACT_APP_SERVER_URL}/login`, credentials)
+
     localStorage.setItem('name', name)
 
     yield put(setName(name))

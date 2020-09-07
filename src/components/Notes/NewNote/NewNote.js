@@ -16,8 +16,6 @@ const mapDispatchToProps = dispatch => ({
 })
 
 const NewNote = props => {
-  console.log(props)
-
   const {
     updateMode,
     toggleEditMode,
