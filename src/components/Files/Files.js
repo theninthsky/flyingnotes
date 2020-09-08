@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react'
 import { connect } from 'react-redux'
 
-import NewFile from './NewFile/NewFile'
+// import NewFile from './NewFile/NewFile'
 import File from './File/File'
 import { fetchFiles } from '.././../store/actions'
 
@@ -20,7 +20,7 @@ const Files = ({ files, fetchFiles }) => {
 
   return (
     <div className={style.filesContainer}>
-      <NewFile />
+      {/* <NewFile /> */}
 
       {sortedFiles.map(file => (
         <File key={file._id} file={file} />
