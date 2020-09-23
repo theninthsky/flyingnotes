@@ -14,6 +14,7 @@ import {
   DELETING_NOTE,
   DELETE_NOTE,
 } from './actionTypes'
+import { ws } from '../../socketConnection'
 
 const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
 
@@ -27,23 +28,26 @@ const exampleNote = {
   date: Date.now(),
 }
 
-export const fetchNotes = () => {
+export const getNotes = () => {
   return async dispatch => {
     dispatch({ type: LOADING, loading: true })
-    let notes
 
-    if (localStorage.name) {
-      const { data } = await axios.get(`${REACT_APP_SERVER_URL}/notes`)
+    if (localStorage.name) return ws.json({ type: 'getNotes' })
 
-      notes = data.notes
-      dispatch({ type: NOTES_FETCHED, status: true })
-    } else {
-      notes = JSON.parse(localStorage.notes || `[${JSON.stringify(exampleNote)}]`)
-
-      dispatch({ type: LOCAL_NOTES_SET })
-    }
+    const notes = JSON.parse(localStorage.notes || `[${JSON.stringify(exampleNote)}]`)
 
     batch(() => {
+      dispatch({ type: SET_NOTES, notes })
+      dispatch({ type: LOCAL_NOTES_SET })
+      dispatch({ type: LOADING, loading: false })
+    })
+  }
+}
+
+export const setNotes = ({ notes }) => {
+  return dispatch => {
+    batch(() => {
+      dispatch({ type: NOTES_FETCHED, status: true })
       dispatch({ type: SET_NOTES, notes })
       dispatch({ type: LOADING, loading: false })
     })

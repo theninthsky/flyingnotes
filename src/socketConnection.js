@@ -1,21 +1,24 @@
-const { REACT_APP_WS_SERVER_URL = 'ws://localhost:5000' } = process.env
+import store from './store'
 
+import { getNotes, setNotes } from './store/actions/notes'
+
+const { REACT_APP_WS_SERVER_URL = 'ws://localhost:5000' } = process.env
 const messageTypes = {
-  getNotes: '',
+  getNotes: setNotes,
 }
 
-export const createWebSocketConnection = token => {
-  return new Promise((resolve, reject) => {
-    const ws = new WebSocket(REACT_APP_WS_SERVER_URL, token)
+export let ws
 
-    ws.onopen = resolve
+export const createWebSocketConnection = (token, userID) => {
+  ws = new WebSocket(REACT_APP_WS_SERVER_URL, token)
 
-    ws.onmessage = ({ data }) => {
-      const message = JSON.parse(data)
+  ws.onopen = setTimeout(() => store.dispatch(getNotes()), 100)
 
-      messageTypes[message.type].next(message)
-    }
+  ws.onmessage = ({ data }) => {
+    const message = JSON.parse(data)
 
-    ws.json = message => ws.send(JSON.stringify(message))
-  })
+    store.dispatch(messageTypes[message.type](message))
+  }
+
+  ws.json = message => ws.send(JSON.stringify({ userID, ...message }))
 }

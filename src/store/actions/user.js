@@ -7,7 +7,7 @@ const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
 
 axios.defaults.withCredentials = true
 
-export const register = ({ credentials }) => {
+export const register = credentials => {
   return async dispatch => {
     batch(() => {
       dispatch({ type: LOADING, loading: true })

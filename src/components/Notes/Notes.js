@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useMemo } from 'react'
 import { connect } from 'react-redux'
 
-import { fetchNotes } from '../../store/actions/index'
 import Note from './Note/Note'
 import NewNote from './NewNote/NewNote'
 
@@ -12,19 +11,9 @@ const mapStateToProps = state => ({
   notes: state.notes,
 })
 
-const mapDispatchToProps = dispatch => ({
-  fetchNotes: () => dispatch(fetchNotes()),
-})
-
-const Notes = ({ app: { theme, loading, notesFetched, localNotesSet }, notes, fetchNotes }) => {
+const Notes = ({ app: { theme, loading }, notes }) => {
   const [categoryFilter, setCategoryFilter] = useState('')
   const [searchFilter, setSearchFilter] = useState('')
-
-  useEffect(() => {
-    if (!notesFetched && !localNotesSet) {
-      fetchNotes()
-    }
-  }, [notesFetched, localNotesSet, fetchNotes])
 
   const filteredNotes = useMemo(
     () =>
@@ -90,4 +79,4 @@ const Notes = ({ app: { theme, loading, notesFetched, localNotesSet }, notes, fe
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Notes)
+export default connect(mapStateToProps)(Notes)
