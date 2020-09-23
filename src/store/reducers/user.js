@@ -1,4 +1,4 @@
-import { SET_NAME } from '../actions/constants'
+import { SET_NAME } from '../actions/actionTypes'
 
 const initialState = {
   name: localStorage.name,

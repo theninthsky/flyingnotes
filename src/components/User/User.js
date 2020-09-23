@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import { update, changePassword, logout } from '../../store/actions/index'
+import { update, changePassword, logout } from '../../store/actions'
 
 import userLogo from '../../assets/images/user-astronaut.svg'
 import style from './User.module.scss'

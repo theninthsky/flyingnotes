@@ -1,4 +1,4 @@
-import { SET_NOTES, ADD_NOTE, UPDATE_NOTE, DELETE_NOTE } from '../actions/constants'
+import { SET_NOTES, ADD_NOTE, UPDATE_NOTE, DELETE_NOTE } from '../actions/actionTypes'
 
 const initialState = []
 

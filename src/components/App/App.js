@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Switch, Route, useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import { requestChangeTheme } from '../../store/actions/index'
+import { changeTheme } from '../../store/actions'
 import NavigationBar from '../NavigationBar/NavigationBar'
 import Auth from '../Auth/Auth'
 import User from '../User/User'
@@ -19,7 +19,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  onChangeTheme: () => dispatch(requestChangeTheme()),
+  onChangeTheme: () => dispatch(changeTheme()),
 })
 
 const App = ({ app: { theme, loading, notesFetched }, user, onChangeTheme }) => {

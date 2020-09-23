@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import { requestAddNote, requestUpdateNote } from '../../../store/actions/index'
+import { addNote, updateNote } from '../../../store/actions/index'
 
 import style from './NewNote.module.scss'
 
@@ -11,8 +11,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  addNote: note => dispatch(requestAddNote(note)),
-  updateNote: note => dispatch(requestUpdateNote(note)),
+  addNote: note => dispatch(addNote(note)),
+  updateNote: note => dispatch(updateNote(note)),
 })
 
 const NewNote = props => {
