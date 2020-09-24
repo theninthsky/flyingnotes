@@ -1,20 +1,13 @@
 import axios from 'axios'
+import { ws } from '../../socketConnection'
 
 import { SET_FILES } from './actionTypes'
 
-const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
-
 axios.defaults.withCredentials = true
 
-export const fetchFiles = () => {
-  return async dispatch => {
-    const {
-      data: { files },
-    } = await axios.get(`${REACT_APP_SERVER_URL}/files`)
+export const getFiles = () => ws.json({ type: 'getFiles' })
 
-    dispatch({ type: SET_FILES, files })
-  }
-}
+export const setFiles = ({ files }) => ({ type: SET_FILES, files })
 
 export const uploadFile = ({ category, name, extension, selectedFile }) => {
   return async dispatch => {}

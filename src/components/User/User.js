@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import { update, changePassword, logout } from '../../store/actions'
+import { updateUser, changePassword, logout } from '../../store/actions'
 
 import userLogo from '../../assets/images/user-astronaut.svg'
 import style from './User.module.scss'
@@ -13,13 +13,9 @@ const mapStateToProps = state => ({
   notes: state.notes,
 })
 
-const mapDispatchToProps = dispatch => ({
-  onUpdate: name => dispatch(update(name)),
-  onFormSubmit: passwords => dispatch(changePassword(passwords)),
-  onLogout: () => dispatch(logout()),
-})
+const mapDispatchToProps = { changePassword, logout }
 
-const User = ({ app: { theme, errorMessage }, user, notes, onUpdate, onFormSubmit, onLogout }) => {
+const User = ({ app: { theme, errorMessage }, user, notes, changePassword, logout }) => {
   const [name, setName] = useState(user.name)
   const [password, setPassword] = useState('')
   const [changePasswordMode, setChangePasswordMode] = useState(false)
@@ -35,12 +31,12 @@ const User = ({ app: { theme, errorMessage }, user, notes, onUpdate, onFormSubmi
 
   const nameHanlder = event => {
     setName(event.currentTarget.textContent)
-    onUpdate(event.currentTarget.textContent)
+    updateUser(event.currentTarget.textContent)
   }
 
   const submitFormHandler = event => {
     event.preventDefault()
-    onFormSubmit({ password, newPassword })
+    changePassword(password, newPassword)
   }
 
   return (
@@ -88,7 +84,7 @@ const User = ({ app: { theme, errorMessage }, user, notes, onUpdate, onFormSubmi
             <h1>{`Notes: ${notes.length}`}</h1>
           </div>
 
-          <input className={style.logout} type="submit" value="Logout" onClick={onLogout} />
+          <input className={style.logout} type="submit" value="Logout" onClick={logout} />
         </>
       )}
     </div>

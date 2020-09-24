@@ -3,18 +3,16 @@ import { connect } from 'react-redux'
 
 // import NewFile from './NewFile/NewFile'
 import File from './File/File'
-import { fetchFiles } from '.././../store/actions'
+import { getFiles } from '.././../store/actions'
 
 import style from './Files.module.scss'
 
 const mapStateToProp = state => ({ files: state.files })
 
-const mapDispatchToProps = { fetchFiles }
-
-const Files = ({ files, fetchFiles }) => {
+const Files = ({ files }) => {
   useEffect(() => {
-    fetchFiles()
-  }, [fetchFiles])
+    getFiles()
+  }, [])
 
   const sortedFiles = useMemo(() => [...files].sort((a, b) => new Date(b.date) - new Date(a.date)), [files])
 
@@ -29,4 +27,4 @@ const Files = ({ files, fetchFiles }) => {
   )
 }
 
-export default connect(mapStateToProp, mapDispatchToProps)(Files)
+export default connect(mapStateToProp)(Files)

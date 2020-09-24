@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { batch } from 'react-redux'
+import { ws } from '../../socketConnection'
 
 import { LOADING, ERROR, SET_NAME, SET_NOTES, NOTES_FETCHED } from './actionTypes'
 
@@ -65,28 +66,32 @@ export const login = credentials => {
   }
 }
 
-export const update = name => {
-  return async dispatch => {
-    await axios.put(`${REACT_APP_SERVER_URL}/update`, { name })
+export const updateUser = name => ws.json({ type: 'updateUser', newName: name })
 
-    localStorage.setItem('name', name)
+export const modifyUser = ({ status, newName }) => {
+  return dispatch => {
+    if (status === 'FAIL') return
 
-    dispatch({ type: SET_NAME, name })
+    localStorage.setItem('name', newName)
+
+    dispatch({ type: SET_NAME, name: newName })
   }
 }
 
-export const changePassword = passwords => {
+export const changePassword = (password, newPassword) => {
   return async dispatch => {
     batch(() => {
       dispatch({ type: LOADING, loading: true })
       dispatch({ type: ERROR, errorMessage: false })
     })
-    try {
-      await axios.put(`${REACT_APP_SERVER_URL}/register`, passwords)
-    } catch ({ response: { data } }) {
-      dispatch({ type: ERROR, errorMessage: data })
-    }
-    dispatch({ type: LOADING, loading: false })
+
+    ws.json({ type: 'changePassword', password, newPassword })
+  }
+}
+
+export const passwordChanged = ({ status }) => {
+  return dispatch => {
+    if (status === 'SUCCESS') dispatch({ type: LOADING, loading: false })
   }
 }
 
