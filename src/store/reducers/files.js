@@ -1,4 +1,4 @@
-import { SET_FILES, ADD_FILE, ADD_ATTACHMENT } from '../actions/constants'
+import { SET_FILES, ADD_FILE, ADD_ATTACHMENT } from '../actions/actionTypes'
 
 const initialState = []
 

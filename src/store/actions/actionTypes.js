@@ -1,6 +1,5 @@
 /* App */
 export const LOADING = 'LOADING'
-export const REQUEST_CHANGE_THEME = 'REQUEST_CHANGE_THEME'
 export const CHANGE_THEME = 'CHANGE_THEME'
 export const ERROR = 'ERROR'
 export const SHOW_ERROR = 'SHOW_ERROR'
@@ -23,14 +22,10 @@ export const CHANGE_PASSWORD = 'CHANGE_PASSWORD'
 export const LOGOUT = 'LOGOUT'
 
 /* Notes */
-export const FETCH_NOTES = 'FETCH_NOTES'
 export const SET_NOTES = 'SET_NOTES'
-export const REQUEST_ADD_NOTE = 'REQUEST_ADD_NOTE'
 export const ADD_NOTE = 'ADD_NOTE'
-export const REQUEST_UPDATE_NOTE = 'REQUEST_UPDATE_NOTE'
 export const UPDATE_NOTE = 'UPDATE_NOTE'
-export const REQUEST_DELETE_NOTE = 'REQUEST_DELETE_NOTE'
-export const DELETE_NOTE = 'DELETE_NOTE'
+export const REMOVE_NOTE = 'REMOVE_NOTE'
 
 /* Files */
 export const FETCH_FILES = 'FETCH_FILES'

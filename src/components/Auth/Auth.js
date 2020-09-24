@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import * as actions from '../../store/actions/index'
+import * as actions from '../../store/actions'
 import style from './Auth.module.scss'
 
 const mapStateToProps = state => ({

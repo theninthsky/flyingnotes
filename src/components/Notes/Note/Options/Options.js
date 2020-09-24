@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 
-import { requestDeleteNote } from '../../../../store/actions/index'
+import { deleteNote } from '../../../../store/actions/index'
 
 import editSymbol from '../../../../assets/images/edit.svg'
 import deleteSymbol from '../../../../assets/images/delete.svg'
@@ -10,7 +10,7 @@ import cancelSymbol from '../../../../assets/images/cancel.svg'
 import style from './Options.module.scss'
 
 const mapDispatchToProps = dispatch => ({
-  deleteNote: noteID => dispatch(requestDeleteNote(noteID)),
+  deleteNote: noteID => dispatch(deleteNote(noteID)),
 })
 
 const Options = ({ id, edit, deleteNote, toggleConfirmMessage }) => {

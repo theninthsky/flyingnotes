@@ -9,7 +9,7 @@ import {
   DELETING_NOTE,
   UPLOADING_FILE,
   DOWNLOADING_FILE,
-} from '../actions/constants'
+} from '../actions/actionTypes'
 
 const initialState = {
   theme: localStorage.theme || 'light',
