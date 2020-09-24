@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import { addNote, updateNote } from '../../../store/actions/index'
+import { createNote, updateNote } from '../../../store/actions/index'
 
 import style from './NewNote.module.scss'
 
@@ -10,10 +10,7 @@ const mapStateToProps = state => ({
   user: state.user,
 })
 
-const mapDispatchToProps = dispatch => ({
-  addNote: note => dispatch(addNote(note)),
-  updateNote: note => dispatch(updateNote(note)),
-})
+const mapDispatchToProps = { createNote, updateNote }
 
 const NewNote = props => {
   const {
@@ -21,7 +18,7 @@ const NewNote = props => {
     toggleEditMode,
     closeOptions,
     app: { theme, addingNote, updatingNote },
-    addNote,
+    createNote,
     updateNote,
   } = props
 
@@ -47,7 +44,7 @@ const NewNote = props => {
       content,
     }
 
-    if (!updateMode) return addNote(note)
+    if (!updateMode) return createNote(note)
 
     updateNote(note)
     toggleEditMode()
@@ -57,7 +54,7 @@ const NewNote = props => {
   const saveNoteOnCloudHandler = event => {
     event.preventDefault()
 
-    if (!updateMode) return addNote({ category, title, content })
+    if (!updateMode) return createNote({ category, title, content })
 
     updateNote({ _id: props._id, category, title, content })
     toggleEditMode()

@@ -1,4 +1,4 @@
-import { SET_NOTES, ADD_NOTE, UPDATE_NOTE, DELETE_NOTE } from '../actions/actionTypes'
+import { SET_NOTES, ADD_NOTE, UPDATE_NOTE, REMOVE_NOTE } from '../actions/actionTypes'
 
 const initialState = []
 
@@ -10,7 +10,7 @@ export default (state = initialState, action) => {
       return [...state, action.newNote]
     case UPDATE_NOTE:
       return state.map(note => (note._id === action.updatedNote._id ? action.updatedNote : note))
-    case DELETE_NOTE:
+    case REMOVE_NOTE:
       return state.filter(note => (note._id || note.date) !== action.noteID)
     default:
       return state

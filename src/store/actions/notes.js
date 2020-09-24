@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { batch } from 'react-redux'
 
 import {
@@ -12,13 +11,9 @@ import {
   UPDATING_NOTE,
   UPDATE_NOTE,
   DELETING_NOTE,
-  DELETE_NOTE,
+  REMOVE_NOTE,
 } from './actionTypes'
 import { ws } from '../../socketConnection'
-
-const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
-
-axios.defaults.withCredentials = true
 
 const exampleNote = {
   _id: 'example',
@@ -54,22 +49,23 @@ export const setNotes = ({ notes }) => {
   }
 }
 
-export const addNote = newNote => {
+export const createNote = newNote => {
   return async dispatch => {
     dispatch({ type: ADDING_NOTE, status: true })
 
-    if (localStorage.name) {
-      const { data } = await axios.post(`${REACT_APP_SERVER_URL}/notes`, newNote)
+    if (localStorage.name) return ws.json({ type: 'createNote', newNote })
 
-      newNote = data.newNote
-    } else {
-      newNote = { ...newNote, _id: Date.now(), date: Date.now() }
-      localStorage.setItem(
-        'notes',
-        JSON.stringify(localStorage.notes ? [...JSON.parse(localStorage.notes), newNote] : [newNote]),
-      )
-    }
+    newNote = { ...newNote, _id: Date.now(), date: Date.now() }
 
+    localStorage.setItem(
+      'notes',
+      JSON.stringify(localStorage.notes ? [...JSON.parse(localStorage.notes), newNote] : [newNote]),
+    )
+  }
+}
+
+export const addNote = ({ newNote }) => {
+  return dispatch => {
     batch(() => {
       dispatch({ type: ADD_NOTE, newNote })
       dispatch({ type: ADDING_NOTE, status: false })
@@ -81,18 +77,18 @@ export const updateNote = updatedNote => {
   return async dispatch => {
     dispatch({ type: UPDATING_NOTE, noteID: updatedNote._id })
 
-    if (localStorage.name) {
-      const { data } = await axios.put(`${REACT_APP_SERVER_URL}/notes`, updatedNote)
+    if (localStorage.name) return ws.json({ type: 'updateNote', updatedNote })
 
-      updatedNote = data.updatedNote
-    } else {
-      updatedNote.date = Date.now()
-      localStorage.setItem(
-        'notes',
-        JSON.stringify(JSON.parse(localStorage.notes).map(note => (note._id === updatedNote._id ? updatedNote : note))),
-      )
-    }
+    updatedNote.date = Date.now()
+    localStorage.setItem(
+      'notes',
+      JSON.stringify(JSON.parse(localStorage.notes).map(note => (note._id === updatedNote._id ? updatedNote : note))),
+    )
+  }
+}
 
+export const modifyNote = ({ updatedNote }) => {
+  return dispatch => {
     batch(() => {
       dispatch({ type: UPDATE_NOTE, updatedNote })
       dispatch({ type: UPDATING_NOTE, noteID: '' })
@@ -104,23 +100,21 @@ export const deleteNote = noteID => {
   return async dispatch => {
     dispatch({ type: DELETING_NOTE, noteID })
 
-    if (localStorage.name) {
-      try {
-        await axios.delete(`${REACT_APP_SERVER_URL}/notes`, {
-          data: { noteID },
-        })
-      } catch ({ response: { data } }) {
-        noteID = ''
+    if (localStorage.name) return ws.json({ type: 'deleteNote', noteID })
 
-        dispatch({ type: ERROR, errorMessage: data })
-      }
-    } else {
-      localStorage.setItem('notes', JSON.stringify(JSON.parse(localStorage.notes).filter(note => note._id !== noteID)))
+    localStorage.setItem('notes', JSON.stringify(JSON.parse(localStorage.notes).filter(note => note._id !== noteID)))
+  }
+}
+
+export const removeNote = ({ status, noteID }) => {
+  return dispatch => {
+    if (status === 'SUCCESS') {
+      return batch(() => {
+        dispatch({ type: DELETING_NOTE, noteID: '' })
+        dispatch({ type: REMOVE_NOTE, noteID })
+      })
     }
 
-    batch(() => {
-      dispatch({ type: DELETE_NOTE, noteID })
-      dispatch({ type: DELETING_NOTE, noteID: '' })
-    })
+    dispatch({ type: ERROR, errorMessage: 'Error deleting note' })
   }
 }

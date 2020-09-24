@@ -1,10 +1,13 @@
 import store from './store'
 
-import { getNotes, setNotes } from './store/actions/notes'
+import { getNotes, setNotes, addNote, modifyNote, removeNote } from './store/actions/notes'
 
 const { REACT_APP_WS_SERVER_URL = 'ws://localhost:5000' } = process.env
 const messageTypes = {
   getNotes: setNotes,
+  createNote: addNote,
+  updateNote: modifyNote,
+  deleteNote: removeNote,
 }
 
 export let ws
