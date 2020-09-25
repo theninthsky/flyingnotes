@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react'
 import { Switch, Route, useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
-import axios from 'axios'
 
 import { createWebSocketConnection } from '../../socketConnection'
-import { changeTheme } from '../../store/actions'
+import { changeTheme, getNotes } from '../../store/actions'
 import NavigationBar from '../NavigationBar/NavigationBar'
 import Auth from '../Auth/Auth'
 import User from '../User/User'
@@ -15,29 +14,25 @@ import Spinner from '../UI/Spinner'
 import images from '../../util/images'
 import './App.scss'
 
-const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
-
 const mapStateToProps = state => ({
   app: state.app,
   user: state.user,
 })
 
-const mapDispatchToProps = { changeTheme }
+const mapDispatchToProps = { changeTheme, getNotes }
 
-const App = ({ app: { theme, loading, notesFetched }, user, changeTheme }) => {
+const App = ({ app: { theme, loading, notesFetched }, user, changeTheme, getNotes }) => {
   const history = useHistory()
 
   useEffect(() => {
     const connectToWebSocket = async () => {
-      const {
-        data: { bearerToken, userID },
-      } = await axios.get(`${REACT_APP_SERVER_URL}/get-new-token`)
+      await createWebSocketConnection()
 
-      createWebSocketConnection(bearerToken, userID)
+      getNotes()
     }
 
     connectToWebSocket()
-  }, [])
+  }, [getNotes])
 
   useEffect(() => {
     document.body.classList[`${theme === 'dark' ? 'add' : 'remove'}`]('dark')
