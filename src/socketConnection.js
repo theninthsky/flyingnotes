@@ -19,6 +19,8 @@ const messageTypes = {
 export let ws
 
 export const createWebSocketConnection = message => {
+  if (!localStorage.name) return
+
   return new Promise(async resolve => {
     const {
       data: { bearerToken, userID },

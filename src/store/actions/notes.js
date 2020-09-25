@@ -3,8 +3,6 @@ import { batch } from 'react-redux'
 import {
   LOADING,
   ERROR,
-  NOTES_FETCHED,
-  LOCAL_NOTES_SET,
   SET_NOTES,
   ADDING_NOTE,
   ADD_NOTE,
@@ -25,15 +23,12 @@ const exampleNote = {
 
 export const getNotes = () => {
   return async dispatch => {
-    dispatch({ type: LOADING, loading: true })
-
     if (localStorage.name) return ws.json({ type: 'getNotes' })
 
     const notes = JSON.parse(localStorage.notes || `[${JSON.stringify(exampleNote)}]`)
 
     batch(() => {
       dispatch({ type: SET_NOTES, notes })
-      dispatch({ type: LOCAL_NOTES_SET })
       dispatch({ type: LOADING, loading: false })
     })
   }
@@ -42,7 +37,6 @@ export const getNotes = () => {
 export const setNotes = ({ notes }) => {
   return dispatch => {
     batch(() => {
-      dispatch({ type: NOTES_FETCHED, status: true })
       dispatch({ type: SET_NOTES, notes })
       dispatch({ type: LOADING, loading: false })
     })
@@ -51,16 +45,19 @@ export const setNotes = ({ notes }) => {
 
 export const createNote = newNote => {
   return async dispatch => {
-    dispatch({ type: ADDING_NOTE, status: true })
+    if (localStorage.name) {
+      dispatch({ type: ADDING_NOTE, status: true })
 
-    if (localStorage.name) return ws.json({ type: 'createNote', newNote })
+      return ws.json({ type: 'createNote', newNote })
+    }
 
     newNote = { ...newNote, _id: Date.now(), date: Date.now() }
-
     localStorage.setItem(
       'notes',
       JSON.stringify(localStorage.notes ? [...JSON.parse(localStorage.notes), newNote] : [newNote]),
     )
+
+    dispatch({ type: ADD_NOTE, newNote })
   }
 }
 
@@ -75,15 +72,19 @@ export const addNote = ({ newNote }) => {
 
 export const updateNote = updatedNote => {
   return async dispatch => {
-    dispatch({ type: UPDATING_NOTE, noteID: updatedNote._id })
+    if (localStorage.name) {
+      dispatch({ type: UPDATING_NOTE, noteID: updatedNote._id })
 
-    if (localStorage.name) return ws.json({ type: 'updateNote', updatedNote })
+      return ws.json({ type: 'updateNote', updatedNote })
+    }
 
     updatedNote.date = Date.now()
     localStorage.setItem(
       'notes',
       JSON.stringify(JSON.parse(localStorage.notes).map(note => (note._id === updatedNote._id ? updatedNote : note))),
     )
+
+    dispatch({ type: UPDATE_NOTE, updatedNote })
   }
 }
 
@@ -98,11 +99,15 @@ export const modifyNote = ({ updatedNote }) => {
 
 export const deleteNote = noteID => {
   return async dispatch => {
-    dispatch({ type: DELETING_NOTE, noteID })
+    if (localStorage.name) {
+      dispatch({ type: DELETING_NOTE, noteID })
 
-    if (localStorage.name) return ws.json({ type: 'deleteNote', noteID })
+      return ws.json({ type: 'deleteNote', noteID })
+    }
 
     localStorage.setItem('notes', JSON.stringify(JSON.parse(localStorage.notes).filter(note => note._id !== noteID)))
+
+    dispatch({ type: REMOVE_NOTE, noteID })
   }
 }
 

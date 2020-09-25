@@ -1,8 +1,8 @@
 import axios from 'axios'
 import { batch } from 'react-redux'
-import { ws } from '../../socketConnection'
+import { createWebSocketConnection, ws } from '../../socketConnection'
 
-import { LOADING, ERROR, SET_NAME, SET_NOTES, NOTES_FETCHED } from './actionTypes'
+import { LOADING, ERROR, SET_NAME, SET_NOTES } from './actionTypes'
 
 const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
 
@@ -28,10 +28,11 @@ export const register = credentials => {
       localStorage.clear()
       localStorage.setItem('name', name)
 
+      createWebSocketConnection()
+
       batch(() => {
         dispatch({ type: SET_NAME, name })
         dispatch({ type: SET_NOTES, notes })
-        dispatch({ type: NOTES_FETCHED, status: true })
       })
     } catch ({ response: { data } }) {
       dispatch({ type: ERROR, errorMessage: data })
@@ -54,10 +55,11 @@ export const login = credentials => {
 
       localStorage.setItem('name', name)
 
+      createWebSocketConnection()
+
       batch(() => {
         dispatch({ type: SET_NAME, name })
         dispatch({ type: SET_NOTES, notes })
-        dispatch({ type: NOTES_FETCHED, status: true })
       })
     } catch ({ response: { data } }) {
       dispatch({ type: ERROR, errorMessage: data })
@@ -111,9 +113,6 @@ export const logout = () => {
       dispatch({ type: ERROR, errorMessage: data })
     }
 
-    batch(() => {
-      dispatch({ type: LOADING, loading: false })
-      dispatch({ type: NOTES_FETCHED, status: false })
-    })
+    dispatch({ type: LOADING, loading: false })
   }
 }
