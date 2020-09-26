@@ -17,12 +17,11 @@ import './App.scss'
 const mapStateToProps = state => ({
   app: state.app,
   user: state.user,
-  notes: state.notes,
 })
 
 const mapDispatchToProps = { changeTheme, getNotes }
 
-const App = ({ app: { theme, loading }, user, notes, changeTheme, getNotes }) => {
+const App = ({ app: { theme, loading }, user, changeTheme, getNotes }) => {
   const history = useHistory()
 
   useEffect(() => {
@@ -41,7 +40,7 @@ const App = ({ app: { theme, loading }, user, notes, changeTheme, getNotes }) =>
 
   useEffect(() => {
     history.push('/')
-  }, [notes, history])
+  }, [user.name, history])
 
   /* Preload Images */
   useEffect(() => {
