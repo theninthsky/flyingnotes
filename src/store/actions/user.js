@@ -104,6 +104,7 @@ export const logout = () => {
       await axios.post(`${REACT_APP_SERVER_URL}/logout`)
 
       localStorage.removeItem('name')
+      ws.close()
 
       batch(() => {
         dispatch({ type: SET_NAME, name: null })
