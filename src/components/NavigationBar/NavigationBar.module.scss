@@ -1,14 +1,26 @@
 .navBar {
   display: flex;
-  margin: 10px auto;
   margin-bottom: 40px;
-  padding: 0 10px;
-  width: 99%;
+  padding: 5px 8px;
+  width: 100%;
   box-sizing: border-box;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
+  background-color: #3d3c42;
+  color: white;
+  box-shadow: 0 2px 5px gray;
 
-  .item,
+  .logoWrap {
+    display: flex;
+    width: 15%;
+
+    .logo {
+      align-self: center;
+      height: 40px;
+    }
+  }
+
+  .link,
   .theme,
   .auth {
     color: inherit;
@@ -22,25 +34,35 @@
     }
   }
 
-  .item {
-    padding: 2px 6px;
-    box-sizing: border-box;
-    text-decoration: none;
-    font-size: 24px;
+  .links {
+    .link {
+      padding: 0 6px;
+      box-sizing: border-box;
+      text-decoration: none;
+      font-size: 24px;
+    }
   }
 
-  .theme {
-    width: 26px;
-  }
+  .util {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 15%;
 
-  .auth {
-    float: right;
-    margin-left: 15px;
-    font-size: 22px;
-    text-decoration: none;
+    .theme {
+      width: 26px;
+    }
 
-    .user {
-      width: 22px;
+    .auth {
+      display: flex;
+      margin-left: 15px;
+      font-size: 22px;
+      text-decoration: none;
+
+      .user {
+        align-self: center;
+        width: 22px;
+      }
     }
   }
 
@@ -50,8 +72,8 @@
   }
 }
 
-.themeDark,
-.userDark {
+.theme,
+.user {
   filter: invert(100%);
 }
 
@@ -76,6 +98,12 @@
 
 @media (pointer: none), (pointer: coarse) {
   .navBar {
+    .logoWrap {
+      .logo {
+        // width: 35px;
+      }
+    }
+
     .theme,
     .notes,
     .auth {

@@ -11,7 +11,7 @@ import Notes from '../Notes/Notes'
 import Files from '../Files/Files'
 import Spinner from '../UI/Spinner'
 
-import images from '../../util/images'
+import preloadImages from '../../util/preloadImages'
 import './App.scss'
 
 const mapStateToProps = state => ({
@@ -42,12 +42,8 @@ const App = ({ app: { theme, loading }, user, changeTheme, getNotes }) => {
     history.push('/')
   }, [user.name, history])
 
-  /* Preload Images */
   useEffect(() => {
-    images.forEach(image => {
-      const img = new Image()
-      img.src = image
-    })
+    preloadImages()
   }, [])
 
   return (
@@ -58,7 +54,7 @@ const App = ({ app: { theme, loading }, user, changeTheme, getNotes }) => {
         <Spinner />
       ) : (
         <Switch>
-          <Route exact path={['/', '/notes']} component={Notes} />
+          <Route exact path="/" component={Notes} />
           <Route path="/files" component={Files} />
           <Route path="/auth" component={Auth} />
           <Route path="/account" component={User} />

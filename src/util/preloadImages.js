@@ -6,4 +6,8 @@ import editIcon from '../assets/images/edit.svg'
 import lightThemeIcon from '../assets/images/theme-light.svg'
 import darkThemeIcon from '../assets/images/theme-dark.svg'
 
-export default [cancelIcon, confirmIcon, deleteIcon, downloadIcon, editIcon, lightThemeIcon, darkThemeIcon]
+export default () =>
+  [cancelIcon, confirmIcon, deleteIcon, downloadIcon, editIcon, lightThemeIcon, darkThemeIcon].forEach(image => {
+    const img = new Image()
+    img.src = image
+  })

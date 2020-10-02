@@ -7,13 +7,14 @@
   .categoryFilter,
   .searchFilter {
     border: 0.5px solid #ccc;
-    border-radius: 5px;
     background-color: white;
   }
 
   .categoryFilter {
     width: 15%;
+    border-radius: 5px 0 0 5px;
     outline: none;
+    cursor: pointer;
 
     option {
       background-color: transparent;
@@ -21,6 +22,8 @@
   }
 
   .searchFilter {
+    border-radius: 0 5px 5px 0;
+
     .searchIcon {
       padding: 0.5rem;
     }
