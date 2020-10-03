@@ -11,7 +11,7 @@ import {
   DELETING_NOTE,
   REMOVE_NOTE,
 } from './actionTypes'
-import { ws } from '../../socketConnection'
+import { ws } from '../../websocketConnection'
 
 const exampleNote = {
   _id: 'example',

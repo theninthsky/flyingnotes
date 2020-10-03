@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Switch, Route, useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import { createWebSocketConnection } from '../../socketConnection'
+import { createWebSocketConnection } from '../../websocketConnection'
 import { changeTheme, getNotes } from '../../store/actions'
 import NavigationBar from '../NavigationBar/NavigationBar'
 import Auth from '../Auth/Auth'

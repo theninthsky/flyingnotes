@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { batch } from 'react-redux'
-import { createWebSocketConnection, ws } from '../../socketConnection'
+import { createWebSocketConnection, ws } from '../../websocketConnection'
 
 import { LOADING, ERROR, SET_NAME, SET_NOTES } from './actionTypes'
 

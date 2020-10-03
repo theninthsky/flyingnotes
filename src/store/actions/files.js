@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { ws } from '../../socketConnection'
+import { ws } from '../../websocketConnection'
 
 import { SET_FILES } from './actionTypes'
 

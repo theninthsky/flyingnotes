@@ -9,5 +9,6 @@ import darkThemeIcon from '../assets/images/theme-dark.svg'
 export default () =>
   [cancelIcon, confirmIcon, deleteIcon, downloadIcon, editIcon, lightThemeIcon, darkThemeIcon].forEach(image => {
     const img = new Image()
+
     img.src = image
   })
