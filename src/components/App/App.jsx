@@ -1,18 +1,50 @@
 import React, { useEffect } from 'react'
 import { Switch, Route, useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { createGlobalStyle } from 'styled-components'
 
 import { createWebSocketConnection } from '../../websocketConnection'
 import { changeTheme, getNotes } from '../../store/actions'
-import NavigationBar from '../NavigationBar/NavigationBar'
-import Auth from '../Auth/Auth'
+import preloadImages from '../../util/preloadImages'
+import NavigationBar from '../NavigationBar'
+import Auth from '../Auth'
 import User from '../User/User'
 import Notes from '../Notes/Notes'
 import Files from '../Files/Files'
 import Spinner from '../UI/Spinner'
 
-import preloadImages from '../../util/preloadImages'
-import './App.scss'
+const GlobalStyle = createGlobalStyle`
+  html {
+    height: 100vh; // fixes gradient on mobile
+  }
+
+  body {
+    margin: 0;
+    color: ${({ theme }) => (theme === 'light' ? 'rgb(80, 80, 80)' : 'white')};
+    background: ${({ theme }) => (theme === 'light' ? 'initial' : 'linear-gradient(#202020, #404040) fixed')};
+    animation: showApp 0.5s;
+
+    @keyframes showApp {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  }
+
+  img {
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  a {
+    &:visited {
+      color: unset;
+    }
+  }
+`
 
 const mapStateToProps = state => ({
   app: state.app,
@@ -35,10 +67,6 @@ const App = ({ app: { theme, loading }, user, changeTheme, getNotes }) => {
   }, [getNotes])
 
   useEffect(() => {
-    document.body.classList[`${theme === 'dark' ? 'add' : 'remove'}`]('dark')
-  }, [theme])
-
-  useEffect(() => {
     history.push('/')
   }, [user.name, history])
 
@@ -48,6 +76,8 @@ const App = ({ app: { theme, loading }, user, changeTheme, getNotes }) => {
 
   return (
     <>
+      <GlobalStyle theme={theme} />
+
       <NavigationBar theme={theme} user={user} changeTheme={changeTheme} />
 
       {loading ? (

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const Message = styled.div`
+const StyledMessage = styled.div`
   z-index: 1;
   position: fixed;
   bottom: 2%;
@@ -44,9 +44,9 @@ const Message = styled.div`
 
 export default ({ theme, toggle }) => {
   return (
-    <Message theme={theme} onClick={() => toggle(false)}>
+    <StyledMessage theme={theme} onClick={() => toggle(false)}>
       Notes are saved as cookies and will be lost if you clear the browser's data. Login to have your notes and files
       saved on the cloud.
-    </Message>
+    </StyledMessage>
   )
 }
