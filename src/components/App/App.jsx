@@ -10,7 +10,7 @@ import NavigationBar from '../NavigationBar'
 import Auth from '../Auth'
 import User from '../User'
 import Notes from '../Notes'
-import Files from '../Files/Files'
+import Files from '../Files'
 import Spinner from '../UI/Spinner'
 
 const GlobalStyle = createGlobalStyle`
