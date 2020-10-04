@@ -2,8 +2,8 @@ import React, { useState, useMemo } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
-import Note from './Note/Note'
-import NewNote from './NewNote/NewNote'
+import Note from './Note'
+import NewNote from './NewNote'
 
 // #region Styles
 const Filters = styled.div`
@@ -45,7 +45,7 @@ const SearchBox = styled.input`
   outline: none;
 
   &::placeholder {
-    color: ${({ theme }) => (theme === 'dark' ? 'rgb(200, 200, 200)' : 'rgb(120, 120, 120)')};
+    color: ${({ theme }) => (theme === 'dark' ? 'rgb(200, 200, 200)' : 'auto')};
   }
 `
 const NotesWrap = styled.div`

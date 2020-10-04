@@ -6,6 +6,8 @@ A `.env` file (https://www.npmjs.com/package/dotenv) should be placed at the roo
 
 `REACT_APP_SERVER_URL` (required, default: http://localhost:5000)
 
+`REACT_APP_WS_SERVER_URL` (required, default: ws://localhost:5000)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
