@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 
-import CookiesMessage from '../CookiesMessage'
+import CookiesMessage from './CookiesMessage'
 
 import logo from '../../assets/images/logo.svg'
 import lightThemeIcon from '../../assets/images/theme-light.svg'
@@ -10,7 +10,7 @@ import darkThemeIcon from '../../assets/images/theme-dark.svg'
 import userIcon from '../../assets/images/user-astronaut.svg'
 
 // #region Styles
-const StyledNavigationBar = styled.nav`
+const Wrapper = styled.nav`
   display: flex;
   margin-bottom: 40px;
   padding: 5px 10px;
@@ -105,12 +105,12 @@ const Auth = styled(NavLink)`
 `
 // #endregion
 
-export default ({ theme, user, changeTheme }) => {
+const NavigationBar = ({ theme, user, changeTheme }) => {
   const [showCookiesMessage, setShowCookiesMessage] = useState(true)
 
   return (
     <>
-      <StyledNavigationBar>
+      <Wrapper>
         <LogoWrap>
           <Logo src={logo} alt="logo" />
         </LogoWrap>
@@ -145,7 +145,7 @@ export default ({ theme, user, changeTheme }) => {
             </Auth>
           )}
         </Util>
-      </StyledNavigationBar>
+      </Wrapper>
 
       {showCookiesMessage && !user.name && (
         <CookiesMessage theme={theme} toggle={mode => setShowCookiesMessage(mode)} />
@@ -153,3 +153,5 @@ export default ({ theme, user, changeTheme }) => {
     </>
   )
 }
+
+export default NavigationBar

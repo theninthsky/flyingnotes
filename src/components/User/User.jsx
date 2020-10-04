@@ -1,17 +1,116 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
+import styled from 'styled-components'
 
 import { updateUser, changePassword, logout } from '../../store/actions'
 
 import userLogo from '../../assets/images/user-astronaut.svg'
-import style from './User.module.scss'
 
+// #region Styles
+const Wrapper = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: auto;
+  width: 40vw;
+  height: 60vh;
+  min-height: 450px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  border-radius: 2px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  animation: showUser 0.5s;
+
+  @keyframes showUser {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 480px) {
+    width: 90vw;
+  }
+`
+const UserLogo = styled.img`
+  margin: 10px auto;
+  width: 20%;
+  border-radius: 100%;
+  filter: ${({ theme }) => (theme === 'dark' ? 'invert(100%)' : 'none')};
+`
 const mapStateToProps = state => ({
   app: state.app,
   user: state.user,
   notes: state.notes,
 })
+const Name = styled.h1`
+  align-self: center;
+  padding-left: 20px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 20px;
+  font-weight: normal;
+`
+const ErrorMessage = styled.p`
+  text-align: center;
+  color: red;
+`
+const Input = styled.input`
+  display: block;
+  margin: 1vh auto;
+  padding: 4px;
+  border: none;
+  border-bottom: 1px solid lightgray;
+  outline: none;
+  font-size: 16px;
+
+  &:-webkit-autofill {
+    box-shadow: 0 0 0 100px white inset;
+  }
+`
+const Submit = styled(Input)`
+  margin-top: 10%;
+  padding: 6px;
+  border: 1px solid gray;
+  border-width: 1px;
+  border-radius: 4px;
+  background-color: transparent;
+  color: inherit;
+  outline: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+
+  &:hover {
+    color: white;
+    background-color: gray;
+  }
+`
+const Notes = styled.h1`
+  margin: 6px;
+  padding-left: 10%;
+  font-size: 20px;
+  font-weight: normal;
+`
+const ChangePassword = styled.button`
+  display: block;
+  margin: 0 auto;
+  border: none;
+  color: inherit;
+  font-size: 14px;
+  background-color: transparent;
+  opacity: 0.5;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+  }
+`
+// #endregion
 
 const mapDispatchToProps = { changePassword, logout }
 
@@ -40,23 +139,17 @@ const User = ({ app: { theme, errorMessage }, user, notes, changePassword, logou
   }
 
   return (
-    <div className={style.user}>
-      <img className={`${style.userLogo} ${theme === 'dark' ? style.userLogoDark : ''}`} src={userLogo} alt="User" />
+    <Wrapper>
+      <UserLogo theme={theme} src={userLogo} alt="User" />
 
-      <h1
-        className={style.name}
-        contentEditable
-        suppressContentEditableWarning={true}
-        spellCheck="false"
-        onBlur={nameHanlder}
-      >
+      <Name contentEditable suppressContentEditableWarning={true} spellCheck="false" onBlur={nameHanlder}>
         {name}
-      </h1>
+      </Name>
 
       {changePasswordMode || errorMessage ? (
         <form onSubmit={submitFormHandler}>
-          {errorMessage && <p className={style.errorMessage}>{errorMessage}</p>}
-          <input
+          {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+          <Input
             type="password"
             value={password}
             placeholder="Password"
@@ -65,7 +158,7 @@ const User = ({ app: { theme, errorMessage }, user, notes, changePassword, logou
             onChange={event => setPassword(event.target.value)}
           />
 
-          <input
+          <Input
             type="password"
             value={newPassword}
             placeholder="New Password"
@@ -73,21 +166,19 @@ const User = ({ app: { theme, errorMessage }, user, notes, changePassword, logou
             onChange={event => setNewPassword(event.target.value)}
           />
 
-          <input className={style.update} type="submit" />
+          <Submit type="submit" />
         </form>
       ) : (
         <>
-          <button className={style.changePassword} onClick={() => setChangePasswordMode(true)}>
-            Change Password
-          </button>
-          <div className={style.info}>
-            <h1>{`Notes: ${notes.length}`}</h1>
+          <ChangePassword onClick={() => setChangePasswordMode(true)}>Change Password</ChangePassword>
+          <div>
+            <Notes>{`Notes: ${notes.length}`}</Notes>
           </div>
 
-          <input className={style.logout} type="submit" value="Logout" onClick={logout} />
+          <Submit type="submit" value="Logout" onClick={logout} />
         </>
       )}
-    </div>
+    </Wrapper>
   )
 }
 

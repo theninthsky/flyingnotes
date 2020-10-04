@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import * as actions from '../../store/actions'
 
 // #region Styles
-const StyledAuth = styled.div`
+const Wrapper = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
@@ -132,7 +132,7 @@ const Auth = ({ app: { errorMessage }, user, onFormSubmit }) => {
   }
 
   return (
-    <StyledAuth>
+    <Wrapper>
       <Title>
         <Login action={action} onClick={actionChangedHandler}>
           Login
@@ -167,7 +167,7 @@ const Auth = ({ app: { errorMessage }, user, onFormSubmit }) => {
         />
         <Submit type="submit" value={action} />
       </form>
-    </StyledAuth>
+    </Wrapper>
   )
 }
 

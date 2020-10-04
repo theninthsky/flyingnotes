@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const StyledMessage = styled.div`
+const Wrapper = styled.div`
   z-index: 1;
   position: fixed;
   bottom: 2%;
@@ -42,11 +42,13 @@ const StyledMessage = styled.div`
   }
 `
 
-export default ({ theme, toggle }) => {
+const CookiesMessage = ({ theme, toggle }) => {
   return (
-    <StyledMessage theme={theme} onClick={() => toggle(false)}>
+    <Wrapper theme={theme} onClick={() => toggle(false)}>
       Notes are saved as cookies and will be lost if you clear the browser's data. Login to have your notes and files
       saved on the cloud.
-    </StyledMessage>
+    </Wrapper>
   )
 }
+
+export default CookiesMessage

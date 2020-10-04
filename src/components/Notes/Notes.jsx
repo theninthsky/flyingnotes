@@ -1,10 +1,63 @@
 import React, { useState, useMemo } from 'react'
 import { connect } from 'react-redux'
+import styled from 'styled-components'
 
 import Note from './Note/Note'
 import NewNote from './NewNote/NewNote'
 
-import style from './Notes.module.scss'
+// #region Styles
+const Filters = styled.div`
+  margin: 20px auto;
+  width: 25vw;
+  display: flex;
+  justify-content: center;
+
+  @media (max-width: 768px) {
+    width: 70vw;
+  }
+
+  @media (max-width: 480px) {
+    width: 90%;
+  }
+`
+const CategoryFilter = styled.select`
+  width: 15%;
+  border-radius: 5px 0 0 5px;
+  outline: none;
+  cursor: pointer;
+  border: 0.5px solid #ccc;
+  color: inherit;
+  background-color: ${({ theme }) => (theme === 'dark' ? '#222' : 'white')};
+`
+const SearchFilter = styled.div`
+  border: 0.5px solid #ccc;
+  border-radius: 0 5px 5px 0;
+  color: inherit;
+  background-color: inherit;
+`
+const SearchIcon = styled.i`
+  padding: 0.5rem;
+`
+const SearchBox = styled.input`
+  border: none;
+  color: inherit;
+  background-color: transparent;
+  outline: none;
+
+  &::placeholder {
+    color: ${({ theme }) => (theme === 'dark' ? 'rgb(200, 200, 200)' : 'rgb(120, 120, 120)')};
+  }
+`
+const NotesWrap = styled.div`
+  margin: 0 auto;
+  width: 95%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+`
+// #endregion
 
 const mapStateToProps = state => ({
   app: state.app,
@@ -38,12 +91,8 @@ const Notes = ({ app: { theme, loading }, notes }) => {
     <>
       {loading || (
         <>
-          <div className={style.filters}>
-            <select
-              className={`${style.categoryFilter} ${theme === 'dark' ? style.categoryFilterDark : ''}`}
-              title="Category"
-              onChange={event => setCategoryFilter(event.target.value)}
-            >
+          <Filters>
+            <CategoryFilter theme={theme} title="Category" onChange={event => setCategoryFilter(event.target.value)}>
               <option defaultValue value="">
                 ALL
               </option>
@@ -55,24 +104,24 @@ const Notes = ({ app: { theme, loading }, notes }) => {
                 .map(({ category, _id }) => (
                   <option key={_id}>{category}</option>
                 ))}
-            </select>
+            </CategoryFilter>
 
-            <div className={`${style.searchFilter} ${theme === 'dark' ? style.searchFilterDark : ''}`}>
-              <i className={'fa fa-search ' + style.searchIcon}></i>
-              <input
-                className={style.searchBox}
+            <SearchFilter>
+              <SearchIcon className="fa fa-search"></SearchIcon>
+              <SearchBox
+                theme={theme}
                 type="search"
                 value={searchFilter}
                 placeholder="Search..."
                 onChange={event => setSearchFilter(event.target.value.toLowerCase())}
               />
-            </div>
-          </div>
+            </SearchFilter>
+          </Filters>
 
-          <div className={style.notesContainer}>
+          <NotesWrap>
             <NewNote />
             {filteredNotes}
-          </div>
+          </NotesWrap>
         </>
       )}
     </>
