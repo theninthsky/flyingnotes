@@ -1,5 +1,3 @@
-import axios from 'axios'
-
 import store from './store'
 import { modifyUser, passwordChanged } from './store/actions/user'
 import { setNotes, addNote, modifyNote, removeNote } from './store/actions/notes'
@@ -22,9 +20,8 @@ export const createWebSocketConnection = message => {
   if (!localStorage.name) return
 
   return new Promise(async resolve => {
-    const {
-      data: { bearerToken, userID },
-    } = await axios.get(`${REACT_APP_SERVER_URL}/get-new-token`)
+    const res = await fetch(`${REACT_APP_SERVER_URL}/get-new-token`, { credentials: 'include' })
+    const { bearerToken, userID } = await res.json()
 
     ws = new WebSocket(REACT_APP_WS_SERVER_URL, bearerToken)
 

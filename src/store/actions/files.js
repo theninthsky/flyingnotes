@@ -1,9 +1,6 @@
-import axios from 'axios'
 import { ws } from '../../websocketConnection'
 
 import { SET_FILES } from './actionTypes'
-
-axios.defaults.withCredentials = true
 
 export const getFiles = () => ws.json({ type: 'getFiles' })
 

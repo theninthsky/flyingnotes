@@ -1,12 +1,9 @@
-import axios from 'axios'
 import { batch } from 'react-redux'
 import { createWebSocketConnection, ws } from '../../websocketConnection'
 
 import { LOADING, ERROR, SET_NAME, SET_NOTES } from './actionTypes'
 
 const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
-
-axios.defaults.withCredentials = true
 
 export const register = credentials => {
   return async dispatch => {
@@ -15,28 +12,36 @@ export const register = credentials => {
       dispatch({ type: ERROR, errorMessage: false })
     })
 
-    try {
-      const {
-        data: { name, notes },
-      } = await axios.post(`${REACT_APP_SERVER_URL}/register`, {
-        ...credentials,
-        notes: localStorage.notes
-          ? JSON.parse(localStorage.notes).map(note => ({ ...note, _id: null })) // _id is removed to prevent ObjectId errors on server side
-          : [],
+    const body = JSON.stringify({
+      ...credentials,
+      notes: localStorage.notes
+        ? JSON.parse(localStorage.notes).map(note => ({ ...note, _id: null })) // _id is removed to prevent ObjectId errors on server side
+        : [],
+    })
+    const res = await fetch(`${REACT_APP_SERVER_URL}/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body,
+    })
+    const { name, notes, err } = await res.json()
+
+    if (err) {
+      return batch(() => {
+        dispatch({ type: ERROR, errorMessage: err })
+        dispatch({ type: LOADING, loading: false })
       })
-
-      localStorage.clear()
-      localStorage.setItem('name', name)
-
-      createWebSocketConnection()
-
-      batch(() => {
-        dispatch({ type: SET_NAME, name })
-        dispatch({ type: SET_NOTES, notes })
-      })
-    } catch ({ response: { data } }) {
-      dispatch({ type: ERROR, errorMessage: data })
     }
+
+    localStorage.clear()
+    localStorage.setItem('name', name)
+
+    createWebSocketConnection()
+
+    batch(() => {
+      dispatch({ type: SET_NAME, name })
+      dispatch({ type: SET_NOTES, notes })
+    })
+
     dispatch({ type: LOADING, loading: false })
   }
 }
@@ -48,22 +53,30 @@ export const login = credentials => {
       dispatch({ type: ERROR, errorMessage: false })
     })
 
-    try {
-      const {
-        data: { name, notes },
-      } = await axios.post(`${REACT_APP_SERVER_URL}/login`, credentials)
+    const body = JSON.stringify({ ...credentials })
+    const res = await fetch(`${REACT_APP_SERVER_URL}/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body,
+    })
+    const { name, notes, err } = await res.json()
 
-      localStorage.setItem('name', name)
-
-      createWebSocketConnection()
-
-      batch(() => {
-        dispatch({ type: SET_NAME, name })
-        dispatch({ type: SET_NOTES, notes })
+    if (err) {
+      return batch(() => {
+        dispatch({ type: ERROR, errorMessage: err })
+        dispatch({ type: LOADING, loading: false })
       })
-    } catch ({ response: { data } }) {
-      dispatch({ type: ERROR, errorMessage: data })
     }
+
+    localStorage.setItem('name', name)
+
+    createWebSocketConnection()
+
+    batch(() => {
+      dispatch({ type: SET_NAME, name })
+      dispatch({ type: SET_NOTES, notes })
+    })
+
     dispatch({ type: LOADING, loading: false })
   }
 }
@@ -101,7 +114,7 @@ export const logout = () => {
   return async dispatch => {
     dispatch({ type: LOADING, loading: true })
     try {
-      await axios.post(`${REACT_APP_SERVER_URL}/logout`)
+      await fetch(`${REACT_APP_SERVER_URL}/logout`, { method: 'POST' })
 
       localStorage.removeItem('name')
       ws.close()
@@ -110,8 +123,8 @@ export const logout = () => {
         dispatch({ type: SET_NAME, name: null })
         dispatch({ type: SET_NOTES, notes: JSON.parse(localStorage.notes || '[]') })
       })
-    } catch ({ response: { data } }) {
-      dispatch({ type: ERROR, errorMessage: data })
+    } catch (err) {
+      dispatch({ type: ERROR, errorMessage: 'Failed to logout' })
     }
 
     dispatch({ type: LOADING, loading: false })
