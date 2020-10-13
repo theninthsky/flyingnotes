@@ -20,7 +20,13 @@ export const createWebSocketConnection = message => {
   if (!localStorage.name) return
 
   return new Promise(async resolve => {
-    const res = await fetch(`${REACT_APP_SERVER_URL}/get-new-token`, { credentials: 'include' })
+    const res = await fetch(`${REACT_APP_SERVER_URL}/get-new-token`, { mode: 'cors', credentials: 'include' })
+
+    if (!res.ok) {
+      localStorage.removeItem('name')
+      window.location.reload()
+    }
+
     const { bearerToken, userID } = await res.json()
 
     ws = new WebSocket(REACT_APP_WS_SERVER_URL, bearerToken)
