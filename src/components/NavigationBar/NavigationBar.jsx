@@ -42,14 +42,15 @@ const StyledNavLink = styled(NavLink)`
   transition: opacity 0.2s;
   text-decoration: none;
   font-size: 24px;
+  opacity: 0.5;
 
   &:hover {
-    opacity: 0.5;
+    opacity: 1;
   }
 
   &.active {
     cursor: default;
-    opacity: 0.75;
+    opacity: 1;
   }
 `
 const Util = styled.div`
@@ -94,6 +95,7 @@ const Auth = styled.button`
   color: inherit;
   background-color: transparent;
   border: none;
+  outline: none;
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
@@ -149,10 +151,16 @@ const NavigationBar = ({ app: { theme }, user, changeTheme, toggleAuth }) => {
               <UserImage src={userIcon} alt={user.name} />
             </Auth>
           ) : (
-              <Auth title={'Login'} onClick={toggleAuth}>
-                {'Login'}
-              </Auth>
-            )}
+            <Auth
+              title={'Login'}
+              onClick={() => {
+                toggleAuth()
+                setShowCookiesMessage(false)
+              }}
+            >
+              {'Login'}
+            </Auth>
+          )}
         </Util>
       </Wrapper>
 

@@ -23,7 +23,7 @@ const Wrapper = styled.div`
   justify-content: space-around;
   border-radius: 2px;
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.5);
-  background-color: white;
+  background-color: ${({ theme }) => (theme === 'dark' ? '#222' : 'white')};
   animation: showUser 0.5s;
 
   @keyframes showUser {
@@ -137,12 +137,12 @@ const User = ({ app: { theme, errorMessage }, user, notes, toggleAuth, changePas
     event.preventDefault()
     changePassword(password, newPassword)
   }
-  
+
   return (
     <>
       <Backdrop onClick={toggleAuth} />
 
-      <Wrapper>
+      <Wrapper theme={theme}>
         <UserLogo theme={theme} src={userLogo} alt="User" />
 
         <Name contentEditable suppressContentEditableWarning={true} spellCheck="false" onBlur={nameHanlder}>

@@ -50,7 +50,6 @@ const mapStateToProps = state => ({ app: state.app, user: state.user })
 const mapDispatchToProps = { getNotes }
 
 const App = ({ app: { theme, loading, showAuth }, user, getNotes }) => {
-
   useEffect(() => {
     const connectToWebSocket = async () => {
       await createWebSocketConnection()
@@ -71,7 +70,7 @@ const App = ({ app: { theme, loading, showAuth }, user, getNotes }) => {
 
       <NavigationBar />
 
-      {(showAuth && !loading) && <>{!user.name ? <Auth /> : <User />}</>}
+      {showAuth && !loading && (!user.name ? <Auth /> : <User />)}
 
       {loading ? (
         <Spinner />

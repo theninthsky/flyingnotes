@@ -7,7 +7,7 @@ import Backdrop from '../UI/Backdrop'
 
 // #region Styles
 const Wrapper = styled.div`
-  z-index: 2;  
+  z-index: 2;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -21,7 +21,7 @@ const Wrapper = styled.div`
   justify-content: space-around;
   border-radius: 2px;
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.5);
-  background-color: white;
+  background-color: ${({ theme }) => (theme === 'dark' ? '#222' : 'white')};
   animation: showAuth 0.5s;
 
   @keyframes showAuth {
@@ -49,6 +49,10 @@ const Title = styled.div`
 `
 const Login = styled.h1`
   opacity: ${({ action }) => (action === 'Login' ? '1' : '0.4')};
+
+  &:hover {
+    opacity: 1;
+  }
 `
 const Divider = styled.div`
   margin-top: 5%;
@@ -57,6 +61,10 @@ const Divider = styled.div`
 `
 const Register = styled.h1`
   opacity: ${({ action }) => (action === 'Register' ? '1' : '0.4')};
+
+  &:hover {
+    opacity: 1;
+  }
 `
 const ErrorMessage = styled.p`
   margin-bottom: 10%;
@@ -105,7 +113,7 @@ const mapDispatchToProps = dispatch => ({
   onFormSubmit: (credentials, action) => dispatch(actions[action.toLowerCase()](credentials)),
 })
 
-const Auth = ({ app: { errorMessage }, user, toggleAuth, onFormSubmit }) => {
+const Auth = ({ app: { theme, errorMessage }, user, toggleAuth, onFormSubmit }) => {
   const [action, setAction] = useState('Login')
   const [name, setName] = useState(user.name || '')
   const [email, setEmail] = useState('')
@@ -127,12 +135,12 @@ const Auth = ({ app: { errorMessage }, user, toggleAuth, onFormSubmit }) => {
     event.preventDefault()
     onFormSubmit({ name: name.trim(), email, password }, action.toLowerCase())
   }
-  
+
   return (
     <>
       <Backdrop onClick={toggleAuth} />
 
-      <Wrapper>
+      <Wrapper theme={theme}>
         <Title>
           <Login action={action} onClick={actionChangedHandler}>
             Login
@@ -146,7 +154,13 @@ const Auth = ({ app: { errorMessage }, user, toggleAuth, onFormSubmit }) => {
         <form onSubmit={submitFormHandler}>
           {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
           {action === 'Register' ? (
-            <Input type="text" value={name} placeholder="Name" required onChange={event => setName(event.target.value)} />
+            <Input
+              type="text"
+              value={name}
+              placeholder="Name"
+              required
+              onChange={event => setName(event.target.value)}
+            />
           ) : (
             <LoginMessage>Login to have your notes and files saved on the cloud</LoginMessage>
           )}

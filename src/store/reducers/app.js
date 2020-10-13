@@ -30,8 +30,8 @@ export default (state = initialState, action) => {
       return { ...state, loading: action.loading }
     case ERROR:
       return { ...state, errorMessage: action.errorMessage }
-      case TOGGLE_AUTH:
-        return { ...state, showAuth: !state.showAuth }
+    case TOGGLE_AUTH:
+      return { ...state, showAuth: !state.showAuth }
     case ADDING_NOTE:
       return { ...state, addingNote: action.status }
     case UPDATING_NOTE:
