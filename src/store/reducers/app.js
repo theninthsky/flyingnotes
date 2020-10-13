@@ -2,6 +2,7 @@ import {
   CHANGE_THEME,
   LOADING,
   ERROR,
+  TOGGLE_AUTH,
   ADDING_NOTE,
   UPDATING_NOTE,
   DELETING_NOTE,
@@ -12,6 +13,7 @@ import {
 const initialState = {
   theme: localStorage.theme || 'light',
   loading: true,
+  showAuth: false,
   addingNote: false,
   updatingNote: '', // recieves note id
   deletingNote: '', // recieves note id
@@ -28,6 +30,8 @@ export default (state = initialState, action) => {
       return { ...state, loading: action.loading }
     case ERROR:
       return { ...state, errorMessage: action.errorMessage }
+      case TOGGLE_AUTH:
+        return { ...state, showAuth: !state.showAuth }
     case ADDING_NOTE:
       return { ...state, addingNote: action.status }
     case UPDATING_NOTE:

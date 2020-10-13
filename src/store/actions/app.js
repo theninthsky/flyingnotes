@@ -1,4 +1,4 @@
-import { CHANGE_THEME } from './actionTypes'
+import { CHANGE_THEME, TOGGLE_AUTH } from './actionTypes'
 
 export const changeTheme = () => {
   const theme = localStorage.theme === 'light' ? 'dark' : 'light'
@@ -7,3 +7,5 @@ export const changeTheme = () => {
 
   return { type: CHANGE_THEME, theme }
 }
+
+export const toggleAuth = () => ({ type: TOGGLE_AUTH })

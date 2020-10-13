@@ -1,6 +1,7 @@
 /* App */
 export const LOADING = 'LOADING'
 export const CHANGE_THEME = 'CHANGE_THEME'
+export const TOGGLE_AUTH = 'TOGGLE_AUTH'
 export const ERROR = 'ERROR'
 export const SHOW_ERROR = 'SHOW_ERROR'
 export const CLEAR_ERROR = 'CLEAR_ERROR'

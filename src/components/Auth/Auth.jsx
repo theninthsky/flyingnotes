@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
 import * as actions from '../../store/actions'
+import Backdrop from '../UI/Backdrop'
 
 // #region Styles
 const Wrapper = styled.div`
+  z-index: 2;  
   position: absolute;
   top: 50%;
   left: 50%;
@@ -19,7 +20,8 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: space-around;
   border-radius: 2px;
-  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.5) inset;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.5);
+  background-color: white;
   animation: showAuth 0.5s;
 
   @keyframes showAuth {
@@ -97,28 +99,23 @@ const Submit = styled(Input)`
 `
 // #endregion
 
-const mapStateToProps = state => ({
-  app: state.app,
-  user: state.user,
-})
-
+const mapStateToProps = state => ({ app: state.app, user: state.user })
 const mapDispatchToProps = dispatch => ({
+  toggleAuth: () => dispatch(actions.toggleAuth()),
   onFormSubmit: (credentials, action) => dispatch(actions[action.toLowerCase()](credentials)),
 })
 
-const Auth = ({ app: { errorMessage }, user, onFormSubmit }) => {
+const Auth = ({ app: { loading, errorMessage, showAuth }, user, toggleAuth, onFormSubmit }) => {
   const [action, setAction] = useState('Login')
   const [name, setName] = useState(user.name || '')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const history = useHistory()
-
   useEffect(() => {
-    if (user.name) {
-      history.push('/account')
-    }
-  }, [user.name, history])
+    document.body.style.overflow = 'hidden'
+
+    return () => (document.body.style.overflow = 'visible')
+  }, [])
 
   const actionChangedHandler = event => {
     setAction(event.target.innerHTML)
@@ -131,43 +128,49 @@ const Auth = ({ app: { errorMessage }, user, onFormSubmit }) => {
     onFormSubmit({ name: name.trim(), email, password }, action.toLowerCase())
   }
 
+  if (!showAuth || loading || user.name) return null
+  
   return (
-    <Wrapper>
-      <Title>
-        <Login action={action} onClick={actionChangedHandler}>
-          Login
-        </Login>
-        <Divider />
-        <Register action={action} onClick={actionChangedHandler}>
-          Register
-        </Register>
-      </Title>
+    <>
+      <Backdrop onClick={toggleAuth} />
 
-      <form onSubmit={submitFormHandler}>
-        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-        {action === 'Register' ? (
-          <Input type="text" value={name} placeholder="Name" required onChange={event => setName(event.target.value)} />
-        ) : (
-          <LoginMessage>Login to have your notes and files saved on the cloud</LoginMessage>
-        )}
-        <Input
-          type="email"
-          value={email}
-          placeholder="Email"
-          required
-          onChange={event => setEmail(event.target.value)}
-        />
-        <Input
-          type="password"
-          value={password}
-          placeholder="Password"
-          minLength="8"
-          required
-          onChange={event => setPassword(event.target.value)}
-        />
-        <Submit type="submit" value={action} />
-      </form>
-    </Wrapper>
+      <Wrapper>
+        <Title>
+          <Login action={action} onClick={actionChangedHandler}>
+            Login
+          </Login>
+          <Divider />
+          <Register action={action} onClick={actionChangedHandler}>
+            Register
+          </Register>
+        </Title>
+
+        <form onSubmit={submitFormHandler}>
+          {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+          {action === 'Register' ? (
+            <Input type="text" value={name} placeholder="Name" required onChange={event => setName(event.target.value)} />
+          ) : (
+            <LoginMessage>Login to have your notes and files saved on the cloud</LoginMessage>
+          )}
+          <Input
+            type="email"
+            value={email}
+            placeholder="Email"
+            required
+            onChange={event => setEmail(event.target.value)}
+          />
+          <Input
+            type="password"
+            value={password}
+            placeholder="Password"
+            minLength="8"
+            required
+            onChange={event => setPassword(event.target.value)}
+          />
+          <Submit type="submit" value={action} />
+        </form>
+      </Wrapper>
+    </>
   )
 }
 

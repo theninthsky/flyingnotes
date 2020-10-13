@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
+import { connect } from 'react-redux'
 import styled from 'styled-components'
 
 import CookiesMessage from './CookiesMessage'
+import { changeTheme, toggleAuth } from '../../store/actions'
 
 import logo from '../../assets/images/logo.svg'
 import lightThemeIcon from '../../assets/images/theme-light.svg'
@@ -69,7 +71,9 @@ const ThemeImage = styled.img`
   }
 
   @media (max-width: 480px) {
-    opacity: 1;
+    &:hover {
+      opacity: 1;
+    }
   }
 `
 const UserImage = styled.img`
@@ -82,12 +86,14 @@ const UserImage = styled.img`
     opacity: 1;
   }
 `
-const Auth = styled(NavLink)`
+const Auth = styled.button`
   display: flex;
   margin-left: 15px;
+  font-family: inherit;
   font-size: 22px;
-  text-decoration: none;
   color: inherit;
+  background-color: transparent;
+  border: none;
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
@@ -105,7 +111,10 @@ const Auth = styled(NavLink)`
 `
 // #endregion
 
-const NavigationBar = ({ theme, user, changeTheme }) => {
+const mapStateToProps = state => ({ app: state.app, user: state.user })
+const mapDispatchToProps = { changeTheme, toggleAuth }
+
+const NavigationBar = ({ app: { theme }, user, changeTheme, toggleAuth }) => {
   const [showCookiesMessage, setShowCookiesMessage] = useState(true)
 
   return (
@@ -136,14 +145,14 @@ const NavigationBar = ({ theme, user, changeTheme }) => {
           />
 
           {user.name ? (
-            <Auth title={`Logged in as ${user.name}`} to={'/account'}>
+            <Auth title={`Logged in as ${user.name}`} onClick={toggleAuth}>
               <UserImage src={userIcon} alt={user.name} />
             </Auth>
           ) : (
-            <Auth title={'Login'} to={'/auth'}>
-              {'Login'}
-            </Auth>
-          )}
+              <Auth title={'Login'} onClick={toggleAuth}>
+                {'Login'}
+              </Auth>
+            )}
         </Util>
       </Wrapper>
 
@@ -154,4 +163,4 @@ const NavigationBar = ({ theme, user, changeTheme }) => {
   )
 }
 
-export default NavigationBar
+export default connect(mapStateToProps, mapDispatchToProps)(NavigationBar)

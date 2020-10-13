@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { createGlobalStyle } from 'styled-components'
 
 import { createWebSocketConnection } from '../../websocketConnection'
-import { changeTheme, getNotes } from '../../store/actions'
+import { getNotes } from '../../store/actions'
 import preloadImages from '../../util/preloadImages'
 import NavigationBar from '../NavigationBar'
 import Auth from '../Auth'
@@ -46,14 +46,10 @@ const GlobalStyle = createGlobalStyle`
   }
 `
 
-const mapStateToProps = state => ({
-  app: state.app,
-  user: state.user,
-})
+const mapStateToProps = state => ({ app: state.app, user: state.user })
+const mapDispatchToProps = { getNotes }
 
-const mapDispatchToProps = { changeTheme, getNotes }
-
-const App = ({ app: { theme, loading }, user, changeTheme, getNotes }) => {
+const App = ({ app: { theme, loading }, user, getNotes }) => {
   const history = useHistory()
 
   useEffect(() => {
@@ -78,7 +74,10 @@ const App = ({ app: { theme, loading }, user, changeTheme, getNotes }) => {
     <>
       <GlobalStyle theme={theme} />
 
-      <NavigationBar theme={theme} user={user} changeTheme={changeTheme} />
+      <NavigationBar />
+
+      <Auth />
+      <User />
 
       {loading ? (
         <Spinner />
@@ -86,8 +85,6 @@ const App = ({ app: { theme, loading }, user, changeTheme, getNotes }) => {
         <Switch>
           <Route exact path="/" component={Notes} />
           <Route path="/files" component={Files} />
-          <Route path="/auth" component={Auth} />
-          <Route path="/account" component={User} />
         </Switch>
       )}
     </>

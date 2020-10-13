@@ -1,7 +1,7 @@
 import { batch } from 'react-redux'
 import { createWebSocketConnection, ws } from '../../websocketConnection'
 
-import { LOADING, ERROR, SET_NAME, SET_NOTES } from './actionTypes'
+import { LOADING, ERROR, TOGGLE_AUTH, SET_NAME, SET_NOTES } from './actionTypes'
 
 const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
 
@@ -41,6 +41,7 @@ export const register = credentials => {
     batch(() => {
       dispatch({ type: SET_NAME, name })
       dispatch({ type: SET_NOTES, notes })
+      dispatch({ type: TOGGLE_AUTH })
     })
 
     dispatch({ type: LOADING, loading: false })
@@ -77,6 +78,7 @@ export const login = credentials => {
     batch(() => {
       dispatch({ type: SET_NAME, name })
       dispatch({ type: SET_NOTES, notes })
+      dispatch({ type: TOGGLE_AUTH })
     })
 
     dispatch({ type: LOADING, loading: false })
@@ -129,6 +131,9 @@ export const logout = () => {
       dispatch({ type: ERROR, errorMessage: 'Failed to logout' })
     }
 
-    dispatch({ type: LOADING, loading: false })
+    batch(() => {
+      dispatch({ type: LOADING, loading: false })
+      dispatch({ type: TOGGLE_AUTH })
+    })
   }
 }

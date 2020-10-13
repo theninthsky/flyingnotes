@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
-import { updateUser, changePassword, logout } from '../../store/actions'
+import { toggleAuth, updateUser, changePassword, logout } from '../../store/actions'
+import Backdrop from '../UI/Backdrop'
 
 import userLogo from '../../assets/images/user-astronaut.svg'
 
 // #region Styles
 const Wrapper = styled.div`
+  z-index: 1;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -21,7 +22,8 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: space-around;
   border-radius: 2px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.5);
+  background-color: white;
   animation: showUser 0.5s;
 
   @keyframes showUser {
@@ -43,11 +45,6 @@ const UserLogo = styled.img`
   border-radius: 100%;
   filter: ${({ theme }) => (theme === 'dark' ? 'invert(100%)' : 'none')};
 `
-const mapStateToProps = state => ({
-  app: state.app,
-  user: state.user,
-  notes: state.notes,
-})
 const Name = styled.h1`
   align-self: center;
   padding-left: 20px;
@@ -112,21 +109,24 @@ const ChangePassword = styled.button`
 `
 // #endregion
 
-const mapDispatchToProps = { changePassword, logout }
+const mapStateToProps = state => ({
+  app: state.app,
+  user: state.user,
+  notes: state.notes,
+})
+const mapDispatchToProps = { toggleAuth, changePassword, logout }
 
-const User = ({ app: { theme, errorMessage }, user, notes, changePassword, logout }) => {
+const User = ({ app: { theme, loading, errorMessage, showAuth }, user, notes, toggleAuth, changePassword, logout }) => {
   const [name, setName] = useState(user.name)
   const [password, setPassword] = useState('')
   const [changePasswordMode, setChangePasswordMode] = useState(false)
   const [newPassword, setNewPassword] = useState()
 
-  const history = useHistory()
-
   useEffect(() => {
-    if (!user.name) {
-      history.push('/auth')
-    }
-  }, [user.name, history])
+    document.body.style.overflow = 'hidden'
+
+    return () => (document.body.style.overflow = 'visible')
+  }, [])
 
   const nameHanlder = event => {
     setName(event.currentTarget.textContent)
@@ -138,47 +138,53 @@ const User = ({ app: { theme, errorMessage }, user, notes, changePassword, logou
     changePassword(password, newPassword)
   }
 
+  if (!showAuth || loading || !user.name) return null
+  
   return (
-    <Wrapper>
-      <UserLogo theme={theme} src={userLogo} alt="User" />
+    <>
+      <Backdrop onClick={toggleAuth} />
 
-      <Name contentEditable suppressContentEditableWarning={true} spellCheck="false" onBlur={nameHanlder}>
-        {name}
-      </Name>
+      <Wrapper>
+        <UserLogo theme={theme} src={userLogo} alt="User" />
 
-      {changePasswordMode || errorMessage ? (
-        <form onSubmit={submitFormHandler}>
-          {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-          <Input
-            type="password"
-            value={password}
-            placeholder="Password"
-            minLength="8"
-            required
-            onChange={event => setPassword(event.target.value)}
-          />
+        <Name contentEditable suppressContentEditableWarning={true} spellCheck="false" onBlur={nameHanlder}>
+          {name}
+        </Name>
 
-          <Input
-            type="password"
-            value={newPassword}
-            placeholder="New Password"
-            minLength="8"
-            onChange={event => setNewPassword(event.target.value)}
-          />
+        {changePasswordMode || errorMessage ? (
+          <form onSubmit={submitFormHandler}>
+            {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+            <Input
+              type="password"
+              value={password}
+              placeholder="Password"
+              minLength="8"
+              required
+              onChange={event => setPassword(event.target.value)}
+            />
 
-          <Submit type="submit" />
-        </form>
-      ) : (
-        <>
-          <ChangePassword onClick={() => setChangePasswordMode(true)}>Change Password</ChangePassword>
-          <div>
-            <Notes>{`Notes: ${notes.length}`}</Notes>
-          </div>
+            <Input
+              type="password"
+              value={newPassword}
+              placeholder="New Password"
+              minLength="8"
+              onChange={event => setNewPassword(event.target.value)}
+            />
 
-          <Submit type="submit" value="Logout" onClick={logout} />
-        </>
-      )}
-    </Wrapper>
+            <Submit type="submit" />
+          </form>
+        ) : (
+          <>
+            <ChangePassword onClick={() => setChangePasswordMode(true)}>Change Password</ChangePassword>
+            <div>
+              <Notes>{`Notes: ${notes.length}`}</Notes>
+            </div>
+
+            <Submit type="submit" value="Logout" onClick={logout} />
+          </>
+        )}
+      </Wrapper>
+    </>
   )
 }
 
