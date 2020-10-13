@@ -1,5 +1,7 @@
 # Flying Notes React Client
 
+![Notes](src/assets/images/notes.png)
+
 ## Environment Variables
 
 A `.env` file (https://www.npmjs.com/package/dotenv) should be placed at the root directory which will specify the following variables:
