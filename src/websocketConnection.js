@@ -20,7 +20,7 @@ export const createWebSocketConnection = message => {
   if (!localStorage.name) return
 
   return new Promise(async resolve => {
-    const res = await fetch(`${REACT_APP_SERVER_URL}/get-new-token`, { mode: 'cors', credentials: 'include' })
+    const res = await fetch(`${REACT_APP_SERVER_URL}/get-new-token`, { credentials: 'include' })
 
     if (!res.ok) {
       localStorage.removeItem('name')
