@@ -20,6 +20,7 @@ export const register = credentials => {
     })
     const res = await fetch(`${REACT_APP_SERVER_URL}/register`, {
       method: 'POST',
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body,
     })
@@ -56,6 +57,7 @@ export const login = credentials => {
     const body = JSON.stringify({ ...credentials })
     const res = await fetch(`${REACT_APP_SERVER_URL}/login`, {
       method: 'POST',
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body,
     })
