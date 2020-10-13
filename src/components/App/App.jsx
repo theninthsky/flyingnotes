@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Switch, Route, useHistory } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { createGlobalStyle } from 'styled-components'
 
@@ -49,8 +49,7 @@ const GlobalStyle = createGlobalStyle`
 const mapStateToProps = state => ({ app: state.app, user: state.user })
 const mapDispatchToProps = { getNotes }
 
-const App = ({ app: { theme, loading }, user, getNotes }) => {
-  const history = useHistory()
+const App = ({ app: { theme, loading, showAuth }, user, getNotes }) => {
 
   useEffect(() => {
     const connectToWebSocket = async () => {
@@ -63,10 +62,6 @@ const App = ({ app: { theme, loading }, user, getNotes }) => {
   }, [getNotes])
 
   useEffect(() => {
-    history.push('/')
-  }, [user.name, history])
-
-  useEffect(() => {
     preloadImages()
   }, [])
 
@@ -76,8 +71,7 @@ const App = ({ app: { theme, loading }, user, getNotes }) => {
 
       <NavigationBar />
 
-      <Auth />
-      <User />
+      {(showAuth && !loading) && <>{!user.name ? <Auth /> : <User />}</>}
 
       {loading ? (
         <Spinner />

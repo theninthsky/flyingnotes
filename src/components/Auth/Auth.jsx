@@ -105,7 +105,7 @@ const mapDispatchToProps = dispatch => ({
   onFormSubmit: (credentials, action) => dispatch(actions[action.toLowerCase()](credentials)),
 })
 
-const Auth = ({ app: { loading, errorMessage, showAuth }, user, toggleAuth, onFormSubmit }) => {
+const Auth = ({ app: { errorMessage }, user, toggleAuth, onFormSubmit }) => {
   const [action, setAction] = useState('Login')
   const [name, setName] = useState(user.name || '')
   const [email, setEmail] = useState('')
@@ -127,8 +127,6 @@ const Auth = ({ app: { loading, errorMessage, showAuth }, user, toggleAuth, onFo
     event.preventDefault()
     onFormSubmit({ name: name.trim(), email, password }, action.toLowerCase())
   }
-
-  if (!showAuth || loading || user.name) return null
   
   return (
     <>

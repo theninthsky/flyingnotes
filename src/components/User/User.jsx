@@ -9,7 +9,7 @@ import userLogo from '../../assets/images/user-astronaut.svg'
 
 // #region Styles
 const Wrapper = styled.div`
-  z-index: 1;
+  z-index: 2;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -116,7 +116,7 @@ const mapStateToProps = state => ({
 })
 const mapDispatchToProps = { toggleAuth, changePassword, logout }
 
-const User = ({ app: { theme, loading, errorMessage, showAuth }, user, notes, toggleAuth, changePassword, logout }) => {
+const User = ({ app: { theme, errorMessage }, user, notes, toggleAuth, changePassword, logout }) => {
   const [name, setName] = useState(user.name)
   const [password, setPassword] = useState('')
   const [changePasswordMode, setChangePasswordMode] = useState(false)
@@ -137,8 +137,6 @@ const User = ({ app: { theme, loading, errorMessage, showAuth }, user, notes, to
     event.preventDefault()
     changePassword(password, newPassword)
   }
-
-  if (!showAuth || loading || !user.name) return null
   
   return (
     <>
