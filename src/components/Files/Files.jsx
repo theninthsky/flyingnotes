@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
-// import NewFile from './NewFile'
+import NewFile from './NewFile'
 import File from './File'
 import { getFiles } from '.././../store/actions'
 
@@ -27,7 +27,7 @@ const Files = ({ files }) => {
 
   return (
     <Wrapper>
-      {/* <NewFile /> */}
+      <NewFile />
 
       {sortedFiles.map(file => (
         <File key={file._id} file={file} />

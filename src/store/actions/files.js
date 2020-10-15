@@ -1,40 +1,47 @@
+import { batch } from 'react-redux'
 import { ws } from '../../websocketConnection'
 
-import { SET_FILES } from './actionTypes'
+import { SET_FILES, UPLOADING_FILE, ADD_FILE, DOWNLOADING_FILE, ADD_ATTACHMENT } from './actionTypes'
+import { toBase64, fromBase64 } from '../../util/base64'
 
 export const getFiles = () => ws.json({ type: 'getFiles' })
 
 export const setFiles = ({ files }) => ({ type: SET_FILES, files })
 
 export const uploadFile = ({ category, name, extension, selectedFile }) => {
-  return async dispatch => {}
-  // const formData = new FormData()
-  // formData.append('category', category.trim())
-  // formData.append('name', name.trim())
-  // formData.append('extension', extension)
-  // formData.append('file', selectedFile, selectedFile.name)
-  // yield put(uploadingFile(true))
-  // const {
-  //   data: { newFile },
-  // } = yield axios.post(`${REACT_APP_SERVER_URL}/files`, formData, {
-  //   headers: {
-  //     'Content-Type': 'multipart/form-data',
-  //   },
-  // })
-  // yield put(addFile(newFile))
-  // yield put(uploadingFile(false))
+  return async dispatch => {
+    dispatch({ type: UPLOADING_FILE })
+
+    const base64 = await toBase64(selectedFile)
+
+    ws.json({ type: 'uploadFile', file: { category, name, extension, base64 } })
+  }
+}
+
+export const addFile = ({ file }) => {
+  return dispatch => {
+    batch(() => {
+      dispatch({ type: ADD_FILE, file })
+      dispatch({ type: UPLOADING_FILE, bool: false })
+    })
+  }
 }
 
 export const downloadFile = fileID => {
-  return async dispatch => {}
-  // yield put(downloadingFile(fileID))
-  // const { data } = yield axios.post(
-  //   `${REACT_APP_SERVER_URL}/file`,
-  //   { fileID },
-  //   {
-  //     responseType: 'blob',
-  //   },
-  // )
-  // yield put(downloadingFile(null))
-  // yield put(addAttachment({ fileID, attachment: data }))
+  return dispatch => {
+    dispatch({ type: DOWNLOADING_FILE, fileID })
+
+    ws.json({ type: 'downloadFile', fileID })
+  }
+}
+
+export const addAttachment = ({ fileID, name, base64 }) => {
+  return async dispatch => {
+    const attachment = await fromBase64(name, base64)
+
+    batch(() => {
+      dispatch({ type: DOWNLOADING_FILE, fileID: null })
+      dispatch({ type: ADD_ATTACHMENT, fileID, attachment })
+    })
+  }
 }

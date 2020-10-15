@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
+import { saveFile } from '../../../util/base64'
 import { downloadFile } from '../../../store/actions'
 import FileSpinner from '../../UI/FileSpinner'
 
@@ -87,16 +88,6 @@ const Download = styled.img`
   }
 `
 // #endregion
-
-const saveFile = (name, extension, attachment) => {
-  const link = document.createElement('a')
-
-  link.href = window.URL.createObjectURL(new Blob([attachment]))
-  link.setAttribute('download', `${name}.${extension}`)
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
-}
 
 const mapStateToProp = state => ({ app: state.app })
 

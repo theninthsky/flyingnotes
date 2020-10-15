@@ -27,7 +27,6 @@ export const REMOVE_NOTE = 'REMOVE_NOTE'
 
 /* Files */
 export const SET_FILES = 'SET_FILES'
-export const UPLOAD_FILE = 'UPLOAD_FILE'
 export const ADD_FILE = 'ADD_FILE'
-export const DOWNLOAD_FILE = 'DOWNLOAD_FILE'
 export const ADD_ATTACHMENT = 'ADD_ATTACHMENT'
+export const REMOVE_FILE = 'REMOVE_FILE'
