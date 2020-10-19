@@ -7,7 +7,7 @@ export default (state = initialState, action) => {
     case SET_NOTES:
       return action.notes || []
     case ADD_NOTE:
-      return [...state, action.newNote]
+      return [action.newNote, ...state]
     case UPDATE_NOTE:
       return state.map(note => (note._id === action.updatedNote._id ? action.updatedNote : note))
     case REMOVE_NOTE:

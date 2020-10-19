@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 
 import { toggleAuth, updateUser, changePassword, logout } from '../../store/actions'
-import Backdrop from '../UI/Backdrop'
+import { Backdrop } from '../UI'
 
 import userLogo from '../../assets/images/user-astronaut.svg'
 

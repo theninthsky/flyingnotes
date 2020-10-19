@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
-import Options from './Options'
+import Options from '../../Options'
 import NewNote from '../NewNote'
 
 // #region Styles
@@ -17,7 +17,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   border-radius: 4px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  opacity: ${({ isBeingModified }) => (isBeingModified ? '0.5' : '1')}
+  opacity: ${({ isBeingModified }) => (isBeingModified ? '0.5' : '1')};
   transition: 0.2s;
   animation: showNote 0.5s;
 
@@ -119,9 +119,7 @@ const StyledDate = styled.div`
 `
 // #endregion
 
-const mapStateToProps = state => ({
-  app: state.app,
-})
+const mapStateToProps = state => ({ app: state.app })
 
 const Note = props => {
   const {
@@ -130,12 +128,18 @@ const Note = props => {
     title,
     content,
     date,
-    app: { updatingNote, deletingNote },
+    app: { updatingNoteID, deletingNoteID },
   } = props
+
+  // console.log(_id, updatingNoteID)
 
   const [showOptions, setShowOptions] = useState(false)
   const [editMode, setEditMode] = useState(false)
   const [showConfirmMessage, setShowConfirmMessage] = useState(false)
+
+  useEffect(() => {
+    console.log('[Note] rendered')
+  })
 
   return editMode ? (
     <NewNote
@@ -146,7 +150,7 @@ const Note = props => {
     />
   ) : (
     <Wrapper
-      isBeingModified={updatingNote === _id || deletingNote === _id}
+      isBeingModified={updatingNoteID === _id || deletingNoteID === _id}
       onMouseMove={() => setShowOptions(true)}
       onMouseLeave={() => setShowOptions(showConfirmMessage)}
     >
@@ -159,12 +163,12 @@ const Note = props => {
       {showOptions && (
         <Options
           id={_id}
-          edit={() => setEditMode(!editMode)}
+          onEdit={() => setEditMode(!editMode)}
           toggleConfirmMessage={mode => setShowConfirmMessage(mode)}
         />
       )}
 
-      {showConfirmMessage && updatingNote !== _id && deletingNote !== _id ? (
+      {showConfirmMessage && updatingNoteID !== _id && deletingNoteID !== _id ? (
         <ConfirmMessage>Delete this note?</ConfirmMessage>
       ) : (
         <StyledDate>{new Date(date).toLocaleString('en-GB').replace(',', '').slice(0, -3)}</StyledDate>
@@ -172,7 +176,5 @@ const Note = props => {
     </Wrapper>
   )
 }
-
-// updatingNote === _id || deletingNote === _id
 
 export default connect(mapStateToProps)(Note)

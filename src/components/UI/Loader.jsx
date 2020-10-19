@@ -23,8 +23,4 @@ const StyledSpinner = styled.div`
   }
 `
 
-const Spinner = () => {
-  return <StyledSpinner />
-}
-
-export default Spinner
+export default () => <StyledSpinner />

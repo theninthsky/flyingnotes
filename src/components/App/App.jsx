@@ -11,7 +11,7 @@ import Auth from '../Auth'
 import User from '../User'
 import Notes from '../Notes'
 import Files from '../Files'
-import Spinner from '../UI/Spinner'
+import { Loader } from '../UI'
 
 const GlobalStyle = createGlobalStyle`
   html {
@@ -53,6 +53,10 @@ const App = ({ app: { theme, loading, showAuth }, user, getNotes }) => {
   const history = useHistory()
 
   useEffect(() => {
+    console.log('[App] rendered')
+  }, [])
+
+  useEffect(() => {
     const connectToWebSocket = async () => {
       await createWebSocketConnection()
 
@@ -79,7 +83,7 @@ const App = ({ app: { theme, loading, showAuth }, user, getNotes }) => {
       {showAuth && !loading && (!user.name ? <Auth /> : <User />)}
 
       {loading ? (
-        <Spinner />
+        <Loader />
       ) : (
         <Switch>
           <Route exact path="/" component={Notes} />

@@ -8,6 +8,7 @@ import {
   DELETING_NOTE,
   UPLOADING_FILE,
   DOWNLOADING_FILE,
+  DELETING_FILE,
 } from '../actions/actionTypes'
 
 const initialState = {
@@ -15,10 +16,11 @@ const initialState = {
   loading: true,
   showAuth: false,
   addingNote: false,
-  updatingNote: '', // recieves note id
-  deletingNote: '', // recieves note id
+  updatingNoteID: null,
+  deletingNoteID: null,
   uploadingFile: false,
   downloadingFileID: null,
+  deletingFileID: null,
   errorMessage: false,
 }
 
@@ -35,13 +37,15 @@ export default (state = initialState, action) => {
     case ADDING_NOTE:
       return { ...state, addingNote: action.status }
     case UPDATING_NOTE:
-      return { ...state, updatingNote: action.noteID }
+      return { ...state, updatingNoteID: action.noteID }
     case DELETING_NOTE:
-      return { ...state, deletingNote: action.noteID }
+      return { ...state, deletingNoteID: action.noteID }
     case UPLOADING_FILE:
       return { ...state, uploadingFile: action.bool }
     case DOWNLOADING_FILE:
       return { ...state, downloadingFileID: action.fileID }
+    case DELETING_FILE:
+      return { ...state, deletingFileID: action.fileID }
     default:
       return state
   }

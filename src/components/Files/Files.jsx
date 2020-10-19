@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
@@ -23,13 +23,11 @@ const Files = ({ files }) => {
     getFiles()
   }, [])
 
-  const sortedFiles = useMemo(() => [...files].sort((a, b) => new Date(b.date) - new Date(a.date)), [files])
-
   return (
     <Wrapper>
       <NewFile />
 
-      {sortedFiles.map(file => (
+      {files.map(file => (
         <File key={file._id} file={file} />
       ))}
     </Wrapper>

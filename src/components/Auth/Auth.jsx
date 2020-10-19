@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 
 import * as actions from '../../store/actions'
-import Backdrop from '../UI/Backdrop'
+import { Backdrop } from '../UI'
 
 // #region Styles
 const Wrapper = styled.div`

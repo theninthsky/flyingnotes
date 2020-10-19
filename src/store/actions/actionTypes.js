@@ -10,6 +10,7 @@ export const UPDATING_NOTE = 'UPDATING_NOTE'
 export const DELETING_NOTE = 'DELETING_NOTE'
 export const UPLOADING_FILE = 'UPLOADING_FILE'
 export const DOWNLOADING_FILE = 'DOWNLOADING_FILE'
+export const DELETING_FILE = 'DELETING_FILE'
 
 /* User */
 export const REGISTER = 'REGISTER'

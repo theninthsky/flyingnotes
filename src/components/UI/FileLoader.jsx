@@ -19,8 +19,4 @@ const StyledFileSpinner = styled.div`
   }
 `
 
-const FileSpinner = () => {
-  return <StyledFileSpinner />
-}
-
-export default FileSpinner
+export default () => <StyledFileSpinner />

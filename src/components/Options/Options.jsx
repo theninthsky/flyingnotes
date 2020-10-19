@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
-import { deleteNote } from '../../../../store/actions/index'
+import { deleteNote } from '../../store/actions/index'
 
-import editSymbol from '../../../../assets/images/edit.svg'
-import deleteSymbol from '../../../../assets/images/delete.svg'
-import confirmSymbol from '../../../../assets/images/confirm.svg'
-import cancelSymbol from '../../../../assets/images/cancel.svg'
+import editSymbol from '../../assets/images/edit.svg'
+import deleteSymbol from '../../assets/images/delete.svg'
+import confirmSymbol from '../../assets/images/confirm.svg'
+import cancelSymbol from '../../assets/images/cancel.svg'
 
 // #region Styles
 const Wrapper = styled.div`
@@ -82,10 +82,10 @@ const mapDispatchToProps = {
   deleteNote,
 }
 
-const Options = ({ id, edit, deleteNote, toggleConfirmMessage }) => {
+const Options = ({ id, onEdit, deleteNote, toggleConfirmMessage }) => {
   const [showConfirmIcons, setShowConfirmIcons] = useState(false)
 
-  const deletePressedHandler = bool => {
+  const handleDelete = bool => {
     toggleConfirmMessage(bool)
     setShowConfirmIcons(bool)
   }
@@ -95,12 +95,12 @@ const Options = ({ id, edit, deleteNote, toggleConfirmMessage }) => {
       {showConfirmIcons ? (
         <>
           <Confirm src={confirmSymbol} alt="Confirm" title="Confirm" onClick={() => deleteNote(id)} />
-          <Cancel src={cancelSymbol} alt="Cancel" title="Cancel" onClick={() => deletePressedHandler(false)} />
+          <Cancel src={cancelSymbol} alt="Cancel" title="Cancel" onClick={() => handleDelete(false)} />
         </>
       ) : (
         <>
-          <Edit src={editSymbol} alt="Edit" title="Edit" onClick={edit} />
-          <Delete src={deleteSymbol} alt="Delete" title="Delete" onClick={() => deletePressedHandler(true)} />
+          <Edit src={editSymbol} alt="Edit" title="Edit" onClick={onEdit} />
+          <Delete src={deleteSymbol} alt="Delete" title="Delete" onClick={() => handleDelete(true)} />
         </>
       )}
     </Wrapper>

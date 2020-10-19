@@ -35,6 +35,8 @@ export const getNotes = () => {
 }
 
 export const setNotes = ({ notes }) => {
+  notes.sort((a, b) => new Date(b.date) - new Date(a.date))
+
   return dispatch => {
     batch(() => {
       dispatch({ type: SET_NOTES, notes })

@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { saveFile } from '../../../util/base64'
 import { downloadFile } from '../../../store/actions'
-import FileSpinner from '../../UI/FileSpinner'
+import { FileLoader } from '../../UI'
 
 import downloadIcon from '../../../assets/images/download.svg'
 
@@ -109,7 +109,7 @@ const File = ({
   }
 
   return (
-    <Wrapper>
+    <Wrapper /*onMouseMove={() => setShowOptions(true)} onMouseLeave={() => setShowOptions(showConfirmMessage)} */>
       {category && <Category>{category.toUpperCase()}</Category>}
 
       <Name title={name}>{name}</Name>
@@ -118,7 +118,7 @@ const File = ({
         <Extension title={extension}>{extension}</Extension>
 
         {downloadingFileID === _id ? (
-          <FileSpinner />
+          <FileLoader />
         ) : (
           <Download alt="Download" src={downloadIcon} onClick={downloadFileHandler} />
         )}

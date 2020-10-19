@@ -1,9 +1,9 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
-import Note from './Note'
 import NewNote from './NewNote'
+import Note from './Note'
 
 // #region Styles
 const Filters = styled.div`
@@ -59,30 +59,23 @@ const NotesWrap = styled.div`
 `
 // #endregion
 
-const mapStateToProps = state => ({
-  app: state.app,
-  notes: state.notes,
-})
+const mapStateToProps = state => ({ app: state.app, notes: state.notes })
 
 const Notes = ({ app: { theme, loading }, notes }) => {
   const [categoryFilter, setCategoryFilter] = useState('')
   const [searchFilter, setSearchFilter] = useState('')
 
+  useEffect(() => {
+    console.log('[Notes] rendered')
+  })
+
   const filteredNotes = useMemo(
     () =>
-      [...notes]
+      notes
         .filter(({ category }) => (!categoryFilter ? true : category === categoryFilter))
         .filter(({ title, content }) => `${title} ${content}`.toLowerCase().includes(searchFilter))
-        .sort((a, b) => new Date(b.date) - new Date(a.date))
-        .map(note => (
-          <Note
-            key={note._id}
-            _id={note._id}
-            category={note.category}
-            title={note.title}
-            content={note.content}
-            date={note.date}
-          />
+        .map(({ _id, category, title, content, date }) => (
+          <Note key={_id} _id={_id} category={category} title={title} content={content} date={date} />
         )),
     [notes, categoryFilter, searchFilter],
   )
@@ -96,7 +89,7 @@ const Notes = ({ app: { theme, loading }, notes }) => {
               <option defaultValue value="">
                 ALL
               </option>
-              {notes
+              {[...notes]
                 .sort((a, b) => a.category.localeCompare(b.category))
                 .filter(
                   ({ category }, ind, notes) => category && category !== (notes[ind + 1] && notes[ind + 1].category),

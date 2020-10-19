@@ -172,7 +172,6 @@ const NewFile = props => {
   const submitForm = event => {
     event.preventDefault()
 
-    if (!selectedFile) return alert('No file selected')
     if (!name) return alert('File name is required')
 
     uploadFile({ category, name, extension, selectedFile })
@@ -211,7 +210,7 @@ const NewFile = props => {
         </FileLabel>
         <FileInput id="file-input" type="file" onChange={fileHandler} />
 
-        <Upload type="submit" value="UPLOAD" />
+        {selectedFile && <Upload type="submit" value="UPLOAD" />}
       </InfoWrap>
     </Wrapper>
   )
