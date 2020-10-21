@@ -16,7 +16,7 @@ const Wrapper = styled.div`
   align-items: center;
 `
 
-const mapStateToProp = state => ({ files: state.files })
+const mapStateToProp = ({ files }) => ({ files })
 
 const Files = ({ files }) => {
   useEffect(() => {

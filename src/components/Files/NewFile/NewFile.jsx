@@ -120,18 +120,11 @@ const Upload = styled.input`
 `
 // #endregion
 
-const mapStateToProps = state => ({
-  app: state.app,
-  user: state.user,
-})
-
+const mapStateToProps = ({ app: { theme, uploadingFile } }) => ({ theme, uploadingFile })
 const mapDispatchToProps = { uploadFile }
 
 const NewFile = props => {
-  const {
-    app: { theme, uploadingFile },
-    uploadFile,
-  } = props
+  const { theme, uploadingFile, uploadFile } = props
 
   const [category, setCategory] = useState(props.category || '')
   const [name, setName] = useState(props.name || '')

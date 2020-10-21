@@ -89,15 +89,10 @@ const Download = styled.img`
 `
 // #endregion
 
-const mapStateToProp = state => ({ app: state.app })
-
+const mapStateToProp = ({ app: { downloadingFileID } }) => ({ downloadingFileID })
 const mapDispatchToProps = { downloadFile }
 
-const File = ({
-  file: { _id, category, name, extension, attachment },
-  app: { downloadingFileID } = {},
-  downloadFile,
-}) => {
+const File = ({ file: { _id, category, name, extension, attachment }, downloadingFileID, downloadFile }) => {
   useEffect(() => {
     if (attachment) saveFile(name, extension, attachment)
   }, [attachment, name, extension])

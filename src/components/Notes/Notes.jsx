@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useMemo } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
@@ -59,15 +59,11 @@ const NotesWrap = styled.div`
 `
 // #endregion
 
-const mapStateToProps = state => ({ app: state.app, notes: state.notes })
+const mapStateToProps = ({ app: { theme, loading }, notes }) => ({ theme, loading, notes })
 
-const Notes = ({ app: { theme, loading }, notes }) => {
+const Notes = ({ theme, loading, notes }) => {
   const [categoryFilter, setCategoryFilter] = useState('')
   const [searchFilter, setSearchFilter] = useState('')
-
-  useEffect(() => {
-    console.log('[Notes] rendered')
-  })
 
   const filteredNotes = useMemo(
     () =>

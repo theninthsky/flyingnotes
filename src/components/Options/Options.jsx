@@ -78,9 +78,7 @@ const Delete = styled.img`
 `
 // #endregion
 
-const mapDispatchToProps = {
-  deleteNote,
-}
+const mapDispatchToProps = { deleteNote }
 
 const Options = ({ id, onEdit, deleteNote, toggleConfirmMessage }) => {
   const [showConfirmIcons, setShowConfirmIcons] = useState(false)

@@ -107,13 +107,13 @@ const Submit = styled(Input)`
 `
 // #endregion
 
-const mapStateToProps = state => ({ app: state.app, user: state.user })
+const mapStateToProps = ({ app: { theme, errorMessage }, user }) => ({ theme, errorMessage, user })
 const mapDispatchToProps = dispatch => ({
   toggleAuth: () => dispatch(actions.toggleAuth()),
   onFormSubmit: (credentials, action) => dispatch(actions[action.toLowerCase()](credentials)),
 })
 
-const Auth = ({ app: { theme, errorMessage }, user, toggleAuth, onFormSubmit }) => {
+const Auth = ({ theme, errorMessage, user, toggleAuth, onFormSubmit }) => {
   const [action, setAction] = useState('Login')
   const [name, setName] = useState(user.name || '')
   const [email, setEmail] = useState('')

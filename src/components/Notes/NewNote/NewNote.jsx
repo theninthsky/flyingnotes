@@ -133,11 +133,12 @@ const Save = styled.input`
 `
 // #endregion
 
-const mapStateToProps = state => ({
-  app: state.app,
-  user: state.user,
+const mapStateToProps = ({ app: { theme, addingNote, updatingNote }, user }) => ({
+  theme,
+  addingNote,
+  updatingNote,
+  user,
 })
-
 const mapDispatchToProps = { createNote, updateNote }
 
 const NewNote = props => {
@@ -145,7 +146,10 @@ const NewNote = props => {
     updateMode,
     toggleEditMode,
     closeOptions,
-    app: { theme, addingNote, updatingNote },
+    theme,
+    addingNote,
+    updatingNote,
+    user,
     createNote,
     updateNote,
   } = props
@@ -191,7 +195,7 @@ const NewNote = props => {
 
   return (
     <Wrapper saving={addingNote || updatingNote}>
-      <form onSubmit={props.user.name ? saveNoteOnCloudHandler : saveNoteLocallyHandler} autoComplete="off">
+      <form onSubmit={user.name ? saveNoteOnCloudHandler : saveNoteLocallyHandler} autoComplete="off">
         <Category
           type="text"
           value={category}

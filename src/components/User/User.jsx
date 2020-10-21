@@ -109,14 +109,10 @@ const ChangePassword = styled.button`
 `
 // #endregion
 
-const mapStateToProps = state => ({
-  app: state.app,
-  user: state.user,
-  notes: state.notes,
-})
+const mapStateToProps = ({ app: { theme, errorMessage }, user, notes }) => ({ theme, errorMessage, user, notes })
 const mapDispatchToProps = { toggleAuth, changePassword, logout }
 
-const User = ({ app: { theme, errorMessage }, user, notes, toggleAuth, changePassword, logout }) => {
+const User = ({ theme, errorMessage, user, notes, toggleAuth, changePassword, logout }) => {
   const [name, setName] = useState(user.name)
   const [password, setPassword] = useState('')
   const [changePasswordMode, setChangePasswordMode] = useState(false)

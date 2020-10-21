@@ -46,15 +46,11 @@ const GlobalStyle = createGlobalStyle`
   }
 `
 
-const mapStateToProps = state => ({ app: state.app, user: state.user })
+const mapStateToProps = ({ app: { theme, loading, showAuth }, user }) => ({ theme, loading, showAuth, user })
 const mapDispatchToProps = { getNotes }
 
-const App = ({ app: { theme, loading, showAuth }, user, getNotes }) => {
+const App = ({ theme, loading, showAuth, user, getNotes }) => {
   const history = useHistory()
-
-  useEffect(() => {
-    console.log('[App] rendered')
-  }, [])
 
   useEffect(() => {
     const connectToWebSocket = async () => {

@@ -38,6 +38,8 @@ export const register = credentials => {
 
     createWebSocketConnection()
 
+    notes.sort((a, b) => new Date(b.date) - new Date(a.date))
+
     batch(() => {
       dispatch({ type: SET_NAME, name })
       dispatch({ type: SET_NOTES, notes })
@@ -74,6 +76,8 @@ export const login = credentials => {
     localStorage.setItem('name', name)
 
     createWebSocketConnection()
+
+    notes.sort((a, b) => new Date(b.date) - new Date(a.date))
 
     batch(() => {
       dispatch({ type: SET_NAME, name })

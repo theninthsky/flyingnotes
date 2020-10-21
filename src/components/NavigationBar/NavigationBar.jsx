@@ -113,10 +113,10 @@ const Auth = styled.button`
 `
 // #endregion
 
-const mapStateToProps = state => ({ app: state.app, user: state.user })
+const mapStateToProps = ({ app: { theme }, user }) => ({ theme, user })
 const mapDispatchToProps = { changeTheme, toggleAuth }
 
-const NavigationBar = ({ app: { theme }, user, changeTheme, toggleAuth }) => {
+const NavigationBar = ({ theme, user, changeTheme, toggleAuth }) => {
   const [showCookiesMessage, setShowCookiesMessage] = useState(true)
 
   return (

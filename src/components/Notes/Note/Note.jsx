@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
@@ -119,27 +119,14 @@ const StyledDate = styled.div`
 `
 // #endregion
 
-const mapStateToProps = state => ({ app: state.app })
+const mapStateToProps = ({ app: { updatingNoteID, deletingNoteID } }) => ({ updatingNoteID, deletingNoteID })
 
 const Note = props => {
-  const {
-    _id,
-    category,
-    title,
-    content,
-    date,
-    app: { updatingNoteID, deletingNoteID },
-  } = props
-
-  // console.log(_id, updatingNoteID)
+  const { _id, category, title, content, date, updatingNoteID, deletingNoteID } = props
 
   const [showOptions, setShowOptions] = useState(false)
   const [editMode, setEditMode] = useState(false)
   const [showConfirmMessage, setShowConfirmMessage] = useState(false)
-
-  useEffect(() => {
-    console.log('[Note] rendered')
-  })
 
   return editMode ? (
     <NewNote
