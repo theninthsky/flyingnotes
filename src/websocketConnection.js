@@ -39,8 +39,6 @@ export const createWebSocketConnection = message => {
       resolve()
     }
 
-    // ws.onclose = () => { }
-
     ws.onmessage = ({ data }) => {
       const message = JSON.parse(data)
 

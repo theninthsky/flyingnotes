@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { connect } from 'react-redux'
+import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import styled from 'styled-components'
 
 import * as actions from '../../store/actions'
@@ -107,13 +107,17 @@ const Submit = styled(Input)`
 `
 // #endregion
 
-const mapStateToProps = ({ app: { theme, errorMessage }, user }) => ({ theme, errorMessage, user })
-const mapDispatchToProps = dispatch => ({
-  toggleAuth: () => dispatch(actions.toggleAuth()),
-  onFormSubmit: (credentials, action) => dispatch(actions[action.toLowerCase()](credentials)),
-})
+const Auth = () => {
+  const dispatch = useDispatch()
+  const { theme, errorMessage, user } = useSelector(
+    ({ app: { theme, errorMessage }, user }) => ({
+      theme,
+      errorMessage,
+      user,
+    }),
+    shallowEqual,
+  )
 
-const Auth = ({ theme, errorMessage, user, toggleAuth, onFormSubmit }) => {
   const [action, setAction] = useState('Login')
   const [name, setName] = useState(user.name || '')
   const [email, setEmail] = useState('')
@@ -133,12 +137,12 @@ const Auth = ({ theme, errorMessage, user, toggleAuth, onFormSubmit }) => {
 
   const submitFormHandler = event => {
     event.preventDefault()
-    onFormSubmit({ name: name.trim(), email, password }, action.toLowerCase())
+    dispatch(actions[action.toLowerCase()]({ name: name.trim(), email, password }))
   }
 
   return (
     <>
-      <Backdrop onClick={toggleAuth} />
+      <Backdrop onClick={() => dispatch(actions.toggleAuth())} />
 
       <Wrapper theme={theme}>
         <Title>
@@ -186,4 +190,4 @@ const Auth = ({ theme, errorMessage, user, toggleAuth, onFormSubmit }) => {
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Auth)
+export default Auth

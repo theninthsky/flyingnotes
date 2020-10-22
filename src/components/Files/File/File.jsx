@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 import { saveFile } from '../../../util/base64'
@@ -89,16 +89,16 @@ const Download = styled.img`
 `
 // #endregion
 
-const mapStateToProp = ({ app: { downloadingFileID } }) => ({ downloadingFileID })
-const mapDispatchToProps = { downloadFile }
+const File = ({ file: { _id, category, name, extension, attachment } }) => {
+  const dispatch = useDispatch()
+  const downloadingFileID = useSelector(({ app }) => app.downloadingFileID)
 
-const File = ({ file: { _id, category, name, extension, attachment }, downloadingFileID, downloadFile }) => {
   useEffect(() => {
     if (attachment) saveFile(name, extension, attachment)
   }, [attachment, name, extension])
 
   const downloadFileHandler = () => {
-    if (!attachment) return downloadFile(_id)
+    if (!attachment) return dispatch(downloadFile(_id))
 
     saveFile(name, extension, attachment)
   }
@@ -122,4 +122,4 @@ const File = ({ file: { _id, category, name, extension, attachment }, downloadin
   )
 }
 
-export default connect(mapStateToProp, mapDispatchToProps)(File)
+export default File

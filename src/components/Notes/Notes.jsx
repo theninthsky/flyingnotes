@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react'
-import { connect } from 'react-redux'
+import { useSelector, shallowEqual } from 'react-redux'
 import styled from 'styled-components'
 
 import NewNote from './NewNote'
@@ -59,9 +59,12 @@ const NotesWrap = styled.div`
 `
 // #endregion
 
-const mapStateToProps = ({ app: { theme, loading }, notes }) => ({ theme, loading, notes })
+const Notes = () => {
+  const { theme, loading, notes } = useSelector(
+    ({ app: { theme, loading }, notes }) => ({ theme, loading, notes }),
+    shallowEqual,
+  )
 
-const Notes = ({ theme, loading, notes }) => {
   const [categoryFilter, setCategoryFilter] = useState('')
   const [searchFilter, setSearchFilter] = useState('')
 
@@ -117,4 +120,4 @@ const Notes = ({ theme, loading, notes }) => {
   )
 }
 
-export default connect(mapStateToProps)(Notes)
+export default Notes

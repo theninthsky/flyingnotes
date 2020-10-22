@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { connect } from 'react-redux'
+import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import styled from 'styled-components'
 
 import { createNote, updateNote } from '../../../store/actions/index'
@@ -133,26 +133,14 @@ const Save = styled.input`
 `
 // #endregion
 
-const mapStateToProps = ({ app: { theme, addingNote, updatingNote }, user }) => ({
-  theme,
-  addingNote,
-  updatingNote,
-  user,
-})
-const mapDispatchToProps = { createNote, updateNote }
-
 const NewNote = props => {
-  const {
-    updateMode,
-    toggleEditMode,
-    closeOptions,
-    theme,
-    addingNote,
-    updatingNote,
-    user,
-    createNote,
-    updateNote,
-  } = props
+  const { updateMode, toggleEditMode, closeOptions } = props
+
+  const dispatch = useDispatch()
+  const { theme, addingNote, updatingNote, user } = useSelector(
+    ({ app: { theme, addingNote, updatingNote }, user }) => ({ theme, addingNote, updatingNote, user }),
+    shallowEqual,
+  )
 
   const [category, setCategory] = useState(props.category || '')
   const [title, setTitle] = useState(props.title || '')
@@ -176,9 +164,9 @@ const NewNote = props => {
       content,
     }
 
-    if (!updateMode) return createNote(note)
+    if (!updateMode) return dispatch(createNote(note))
 
-    updateNote(note)
+    dispatch(updateNote(note))
     toggleEditMode()
     closeOptions()
   }
@@ -186,9 +174,9 @@ const NewNote = props => {
   const saveNoteOnCloudHandler = event => {
     event.preventDefault()
 
-    if (!updateMode) return createNote({ category, title, content })
+    if (!updateMode) return dispatch(createNote({ category, title, content }))
 
-    updateNote({ _id: props._id, category, title, content })
+    dispatch(updateNote({ _id: props._id, category, title, content }))
     toggleEditMode()
     closeOptions()
   }
@@ -231,4 +219,4 @@ const NewNote = props => {
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewNote)
+export default NewNote

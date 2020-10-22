@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { connect } from 'react-redux'
+import { useSelector, shallowEqual } from 'react-redux'
 import styled from 'styled-components'
 
 import Options from '../../Options'
@@ -119,10 +119,13 @@ const StyledDate = styled.div`
 `
 // #endregion
 
-const mapStateToProps = ({ app: { updatingNoteID, deletingNoteID } }) => ({ updatingNoteID, deletingNoteID })
-
 const Note = props => {
-  const { _id, category, title, content, date, updatingNoteID, deletingNoteID } = props
+  const { _id, category, title, content, date } = props
+
+  const { updatingNoteID, deletingNoteID } = useSelector(
+    ({ app: { updatingNoteID, deletingNoteID } }) => ({ updatingNoteID, deletingNoteID }),
+    shallowEqual,
+  )
 
   const [showOptions, setShowOptions] = useState(false)
   const [editMode, setEditMode] = useState(false)
@@ -164,4 +167,4 @@ const Note = props => {
   )
 }
 
-export default connect(mapStateToProps)(Note)
+export default Note

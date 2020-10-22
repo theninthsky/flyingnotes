@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import styled from 'styled-components'
 
 import CookiesMessage from './CookiesMessage'
@@ -113,10 +113,10 @@ const Auth = styled.button`
 `
 // #endregion
 
-const mapStateToProps = ({ app: { theme }, user }) => ({ theme, user })
-const mapDispatchToProps = { changeTheme, toggleAuth }
+const NavigationBar = () => {
+  const dispatch = useDispatch()
+  const { theme, user } = useSelector(({ app: { theme }, user }) => ({ theme, user }), shallowEqual)
 
-const NavigationBar = ({ theme, user, changeTheme, toggleAuth }) => {
   const [showCookiesMessage, setShowCookiesMessage] = useState(true)
 
   return (
@@ -143,18 +143,18 @@ const NavigationBar = ({ theme, user, changeTheme, toggleAuth }) => {
             src={theme === 'light' ? lightThemeIcon : darkThemeIcon}
             alt="Theme"
             title="Change Theme"
-            onClick={changeTheme}
+            onClick={() => dispatch(changeTheme())}
           />
 
           {user.name ? (
-            <Auth title={`Logged in as ${user.name}`} onClick={toggleAuth}>
+            <Auth title={`Logged in as ${user.name}`} onClick={() => dispatch(toggleAuth())}>
               <UserImage src={userIcon} alt={user.name} />
             </Auth>
           ) : (
             <Auth
               title={'Login'}
               onClick={() => {
-                toggleAuth()
+                dispatch(toggleAuth())
                 setShowCookiesMessage(false)
               }}
             >
@@ -171,4 +171,4 @@ const NavigationBar = ({ theme, user, changeTheme, toggleAuth }) => {
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavigationBar)
+export default NavigationBar

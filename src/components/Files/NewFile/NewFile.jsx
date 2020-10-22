@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { connect } from 'react-redux'
+import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import styled from 'styled-components'
 
 import { uploadFile } from '../../../store/actions'
@@ -120,11 +120,12 @@ const Upload = styled.input`
 `
 // #endregion
 
-const mapStateToProps = ({ app: { theme, uploadingFile } }) => ({ theme, uploadingFile })
-const mapDispatchToProps = { uploadFile }
-
 const NewFile = props => {
-  const { theme, uploadingFile, uploadFile } = props
+  const dispatch = useDispatch()
+  const { theme, uploadingFile } = useSelector(
+    ({ app: { theme, uploadingFile } }) => ({ theme, uploadingFile }),
+    shallowEqual,
+  )
 
   const [category, setCategory] = useState(props.category || '')
   const [name, setName] = useState(props.name || '')
@@ -167,7 +168,7 @@ const NewFile = props => {
 
     if (!name) return alert('File name is required')
 
-    uploadFile({ category, name, extension, selectedFile })
+    dispatch(uploadFile({ category, name, extension, selectedFile }))
   }
 
   return (
@@ -209,4 +210,4 @@ const NewFile = props => {
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewFile)
+export default NewFile

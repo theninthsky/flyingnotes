@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { connect } from 'react-redux'
+import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import styled from 'styled-components'
 
 import { toggleAuth, updateUser, changePassword, logout } from '../../store/actions'
@@ -109,10 +109,13 @@ const ChangePassword = styled.button`
 `
 // #endregion
 
-const mapStateToProps = ({ app: { theme, errorMessage }, user, notes }) => ({ theme, errorMessage, user, notes })
-const mapDispatchToProps = { toggleAuth, changePassword, logout }
+const User = () => {
+  const dispatch = useDispatch()
+  const { theme, errorMessage, user, notes } = useSelector(
+    ({ app: { theme, errorMessage }, user, notes }) => ({ theme, errorMessage, user, notes }),
+    shallowEqual,
+  )
 
-const User = ({ theme, errorMessage, user, notes, toggleAuth, changePassword, logout }) => {
   const [name, setName] = useState(user.name)
   const [password, setPassword] = useState('')
   const [changePasswordMode, setChangePasswordMode] = useState(false)
@@ -131,12 +134,12 @@ const User = ({ theme, errorMessage, user, notes, toggleAuth, changePassword, lo
 
   const submitFormHandler = event => {
     event.preventDefault()
-    changePassword(password, newPassword)
+    dispatch(changePassword(password, newPassword))
   }
 
   return (
     <>
-      <Backdrop onClick={toggleAuth} />
+      <Backdrop onClick={() => dispatch(toggleAuth())} />
 
       <Wrapper theme={theme}>
         <UserLogo theme={theme} src={userLogo} alt="User" />
@@ -174,7 +177,7 @@ const User = ({ theme, errorMessage, user, notes, toggleAuth, changePassword, lo
               <Notes>{`Notes: ${notes.length}`}</Notes>
             </div>
 
-            <Submit type="submit" value="Logout" onClick={logout} />
+            <Submit type="submit" value="Logout" onClick={() => dispatch(logout())} />
           </>
         )}
       </Wrapper>
@@ -182,4 +185,4 @@ const User = ({ theme, errorMessage, user, notes, toggleAuth, changePassword, lo
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(User)
+export default User

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 import NewFile from './NewFile'
@@ -16,9 +16,9 @@ const Wrapper = styled.div`
   align-items: center;
 `
 
-const mapStateToProp = ({ files }) => ({ files })
+const Files = () => {
+  const files = useSelector(({ files }) => files)
 
-const Files = ({ files }) => {
   useEffect(() => {
     getFiles()
   }, [])
@@ -34,4 +34,4 @@ const Files = ({ files }) => {
   )
 }
 
-export default connect(mapStateToProp)(Files)
+export default Files

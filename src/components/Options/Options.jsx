@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { connect } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 
 import { deleteNote } from '../../store/actions/index'
@@ -78,9 +78,9 @@ const Delete = styled.img`
 `
 // #endregion
 
-const mapDispatchToProps = { deleteNote }
+const Options = ({ id, onEdit, toggleConfirmMessage }) => {
+  const dispatch = useDispatch()
 
-const Options = ({ id, onEdit, deleteNote, toggleConfirmMessage }) => {
   const [showConfirmIcons, setShowConfirmIcons] = useState(false)
 
   const handleDelete = bool => {
@@ -92,7 +92,7 @@ const Options = ({ id, onEdit, deleteNote, toggleConfirmMessage }) => {
     <Wrapper>
       {showConfirmIcons ? (
         <>
-          <Confirm src={confirmSymbol} alt="Confirm" title="Confirm" onClick={() => deleteNote(id)} />
+          <Confirm src={confirmSymbol} alt="Confirm" title="Confirm" onClick={() => dispatch(deleteNote(id))} />
           <Cancel src={cancelSymbol} alt="Cancel" title="Cancel" onClick={() => handleDelete(false)} />
         </>
       ) : (
@@ -105,4 +105,4 @@ const Options = ({ id, onEdit, deleteNote, toggleConfirmMessage }) => {
   )
 }
 
-export default connect(null, mapDispatchToProps)(Options)
+export default Options
