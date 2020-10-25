@@ -24,7 +24,7 @@ const initialState = {
   errorMessage: false,
 }
 
-export default (state = initialState, action) => {
+const appReducer = (state = initialState, action) => {
   switch (action.type) {
     case CHANGE_THEME:
       return { ...state, theme: action.theme }
@@ -50,3 +50,5 @@ export default (state = initialState, action) => {
       return state
   }
 }
+
+export default appReducer

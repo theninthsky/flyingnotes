@@ -2,7 +2,7 @@ import { SET_NOTES, ADD_NOTE, UPDATE_NOTE, REMOVE_NOTE } from '../actions/action
 
 const initialState = []
 
-export default (state = initialState, action) => {
+const notesReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_NOTES:
       return action.notes || []
@@ -16,3 +16,5 @@ export default (state = initialState, action) => {
       return state
   }
 }
+
+export default notesReducer

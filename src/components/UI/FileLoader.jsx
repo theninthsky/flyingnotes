@@ -1,7 +1,6 @@
-import React from 'react'
 import styled from 'styled-components'
 
-const StyledFileSpinner = styled.div`
+const StyledFileLoader = styled.div`
   width: 15px;
   height: 15px;
   border-top: 2px solid rgba(30, 144, 255, 0.5);
@@ -19,4 +18,6 @@ const StyledFileSpinner = styled.div`
   }
 `
 
-export default () => <StyledFileSpinner />
+const FileLoader = () => <StyledFileLoader />
+
+export default FileLoader

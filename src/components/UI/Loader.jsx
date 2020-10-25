@@ -1,7 +1,6 @@
-import React from 'react'
 import styled from 'styled-components'
 
-const StyledSpinner = styled.div`
+const StyledLoader = styled.div`
   z-index: 2;
   position: absolute;
   top: 50%;
@@ -23,4 +22,6 @@ const StyledSpinner = styled.div`
   }
 `
 
-export default () => <StyledSpinner />
+const Loader = () => <StyledLoader />
+
+export default Loader

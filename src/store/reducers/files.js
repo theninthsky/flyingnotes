@@ -2,7 +2,7 @@ import { SET_FILES, ADD_FILE, ADD_ATTACHMENT } from '../actions/actionTypes'
 
 const initialState = []
 
-export default (state = initialState, action) => {
+const filesReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_FILES:
       return action.files || []
@@ -14,3 +14,5 @@ export default (state = initialState, action) => {
       return state
   }
 }
+
+export default filesReducer

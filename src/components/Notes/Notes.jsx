@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import { useSelector, shallowEqual } from 'react-redux'
 import styled from 'styled-components'
 

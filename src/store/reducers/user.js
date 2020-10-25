@@ -4,7 +4,7 @@ const initialState = {
   name: localStorage.name,
 }
 
-export default (state = initialState, action) => {
+const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_NAME:
       return { name: action.name }
@@ -12,3 +12,5 @@ export default (state = initialState, action) => {
       return state
   }
 }
+
+export default userReducer
