@@ -39,7 +39,6 @@ const StyledNavLink = styled(NavLink)`
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
-  transition: opacity 0.2s;
   text-decoration: none;
   font-size: 24px;
   opacity: 0.5;
@@ -65,14 +64,11 @@ const ThemeImage = styled.img`
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
-  transition: opacity 0.2s;
 
   &:hover {
     opacity: 0.5;
-  }
 
-  @media (max-width: 480px) {
-    &:hover {
+    @media (max-width: 480px) {
       opacity: 1;
     }
   }
@@ -99,7 +95,6 @@ const Auth = styled.button`
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
-  transition: opacity 0.2s;
 
   &:hover {
     opacity: 0.5;

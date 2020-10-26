@@ -4,7 +4,6 @@ import styled from 'styled-components'
 
 import { saveFile } from '../../../util/base64'
 import { downloadFile } from '../../../store/actions'
-import { FileLoader } from '../../UI'
 
 import downloadIcon from '../../../assets/images/download.svg'
 
@@ -80,11 +79,20 @@ const Extension = styled.div`
 `
 const Download = styled.img`
   width: 15px;
-  opacity: 0.5;
   cursor: pointer;
+  animation: ${({ downloading }) => (downloading ? 'loading 0.5s infinite alternate' : 'none')};
 
   &:hover {
-    opacity: 1;
+    opacity: 0.5;
+  }
+
+  @keyframes loading {
+    from {
+      opacity: 0.25;
+    }
+    to {
+      opacity: 0.75;
+    }
   }
 `
 // #endregion
@@ -112,11 +120,12 @@ const File = ({ file: { _id, category, name, extension, attachment } }) => {
       <InfoWrap>
         <Extension title={extension}>{extension}</Extension>
 
-        {downloadingFileID === _id ? (
-          <FileLoader />
-        ) : (
-          <Download alt="Download" src={downloadIcon} onClick={downloadFileHandler} />
-        )}
+        <Download
+          downloading={downloadingFileID === _id}
+          alt="Download"
+          src={downloadIcon}
+          onClick={downloadFileHandler}
+        />
       </InfoWrap>
     </Wrapper>
   )

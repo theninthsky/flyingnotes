@@ -88,11 +88,10 @@ const FileLabel = styled.label`
 `
 const FileSelect = styled.img`
   width: 15px;
-  opacity: 0.5;
   cursor: pointer;
 
   &:hover {
-    opacity: 1;
+    opacity: 0.5;
   }
 `
 const FileInput = styled.input`
@@ -103,7 +102,6 @@ const Upload = styled.input`
   border: none;
   outline: none;
   font-family: inherit;
-  opacity: 0.5;
   color: red;
   background-color: inherit;
   font-size: 12px;
@@ -111,7 +109,7 @@ const Upload = styled.input`
   -webkit-tap-highlight-color: transparent;
 
   &:hover {
-    opacity: 1;
+    opacity: 0.5;
   }
 
   @media (max-width: 480px) {
