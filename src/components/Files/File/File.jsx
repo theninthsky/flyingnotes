@@ -78,8 +78,9 @@ const Extension = styled.div`
 `
 const Download = styled.img`
   width: 15px;
-  cursor: pointer;
-  animation: ${({ downloading }) => (downloading ? 'loading 0.5s infinite alternate' : 'none')};
+  cursor: ${({ downloading }) => (downloading ? 'default' : 'pointer')};
+  pointer-events: ${({ downloading }) => (downloading ? 'none' : 'auto')};
+  animation: ${({ downloading }) => (downloading ? 'loading 0.75s infinite alternate' : 'none')};
 
   &:hover {
     opacity: 0.5;
@@ -87,10 +88,10 @@ const Download = styled.img`
 
   @keyframes loading {
     from {
-      opacity: 0.25;
+      opacity: 1;
     }
     to {
-      opacity: 0.75;
+      opacity: 0.25;
     }
   }
 `
