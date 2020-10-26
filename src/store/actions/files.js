@@ -1,7 +1,15 @@
 import { batch } from 'react-redux'
 import { ws } from '../../websocketConnection'
 
-import { SET_FILES, UPLOADING_FILE, ADD_FILE, DOWNLOADING_FILE, ADD_ATTACHMENT, DELETING_FILE } from './actionTypes'
+import {
+  SET_FILES,
+  UPLOADING_FILE,
+  ADD_FILE,
+  DOWNLOADING_FILE,
+  ADD_ATTACHMENT,
+  DELETING_FILE,
+  REMOVE_FILE,
+} from './actionTypes'
 import { toBase64, fromBase64, saveFile } from '../../util/base64'
 
 export const getFiles = () => ws.json({ type: 'getFiles' })
@@ -16,7 +24,7 @@ export const setFiles = ({ files }) => {
 
 export const uploadFile = ({ category, name, extension, selectedFile }) => {
   return async dispatch => {
-    dispatch({ type: UPLOADING_FILE })
+    dispatch({ type: UPLOADING_FILE, bool: true })
 
     const base64 = await toBase64(selectedFile)
 
@@ -57,5 +65,16 @@ export const addAttachment = ({ fileID, name, extension, base64 }) => {
 export const deleteFile = fileID => {
   return dispatch => {
     dispatch({ type: DELETING_FILE, fileID })
+
+    ws.json({ type: 'deleteFile', fileID })
+  }
+}
+
+export const removeFile = ({ fileID }) => {
+  return dispatch => {
+    batch(() => {
+      dispatch({ type: DELETING_FILE, fileID: null })
+      dispatch({ type: REMOVE_FILE, fileID })
+    })
   }
 }

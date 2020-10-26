@@ -1,7 +1,7 @@
 import store from './store'
 import { modifyUser, passwordChanged } from './store/actions/user'
 import { setNotes, addNote, modifyNote, removeNote } from './store/actions/notes'
-import { setFiles, addFile, addAttachment } from './store/actions/files'
+import { setFiles, addFile, addAttachment, removeFile } from './store/actions/files'
 
 const { REACT_APP_SERVER_URL = 'http://localhost:5000', REACT_APP_WS_SERVER_URL = 'ws://localhost:5000' } = process.env
 const messageTypes = {
@@ -14,6 +14,7 @@ const messageTypes = {
   getFiles: setFiles,
   uploadFile: addFile,
   downloadFile: addAttachment,
+  deleteFile: removeFile,
 }
 
 export let ws

@@ -1,10 +1,12 @@
-import { useDispatch, useSelector } from 'react-redux'
+import { useState } from 'react'
+import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import styled from 'styled-components'
 
 import { saveFile } from '../../../util/base64'
-import { downloadFile } from '../../../store/actions'
+import { downloadFile, deleteFile } from '../../../store/actions'
 
 import downloadIcon from '../../../assets/images/download.svg'
+import deleteIcon from '../../../assets/images/delete.svg'
 
 // #region Styles
 const Wrapper = styled.div`
@@ -16,6 +18,7 @@ const Wrapper = styled.div`
   margin: 20px;
   border-radius: 4px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  opacity: ${({ isBeingDeleted }) => (isBeingDeleted ? '0.5' : '1')};
   font-family: inherit;
   background-color: inherit;
   color: inherit;
@@ -95,11 +98,25 @@ const Download = styled.img`
     }
   }
 `
+const Delete = styled.img`
+  width: 14px;
+  opacity: 1;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.5;
+  }
+`
 // #endregion
 
 const File = ({ file: { _id, category, name, extension, attachment } }) => {
   const dispatch = useDispatch()
-  const downloadingFileID = useSelector(({ app }) => app.downloadingFileID)
+  const { downloadingFileID, deletingFileID } = useSelector(
+    ({ app: { downloadingFileID, deletingFileID } }) => ({ downloadingFileID, deletingFileID }),
+    shallowEqual,
+  )
+
+  const [showDelete, setShowDelete] = useState(false)
 
   const downloadFileHandler = () => {
     if (!attachment) return dispatch(downloadFile(_id))
@@ -108,17 +125,33 @@ const File = ({ file: { _id, category, name, extension, attachment } }) => {
   }
 
   return (
-    <Wrapper /*onMouseMove={() => setShowOptions(true)} onMouseLeave={() => setShowOptions(showConfirmMessage)} */>
+    <Wrapper
+      isBeingDeleted={deletingFileID === _id}
+      onMouseMove={() => setShowDelete(true)}
+      onMouseLeave={() => setShowDelete(false)}
+    >
       {category && <Category>{category.toUpperCase()}</Category>}
 
       <Name title={name}>{name}</Name>
 
       <InfoWrap>
-        <Extension title={extension}>{extension}</Extension>
+        {showDelete ? (
+          <Delete
+            src={deleteIcon}
+            alt="Delete"
+            title="Delete"
+            onClick={() => {
+              if (window.confirm(`Delete ${name}.${extension}?`)) dispatch(deleteFile(_id))
+            }}
+          />
+        ) : (
+          <Extension title={extension}>{extension}</Extension>
+        )}
 
         <Download
           downloading={downloadingFileID === _id}
           alt="Download"
+          title="Download"
           src={downloadIcon}
           onClick={downloadFileHandler}
         />
