@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 
@@ -100,10 +99,6 @@ const Download = styled.img`
 const File = ({ file: { _id, category, name, extension, attachment } }) => {
   const dispatch = useDispatch()
   const downloadingFileID = useSelector(({ app }) => app.downloadingFileID)
-
-  useEffect(() => {
-    if (attachment) saveFile(name, extension, attachment)
-  }, [attachment, name, extension])
 
   const downloadFileHandler = () => {
     if (!attachment) return dispatch(downloadFile(_id))

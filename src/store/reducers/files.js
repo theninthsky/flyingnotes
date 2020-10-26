@@ -5,7 +5,7 @@ const initialState = []
 const filesReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_FILES:
-      return action.files || []
+      return state.length ? state : action.files || []
     case ADD_FILE:
       return [...state, action.file]
     case ADD_ATTACHMENT:
