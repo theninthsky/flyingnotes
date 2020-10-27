@@ -5,10 +5,14 @@ import styled from 'styled-components'
 import NewNote from './NewNote'
 import Note from './Note'
 
+import magnifyingGlassBlackIcon from '../../assets/images/magnifying-glass-black.svg'
+import magnifyingGlassWhiteIcon from '../../assets/images/magnifying-glass-white.svg'
+
 // #region Styles
 const Filters = styled.div`
   margin: 20px auto;
   width: 25vw;
+  height: 32px;
   display: flex;
   justify-content: center;
 
@@ -30,19 +34,24 @@ const CategoryFilter = styled.select`
   background-color: ${({ theme }) => (theme === 'dark' ? '#222' : 'white')};
 `
 const SearchFilter = styled.div`
+  display: flex;
+  align-items: center;
   border: 0.5px solid #ccc;
   border-radius: 0 5px 5px 0;
   color: inherit;
   background-color: inherit;
 `
-const SearchIcon = styled.i`
-  padding: 0.5rem;
-`
+
 const SearchBox = styled.input`
+  height: 50%;
+  padding-left: 30px;
   border: none;
   color: inherit;
-  background-color: transparent;
   outline: none;
+  background: ${({ theme }) =>
+    `url(${
+      theme === 'dark' ? magnifyingGlassWhiteIcon : magnifyingGlassBlackIcon
+    }) no-repeat 7.5px scroll transparent`};
 
   &::placeholder {
     color: ${({ theme }) => (theme === 'dark' ? 'rgb(200, 200, 200)' : 'auto')};
@@ -99,7 +108,6 @@ const Notes = () => {
             </CategoryFilter>
 
             <SearchFilter>
-              <SearchIcon className="fa fa-search"></SearchIcon>
               <SearchBox
                 theme={theme}
                 type="search"
