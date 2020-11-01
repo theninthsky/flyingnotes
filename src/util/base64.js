@@ -13,8 +13,6 @@ export const fromBase64 = async (name, base64) => {
   const res = await fetch(base64)
   const blob = await res.blob()
 
-  console.log(mimeType)
-
   return new File([blob], name, { type: mimeType })
 }
 
