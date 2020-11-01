@@ -9,9 +9,11 @@ export const toBase64 = file => {
 }
 
 export const fromBase64 = async (name, base64) => {
-  const [mimeType] = base64.match(/(?<=:)(.*?)(?=;)/)
+  const mimeType = base64.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/)[1]
   const res = await fetch(base64)
   const blob = await res.blob()
+
+  console.log(mimeType)
 
   return new File([blob], name, { type: mimeType })
 }
