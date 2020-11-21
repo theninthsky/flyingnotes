@@ -90,8 +90,12 @@ const App = () => {
         <Loader />
       ) : (
         <Switch>
-          <Route exact path="/" component={Notes} />
-          <Route path="/files" component={Files} />
+          <Route exact path="/">
+            <Notes />
+          </Route>
+          <Route path="/files">
+            <Files />
+          </Route>
         </Switch>
       )}
     </>
