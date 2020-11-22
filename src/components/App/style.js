@@ -6,19 +6,8 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    margin: 0;
     color: ${({ theme }) => (theme === 'light' ? 'rgb(80, 80, 80)' : 'white')};
     background: ${({ theme }) => (theme === 'light' ? 'initial' : 'linear-gradient(#202020, #404040) fixed')};
-    animation: showApp 0.5s;
-
-    @keyframes showApp {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
   }
 
   img {

@@ -16,4 +16,4 @@ ReactDOM.render(
   document.getElementById('root'),
 )
 
-serviceWorkerRegistration.register()
+if (window.matchMedia('(display-mode: standalone)').matches) serviceWorkerRegistration.register()

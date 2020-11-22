@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Switch, Route, useHistory } from 'react-router-dom'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
+import 'normalize.css'
 
 import { createWebSocketConnection } from '../../websocketConnection'
 import { getNotes } from '../../store/actions'
