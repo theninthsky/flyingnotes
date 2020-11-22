@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { Switch, Route, useHistory } from 'react-router-dom'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
-import { createGlobalStyle } from 'styled-components'
 
 import { createWebSocketConnection } from '../../websocketConnection'
 import { getNotes } from '../../store/actions'
@@ -12,39 +11,7 @@ import User from '../User'
 import Notes from '../Notes'
 import Files from '../Files'
 import { Loader } from '../UI'
-
-const GlobalStyle = createGlobalStyle`
-  html {
-    height: 100vh; // fixes gradient on mobile
-  }
-
-  body {
-    margin: 0;
-    color: ${({ theme }) => (theme === 'light' ? 'rgb(80, 80, 80)' : 'white')};
-    background: ${({ theme }) => (theme === 'light' ? 'initial' : 'linear-gradient(#202020, #404040) fixed')};
-    animation: showApp 0.5s;
-
-    @keyframes showApp {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
-  }
-
-  img {
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  a {
-    &:visited {
-      color: unset;
-    }
-  }
-`
+import { GlobalStyle } from './style'
 
 const App = () => {
   const dispatch = useDispatch()

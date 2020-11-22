@@ -1,72 +1,9 @@
 import { useState, useMemo } from 'react'
 import { useSelector, shallowEqual } from 'react-redux'
-import styled from 'styled-components'
 
 import NewNote from './NewNote'
 import Note from './Note'
-
-import magnifyingGlassBlackIcon from '../../assets/images/magnifying-glass-black.svg'
-import magnifyingGlassWhiteIcon from '../../assets/images/magnifying-glass-white.svg'
-
-// #region Styles
-const Filters = styled.div`
-  margin: 20px auto;
-  width: 25vw;
-  height: 32px;
-  display: flex;
-  justify-content: center;
-
-  @media (max-width: 768px) {
-    width: 70vw;
-  }
-
-  @media (max-width: 480px) {
-    width: 90%;
-  }
-`
-const CategoryFilter = styled.select`
-  width: 15%;
-  border-radius: 5px 0 0 5px;
-  outline: none;
-  cursor: pointer;
-  border: 0.5px solid #ccc;
-  color: inherit;
-  background-color: ${({ theme }) => (theme === 'dark' ? '#222' : 'white')};
-`
-const SearchFilter = styled.div`
-  display: flex;
-  align-items: center;
-  border: 0.5px solid #ccc;
-  border-radius: 0 5px 5px 0;
-  color: inherit;
-  background-color: inherit;
-`
-
-const SearchBox = styled.input`
-  height: 50%;
-  padding-left: 30px;
-  border: none;
-  color: inherit;
-  outline: none;
-  background: ${({ theme }) =>
-    `url(${
-      theme === 'dark' ? magnifyingGlassWhiteIcon : magnifyingGlassBlackIcon
-    }) no-repeat 7.5px scroll transparent`};
-
-  &::placeholder {
-    color: ${({ theme }) => (theme === 'dark' ? 'rgb(200, 200, 200)' : 'auto')};
-  }
-`
-const NotesWrap = styled.div`
-  margin: 0 auto;
-  width: 95%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  align-items: center;
-`
-// #endregion
+import { Filters, CategoryFilter, SearchFilter, SearchBox, NotesWrap } from './style'
 
 const Notes = () => {
   const { theme, loading, notes } = useSelector(
