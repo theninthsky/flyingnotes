@@ -1,15 +1,16 @@
 import { useState, useMemo } from 'react'
 import { useSelector, shallowEqual } from 'react-redux'
+import { useRecoilValue } from 'recoil'
 
+import { themeState } from '../App/atoms'
 import NewNote from './NewNote'
 import Note from './Note'
 import { Filters, CategoryFilter, SearchFilter, SearchBox, NotesWrap } from './style'
 
 const Notes = () => {
-  const { theme, loading, notes } = useSelector(
-    ({ app: { theme, loading }, notes }) => ({ theme, loading, notes }),
-    shallowEqual,
-  )
+  const { loading, notes } = useSelector(({ app: { loading }, notes }) => ({ loading, notes }), shallowEqual)
+
+  const theme = useRecoilValue(themeState)
 
   const [categoryFilter, setCategoryFilter] = useState('')
   const [searchFilter, setSearchFilter] = useState('')

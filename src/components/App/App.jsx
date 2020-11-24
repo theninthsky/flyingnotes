@@ -1,10 +1,12 @@
 import { useEffect } from 'react'
 import { Switch, Route, useHistory } from 'react-router-dom'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
+import { useRecoilValue } from 'recoil'
 import 'normalize.css'
 
 import { createWebSocketConnection } from '../../websocketConnection'
 import { getNotes } from '../../store/actions'
+import { themeState } from './atoms'
 import preloadImages from '../../util/preloadImages'
 import NavigationBar from '../NavigationBar'
 import Auth from '../Auth'
@@ -16,15 +18,16 @@ import { GlobalStyle } from './style'
 
 const App = () => {
   const dispatch = useDispatch()
-  const { theme, loading, showAuth, user } = useSelector(
-    ({ app: { theme, loading, showAuth }, user }) => ({
-      theme,
+  const { loading, showAuth, user } = useSelector(
+    ({ app: { loading, showAuth }, user }) => ({
       loading,
       showAuth,
       user,
     }),
     shallowEqual,
   )
+
+  const theme = useRecoilValue(themeState)
 
   const history = useHistory()
 

@@ -12,7 +12,6 @@ import {
 } from '../actions/actionTypes'
 
 const initialState = {
-  theme: localStorage.theme || 'light',
   loading: true,
   showAuth: false,
   addingNote: false,

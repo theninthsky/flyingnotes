@@ -1,20 +1,23 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
+import { useRecoilValue } from 'recoil'
 
 import * as actions from '../../store/actions'
+import { themeState } from '../App/atoms'
 import { Backdrop } from '../UI'
 import { Wrapper, Title, Login, Divider, Register, ErrorMessage, LoginMessage, Input, Submit } from './style'
 
 const Auth = () => {
   const dispatch = useDispatch()
-  const { theme, errorMessage, user } = useSelector(
-    ({ app: { theme, errorMessage }, user }) => ({
-      theme,
+  const { errorMessage, user } = useSelector(
+    ({ app: { errorMessage }, user }) => ({
       errorMessage,
       user,
     }),
     shallowEqual,
   )
+
+  const theme = useRecoilValue(themeState)
 
   const [action, setAction] = useState('Login')
   const [name, setName] = useState(user.name || '')

@@ -1,17 +1,18 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
+import { useRecoilValue } from 'recoil'
 
 import { uploadFile } from '../../../store/actions'
+import { themeState } from '../../App/atoms'
 import { Wrapper, Category, Name, InfoWrap, FileLabel, FileSelect, FileInput, Upload } from './style'
 
 import uploadIcon from '../../../assets/images/upload.svg'
 
 const NewFile = props => {
   const dispatch = useDispatch()
-  const { theme, uploadingFile } = useSelector(
-    ({ app: { theme, uploadingFile } }) => ({ theme, uploadingFile }),
-    shallowEqual,
-  )
+  const uploadingFile = useSelector(({ app: { uploadingFile } }) => uploadingFile, shallowEqual)
+
+  const theme = useRecoilValue(themeState)
 
   const [category, setCategory] = useState(props.category || '')
   const [name, setName] = useState(props.name || '')

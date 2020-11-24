@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
+import { useRecoilState } from 'recoil'
 
 import CookiesMessage from './CookiesMessage'
-import { changeTheme, toggleAuth } from '../../store/actions'
+import { toggleAuth } from '../../store/actions'
+import { toggleTheme } from './actions'
+import { themeState } from '../App/atoms'
 import { Wrapper, LogoWrap, Logo, StyledNavLink, Util, ThemeImage, UserImage, Auth } from './style'
 
 import logo from '../../assets/images/logo.svg'
@@ -12,7 +15,9 @@ import userIcon from '../../assets/images/user-astronaut.svg'
 
 const NavigationBar = () => {
   const dispatch = useDispatch()
-  const { theme, user } = useSelector(({ app: { theme }, user }) => ({ theme, user }), shallowEqual)
+  const user = useSelector(({ user }) => user, shallowEqual)
+
+  const [theme, setTheme] = useRecoilState(themeState)
 
   const [showCookiesMessage, setShowCookiesMessage] = useState(true)
 
@@ -40,7 +45,7 @@ const NavigationBar = () => {
             src={theme === 'light' ? lightThemeIcon : darkThemeIcon}
             alt="Theme"
             title="Change Theme"
-            onClick={() => dispatch(changeTheme())}
+            onClick={() => toggleTheme(theme, setTheme)}
           />
 
           {user.name ? (

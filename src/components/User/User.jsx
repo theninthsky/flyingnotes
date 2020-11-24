@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
+import { useRecoilValue } from 'recoil'
 
 import { toggleAuth, updateUser, changePassword, logout } from '../../store/actions'
+import { themeState } from '../App/atoms'
 import { Backdrop } from '../UI'
 import { Wrapper, UserLogo, Name, ErrorMessage, Input, Submit, Notes, ChangePassword } from './style'
 
@@ -9,10 +11,12 @@ import userLogo from '../../assets/images/user-astronaut.svg'
 
 const User = () => {
   const dispatch = useDispatch()
-  const { theme, errorMessage, user, notes } = useSelector(
-    ({ app: { theme, errorMessage }, user, notes }) => ({ theme, errorMessage, user, notes }),
+  const { errorMessage, user, notes } = useSelector(
+    ({ app: { errorMessage }, user, notes }) => ({ errorMessage, user, notes }),
     shallowEqual,
   )
+
+  const theme = useRecoilValue(themeState)
 
   const [name, setName] = useState(user.name)
   const [password, setPassword] = useState('')

@@ -1,17 +1,21 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
+import { useRecoilValue } from 'recoil'
 
 import { createNote, updateNote } from '../../../store/actions/index'
+import { themeState } from '../../App/atoms'
 import { Wrapper, Category, Title, Content, Save } from './style'
 
 const NewNote = props => {
   const { updateMode, toggleEditMode, closeOptions } = props
 
   const dispatch = useDispatch()
-  const { theme, addingNote, updatingNote, user } = useSelector(
-    ({ app: { theme, addingNote, updatingNote }, user }) => ({ theme, addingNote, updatingNote, user }),
+  const { addingNote, updatingNote, user } = useSelector(
+    ({ app: { addingNote, updatingNote }, user }) => ({ addingNote, updatingNote, user }),
     shallowEqual,
   )
+
+  const theme = useRecoilValue(themeState)
 
   const [category, setCategory] = useState(props.category || '')
   const [title, setTitle] = useState(props.title || '')
