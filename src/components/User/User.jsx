@@ -1,22 +1,25 @@
 import { useState, useEffect } from 'react'
-import { useDispatch, useSelector, shallowEqual } from 'react-redux'
-import { useRecoilValue } from 'recoil'
+import { useDispatch } from 'react-redux'
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 
-import { toggleAuth, updateUser, changePassword, logout } from '../../store/actions'
-import { themeState } from '../App/atoms'
+import { ws } from '../../websocketConnection'
+import { changePassword } from '../../store/actions'
+import { themeState, authIsOpenState } from '../App/atoms'
+import { userState, errorMessageState } from './atoms'
 import { Backdrop } from '../UI'
-import { Wrapper, UserLogo, Name, ErrorMessage, Input, Submit, Notes, ChangePassword } from './style'
+import { Wrapper, UserLogo, Name, ErrorMessage, Input, Submit, ChangePassword } from './style'
 
 import userLogo from '../../assets/images/user-astronaut.svg'
 
+const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
+
 const User = () => {
   const dispatch = useDispatch()
-  const { errorMessage, user, notes } = useSelector(
-    ({ app: { errorMessage }, user, notes }) => ({ errorMessage, user, notes }),
-    shallowEqual,
-  )
 
   const theme = useRecoilValue(themeState)
+  const [user, setUser] = useRecoilState(userState)
+  const setAuthIsOpen = useSetRecoilState(authIsOpenState)
+  const [errorMessage, setErrorMessage] = useRecoilState(errorMessageState)
 
   const [name, setName] = useState(user.name)
   const [password, setPassword] = useState('')
@@ -31,7 +34,7 @@ const User = () => {
 
   const nameHanlder = event => {
     setName(event.currentTarget.textContent)
-    updateUser(event.currentTarget.textContent)
+    ws.json({ type: 'updateUser', newName: event.currentTarget.textContent })
   }
 
   const submitFormHandler = event => {
@@ -39,9 +42,25 @@ const User = () => {
     dispatch(changePassword(password, newPassword))
   }
 
+  const logout = async () => {
+    try {
+      await fetch(`${REACT_APP_SERVER_URL}/logout`, { method: 'POST' })
+
+      localStorage.removeItem('name')
+      ws.close()
+
+      setUser({ name: null })
+      // dispatch({ type: SET_NOTES, notes: JSON.parse(localStorage.notes || '[]') })
+    } catch (err) {
+      return setErrorMessage('Failed to logout')
+    }
+
+    setAuthIsOpen(false)
+  }
+
   return (
     <>
-      <Backdrop onClick={() => dispatch(toggleAuth())} />
+      <Backdrop onClick={() => setAuthIsOpen(false)} />
 
       <Wrapper theme={theme}>
         <UserLogo theme={theme} src={userLogo} alt="User" />
@@ -75,11 +94,8 @@ const User = () => {
         ) : (
           <>
             <ChangePassword onClick={() => setChangePasswordMode(true)}>Change Password</ChangePassword>
-            <div>
-              <Notes>{`Notes: ${notes.length}`}</Notes>
-            </div>
 
-            <Submit type="submit" value="Logout" onClick={() => dispatch(logout())} />
+            <Submit type="submit" value="Logout" onClick={logout} />
           </>
         )}
       </Wrapper>

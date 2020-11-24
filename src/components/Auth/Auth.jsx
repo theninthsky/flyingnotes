@@ -1,23 +1,20 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
-import { useRecoilValue } from 'recoil'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
 
 import * as actions from '../../store/actions'
-import { themeState } from '../App/atoms'
+import { themeState, authIsOpenState } from '../App/atoms'
+import { userState } from '../User/atoms'
 import { Backdrop } from '../UI'
 import { Wrapper, Title, Login, Divider, Register, ErrorMessage, LoginMessage, Input, Submit } from './style'
 
 const Auth = () => {
   const dispatch = useDispatch()
-  const { errorMessage, user } = useSelector(
-    ({ app: { errorMessage }, user }) => ({
-      errorMessage,
-      user,
-    }),
-    shallowEqual,
-  )
+  const errorMessage = useSelector(({ app: { errorMessage } }) => errorMessage, shallowEqual)
 
   const theme = useRecoilValue(themeState)
+  const user = useRecoilValue(userState)
+  const setAuthIsOpen = useSetRecoilState(authIsOpenState)
 
   const [action, setAction] = useState('Login')
   const [name, setName] = useState(user.name || '')
@@ -43,7 +40,7 @@ const Auth = () => {
 
   return (
     <>
-      <Backdrop onClick={() => dispatch(actions.toggleAuth())} />
+      <Backdrop onClick={() => setAuthIsOpen(false)} />
 
       <Wrapper theme={theme}>
         <Title>

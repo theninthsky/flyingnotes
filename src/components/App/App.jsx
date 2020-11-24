@@ -6,8 +6,10 @@ import 'normalize.css'
 
 import { createWebSocketConnection } from '../../websocketConnection'
 import { getNotes } from '../../store/actions'
-import { themeState } from './atoms'
+import { themeState, authIsOpenState } from './atoms'
+import { userState } from '../User/atoms'
 import preloadImages from '../../util/preloadImages'
+import If from '../If'
 import NavigationBar from '../NavigationBar'
 import Auth from '../Auth'
 import User from '../User'
@@ -18,16 +20,11 @@ import { GlobalStyle } from './style'
 
 const App = () => {
   const dispatch = useDispatch()
-  const { loading, showAuth, user } = useSelector(
-    ({ app: { loading, showAuth }, user }) => ({
-      loading,
-      showAuth,
-      user,
-    }),
-    shallowEqual,
-  )
+  const loading = useSelector(({ app: { loading } }) => loading, shallowEqual)
 
   const theme = useRecoilValue(themeState)
+  const user = useRecoilValue(userState)
+  const authIsOpen = useRecoilValue(authIsOpenState)
 
   const history = useHistory()
 
@@ -55,7 +52,7 @@ const App = () => {
 
       <NavigationBar />
 
-      {showAuth && !loading && (!user.name ? <Auth /> : <User />)}
+      <If condition={authIsOpen && !loading}>{!user.name ? <Auth /> : <User />}</If>
 
       {loading ? (
         <Loader />

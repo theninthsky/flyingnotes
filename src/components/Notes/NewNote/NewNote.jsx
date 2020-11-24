@@ -4,18 +4,20 @@ import { useRecoilValue } from 'recoil'
 
 import { createNote, updateNote } from '../../../store/actions/index'
 import { themeState } from '../../App/atoms'
+import { userState } from '../../User/atoms'
 import { Wrapper, Category, Title, Content, Save } from './style'
 
 const NewNote = props => {
   const { updateMode, toggleEditMode, closeOptions } = props
 
   const dispatch = useDispatch()
-  const { addingNote, updatingNote, user } = useSelector(
-    ({ app: { addingNote, updatingNote }, user }) => ({ addingNote, updatingNote, user }),
+  const { addingNote, updatingNote } = useSelector(
+    ({ app: { addingNote, updatingNote } }) => ({ addingNote, updatingNote }),
     shallowEqual,
   )
 
   const theme = useRecoilValue(themeState)
+  const user = useRecoilValue(userState)
 
   const [category, setCategory] = useState(props.category || '')
   const [title, setTitle] = useState(props.title || '')

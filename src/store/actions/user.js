@@ -89,8 +89,6 @@ export const login = credentials => {
   }
 }
 
-export const updateUser = name => ws.json({ type: 'updateUser', newName: name })
-
 export const modifyUser = ({ status, newName }) => {
   return dispatch => {
     if (status === 'FAIL') return
@@ -115,29 +113,5 @@ export const changePassword = (password, newPassword) => {
 export const passwordChanged = ({ status }) => {
   return dispatch => {
     if (status === 'SUCCESS') dispatch({ type: LOADING, loading: false })
-  }
-}
-
-export const logout = () => {
-  return async dispatch => {
-    dispatch({ type: LOADING, loading: true })
-    try {
-      await fetch(`${REACT_APP_SERVER_URL}/logout`, { method: 'POST' })
-
-      localStorage.removeItem('name')
-      ws.close()
-
-      batch(() => {
-        dispatch({ type: SET_NAME, name: null })
-        dispatch({ type: SET_NOTES, notes: JSON.parse(localStorage.notes || '[]') })
-      })
-    } catch (err) {
-      dispatch({ type: ERROR, errorMessage: 'Failed to logout' })
-    }
-
-    batch(() => {
-      dispatch({ type: LOADING, loading: false })
-      dispatch({ type: TOGGLE_AUTH })
-    })
   }
 }

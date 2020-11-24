@@ -13,7 +13,6 @@ import {
 
 const initialState = {
   loading: true,
-  showAuth: false,
   addingNote: false,
   updatingNoteID: null,
   deletingNoteID: null,

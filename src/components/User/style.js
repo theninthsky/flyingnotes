@@ -79,12 +79,6 @@ export const Submit = styled(Input)`
     background-color: gray;
   }
 `
-export const Notes = styled.h2`
-  margin: 6px;
-  padding-left: 10%;
-  font-size: 20px;
-  font-weight: normal;
-`
 export const ChangePassword = styled.button`
   display: block;
   margin: 0 auto;
@@ -92,10 +86,9 @@ export const ChangePassword = styled.button`
   color: inherit;
   font-size: 14px;
   background-color: transparent;
-  opacity: 0.5;
   cursor: pointer;
 
   &:hover {
-    opacity: 1;
+    opacity: 0.75;
   }
 `

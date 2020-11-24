@@ -1,11 +1,9 @@
 import { useState } from 'react'
-import { useDispatch, useSelector, shallowEqual } from 'react-redux'
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
 
 import CookiesMessage from './CookiesMessage'
-import { toggleAuth } from '../../store/actions'
-import { toggleTheme } from './actions'
-import { themeState } from '../App/atoms'
+import { themeState, authIsOpenState } from '../App/atoms'
+import { userState } from '../User/atoms'
 import { Wrapper, LogoWrap, Logo, StyledNavLink, Util, ThemeImage, UserImage, Auth } from './style'
 
 import logo from '../../assets/images/logo.svg'
@@ -14,12 +12,18 @@ import darkThemeIcon from '../../assets/images/theme-dark.svg'
 import userIcon from '../../assets/images/user-astronaut.svg'
 
 const NavigationBar = () => {
-  const dispatch = useDispatch()
-  const user = useSelector(({ user }) => user, shallowEqual)
-
   const [theme, setTheme] = useRecoilState(themeState)
+  const user = useRecoilValue(userState)
+  const [authIsOpen, setAuthIsOpen] = useRecoilState(authIsOpenState)
 
   const [showCookiesMessage, setShowCookiesMessage] = useState(true)
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark'
+
+    setTheme(newTheme)
+    localStorage.setItem('theme', newTheme)
+  }
 
   return (
     <>
@@ -45,18 +49,18 @@ const NavigationBar = () => {
             src={theme === 'light' ? lightThemeIcon : darkThemeIcon}
             alt="Theme"
             title="Change Theme"
-            onClick={() => toggleTheme(theme, setTheme)}
+            onClick={toggleTheme}
           />
 
           {user.name ? (
-            <Auth title={`Logged in as ${user.name}`} onClick={() => dispatch(toggleAuth())}>
+            <Auth title={`Logged in as ${user.name}`} onClick={() => setAuthIsOpen(!authIsOpen)}>
               <UserImage src={userIcon} alt={user.name} />
             </Auth>
           ) : (
             <Auth
               title={'Login'}
               onClick={() => {
-                dispatch(toggleAuth())
+                setAuthIsOpen(!authIsOpen)
                 setShowCookiesMessage(false)
               }}
             >
