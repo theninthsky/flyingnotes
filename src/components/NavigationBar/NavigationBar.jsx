@@ -2,8 +2,7 @@ import { useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import CookiesMessage from './CookiesMessage'
-import { themeState, authIsOpenState } from '../App/atoms'
-import { userState } from '../User/atoms'
+import { themeState, authIsOpenState, userState } from '../../atoms'
 import { Wrapper, LogoWrap, Logo, StyledNavLink, Util, ThemeImage, UserImage, Auth } from './style'
 
 import logo from '../../assets/images/logo.svg'

@@ -1,11 +1,11 @@
 import { atom } from 'recoil'
 
 export const themeState = atom({
-  key: 'theme',
+  key: 'themeState',
   default: localStorage.theme || 'light',
 })
 
 export const authIsOpenState = atom({
-  key: 'authIsOpen',
+  key: 'authIsOpenState',
   default: false,
 })

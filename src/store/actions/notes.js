@@ -1,49 +1,7 @@
 import { batch } from 'react-redux'
 
-import {
-  LOADING,
-  ERROR,
-  SET_NOTES,
-  ADDING_NOTE,
-  ADD_NOTE,
-  UPDATING_NOTE,
-  UPDATE_NOTE,
-  DELETING_NOTE,
-  REMOVE_NOTE,
-} from './actionTypes'
+import { ERROR, ADDING_NOTE, ADD_NOTE, UPDATING_NOTE, UPDATE_NOTE, DELETING_NOTE, REMOVE_NOTE } from './actionTypes'
 import { ws } from '../../websocketConnection'
-
-const exampleNote = {
-  _id: 'example',
-  category: 'Demo',
-  title: 'Example',
-  content: 'This is an example note.',
-  date: Date.now(),
-}
-
-export const getNotes = () => {
-  return async dispatch => {
-    if (localStorage.name) return ws.json({ type: 'getNotes' })
-
-    const notes = JSON.parse(localStorage.notes || `[${JSON.stringify(exampleNote)}]`)
-
-    batch(() => {
-      dispatch({ type: SET_NOTES, notes })
-      dispatch({ type: LOADING, loading: false })
-    })
-  }
-}
-
-export const setNotes = ({ notes }) => {
-  notes.sort((a, b) => new Date(b.date) - new Date(a.date))
-
-  return dispatch => {
-    batch(() => {
-      dispatch({ type: SET_NOTES, notes })
-      dispatch({ type: LOADING, loading: false })
-    })
-  }
-}
 
 export const createNote = newNote => {
   return async dispatch => {

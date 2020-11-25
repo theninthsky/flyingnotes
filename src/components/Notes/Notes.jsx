@@ -1,19 +1,42 @@
-import { useState, useMemo } from 'react'
-import { useSelector, shallowEqual } from 'react-redux'
-import { useRecoilValue } from 'recoil'
+import { useState, useEffect, useMemo, useCallback } from 'react'
+import { useRecoilState, useRecoilValue } from 'recoil'
 
-import { themeState } from '../App/atoms'
+import { ws } from '../../websocketConnection'
+import { themeState, notesLoadingState } from '../../atoms'
+import { notesSelector } from '../../selectors'
+import { exampleNote } from './constants'
 import NewNote from './NewNote'
 import Note from './Note'
+import { Loader } from '../UI'
 import { Filters, CategoryFilter, SearchFilter, SearchBox, NotesWrap } from './style'
 
 const Notes = () => {
-  const { loading, notes } = useSelector(({ app: { loading }, notes }) => ({ loading, notes }), shallowEqual)
-
   const theme = useRecoilValue(themeState)
+  const [notes, setNotes] = useRecoilState(notesSelector)
+  const [loading, setLoading] = useRecoilState(notesLoadingState)
 
   const [categoryFilter, setCategoryFilter] = useState('')
   const [searchFilter, setSearchFilter] = useState('')
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (!notes.length) getNotes()
+    }, 1000)
+  }, [notes.length])
+
+  const getNotes = useCallback(async () => {
+    if (localStorage.name) {
+      const { notes } = await ws.json({ type: 'getNotes' })
+
+      setNotes(notes)
+      return setLoading(false)
+    }
+
+    const notes = JSON.parse(localStorage.notes || `[${JSON.stringify(exampleNote)}]`)
+
+    setNotes(notes)
+    setLoading(false)
+  }, [setLoading, setNotes])
 
   const filteredNotes = useMemo(
     () =>
@@ -21,47 +44,53 @@ const Notes = () => {
         .filter(({ category }) => (!categoryFilter ? true : category === categoryFilter))
         .filter(({ title, content }) => `${title} ${content}`.toLowerCase().includes(searchFilter))
         .map(({ _id, category, title, content, date }) => (
-          <Note key={_id} _id={_id} category={category} title={title} content={content} date={date} />
+          <Note
+            key={_id}
+            _id={_id}
+            category={category}
+            title={title}
+            content={content}
+            date={date}
+            modifyNote={modifiedNote =>
+              setNotes(notes.map(note => (note._id === modifiedNote._id ? modifiedNote : note)))
+            }
+          />
         )),
     [notes, categoryFilter, searchFilter],
   )
 
+  if (loading) return <Loader />
+
   return (
     <>
-      {loading || (
-        <>
-          <Filters>
-            <CategoryFilter theme={theme} title="Category" onChange={event => setCategoryFilter(event.target.value)}>
-              <option defaultValue value="">
-                ALL
-              </option>
-              {[...notes]
-                .sort((a, b) => a.category.localeCompare(b.category))
-                .filter(
-                  ({ category }, ind, notes) => category && category !== (notes[ind + 1] && notes[ind + 1].category),
-                )
-                .map(({ category, _id }) => (
-                  <option key={_id}>{category}</option>
-                ))}
-            </CategoryFilter>
+      <Filters>
+        <CategoryFilter theme={theme} title="Category" onChange={event => setCategoryFilter(event.target.value)}>
+          <option defaultValue value="">
+            ALL
+          </option>
+          {[...notes]
+            .sort((a, b) => a.category.localeCompare(b.category))
+            .filter(({ category }, ind, notes) => category && category !== (notes[ind + 1] && notes[ind + 1].category))
+            .map(({ category, _id }) => (
+              <option key={_id}>{category}</option>
+            ))}
+        </CategoryFilter>
 
-            <SearchFilter>
-              <SearchBox
-                theme={theme}
-                type="search"
-                value={searchFilter}
-                placeholder="Search..."
-                onChange={event => setSearchFilter(event.target.value.toLowerCase())}
-              />
-            </SearchFilter>
-          </Filters>
+        <SearchFilter>
+          <SearchBox
+            theme={theme}
+            type="search"
+            value={searchFilter}
+            placeholder="Search..."
+            onChange={event => setSearchFilter(event.target.value.toLowerCase())}
+          />
+        </SearchFilter>
+      </Filters>
 
-          <NotesWrap>
-            <NewNote />
-            {filteredNotes}
-          </NotesWrap>
-        </>
-      )}
+      <NotesWrap>
+        <NewNote addNote={newNote => setNotes([...notes, newNote])} />
+        {filteredNotes}
+      </NotesWrap>
     </>
   )
 }

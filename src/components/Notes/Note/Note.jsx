@@ -6,7 +6,7 @@ import NewNote from '../NewNote'
 import { Wrapper, Category, Title, Content, ConfirmMessage, StyledDate } from './style'
 
 const Note = props => {
-  const { _id, category, title, content, date } = props
+  const { _id, category, title, content, date, modifyNote } = props
 
   const { updatingNoteID, deletingNoteID } = useSelector(
     ({ app: { updatingNoteID, deletingNoteID } }) => ({ updatingNoteID, deletingNoteID }),
@@ -23,6 +23,7 @@ const Note = props => {
       toggleEditMode={() => setEditMode(!editMode)}
       closeOptions={() => setShowOptions(showConfirmMessage)}
       updateMode
+      modifyNote={modifyNote}
     />
   ) : (
     <Wrapper

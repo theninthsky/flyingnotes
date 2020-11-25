@@ -1,11 +1,11 @@
 import { atom } from 'recoil'
 
 export const userState = atom({
-  key: 'user',
+  key: 'userState',
   default: { name: localStorage.name },
 })
 
 export const errorMessageState = atom({
-  key: 'errorMessage',
+  key: 'errorMessageState',
   default: null,
 })

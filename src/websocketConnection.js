@@ -1,13 +1,12 @@
 import store from './store'
-import { modifyUser, passwordChanged } from './store/actions/user'
-import { setNotes, addNote, modifyNote, removeNote } from './store/actions/notes'
+// import { modifyUser, passwordChanged } from './store/actions/user'
+import { addNote, modifyNote, removeNote } from './store/actions/notes'
 import { setFiles, addFile, addAttachment, removeFile } from './store/actions/files'
 
 const { REACT_APP_SERVER_URL = 'http://localhost:5000', REACT_APP_WS_SERVER_URL = 'ws://localhost:5000' } = process.env
 const messageTypes = {
-  updateUser: modifyUser,
-  changePassword: passwordChanged,
-  getNotes: setNotes,
+  // updateUser: modifyUser,
+  // changePassword: passwordChanged,
   createNote: addNote,
   updateNote: modifyNote,
   deleteNote: removeNote,
@@ -18,6 +17,7 @@ const messageTypes = {
 }
 
 export let ws
+let resolver
 
 export const createWebSocketConnection = message => {
   if (!localStorage.name) return
@@ -43,13 +43,21 @@ export const createWebSocketConnection = message => {
     ws.onmessage = ({ data }) => {
       const message = JSON.parse(data)
 
-      store.dispatch(messageTypes[message.type](message))
+      resolver(message)
+
+      try {
+        store.dispatch(messageTypes[message.type](message))
+      } catch (err) {}
     }
 
     ws.json = async message => {
       if (ws.readyState !== 1) return createWebSocketConnection(message)
 
-      ws.send(JSON.stringify({ userID, ...message }))
+      return new Promise(resolve => {
+        resolver = resolve
+
+        ws.send(JSON.stringify({ userID, ...message }))
+      })
     }
   })
 }

@@ -1,16 +1,14 @@
 import { useState, useEffect } from 'react'
-import { useDispatch, useSelector, shallowEqual } from 'react-redux'
+import { useSelector, shallowEqual } from 'react-redux'
 import { useRecoilValue } from 'recoil'
 
-import { createNote, updateNote } from '../../../store/actions/index'
-import { themeState } from '../../App/atoms'
-import { userState } from '../../User/atoms'
+import { ws } from '../../../websocketConnection'
+import { themeState, userState } from '../../../atoms'
 import { Wrapper, Category, Title, Content, Save } from './style'
 
 const NewNote = props => {
-  const { updateMode, toggleEditMode, closeOptions } = props
+  const { updateMode, toggleEditMode, closeOptions, addNote, modifyNote } = props
 
-  const dispatch = useDispatch()
   const { addingNote, updatingNote } = useSelector(
     ({ app: { addingNote, updatingNote } }) => ({ addingNote, updatingNote }),
     shallowEqual,
@@ -31,6 +29,42 @@ const NewNote = props => {
     setContent('')
   }, [updateMode, addingNote])
 
+  const createNote = async newNote => {
+    if (user.name) {
+      // dispatch({ type: ADDING_NOTE, status: true })
+
+      const { newNote: note } = await ws.json({ type: 'createNote', newNote })
+
+      return addNote(note)
+    }
+
+    newNote = { ...newNote, _id: Date.now(), date: Date.now() }
+    localStorage.setItem(
+      'notes',
+      JSON.stringify(localStorage.notes ? [...JSON.parse(localStorage.notes), newNote] : [newNote]),
+    )
+
+    addNote(newNote)
+  }
+
+  const updateNote = async updatedNote => {
+    if (user.name) {
+      // dispatch({ type: UPDATING_NOTE, noteID: updatedNote._id })
+
+      const { updatedNote: note } = await ws.json({ type: 'updateNote', updatedNote })
+
+      return modifyNote(note)
+    }
+
+    updatedNote.date = Date.now()
+    localStorage.setItem(
+      'notes',
+      JSON.stringify(JSON.parse(localStorage.notes).map(note => (note._id === updatedNote._id ? updatedNote : note))),
+    )
+
+    modifyNote(updatedNote)
+  }
+
   const saveNoteLocallyHandler = event => {
     event.preventDefault()
 
@@ -41,9 +75,9 @@ const NewNote = props => {
       content,
     }
 
-    if (!updateMode) return dispatch(createNote(note))
+    if (!updateMode) return createNote(note)
 
-    dispatch(updateNote(note))
+    updateNote(note)
     toggleEditMode()
     closeOptions()
   }
@@ -51,9 +85,9 @@ const NewNote = props => {
   const saveNoteOnCloudHandler = event => {
     event.preventDefault()
 
-    if (!updateMode) return dispatch(createNote({ category, title, content }))
+    if (!updateMode) return createNote({ category, title, content })
 
-    dispatch(updateNote({ _id: props._id, category, title, content }))
+    updateNote({ _id: props._id, category, title, content })
     toggleEditMode()
     closeOptions()
   }

@@ -4,8 +4,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 
 import { ws } from '../../websocketConnection'
 import { changePassword } from '../../store/actions'
-import { themeState, authIsOpenState } from '../App/atoms'
-import { userState, errorMessageState } from './atoms'
+import { themeState, authIsOpenState, userState, errorMessageState } from '../../atoms'
 import { Backdrop } from '../UI'
 import { Wrapper, UserLogo, Name, ErrorMessage, Input, Submit, ChangePassword } from './style'
 

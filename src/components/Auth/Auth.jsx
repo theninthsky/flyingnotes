@@ -3,8 +3,7 @@ import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 
 import * as actions from '../../store/actions'
-import { themeState, authIsOpenState } from '../App/atoms'
-import { userState } from '../User/atoms'
+import { themeState, authIsOpenState, userState } from '../../atoms'
 import { Backdrop } from '../UI'
 import { Wrapper, Title, Login, Divider, Register, ErrorMessage, LoginMessage, Input, Submit } from './style'
 
