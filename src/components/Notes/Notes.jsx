@@ -56,7 +56,7 @@ const Notes = () => {
             }
           />
         )),
-    [notes, categoryFilter, searchFilter],
+    [notes, setNotes, categoryFilter, searchFilter],
   )
 
   if (loading) return <Loader />

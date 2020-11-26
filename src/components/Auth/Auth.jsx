@@ -1,22 +1,22 @@
 import { useState, useEffect } from 'react'
-import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 
-import * as actions from 'store/actions'
-import { themeState, authIsOpenState, userState } from 'atoms'
+import { createWebSocketConnection } from 'websocketConnection'
+import { themeState, authIsOpenState, userState, notesState } from 'atoms'
+import { ACTION_REGISTER, ACTION_LOGIN } from './constants'
 import { Backdrop } from 'components/UI'
 import { Wrapper, Title, Login, Divider, Register, ErrorMessage, LoginMessage, Input, Submit } from './style'
 
+const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
+
 const Auth = () => {
-  const dispatch = useDispatch()
-  const errorMessage = useSelector(({ app: { errorMessage } }) => errorMessage, shallowEqual)
-
   const theme = useRecoilValue(themeState)
-  const user = useRecoilValue(userState)
+  const setUser = useSetRecoilState(userState)
   const setAuthIsOpen = useSetRecoilState(authIsOpenState)
+  const setNotes = useSetRecoilState(notesState)
 
-  const [action, setAction] = useState('Login')
-  const [name, setName] = useState(user.name || '')
+  const [action, setAction] = useState(ACTION_LOGIN)
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -26,6 +26,73 @@ const Auth = () => {
     return () => (document.body.style.overflow = 'visible')
   }, [])
 
+  const register = async credentials => {
+    // dispatch({ type: LOADING, loading: true })
+    // dispatch({ type: ERROR, errorMessage: false })
+
+    const body = JSON.stringify({
+      ...credentials,
+      notes: localStorage.notes
+        ? JSON.parse(localStorage.notes).map(note => ({ ...note, _id: null })) // _id is removed to prevent ObjectId errors on server side
+        : [],
+    })
+
+    const res = await fetch(`${REACT_APP_SERVER_URL}/register`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body,
+    })
+
+    const { name, notes, err } = await res.json()
+
+    if (err) {
+      // dispatch({ type: ERROR, errorMessage: err })
+      // dispatch({ type: LOADING, loading: false })
+    }
+
+    localStorage.clear()
+    localStorage.setItem('name', name)
+
+    createWebSocketConnection()
+
+    setUser({ name })
+    setNotes(notes)
+    setAuthIsOpen(false)
+    // dispatch({ type: LOADING, loading: false })
+  }
+
+  const login = async credentials => {
+    // dispatch({ type: LOADING, loading: true })
+    // dispatch({ type: ERROR, errorMessage: false })
+
+    const body = JSON.stringify({ ...credentials })
+
+    const res = await fetch(`${REACT_APP_SERVER_URL}/login`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body,
+    })
+
+    const { name, notes, err } = await res.json()
+
+    if (err) {
+      // dispatch({ type: ERROR, errorMessage: err })
+      // dispatch({ type: LOADING, loading: false })
+    }
+
+    localStorage.setItem('name', name)
+
+    createWebSocketConnection()
+
+    setUser({ name })
+    setNotes(notes)
+    setAuthIsOpen(false)
+
+    // dispatch({ type: LOADING, loading: false })
+  }
+
   const actionChangedHandler = event => {
     setAction(event.target.innerHTML)
     setName('')
@@ -34,7 +101,10 @@ const Auth = () => {
 
   const submitFormHandler = event => {
     event.preventDefault()
-    dispatch(actions[action.toLowerCase()]({ name: name.trim(), email, password }))
+
+    action === ACTION_REGISTER
+      ? register({ name: name.trim(), email, password })
+      : login({ name: name.trim(), email, password })
   }
 
   return (
@@ -53,8 +123,8 @@ const Auth = () => {
         </Title>
 
         <form onSubmit={submitFormHandler}>
-          {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-          {action === 'Register' ? (
+          {/* {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>} */}
+          {action === ACTION_REGISTER ? (
             <Input
               type="text"
               value={name}
