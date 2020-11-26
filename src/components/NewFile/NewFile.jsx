@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import { useRecoilValue } from 'recoil'
 
-import { uploadFile } from '../../../store/actions'
-import { themeState } from '../../App/atoms'
+import { uploadFile } from 'store/actions'
+import { themeState } from 'atoms'
 import { Wrapper, Category, Name, InfoWrap, FileLabel, FileSelect, FileInput, Upload } from './style'
 
-import uploadIcon from '../../../assets/images/upload.svg'
+import uploadIcon from 'assets/images/upload.svg'
 
 const NewFile = props => {
   const dispatch = useDispatch()

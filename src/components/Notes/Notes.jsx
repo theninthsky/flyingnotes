@@ -1,19 +1,19 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
-import { ws } from '../../websocketConnection'
-import { themeState, notesLoadingState } from '../../atoms'
-import { notesSelector } from '../../selectors'
+import { ws } from 'websocketConnection'
+import { themeState, loadingNotesState } from 'atoms'
+import { notesSelector } from 'selectors'
 import { exampleNote } from './constants'
-import NewNote from './NewNote'
-import Note from './Note'
-import { Loader } from '../UI'
+import NewNote from 'components/NewNote'
+import Note from 'components/Note'
+import { Loader } from 'components/UI'
 import { Filters, CategoryFilter, SearchFilter, SearchBox, NotesWrap } from './style'
 
 const Notes = () => {
   const theme = useRecoilValue(themeState)
   const [notes, setNotes] = useRecoilState(notesSelector)
-  const [loading, setLoading] = useRecoilState(notesLoadingState)
+  const [loading, setLoading] = useRecoilState(loadingNotesState)
 
   const [categoryFilter, setCategoryFilter] = useState('')
   const [searchFilter, setSearchFilter] = useState('')

@@ -5,7 +5,7 @@ export const notesState = atom({
   default: [],
 })
 
-export const notesLoadingState = atom({
-  key: 'notesAreLoadingState',
+export const loadingNotesState = atom({
+  key: 'loadingNotesState',
   default: true,
 })

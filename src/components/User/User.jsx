@@ -2,13 +2,13 @@ import { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 
-import { ws } from '../../websocketConnection'
-import { changePassword } from '../../store/actions'
-import { themeState, authIsOpenState, userState, errorMessageState } from '../../atoms'
-import { Backdrop } from '../UI'
+import { ws } from 'websocketConnection'
+import { changePassword } from 'store/actions'
+import { themeState, authIsOpenState, userState, errorMessageState } from 'atoms'
+import { Backdrop } from 'components/UI'
 import { Wrapper, UserLogo, Name, ErrorMessage, Input, Submit, ChangePassword } from './style'
 
-import userLogo from '../../assets/images/user-astronaut.svg'
+import userLogo from 'assets/images/user-astronaut.svg'
 
 const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
 

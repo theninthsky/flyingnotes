@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import { useSelector, shallowEqual } from 'react-redux'
 import { useRecoilValue } from 'recoil'
 
-import { ws } from '../../../websocketConnection'
-import { themeState, userState } from '../../../atoms'
+import { ws } from 'websocketConnection'
+import { themeState, userState } from 'atoms'
 import { Wrapper, Category, Title, Content, Save } from './style'
 
 const NewNote = props => {

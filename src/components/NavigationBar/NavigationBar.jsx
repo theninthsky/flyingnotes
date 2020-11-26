@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
-import CookiesMessage from './CookiesMessage'
-import { themeState, authIsOpenState, userState } from '../../atoms'
+import { themeState, authIsOpenState, userState } from 'atoms'
+import CookiesMessage from 'components/CookiesMessage'
 import { Wrapper, LogoWrap, Logo, StyledNavLink, Util, ThemeImage, UserImage, Auth } from './style'
 
-import logo from '../../assets/images/logo.svg'
-import lightThemeIcon from '../../assets/images/theme-light.svg'
-import darkThemeIcon from '../../assets/images/theme-dark.svg'
-import userIcon from '../../assets/images/user-astronaut.svg'
+import logo from 'assets/images/logo.svg'
+import lightThemeIcon from 'assets/images/theme-light.svg'
+import darkThemeIcon from 'assets/images/theme-dark.svg'
+import userIcon from 'assets/images/user-astronaut.svg'
 
 const NavigationBar = () => {
   const [theme, setTheme] = useRecoilState(themeState)

@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 
-import * as actions from '../../store/actions'
-import { themeState, authIsOpenState, userState } from '../../atoms'
-import { Backdrop } from '../UI'
+import * as actions from 'store/actions'
+import { themeState, authIsOpenState, userState } from 'atoms'
+import { Backdrop } from 'components/UI'
 import { Wrapper, Title, Login, Divider, Register, ErrorMessage, LoginMessage, Input, Submit } from './style'
 
 const Auth = () => {

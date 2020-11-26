@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
-import NewFile from './NewFile'
-import File from './File'
-import { getFiles } from '.././../store/actions'
+import NewFile from 'components/NewFile'
+import File from 'components/File'
+import { getFiles } from 'store/actions'
 import { Wrapper } from './style'
 
 const Files = () => {

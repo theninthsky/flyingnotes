@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 
-import { saveFile } from '../../../util/base64'
-import { downloadFile, deleteFile } from '../../../store/actions'
+import { saveFile } from 'util/base64'
+import { downloadFile, deleteFile } from 'store/actions'
 import { Wrapper, Category, Name, InfoWrap, Extension, Download, Delete } from './style'
 
-import downloadIcon from '../../../assets/images/download.svg'
-import deleteIcon from '../../../assets/images/delete.svg'
+import downloadIcon from 'assets/images/download.svg'
+import deleteIcon from 'assets/images/delete.svg'
 
 const File = ({ file: { _id, category, name, extension, attachment } }) => {
   const dispatch = useDispatch()

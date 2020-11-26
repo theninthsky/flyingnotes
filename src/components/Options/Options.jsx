@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 
-import { deleteNote } from '../../store/actions/index'
+import { deleteNote } from 'store/actions/index'
 import { Wrapper, Confirm, Cancel, Edit, Delete } from './style'
 
-import editSymbol from '../../assets/images/edit.svg'
-import deleteSymbol from '../../assets/images/delete.svg'
-import confirmSymbol from '../../assets/images/confirm.svg'
-import cancelSymbol from '../../assets/images/cancel.svg'
+import editSymbol from 'assets/images/edit.svg'
+import deleteSymbol from 'assets/images/delete.svg'
+import confirmSymbol from 'assets/images/confirm.svg'
+import cancelSymbol from 'assets/images/cancel.svg'
 
 const Options = ({ id, onEdit, toggleConfirmMessage }) => {
   const dispatch = useDispatch()

@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useSelector, shallowEqual } from 'react-redux'
 
-import Options from '../../Options'
-import NewNote from '../NewNote'
+import Options from 'components/Options'
+import NewNote from 'components/NewNote'
 import { Wrapper, Category, Title, Content, ConfirmMessage, StyledDate } from './style'
 
 const Note = props => {
