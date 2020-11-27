@@ -37,13 +37,11 @@ export const UserLogo = styled.img`
   border-radius: 100%;
   filter: ${({ theme }) => (theme === 'dark' ? 'invert(100%)' : 'none')};
 `
-export const Name = styled.h1`
+export const Name = styled.input`
   align-self: center;
-  padding-left: 20px;
+  border: none;
   text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 20px;
-  font-weight: normal;
+  font-size: 20px;
 `
 export const ErrorMessage = styled.p`
   text-align: center;

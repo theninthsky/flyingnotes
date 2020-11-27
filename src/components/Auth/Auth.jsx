@@ -3,7 +3,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil'
 
 import { createWebSocketConnection } from 'websocketConnection'
 import { themeState, authIsOpenState, userState, notesState } from 'atoms'
-import { ACTION_REGISTER, ACTION_LOGIN } from './constants'
+import { REGISTER, LOGIN } from './constants'
 import { Backdrop } from 'components/UI'
 import { Wrapper, Title, Login, Divider, Register, ErrorMessage, LoginMessage, Input, Submit } from './style'
 
@@ -15,7 +15,7 @@ const Auth = () => {
   const setAuthIsOpen = useSetRecoilState(authIsOpenState)
   const setNotes = useSetRecoilState(notesState)
 
-  const [action, setAction] = useState(ACTION_LOGIN)
+  const [action, setAction] = useState(LOGIN)
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -80,6 +80,7 @@ const Auth = () => {
     if (err) {
       // dispatch({ type: ERROR, errorMessage: err })
       // dispatch({ type: LOADING, loading: false })
+      return
     }
 
     localStorage.setItem('name', name)
@@ -102,7 +103,7 @@ const Auth = () => {
   const submitFormHandler = event => {
     event.preventDefault()
 
-    action === ACTION_REGISTER
+    action === REGISTER
       ? register({ name: name.trim(), email, password })
       : login({ name: name.trim(), email, password })
   }
@@ -114,17 +115,17 @@ const Auth = () => {
       <Wrapper theme={theme}>
         <Title>
           <Login action={action} onClick={actionChangedHandler}>
-            Login
+            {LOGIN}
           </Login>
           <Divider />
           <Register action={action} onClick={actionChangedHandler}>
-            Register
+            {REGISTER}
           </Register>
         </Title>
 
         <form onSubmit={submitFormHandler}>
           {/* {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>} */}
-          {action === ACTION_REGISTER ? (
+          {action === REGISTER ? (
             <Input
               type="text"
               value={name}
