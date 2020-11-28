@@ -1,20 +1,4 @@
-import store from './store'
-// import { modifyUser, passwordChanged } from './store/actions/user'
-import { addNote, modifyNote, removeNote } from './store/actions/notes'
-import { setFiles, addFile, addAttachment, removeFile } from './store/actions/files'
-
 const { REACT_APP_SERVER_URL = 'http://localhost:5000', REACT_APP_WS_SERVER_URL = 'ws://localhost:5000' } = process.env
-const messageTypes = {
-  // updateUser: modifyUser,
-  // changePassword: passwordChanged,
-  createNote: addNote,
-  updateNote: modifyNote,
-  deleteNote: removeNote,
-  getFiles: setFiles,
-  uploadFile: addFile,
-  downloadFile: addAttachment,
-  deleteFile: removeFile,
-}
 
 export let ws
 let resolver
@@ -44,10 +28,6 @@ export const createWebSocketConnection = message => {
       const message = JSON.parse(data)
 
       resolver(message)
-
-      try {
-        store.dispatch(messageTypes[message.type](message))
-      } catch (err) {}
     }
 
     ws.json = async message => {

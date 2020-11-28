@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react'
-import { useSelector, shallowEqual } from 'react-redux'
+import { useState } from 'react'
 import { useRecoilValue } from 'recoil'
 
 import { ws } from 'websocketConnection'
@@ -9,11 +8,6 @@ import { Wrapper, Category, Title, Content, Save } from './style'
 const NewNote = props => {
   const { updateMode, toggleEditMode, closeOptions, addNote, modifyNote } = props
 
-  const { addingNote, updatingNote } = useSelector(
-    ({ app: { addingNote, updatingNote } }) => ({ addingNote, updatingNote }),
-    shallowEqual,
-  )
-
   const theme = useRecoilValue(themeState)
   const user = useRecoilValue(userState)
 
@@ -21,13 +15,11 @@ const NewNote = props => {
   const [title, setTitle] = useState(props.title || '')
   const [content, setContent] = useState(props.content || '')
 
-  useEffect(() => {
-    if (updateMode || addingNote) return
-
+  const resetNote = () => {
     setCategory('')
     setTitle('')
     setContent('')
-  }, [updateMode, addingNote])
+  }
 
   const createNote = async newNote => {
     if (user.name) {
@@ -35,7 +27,8 @@ const NewNote = props => {
 
       const { newNote: note } = await ws.json({ type: 'createNote', newNote })
 
-      return addNote(note)
+      addNote(note)
+      return resetNote()
     }
 
     newNote = { ...newNote, _id: Date.now(), date: Date.now() }
@@ -45,6 +38,7 @@ const NewNote = props => {
     )
 
     addNote(newNote)
+    resetNote()
   }
 
   const updateNote = async updatedNote => {
@@ -93,7 +87,7 @@ const NewNote = props => {
   }
 
   return (
-    <Wrapper saving={addingNote || updatingNote}>
+    <Wrapper /*saving={addingNote || updatingNote}*/>
       <form onSubmit={user.name ? saveNoteOnCloudHandler : saveNoteLocallyHandler} autoComplete="off">
         <Category
           type="text"

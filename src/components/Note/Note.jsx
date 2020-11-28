@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useSelector, shallowEqual } from 'react-redux'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { ws } from 'websocketConnection'
@@ -11,11 +10,6 @@ import { Wrapper, Category, Title, Content, ConfirmMessage, StyledDate } from '.
 
 const Note = props => {
   const { _id: noteID, category, title, content, date, modifyNote } = props
-
-  const { updatingNoteID, deletingNoteID } = useSelector(
-    ({ app: { updatingNoteID, deletingNoteID } }) => ({ updatingNoteID, deletingNoteID }),
-    shallowEqual,
-  )
 
   const user = useRecoilValue(userState)
   const [notes, setNotes] = useRecoilState(notesSelector)
@@ -51,7 +45,7 @@ const Note = props => {
     />
   ) : (
     <Wrapper
-      isBeingModified={updatingNoteID === noteID || deletingNoteID === noteID}
+      /*isBeingModified={updatingNoteID === noteID || deletingNoteID === noteID}*/
       onMouseMove={() => setShowOptions(true)}
       onMouseLeave={() => setShowOptions(showConfirmMessage)}
     >
@@ -69,7 +63,7 @@ const Note = props => {
         />
       )}
 
-      {showConfirmMessage && updatingNoteID !== noteID && deletingNoteID !== noteID ? (
+      {showConfirmMessage ? (
         <ConfirmMessage>Delete this note?</ConfirmMessage>
       ) : (
         <StyledDate>{new Date(date).toLocaleString('en-GB').replace(',', '').slice(0, -3)}</StyledDate>
