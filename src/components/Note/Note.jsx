@@ -30,8 +30,7 @@ const Note = props => {
 
       const { status } = await ws.json({ type: 'deleteNote', noteID })
 
-      if (status === 'SUCCESS') setNotes(notes.filter(({ _id }) => _id !== noteID))
-      return
+      if (status === 'SUCCESS') return setNotes(notes.filter(({ _id }) => _id !== noteID))
     }
 
     localStorage.setItem('notes', JSON.stringify(JSON.parse(localStorage.notes).filter(({ _id }) => _id !== noteID)))

@@ -1,17 +1,24 @@
 import { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useRecoilState } from 'recoil'
 
+import { ws } from 'websocketConnection'
+import { filesSelector } from 'selectors'
 import NewFile from 'components/NewFile'
 import File from 'components/File'
-import { getFiles } from 'store/actions'
 import { Wrapper } from './style'
 
 const Files = () => {
-  const files = useSelector(({ files }) => files)
+  const [files, setFiles] = useRecoilState(filesSelector)
 
   useEffect(() => {
-    getFiles()
-  }, [])
+    const getFiles = async () => {
+      const { files } = await ws.json({ type: 'getFiles' })
+
+      setFiles(files)
+    }
+
+    if (!files.length) setTimeout(getFiles, 1000)
+  }, [setFiles, files.length])
 
   return (
     <Wrapper>

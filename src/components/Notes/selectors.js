@@ -1,6 +1,6 @@
 import { selector } from 'recoil'
 
-import { notesState } from '../../atoms'
+import { notesState } from 'atoms'
 
 export const notesSelector = selector({
   key: 'notesSelector',

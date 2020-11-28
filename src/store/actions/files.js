@@ -10,7 +10,7 @@ import {
   DELETING_FILE,
   REMOVE_FILE,
 } from './actionTypes'
-import { toBase64, fromBase64, saveFile } from '../../util/base64'
+import { toBase64, fromBase64 } from '../../util/base64'
 
 export const getFiles = () => ws.json({ type: 'getFiles' })
 
@@ -49,7 +49,7 @@ export const downloadFile = fileID => {
   }
 }
 
-export const addAttachment = ({ fileID, name, extension, base64 }) => {
+export const addAttachment = ({ fileID, name, base64 }) => {
   return async dispatch => {
     const attachment = await fromBase64(name, base64)
 
@@ -57,8 +57,6 @@ export const addAttachment = ({ fileID, name, extension, base64 }) => {
       dispatch({ type: DOWNLOADING_FILE, fileID: null })
       dispatch({ type: ADD_ATTACHMENT, fileID, attachment })
     })
-
-    saveFile(name, extension, attachment)
   }
 }
 
