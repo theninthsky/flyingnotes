@@ -1,7 +1,7 @@
 const { REACT_APP_SERVER_URL = 'http://localhost:5000', REACT_APP_WS_SERVER_URL = 'ws://localhost:5000' } = process.env
 
 export let ws
-let resolver
+const resolvers = {}
 
 export const createWebSocketConnection = message => {
   if (!localStorage.name) return
@@ -25,18 +25,24 @@ export const createWebSocketConnection = message => {
     }
 
     ws.onmessage = ({ data }) => {
-      const message = JSON.parse(data)
+      const { messageID, ...message } = JSON.parse(data)
 
-      resolver(message)
+      resolvers[messageID](message)
+
+      delete resolvers[messageID]
     }
 
-    ws.json = async message => {
+    ws.json = message => {
       if (ws.readyState !== 1) return createWebSocketConnection(message)
 
       return new Promise(resolve => {
-        resolver = resolve
+        const messageID = Math.floor((1 + Math.random()) * 0x100000000)
+          .toString(16)
+          .slice(1)
 
-        ws.send(JSON.stringify({ userID, ...message }))
+        resolvers[messageID] = resolve
+
+        ws.send(JSON.stringify({ messageID, userID, ...message }))
       })
     }
   })
