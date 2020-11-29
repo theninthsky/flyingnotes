@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
-import { ws } from 'websocketConnection'
+import { createWebSocketConnection, ws } from 'websocketConnection'
 import { themeState, userState, loadingNotesState } from 'atoms'
 import { notesSelector, categoriesSelector } from 'selectors'
 import { exampleNote } from './constants'
@@ -23,6 +23,8 @@ const Notes = () => {
   useEffect(() => {
     const getNotes = async () => {
       if (user.name) {
+        if (!ws) await createWebSocketConnection()
+
         const { notes } = await ws.json({ type: 'getNotes' })
 
         setNotes(notes)
@@ -35,7 +37,7 @@ const Notes = () => {
       setLoading(false)
     }
 
-    if (!notes.length) setTimeout(getNotes, 1000)
+    if (!notes.length) getNotes()
   }, [notes.length, setLoading, setNotes, user.name])
 
   const filteredNotes = useMemo(

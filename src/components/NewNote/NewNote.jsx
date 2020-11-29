@@ -36,7 +36,7 @@ const NewNote = props => {
     newNote = { ...newNote, _id: Date.now(), date: Date.now() }
     localStorage.setItem(
       'notes',
-      JSON.stringify(localStorage.notes ? [...JSON.parse(localStorage.notes), newNote] : [newNote]),
+      JSON.stringify(localStorage.notes ? [...JSON.parse(localStorage.notes), newNote] : [newNote])
     )
 
     addNote(newNote)
@@ -56,7 +56,7 @@ const NewNote = props => {
     updatedNote.date = Date.now()
     localStorage.setItem(
       'notes',
-      JSON.stringify(JSON.parse(localStorage.notes).map(note => (note._id === updatedNote._id ? updatedNote : note))),
+      JSON.stringify(JSON.parse(localStorage.notes).map(note => (note._id === updatedNote._id ? updatedNote : note)))
     )
 
     modifyNote(updatedNote)
@@ -69,7 +69,7 @@ const NewNote = props => {
       _id: props._id,
       category: category.trim(),
       title: title.trim(),
-      content,
+      content
     }
 
     if (!updateMode) return createNote(note)

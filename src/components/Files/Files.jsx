@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 
-import { ws } from 'websocketConnection'
+import { createWebSocketConnection, ws } from 'websocketConnection'
 import { filesSelector } from 'selectors'
 import NewFile from 'components/NewFile'
 import File from 'components/File'
@@ -12,12 +12,14 @@ const Files = () => {
 
   useEffect(() => {
     const getFiles = async () => {
+      if (!ws) await createWebSocketConnection()
+
       const { files } = await ws.json({ type: 'getFiles' })
 
       setFiles(files)
     }
 
-    if (!files.length) setTimeout(getFiles, 1000)
+    if (!files.length) getFiles()
   }, [setFiles, files.length])
 
   return (
