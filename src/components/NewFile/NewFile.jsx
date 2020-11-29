@@ -1,34 +1,32 @@
-import { useState, useEffect } from 'react'
-import { useDispatch, useSelector, shallowEqual } from 'react-redux'
-import { useRecoilValue } from 'recoil'
+import { useState } from 'react'
+import { useRecoilState, useRecoilValue } from 'recoil'
 
-import { uploadFile } from '../../../store/actions'
-import { themeState } from '../../App/atoms'
+import { ws } from 'websocketConnection'
+import { toBase64 } from 'util/base64'
+import { themeState, filesState } from 'atoms'
+import If from 'components/If'
 import { Wrapper, Category, Name, InfoWrap, FileLabel, FileSelect, FileInput, Upload } from './style'
 
-import uploadIcon from '../../../assets/images/upload.svg'
+import uploadIcon from 'assets/images/upload.svg'
 
 const NewFile = props => {
-  const dispatch = useDispatch()
-  const uploadingFile = useSelector(({ app: { uploadingFile } }) => uploadingFile, shallowEqual)
-
   const theme = useRecoilValue(themeState)
+  const [files, setFiles] = useRecoilState(filesState)
 
   const [category, setCategory] = useState(props.category || '')
   const [name, setName] = useState(props.name || '')
   const [extension, setExtension] = useState(props.extension || '')
   const [selectedFile, setSelectedFile] = useState()
+  const [uploading, setUploading] = useState(false)
 
-  useEffect(() => {
-    if (!uploadingFile) {
-      setCategory('')
-      setName('')
-      setExtension('')
-      setSelectedFile(null)
-    }
-  }, [uploadingFile])
+  const resetFile = () => {
+    setCategory('')
+    setName('')
+    setExtension('')
+    setSelectedFile(null)
+  }
 
-  const fileHandler = event => {
+  const loadFile = event => {
     const [file] = event.target.files
 
     if (!file) return
@@ -42,24 +40,29 @@ const NewFile = props => {
       setSelectedFile(file)
     } else {
       alert('File size exceeds 10MB')
-      setCategory('')
-      setName('')
-      setExtension('')
-      setSelectedFile(null)
+      resetFile()
       document.querySelector('#file-input').value = ''
     }
   }
 
-  const submitForm = event => {
+  const uploadFile = async event => {
     event.preventDefault()
 
     if (!name) return alert('File name is required')
 
-    dispatch(uploadFile({ category, name, extension, selectedFile }))
+    setUploading(true)
+
+    const base64 = await toBase64(selectedFile)
+    const { file } = await ws.json({ type: 'uploadFile', file: { category, name, extension, base64 } })
+
+    setFiles([...files, file])
+    resetFile()
+
+    setUploading(false)
   }
 
   return (
-    <Wrapper uploadingFile={uploadingFile} onSubmit={submitForm} autoComplete="off">
+    <Wrapper uploading={uploading} onSubmit={uploadFile} autoComplete="off">
       <Category
         type="text"
         value={category}
@@ -67,7 +70,7 @@ const NewFile = props => {
         placeholder="CATEGORY"
         maxLength="24"
         title="Optional"
-        onChange={event => setCategory(event.target.value.toUpperCase().slice(0, 24))} // forces maxLength on mobile devices
+        onChange={event => setCategory(event.target.value.toUpperCase().slice(0, 24))} // forces maxLength on mobile
       />
 
       <Name
@@ -89,9 +92,11 @@ const NewFile = props => {
             title={selectedFile ? selectedFile.name : props.name || 'Upload a File'}
           />
         </FileLabel>
-        <FileInput id="file-input" type="file" onChange={fileHandler} />
+        <FileInput id="file-input" type="file" onChange={loadFile} />
 
-        {selectedFile && <Upload type="submit" value="UPLOAD" />}
+        <If condition={selectedFile}>
+          <Upload type="submit" value="UPLOAD" />
+        </If>
       </InfoWrap>
     </Wrapper>
   )

@@ -1,25 +1,9 @@
-import store from './store'
-import { modifyUser, passwordChanged } from './store/actions/user'
-import { setNotes, addNote, modifyNote, removeNote } from './store/actions/notes'
-import { setFiles, addFile, addAttachment, removeFile } from './store/actions/files'
-
 const { REACT_APP_SERVER_URL = 'http://localhost:5000', REACT_APP_WS_SERVER_URL = 'ws://localhost:5000' } = process.env
-const messageTypes = {
-  updateUser: modifyUser,
-  changePassword: passwordChanged,
-  getNotes: setNotes,
-  createNote: addNote,
-  updateNote: modifyNote,
-  deleteNote: removeNote,
-  getFiles: setFiles,
-  uploadFile: addFile,
-  downloadFile: addAttachment,
-  deleteFile: removeFile,
-}
 
 export let ws
+const resolvers = {}
 
-export const createWebSocketConnection = message => {
+export const createWebSocketConnection = () => {
   if (!localStorage.name) return
 
   return new Promise(async resolve => {
@@ -34,22 +18,28 @@ export const createWebSocketConnection = message => {
 
     ws = new WebSocket(REACT_APP_WS_SERVER_URL, bearerToken)
 
-    ws.onopen = () => {
-      if (message) ws.json(message)
+    ws.onopen = resolve
 
-      resolve()
-    }
+    ws.onclose = () => window.location.reload()
 
     ws.onmessage = ({ data }) => {
-      const message = JSON.parse(data)
+      const { messageID, ...message } = JSON.parse(data)
 
-      store.dispatch(messageTypes[message.type](message))
+      resolvers[messageID](message)
+
+      delete resolvers[messageID]
     }
 
-    ws.json = async message => {
-      if (ws.readyState !== 1) return createWebSocketConnection(message)
+    ws.json = message => {
+      return new Promise(resolve => {
+        const messageID = Math.floor((1 + Math.random()) * 0x100000000)
+          .toString(16)
+          .slice(1)
 
-      ws.send(JSON.stringify({ userID, ...message }))
+        resolvers[messageID] = resolve
+
+        ws.send(JSON.stringify({ messageID, userID, ...message }))
+      })
     }
   })
 }

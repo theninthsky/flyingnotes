@@ -1,34 +1,99 @@
 import { useState, useEffect } from 'react'
-import { useDispatch, useSelector, shallowEqual } from 'react-redux'
-import { useRecoilValue } from 'recoil'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
 
-import * as actions from '../../store/actions'
-import { themeState } from '../App/atoms'
-import { Backdrop } from '../UI'
+import { createWebSocketConnection } from 'websocketConnection'
+import { themeState, authIsVisibleState, userState, notesState } from 'atoms'
+import { REGISTER, LOGIN } from './constants'
+import If from 'components/If'
+import { Backdrop } from 'components/UI'
 import { Wrapper, Title, Login, Divider, Register, ErrorMessage, LoginMessage, Input, Submit } from './style'
 
+const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
+
 const Auth = () => {
-  const dispatch = useDispatch()
-  const { errorMessage, user } = useSelector(
-    ({ app: { errorMessage }, user }) => ({
-      errorMessage,
-      user,
-    }),
-    shallowEqual,
-  )
-
   const theme = useRecoilValue(themeState)
+  const setUser = useSetRecoilState(userState)
+  const setAuthIsVisible = useSetRecoilState(authIsVisibleState)
+  const setNotes = useSetRecoilState(notesState)
 
-  const [action, setAction] = useState('Login')
-  const [name, setName] = useState(user.name || '')
+  const [action, setAction] = useState(LOGIN)
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState()
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
 
     return () => (document.body.style.overflow = 'visible')
   }, [])
+
+  const register = async credentials => {
+    setError()
+    setLoading(true)
+
+    const body = JSON.stringify({
+      ...credentials,
+      notes: localStorage.notes
+        ? JSON.parse(localStorage.notes).map(note => ({ ...note, _id: null })) // _id is removed to prevent ObjectId errors on server side
+        : [],
+    })
+
+    const res = await fetch(`${REACT_APP_SERVER_URL}/register`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body,
+    })
+
+    const { name, notes, err } = await res.json()
+
+    if (err) {
+      setError(err)
+      return setLoading(false)
+    }
+
+    localStorage.clear()
+    localStorage.setItem('name', name)
+
+    createWebSocketConnection()
+
+    setUser({ name })
+    setNotes(notes)
+    setAuthIsVisible(false)
+    setLoading(false)
+  }
+
+  const login = async credentials => {
+    setError()
+    setLoading(true)
+
+    const body = JSON.stringify({ ...credentials })
+
+    const res = await fetch(`${REACT_APP_SERVER_URL}/login`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body,
+    })
+
+    const { name, notes, err } = await res.json()
+
+    if (err) {
+      setError(err)
+      return setLoading(false)
+    }
+
+    localStorage.setItem('name', name)
+
+    createWebSocketConnection()
+
+    setUser({ name })
+    setNotes(notes)
+    setAuthIsVisible(false)
+    setLoading(false)
+  }
 
   const actionChangedHandler = event => {
     setAction(event.target.innerHTML)
@@ -38,27 +103,35 @@ const Auth = () => {
 
   const submitFormHandler = event => {
     event.preventDefault()
-    dispatch(actions[action.toLowerCase()]({ name: name.trim(), email, password }))
+
+    action === REGISTER
+      ? register({ name: name.trim(), email, password })
+      : login({ name: name.trim(), email, password })
   }
 
   return (
     <>
-      <Backdrop onClick={() => dispatch(actions.toggleAuth())} />
+      <Backdrop onClick={() => setAuthIsVisible(false)} />
 
       <Wrapper theme={theme}>
         <Title>
           <Login action={action} onClick={actionChangedHandler}>
-            Login
+            {LOGIN}
           </Login>
+
           <Divider />
+
           <Register action={action} onClick={actionChangedHandler}>
-            Register
+            {REGISTER}
           </Register>
         </Title>
 
         <form onSubmit={submitFormHandler}>
-          {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-          {action === 'Register' ? (
+          <If condition={error}>
+            <ErrorMessage>{error}</ErrorMessage>
+          </If>
+
+          {action === REGISTER ? (
             <Input
               type="text"
               value={name}
@@ -69,6 +142,7 @@ const Auth = () => {
           ) : (
             <LoginMessage>Login to have your notes and files saved on the cloud</LoginMessage>
           )}
+
           <Input
             type="email"
             value={email}
@@ -76,6 +150,7 @@ const Auth = () => {
             required
             onChange={event => setEmail(event.target.value)}
           />
+
           <Input
             type="password"
             value={password}
@@ -84,7 +159,8 @@ const Auth = () => {
             required
             onChange={event => setPassword(event.target.value)}
           />
-          <Submit type="submit" value={action} />
+
+          <Submit type="submit" value={action} disabled={loading} />
         </form>
       </Wrapper>
     </>

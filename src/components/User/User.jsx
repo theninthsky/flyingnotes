@@ -1,27 +1,28 @@
 import { useState, useEffect } from 'react'
-import { useDispatch, useSelector, shallowEqual } from 'react-redux'
-import { useRecoilValue } from 'recoil'
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 
-import { toggleAuth, updateUser, changePassword, logout } from '../../store/actions'
-import { themeState } from '../App/atoms'
-import { Backdrop } from '../UI'
-import { Wrapper, UserLogo, Name, ErrorMessage, Input, Submit, Notes, ChangePassword } from './style'
+import { ws } from 'websocketConnection'
+import { themeState, authIsVisibleState, userState, notesState } from 'atoms'
+import If from 'components/If'
+import { Backdrop } from 'components/UI'
+import { Wrapper, UserLogo, Name, ErrorMessage, Input, Submit, ChangePassword } from './style'
 
-import userLogo from '../../assets/images/user-astronaut.svg'
+import userLogo from 'assets/images/user-astronaut.svg'
+
+const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
 
 const User = () => {
-  const dispatch = useDispatch()
-  const { errorMessage, user, notes } = useSelector(
-    ({ app: { errorMessage }, user, notes }) => ({ errorMessage, user, notes }),
-    shallowEqual,
-  )
-
   const theme = useRecoilValue(themeState)
+  const [user, setUser] = useRecoilState(userState)
+  const setAuthIsVisible = useSetRecoilState(authIsVisibleState)
+  const setNotes = useSetRecoilState(notesState)
 
   const [name, setName] = useState(user.name)
   const [password, setPassword] = useState('')
   const [changePasswordMode, setChangePasswordMode] = useState(false)
   const [newPassword, setNewPassword] = useState()
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState()
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -29,30 +30,61 @@ const User = () => {
     return () => (document.body.style.overflow = 'visible')
   }, [])
 
-  const nameHanlder = event => {
-    setName(event.currentTarget.textContent)
-    updateUser(event.currentTarget.textContent)
+  const changePassword = async event => {
+    event.preventDefault()
+
+    setError()
+    setLoading(true)
+
+    const { status, error } = await ws.json({ type: 'changePassword', password, newPassword })
+
+    if (status === 'SUCCESS') return setAuthIsVisible(false)
+
+    setError(error)
+    setLoading(false)
   }
 
-  const submitFormHandler = event => {
-    event.preventDefault()
-    dispatch(changePassword(password, newPassword))
+  const logout = async () => {
+    setLoading(true)
+
+    try {
+      await fetch(`${REACT_APP_SERVER_URL}/logout`, { method: 'POST' })
+
+      localStorage.removeItem('name')
+
+      setUser({ name: null })
+      setNotes(JSON.parse(localStorage.notes || '[]'))
+      setAuthIsVisible(false)
+
+      ws.close()
+    } catch (err) {
+      setError('Failed to logout')
+      setLoading(false)
+    }
   }
 
   return (
     <>
-      <Backdrop onClick={() => dispatch(toggleAuth())} />
+      <Backdrop onClick={() => setAuthIsVisible(false)} />
 
       <Wrapper theme={theme}>
         <UserLogo theme={theme} src={userLogo} alt="User" />
 
-        <Name contentEditable suppressContentEditableWarning={true} spellCheck="false" onBlur={nameHanlder}>
-          {name}
-        </Name>
+        <Name
+          value={name}
+          onChange={event => setName(event.target.value)}
+          onBlur={async () => {
+            await ws.json({ type: 'updateUser', newName: name })
+            setUser({ name })
+          }}
+        />
 
-        {changePasswordMode || errorMessage ? (
-          <form onSubmit={submitFormHandler}>
-            {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+        <If condition={error}>
+          <ErrorMessage>{error}</ErrorMessage>
+        </If>
+
+        {changePasswordMode ? (
+          <form onSubmit={changePassword}>
             <Input
               type="password"
               value={password}
@@ -70,16 +102,13 @@ const User = () => {
               onChange={event => setNewPassword(event.target.value)}
             />
 
-            <Submit type="submit" />
+            <Submit type="submit" disabled={loading} />
           </form>
         ) : (
           <>
             <ChangePassword onClick={() => setChangePasswordMode(true)}>Change Password</ChangePassword>
-            <div>
-              <Notes>{`Notes: ${notes.length}`}</Notes>
-            </div>
 
-            <Submit type="submit" value="Logout" onClick={() => dispatch(logout())} />
+            <Submit type="submit" value="Logout" disabled={loading} onClick={logout} />
           </>
         )}
       </Wrapper>

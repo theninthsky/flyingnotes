@@ -37,13 +37,11 @@ export const UserLogo = styled.img`
   border-radius: 100%;
   filter: ${({ theme }) => (theme === 'dark' ? 'invert(100%)' : 'none')};
 `
-export const Name = styled.h1`
+export const Name = styled.input`
   align-self: center;
-  padding-left: 20px;
+  border: none;
   text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 20px;
-  font-weight: normal;
+  font-size: 20px;
 `
 export const ErrorMessage = styled.p`
   text-align: center;
@@ -62,6 +60,19 @@ export const Input = styled.input`
     box-shadow: 0 0 0 100px white inset;
   }
 `
+export const ChangePassword = styled.button`
+  display: block;
+  margin: 0 auto;
+  border: none;
+  color: inherit;
+  font-size: 14px;
+  background-color: transparent;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.75;
+  }
+`
 export const Submit = styled(Input)`
   margin-top: 10%;
   padding: 6px;
@@ -72,30 +83,13 @@ export const Submit = styled(Input)`
   color: inherit;
   outline: none;
   cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
 
   &:hover {
     color: white;
     background-color: gray;
   }
-`
-export const Notes = styled.h2`
-  margin: 6px;
-  padding-left: 10%;
-  font-size: 20px;
-  font-weight: normal;
-`
-export const ChangePassword = styled.button`
-  display: block;
-  margin: 0 auto;
-  border: none;
-  color: inherit;
-  font-size: 14px;
-  background-color: transparent;
-  opacity: 0.5;
-  cursor: pointer;
 
-  &:hover {
-    opacity: 1;
+  &:disabled {
+    opacity: 0.5;
   }
 `

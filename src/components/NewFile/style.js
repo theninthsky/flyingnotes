@@ -9,8 +9,8 @@ export const Wrapper = styled.form`
   margin: 20px;
   border-radius: 4px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  opacity: ${({ uploadingFile }) => (uploadingFile ? '0.5' : '1')};
-  pointer-events: ${({ uploadingFile }) => (uploadingFile ? 'none' : 'auto')};
+  opacity: ${({ uploading }) => (uploading ? '0.5' : '1')};
+  pointer-events: ${({ uploading }) => (uploading ? 'none' : 'auto')};
   transition: 0.2s;
   animation: showNewFile 0.5s;
 
@@ -99,7 +99,6 @@ export const Upload = styled.input`
   background-color: inherit;
   font-size: 12px;
   cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
 
   &:hover {
     opacity: 0.5;

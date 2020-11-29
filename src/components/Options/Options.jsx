@@ -1,35 +1,31 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
 
-import { deleteNote } from '../../store/actions/index'
 import { Wrapper, Confirm, Cancel, Edit, Delete } from './style'
 
-import editSymbol from '../../assets/images/edit.svg'
-import deleteSymbol from '../../assets/images/delete.svg'
-import confirmSymbol from '../../assets/images/confirm.svg'
-import cancelSymbol from '../../assets/images/cancel.svg'
+import editIcon from 'assets/images/edit.svg'
+import deleteIcon from 'assets/images/delete.svg'
+import confirmIcon from 'assets/images/confirm.svg'
+import cancelIcon from 'assets/images/cancel.svg'
 
-const Options = ({ id, onEdit, toggleConfirmMessage }) => {
-  const dispatch = useDispatch()
+const Options = ({ onEdit, onDelete, toggleConfirmMessage }) => {
+  const [confirmIconsAreVisible, setConfirmIconsAreVisible] = useState(false)
 
-  const [showConfirmIcons, setShowConfirmIcons] = useState(false)
-
-  const handleDelete = bool => {
+  const confirmDeletion = bool => {
     toggleConfirmMessage(bool)
-    setShowConfirmIcons(bool)
+    setConfirmIconsAreVisible(bool)
   }
 
   return (
     <Wrapper>
-      {showConfirmIcons ? (
+      {confirmIconsAreVisible ? (
         <>
-          <Confirm src={confirmSymbol} alt="Confirm" title="Confirm" onClick={() => dispatch(deleteNote(id))} />
-          <Cancel src={cancelSymbol} alt="Cancel" title="Cancel" onClick={() => handleDelete(false)} />
+          <Confirm src={confirmIcon} alt="Confirm" title="Confirm" onClick={onDelete} />
+          <Cancel src={cancelIcon} alt="Cancel" title="Cancel" onClick={() => confirmDeletion(false)} />
         </>
       ) : (
         <>
-          <Edit src={editSymbol} alt="Edit" title="Edit" onClick={onEdit} />
-          <Delete src={deleteSymbol} alt="Delete" title="Delete" onClick={() => handleDelete(true)} />
+          <Edit src={editIcon} alt="Edit" title="Edit" onClick={onEdit} />
+          <Delete src={deleteIcon} alt="Delete" title="Delete" onClick={() => confirmDeletion(true)} />
         </>
       )}
     </Wrapper>

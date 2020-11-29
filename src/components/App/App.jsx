@@ -1,49 +1,24 @@
 import { useEffect } from 'react'
 import { Switch, Route, useHistory } from 'react-router-dom'
-import { useDispatch, useSelector, shallowEqual } from 'react-redux'
 import { useRecoilValue } from 'recoil'
 import 'normalize.css'
 
-import { createWebSocketConnection } from '../../websocketConnection'
-import { getNotes } from '../../store/actions'
-import { themeState } from './atoms'
-import preloadImages from '../../util/preloadImages'
-import NavigationBar from '../NavigationBar'
-import Auth from '../Auth'
-import User from '../User'
-import Notes from '../Notes'
-import Files from '../Files'
-import { Loader } from '../UI'
+import { themeState, authIsVisibleState, userState } from 'atoms'
+import If from 'components/If'
+import NavigationBar from 'components/NavigationBar'
+import Auth from 'components/Auth'
+import User from 'components/User'
+import Notes from 'components/Notes'
+import Files from 'components/Files'
 import { GlobalStyle } from './style'
+import 'util/preloadImages'
 
 const App = () => {
-  const dispatch = useDispatch()
-  const { loading, showAuth, user } = useSelector(
-    ({ app: { loading, showAuth }, user }) => ({
-      loading,
-      showAuth,
-      user,
-    }),
-    shallowEqual,
-  )
-
   const theme = useRecoilValue(themeState)
+  const user = useRecoilValue(userState)
+  const authIsVisible = useRecoilValue(authIsVisibleState)
 
   const history = useHistory()
-
-  useEffect(() => {
-    const connectToWebSocket = async () => {
-      await createWebSocketConnection()
-
-      dispatch(getNotes())
-    }
-
-    connectToWebSocket()
-  }, [dispatch])
-
-  useEffect(() => {
-    preloadImages()
-  }, [])
 
   useEffect(() => {
     if (!user.name) history.replace('/')
@@ -55,20 +30,16 @@ const App = () => {
 
       <NavigationBar />
 
-      {showAuth && !loading && (!user.name ? <Auth /> : <User />)}
+      <If condition={authIsVisible}>{!user.name ? <Auth /> : <User />}</If>
 
-      {loading ? (
-        <Loader />
-      ) : (
-        <Switch>
-          <Route exact path="/">
-            <Notes />
-          </Route>
-          <Route path="/files">
-            <Files />
-          </Route>
-        </Switch>
-      )}
+      <Switch>
+        <Route exact path="/">
+          <Notes />
+        </Route>
+        <Route path="/files">
+          <Files />
+        </Route>
+      </Switch>
     </>
   )
 }

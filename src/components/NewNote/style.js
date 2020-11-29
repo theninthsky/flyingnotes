@@ -120,7 +120,6 @@ export const Save = styled.input`
   font-size: 14px;
   background-color: green;
   cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
 
   &:hover {
     background-color: rgb(44, 179, 44);

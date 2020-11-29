@@ -1,25 +1,30 @@
 import { useState } from 'react'
-import { useDispatch, useSelector, shallowEqual } from 'react-redux'
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
 
-import CookiesMessage from './CookiesMessage'
-import { toggleAuth } from '../../store/actions'
-import { toggleTheme } from './actions'
-import { themeState } from '../App/atoms'
+import { themeState, authIsVisibleState, userState } from 'atoms'
+import { THEME_LIGHT, THEME_DARK, LOGIN } from './constants'
+import If from 'components/If'
+import CookiesMessage from 'components/CookiesMessage'
 import { Wrapper, LogoWrap, Logo, StyledNavLink, Util, ThemeImage, UserImage, Auth } from './style'
 
-import logo from '../../assets/images/logo.svg'
-import lightThemeIcon from '../../assets/images/theme-light.svg'
-import darkThemeIcon from '../../assets/images/theme-dark.svg'
-import userIcon from '../../assets/images/user-astronaut.svg'
+import logo from 'assets/images/logo.svg'
+import lightThemeIcon from 'assets/images/theme-light.svg'
+import darkThemeIcon from 'assets/images/theme-dark.svg'
+import userIcon from 'assets/images/user-astronaut.svg'
 
 const NavigationBar = () => {
-  const dispatch = useDispatch()
-  const user = useSelector(({ user }) => user, shallowEqual)
-
   const [theme, setTheme] = useRecoilState(themeState)
+  const user = useRecoilValue(userState)
+  const [authIsVisible, setAuthIsVisible] = useRecoilState(authIsVisibleState)
 
-  const [showCookiesMessage, setShowCookiesMessage] = useState(true)
+  const [cookiesMessageIsVisible, setCookiesMessageIsVisible] = useState(true)
+
+  const toggleTheme = () => {
+    const newTheme = theme === THEME_DARK ? THEME_LIGHT : THEME_DARK
+
+    setTheme(newTheme)
+    localStorage.setItem('theme', newTheme)
+  }
 
   return (
     <>
@@ -42,33 +47,33 @@ const NavigationBar = () => {
 
         <Util>
           <ThemeImage
-            src={theme === 'light' ? lightThemeIcon : darkThemeIcon}
+            src={theme === THEME_LIGHT ? lightThemeIcon : darkThemeIcon}
             alt="Theme"
             title="Change Theme"
-            onClick={() => toggleTheme(theme, setTheme)}
+            onClick={toggleTheme}
           />
 
           {user.name ? (
-            <Auth title={`Logged in as ${user.name}`} onClick={() => dispatch(toggleAuth())}>
+            <Auth title={`Logged in as ${user.name}`} onClick={() => setAuthIsVisible(!authIsVisible)}>
               <UserImage src={userIcon} alt={user.name} />
             </Auth>
           ) : (
             <Auth
-              title={'Login'}
+              title={LOGIN}
               onClick={() => {
-                dispatch(toggleAuth())
-                setShowCookiesMessage(false)
+                setAuthIsVisible(!authIsVisible)
+                setCookiesMessageIsVisible(false)
               }}
             >
-              {'Login'}
+              {LOGIN}
             </Auth>
           )}
         </Util>
       </Wrapper>
 
-      {showCookiesMessage && !user.name && (
-        <CookiesMessage theme={theme} toggle={mode => setShowCookiesMessage(mode)} />
-      )}
+      <If condition={cookiesMessageIsVisible && !user.name}>
+        <CookiesMessage theme={theme} toggle={mode => setCookiesMessageIsVisible(mode)} />
+      </If>
     </>
   )
 }

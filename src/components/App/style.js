@@ -1,6 +1,10 @@
 import { createGlobalStyle } from 'styled-components'
 
 export const GlobalStyle = createGlobalStyle`
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }  
+
   html {
     height: 100vh; // fixes gradient on mobile
   }
@@ -12,7 +16,6 @@ export const GlobalStyle = createGlobalStyle`
 
   img {
     user-select: none;
-    -webkit-tap-highlight-color: transparent;
   }
 
   a {
