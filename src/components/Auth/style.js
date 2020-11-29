@@ -92,10 +92,13 @@ export const Submit = styled(Input)`
   color: inherit;
   outline: none;
   cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
 
   &:hover {
     color: white;
     background-color: gray;
+  }
+
+  &:disabled {
+    opacity: 0.5;
   }
 `

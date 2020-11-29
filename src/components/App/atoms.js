@@ -5,7 +5,7 @@ export const themeState = atom({
   default: localStorage.theme || 'light',
 })
 
-export const authIsOpenState = atom({
-  key: 'authIsOpenState',
+export const authIsVisibleState = atom({
+  key: 'authIsVisibleState',
   default: false,
 })

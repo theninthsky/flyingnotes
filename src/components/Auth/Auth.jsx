@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 
 import { createWebSocketConnection } from 'websocketConnection'
-import { themeState, authIsOpenState, userState, notesState } from 'atoms'
+import { themeState, authIsVisibleState, userState, notesState } from 'atoms'
 import { REGISTER, LOGIN } from './constants'
+import If from 'components/If'
 import { Backdrop } from 'components/UI'
 import { Wrapper, Title, Login, Divider, Register, ErrorMessage, LoginMessage, Input, Submit } from './style'
 
@@ -12,13 +13,15 @@ const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
 const Auth = () => {
   const theme = useRecoilValue(themeState)
   const setUser = useSetRecoilState(userState)
-  const setAuthIsOpen = useSetRecoilState(authIsOpenState)
+  const setAuthIsVisible = useSetRecoilState(authIsVisibleState)
   const setNotes = useSetRecoilState(notesState)
 
   const [action, setAction] = useState(LOGIN)
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState()
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -27,8 +30,8 @@ const Auth = () => {
   }, [])
 
   const register = async credentials => {
-    // dispatch({ type: LOADING, loading: true })
-    // dispatch({ type: ERROR, errorMessage: false })
+    setError()
+    setLoading(true)
 
     const body = JSON.stringify({
       ...credentials,
@@ -47,8 +50,8 @@ const Auth = () => {
     const { name, notes, err } = await res.json()
 
     if (err) {
-      // dispatch({ type: ERROR, errorMessage: err })
-      // dispatch({ type: LOADING, loading: false })
+      setError(err)
+      return setLoading(false)
     }
 
     localStorage.clear()
@@ -58,13 +61,13 @@ const Auth = () => {
 
     setUser({ name })
     setNotes(notes)
-    setAuthIsOpen(false)
-    // dispatch({ type: LOADING, loading: false })
+    setAuthIsVisible(false)
+    setLoading(false)
   }
 
   const login = async credentials => {
-    // dispatch({ type: LOADING, loading: true })
-    // dispatch({ type: ERROR, errorMessage: false })
+    setError()
+    setLoading(true)
 
     const body = JSON.stringify({ ...credentials })
 
@@ -78,9 +81,8 @@ const Auth = () => {
     const { name, notes, err } = await res.json()
 
     if (err) {
-      // dispatch({ type: ERROR, errorMessage: err })
-      // dispatch({ type: LOADING, loading: false })
-      return
+      setError(err)
+      return setLoading(false)
     }
 
     localStorage.setItem('name', name)
@@ -89,9 +91,8 @@ const Auth = () => {
 
     setUser({ name })
     setNotes(notes)
-    setAuthIsOpen(false)
-
-    // dispatch({ type: LOADING, loading: false })
+    setAuthIsVisible(false)
+    setLoading(false)
   }
 
   const actionChangedHandler = event => {
@@ -110,21 +111,26 @@ const Auth = () => {
 
   return (
     <>
-      <Backdrop onClick={() => setAuthIsOpen(false)} />
+      <Backdrop onClick={() => setAuthIsVisible(false)} />
 
       <Wrapper theme={theme}>
         <Title>
           <Login action={action} onClick={actionChangedHandler}>
             {LOGIN}
           </Login>
+
           <Divider />
+
           <Register action={action} onClick={actionChangedHandler}>
             {REGISTER}
           </Register>
         </Title>
 
         <form onSubmit={submitFormHandler}>
-          {/* {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>} */}
+          <If condition={error}>
+            <ErrorMessage>{error}</ErrorMessage>
+          </If>
+
           {action === REGISTER ? (
             <Input
               type="text"
@@ -136,6 +142,7 @@ const Auth = () => {
           ) : (
             <LoginMessage>Login to have your notes and files saved on the cloud</LoginMessage>
           )}
+
           <Input
             type="email"
             value={email}
@@ -143,6 +150,7 @@ const Auth = () => {
             required
             onChange={event => setEmail(event.target.value)}
           />
+
           <Input
             type="password"
             value={password}
@@ -151,7 +159,8 @@ const Auth = () => {
             required
             onChange={event => setPassword(event.target.value)}
           />
-          <Submit type="submit" value={action} />
+
+          <Submit type="submit" value={action} disabled={loading} />
         </form>
       </Wrapper>
     </>

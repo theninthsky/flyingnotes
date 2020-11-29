@@ -3,7 +3,7 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { ws } from 'websocketConnection'
 import { themeState, userState, loadingNotesState } from 'atoms'
-import { notesSelector } from 'selectors'
+import { notesSelector, categoriesSelector } from 'selectors'
 import { exampleNote } from './constants'
 import NewNote from 'components/NewNote'
 import Note from 'components/Note'
@@ -14,6 +14,7 @@ const Notes = () => {
   const theme = useRecoilValue(themeState)
   const user = useRecoilValue(userState)
   const [notes, setNotes] = useRecoilState(notesSelector)
+  const categories = useRecoilValue(categoriesSelector)
   const [loading, setLoading] = useRecoilState(loadingNotesState)
 
   const [categoryFilter, setCategoryFilter] = useState('')
@@ -55,7 +56,7 @@ const Notes = () => {
             }
           />
         )),
-    [notes, setNotes, categoryFilter, searchFilter],
+    [notes, setNotes, categoryFilter, searchFilter]
   )
 
   if (loading) return <Loader />
@@ -67,12 +68,9 @@ const Notes = () => {
           <option defaultValue value="">
             ALL
           </option>
-          {[...notes]
-            .sort((a, b) => a.category.localeCompare(b.category))
-            .filter(({ category }, ind, notes) => category && category !== (notes[ind + 1] && notes[ind + 1].category))
-            .map(({ category, _id }) => (
-              <option key={_id}>{category}</option>
-            ))}
+          {categories.map(category => (
+            <option key={category}>{category}</option>
+          ))}
         </CategoryFilter>
 
         <SearchFilter>

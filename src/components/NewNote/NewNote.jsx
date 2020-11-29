@@ -14,6 +14,7 @@ const NewNote = props => {
   const [category, setCategory] = useState(props.category || '')
   const [title, setTitle] = useState(props.title || '')
   const [content, setContent] = useState(props.content || '')
+  const [adding, setAdding] = useState(false)
 
   const resetNote = () => {
     setCategory('')
@@ -23,10 +24,11 @@ const NewNote = props => {
 
   const createNote = async newNote => {
     if (user.name) {
-      // dispatch({ type: ADDING_NOTE, status: true })
+      setAdding(true)
 
       const { newNote: note } = await ws.json({ type: 'createNote', newNote })
 
+      setAdding(false)
       addNote(note)
       return resetNote()
     }
@@ -43,10 +45,11 @@ const NewNote = props => {
 
   const updateNote = async updatedNote => {
     if (user.name) {
-      // dispatch({ type: UPDATING_NOTE, noteID: updatedNote._id })
+      setAdding(true)
 
       const { updatedNote: note } = await ws.json({ type: 'updateNote', updatedNote })
 
+      setAdding(false)
       return modifyNote(note)
     }
 
@@ -87,7 +90,7 @@ const NewNote = props => {
   }
 
   return (
-    <Wrapper /*saving={addingNote || updatingNote}*/>
+    <Wrapper saving={adding}>
       <form onSubmit={user.name ? saveNoteOnCloudHandler : saveNoteLocallyHandler} autoComplete="off">
         <Category
           type="text"

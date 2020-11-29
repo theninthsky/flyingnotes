@@ -27,7 +27,6 @@ export const StyledNavLink = styled(NavLink)`
   color: inherit;
   cursor: pointer;
   user-select: none;
-  -webkit-tap-highlight-color: transparent;
   text-decoration: none;
   font-size: 24px;
   opacity: 0.5;
@@ -52,7 +51,6 @@ export const ThemeImage = styled.img`
   filter: invert(100%);
   cursor: pointer;
   user-select: none;
-  -webkit-tap-highlight-color: transparent;
 
   &:hover {
     opacity: 0.5;
@@ -83,7 +81,6 @@ export const Auth = styled.button`
   outline: none;
   cursor: pointer;
   user-select: none;
-  -webkit-tap-highlight-color: transparent;
 
   &:hover {
     opacity: 0.5;

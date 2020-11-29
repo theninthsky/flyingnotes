@@ -13,41 +13,43 @@ const File = ({ file: { _id: fileID, category, name, extension } }) => {
   const [files, setFiles] = useRecoilState(filesSelector)
 
   const [attachment, setAttachment] = useState()
-  const [showDelete, setShowDelete] = useState(false)
+  const [deleteIsVisible, setDeleteIsVisible] = useState(false)
+  const [downloading, setDownloading] = useState(false)
+  const [deleting, setDeleting] = useState(false)
 
   const downloadFile = async () => {
     if (attachment) return saveFile(name, extension, attachment)
 
-    // dispatch({ type: DOWNLOADING_FILE, fileID })
+    setDownloading(true)
 
     const { base64 } = await ws.json({ type: 'downloadFile', fileID })
-    const newAttachment = await fromBase64(name, base64)
+    const fileAttachment = await fromBase64(name, base64)
 
-    // dispatch({ type: DOWNLOADING_FILE, fileID: null })
-    setAttachment(newAttachment)
-    saveFile(name, extension, newAttachment)
+    setDownloading(false)
+    setAttachment(fileAttachment)
+    saveFile(name, extension, fileAttachment)
   }
 
   const deleteFile = async () => {
-    // dispatch({ type: DELETING_FILE, fileID })
+    setDeleting(true)
+
     const { status } = await ws.json({ type: 'deleteFile', fileID })
 
     if (status === 'SUCCESS') setFiles(files.filter(({ _id }) => _id !== fileID))
-    // dispatch({ type: DELETING_FILE, fileID: null })
   }
 
   return (
     <Wrapper
-      /*deleting={deletingFileID === fileID}*/
-      onMouseMove={() => setShowDelete(true)}
-      onMouseLeave={() => setShowDelete(false)}
+      deleting={deleting}
+      onMouseMove={() => setDeleteIsVisible(true)}
+      onMouseLeave={() => setDeleteIsVisible(false)}
     >
       {category && <Category>{category.toUpperCase()}</Category>}
 
       <Name title={name}>{name}</Name>
 
       <InfoWrap>
-        {showDelete ? (
+        {deleteIsVisible ? (
           <Delete
             src={deleteIcon}
             alt="Delete"
@@ -60,13 +62,7 @@ const File = ({ file: { _id: fileID, category, name, extension } }) => {
           <Extension title={extension}>{extension}</Extension>
         )}
 
-        <Download
-          /*downloading={downloadingFileID === fileID}*/
-          alt="Download"
-          title="Download"
-          src={downloadIcon}
-          onClick={downloadFile}
-        />
+        <Download downloading={downloading} alt="Download" title="Download" src={downloadIcon} onClick={downloadFile} />
       </InfoWrap>
     </Wrapper>
   )

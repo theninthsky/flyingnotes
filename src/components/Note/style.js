@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
   flex-direction: column;
   border-radius: 4px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  opacity: ${({ isBeingModified }) => (isBeingModified ? '0.5' : '1')};
+  opacity: ${({ deleting }) => (deleting ? '0.5' : '1')};
   transition: 0.2s;
   animation: showNote 0.5s;
 

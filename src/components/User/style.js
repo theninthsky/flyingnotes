@@ -60,23 +60,6 @@ export const Input = styled.input`
     box-shadow: 0 0 0 100px white inset;
   }
 `
-export const Submit = styled(Input)`
-  margin-top: 10%;
-  padding: 6px;
-  border: 1px solid gray;
-  border-width: 1px;
-  border-radius: 4px;
-  background-color: transparent;
-  color: inherit;
-  outline: none;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-
-  &:hover {
-    color: white;
-    background-color: gray;
-  }
-`
 export const ChangePassword = styled.button`
   display: block;
   margin: 0 auto;
@@ -88,5 +71,25 @@ export const ChangePassword = styled.button`
 
   &:hover {
     opacity: 0.75;
+  }
+`
+export const Submit = styled(Input)`
+  margin-top: 10%;
+  padding: 6px;
+  border: 1px solid gray;
+  border-width: 1px;
+  border-radius: 4px;
+  background-color: transparent;
+  color: inherit;
+  outline: none;
+  cursor: pointer;
+
+  &:hover {
+    color: white;
+    background-color: gray;
+  }
+
+  &:disabled {
+    opacity: 0.5;
   }
 `

@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
-import { themeState, authIsOpenState, userState } from 'atoms'
+import { themeState, authIsVisibleState, userState } from 'atoms'
+import { THEME_LIGHT, THEME_DARK, LOGIN } from './constants'
+import If from 'components/If'
 import CookiesMessage from 'components/CookiesMessage'
 import { Wrapper, LogoWrap, Logo, StyledNavLink, Util, ThemeImage, UserImage, Auth } from './style'
 
@@ -13,12 +15,12 @@ import userIcon from 'assets/images/user-astronaut.svg'
 const NavigationBar = () => {
   const [theme, setTheme] = useRecoilState(themeState)
   const user = useRecoilValue(userState)
-  const [authIsOpen, setAuthIsOpen] = useRecoilState(authIsOpenState)
+  const [authIsVisible, setAuthIsVisible] = useRecoilState(authIsVisibleState)
 
-  const [showCookiesMessage, setShowCookiesMessage] = useState(true)
+  const [cookiesMessageIsVisible, setCookiesMessageIsVisible] = useState(true)
 
   const toggleTheme = () => {
-    const newTheme = theme === 'dark' ? 'light' : 'dark'
+    const newTheme = theme === THEME_DARK ? THEME_LIGHT : THEME_DARK
 
     setTheme(newTheme)
     localStorage.setItem('theme', newTheme)
@@ -45,33 +47,33 @@ const NavigationBar = () => {
 
         <Util>
           <ThemeImage
-            src={theme === 'light' ? lightThemeIcon : darkThemeIcon}
+            src={theme === THEME_LIGHT ? lightThemeIcon : darkThemeIcon}
             alt="Theme"
             title="Change Theme"
             onClick={toggleTheme}
           />
 
           {user.name ? (
-            <Auth title={`Logged in as ${user.name}`} onClick={() => setAuthIsOpen(!authIsOpen)}>
+            <Auth title={`Logged in as ${user.name}`} onClick={() => setAuthIsVisible(!authIsVisible)}>
               <UserImage src={userIcon} alt={user.name} />
             </Auth>
           ) : (
             <Auth
-              title={'Login'}
+              title={LOGIN}
               onClick={() => {
-                setAuthIsOpen(!authIsOpen)
-                setShowCookiesMessage(false)
+                setAuthIsVisible(!authIsVisible)
+                setCookiesMessageIsVisible(false)
               }}
             >
-              {'Login'}
+              {LOGIN}
             </Auth>
           )}
         </Util>
       </Wrapper>
 
-      {showCookiesMessage && !user.name && (
-        <CookiesMessage theme={theme} toggle={mode => setShowCookiesMessage(mode)} />
-      )}
+      <If condition={cookiesMessageIsVisible && !user.name}>
+        <CookiesMessage theme={theme} toggle={mode => setCookiesMessageIsVisible(mode)} />
+      </If>
     </>
   )
 }

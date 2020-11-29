@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 
 import { ws } from 'websocketConnection'
-import { themeState, authIsOpenState, userState, errorMessageState, notesState } from 'atoms'
+import { themeState, authIsVisibleState, userState, notesState } from 'atoms'
+import If from 'components/If'
 import { Backdrop } from 'components/UI'
 import { Wrapper, UserLogo, Name, ErrorMessage, Input, Submit, ChangePassword } from './style'
 
@@ -13,14 +14,15 @@ const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
 const User = () => {
   const theme = useRecoilValue(themeState)
   const [user, setUser] = useRecoilState(userState)
-  const setAuthIsOpen = useSetRecoilState(authIsOpenState)
-  const [errorMessage, setErrorMessage] = useRecoilState(errorMessageState)
+  const setAuthIsVisible = useSetRecoilState(authIsVisibleState)
   const setNotes = useSetRecoilState(notesState)
 
   const [name, setName] = useState(user.name)
   const [password, setPassword] = useState('')
   const [changePasswordMode, setChangePasswordMode] = useState(false)
   const [newPassword, setNewPassword] = useState()
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState()
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -31,18 +33,20 @@ const User = () => {
   const changePassword = async event => {
     event.preventDefault()
 
-    // dispatch({ type: LOADING, loading: true })
-    // dispatch({ type: ERROR, errorMessage: false })
+    setError()
+    setLoading(true)
 
-    const { status } = await ws.json({ type: 'changePassword', password, newPassword })
+    const { status, error } = await ws.json({ type: 'changePassword', password, newPassword })
 
-    if (status === 'SUCCESS') {
-      /*dispatch({ type: LOADING, loading: false })*/
-      setAuthIsOpen(false)
-    }
+    if (status === 'SUCCESS') return setAuthIsVisible(false)
+
+    setError(error)
+    setLoading(false)
   }
 
   const logout = async () => {
+    setLoading(true)
+
     try {
       await fetch(`${REACT_APP_SERVER_URL}/logout`, { method: 'POST' })
 
@@ -50,18 +54,18 @@ const User = () => {
 
       setUser({ name: null })
       setNotes(JSON.parse(localStorage.notes || '[]'))
+      setAuthIsVisible(false)
 
       ws.close()
     } catch (err) {
-      return setErrorMessage('Failed to logout')
+      setError('Failed to logout')
+      setLoading(false)
     }
-
-    setAuthIsOpen(false)
   }
 
   return (
     <>
-      <Backdrop onClick={() => setAuthIsOpen(false)} />
+      <Backdrop onClick={() => setAuthIsVisible(false)} />
 
       <Wrapper theme={theme}>
         <UserLogo theme={theme} src={userLogo} alt="User" />
@@ -75,9 +79,12 @@ const User = () => {
           }}
         />
 
-        {changePasswordMode || errorMessage ? (
+        <If condition={error}>
+          <ErrorMessage>{error}</ErrorMessage>
+        </If>
+
+        {changePasswordMode ? (
           <form onSubmit={changePassword}>
-            {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
             <Input
               type="password"
               value={password}
@@ -95,13 +102,13 @@ const User = () => {
               onChange={event => setNewPassword(event.target.value)}
             />
 
-            <Submit type="submit" />
+            <Submit type="submit" disabled={loading} />
           </form>
         ) : (
           <>
             <ChangePassword onClick={() => setChangePasswordMode(true)}>Change Password</ChangePassword>
 
-            <Submit type="submit" value="Logout" onClick={logout} />
+            <Submit type="submit" value="Logout" disabled={loading} onClick={logout} />
           </>
         )}
       </Wrapper>
