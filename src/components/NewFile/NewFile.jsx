@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
-import { ws } from 'websocketConnection'
+import { ws } from 'websocket-connection'
 import { toBase64 } from 'util/base64'
 import { themeState, filesState } from 'atoms'
 import If from 'components/If'

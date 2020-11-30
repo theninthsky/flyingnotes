@@ -11,7 +11,7 @@ import User from 'components/User'
 import Notes from 'components/Notes'
 import Files from 'components/Files'
 import { GlobalStyle } from './style'
-import 'util/preloadImages'
+import 'util/preload-images'
 
 const App = () => {
   const theme = useRecoilValue(themeState)

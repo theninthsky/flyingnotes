@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
-import { createWebSocketConnection, ws } from 'websocketConnection'
+import { createWebSocketConnection, ws } from 'websocket-connection'
 import { themeState, userState, loadingNotesState } from 'atoms'
 import { notesSelector, categoriesSelector } from 'selectors'
 import { exampleNote } from './constants'

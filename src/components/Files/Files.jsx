@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 
-import { createWebSocketConnection, ws } from 'websocketConnection'
+import { createWebSocketConnection, ws } from 'websocket-connection'
 import { filesSelector } from 'selectors'
 import NewFile from 'components/NewFile'
 import File from 'components/File'

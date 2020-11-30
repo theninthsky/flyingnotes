@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
-import { ws } from 'websocketConnection'
+import { ws } from 'websocket-connection'
 import { userState } from 'atoms'
 import { notesSelector } from 'selectors'
 import If from 'components/If'

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 
-import { ws } from 'websocketConnection'
+import { ws } from 'websocket-connection'
 import { themeState, authIsVisibleState, userState, notesState } from 'atoms'
 import If from 'components/If'
 import { Backdrop } from 'components/UI'

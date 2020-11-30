@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useRecoilValue } from 'recoil'
 
-import { ws } from 'websocketConnection'
+import { ws } from 'websocket-connection'
 import { themeState, userState } from 'atoms'
 import { Wrapper, Category, Title, Content, Save } from './style'
 

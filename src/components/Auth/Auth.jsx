@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 
-import { createWebSocketConnection } from 'websocketConnection'
+import { createWebSocketConnection } from 'websocket-connection'
 import { themeState, authIsVisibleState, userState, notesState } from 'atoms'
 import { REGISTER, LOGIN } from './constants'
 import If from 'components/If'
@@ -37,14 +37,14 @@ const Auth = () => {
       ...credentials,
       notes: localStorage.notes
         ? JSON.parse(localStorage.notes).map(note => ({ ...note, _id: null })) // _id is removed to prevent ObjectId errors on server side
-        : [],
+        : []
     })
 
     const res = await fetch(`${REACT_APP_SERVER_URL}/register`, {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
-      body,
+      body
     })
 
     const { name, notes, err } = await res.json()
@@ -75,7 +75,7 @@ const Auth = () => {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
-      body,
+      body
     })
 
     const { name, notes, err } = await res.json()

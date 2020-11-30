@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useRecoilState } from 'recoil'
 
-import { ws } from 'websocketConnection'
+import { ws } from 'websocket-connection'
 import { fromBase64, saveFile } from 'util/base64'
 
 import { Wrapper, Category, Name, InfoWrap, Extension, Download, Delete } from './style'
