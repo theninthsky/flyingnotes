@@ -3,9 +3,10 @@ import { useRecoilState } from 'recoil'
 
 import { ws } from 'websocket-connection'
 import { fromBase64, saveFile } from 'util/base64'
-
-import { Wrapper, Category, Name, InfoWrap, Extension, Download, Delete } from './style'
 import { filesSelector } from 'selectors'
+import If from 'components/If'
+import { Wrapper, Category, Name, InfoWrap, Extension, Download, Delete } from './style'
+
 import downloadIcon from 'assets/images/download.svg'
 import deleteIcon from 'assets/images/delete.svg'
 
@@ -44,7 +45,9 @@ const File = ({ file: { _id: fileID, category, name, extension } }) => {
       onMouseMove={() => setDeleteIsVisible(true)}
       onMouseLeave={() => setDeleteIsVisible(false)}
     >
-      {category && <Category>{category.toUpperCase()}</Category>}
+      <If condition={category}>
+        <Category>{category.toUpperCase()}</Category>
+      </If>
 
       <Name title={name}>{name}</Name>
 
