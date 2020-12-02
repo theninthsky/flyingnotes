@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 
+import { Category as NewNoteCategory, Title as NewNoteTitle } from 'components/NewNote/style'
+
 export const Wrapper = styled.div`
   position: relative;
   margin: 15px;
@@ -36,34 +38,19 @@ export const Wrapper = styled.div`
     margin: 10px 0;
   }
 `
-export const Category = styled.div`
-  padding: 2px 0;
-  border-radius: 4px 4px 0 0;
-  width: 100%;
-  text-align: center;
-  letter-spacing: 3px;
-  font-size: 12px;
-  color: rgb(150, 150, 150);
-  background-color: #ffffde;
+export const Category = styled(NewNoteCategory)`
+  width: auto;
 `
-export const Title = styled.h1`
-  margin: 10px auto;
-  margin-bottom: 0;
-  width: 94%;
-  text-align: center;
-  line-height: 0.95;
-  font-size: 24px;
-  font-weight: normal;
-  word-break: break-word;
-
-  @media (max-width: 480px) {
-    font-size: 22px;
-  }
+export const Title = styled(NewNoteTitle)`
+  width: auto;
 `
-export const Content = styled.div`
+export const Content = styled.textarea`
   position: relative;
   flex-grow: 1;
   margin: 10px 12px 2.5px 12px;
+  border: none;
+  outline: none;
+  resize: none;
   white-space: pre;
   overflow: auto;
   font-size: 16px;

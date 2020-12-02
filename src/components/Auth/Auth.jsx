@@ -62,7 +62,6 @@ const Auth = () => {
     setUser({ name })
     setNotes(notes)
     setAuthIsVisible(false)
-    setLoading(false)
   }
 
   const login = async credentials => {
@@ -85,14 +84,13 @@ const Auth = () => {
       return setLoading(false)
     }
 
-    localStorage.setItem('name', name)
+    localStorage.setItem('user', name)
 
     createWebSocketConnection()
 
     setUser({ name })
     setNotes(notes)
     setAuthIsVisible(false)
-    setLoading(false)
   }
 
   const actionChangedHandler = event => {

@@ -22,16 +22,16 @@ const Notes = () => {
 
   useEffect(() => {
     const getNotes = async () => {
+      let notes
+
       if (user.name) {
         if (!ws) await createWebSocketConnection()
 
-        const { notes } = await ws.json({ type: 'getNotes' })
-
+        notes = (await ws.json({ type: 'getNotes' })).notes
         setNotes(notes)
-        return setLoading(false)
+      } else {
+        notes = JSON.parse(localStorage.notes || `[${JSON.stringify(exampleNote)}]`)
       }
-
-      const notes = JSON.parse(localStorage.notes || `[${JSON.stringify(exampleNote)}]`)
 
       setNotes(notes)
       setLoading(false)
@@ -46,19 +46,9 @@ const Notes = () => {
         .filter(({ category }) => (!categoryFilter ? true : category === categoryFilter))
         .filter(({ title, content }) => `${title} ${content}`.toLowerCase().includes(searchFilter))
         .map(({ _id, category, title, content, date }) => (
-          <Note
-            key={_id}
-            _id={_id}
-            category={category}
-            title={title}
-            content={content}
-            date={date}
-            modifyNote={modifiedNote =>
-              setNotes(notes.map(note => (note._id === modifiedNote._id ? modifiedNote : note)))
-            }
-          />
+          <Note key={_id} _id={_id} category={category} title={title} content={content} date={date} />
         )),
-    [notes, setNotes, categoryFilter, searchFilter]
+    [notes, categoryFilter, searchFilter]
   )
 
   if (loading) return <Loader />
@@ -87,7 +77,7 @@ const Notes = () => {
       </Filters>
 
       <NotesWrap>
-        <NewNote addNote={newNote => setNotes([...notes, newNote])} />
+        <NewNote />
         {filteredNotes}
       </NotesWrap>
     </>

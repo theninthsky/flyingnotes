@@ -1,0 +1,1 @@
+export const UPDATE_DEBOUNCE_IN_SECONDS = 2

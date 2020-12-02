@@ -50,7 +50,7 @@ const User = () => {
     try {
       await fetch(`${REACT_APP_SERVER_URL}/logout`, { method: 'POST' })
 
-      localStorage.removeItem('name')
+      localStorage.removeItem('user')
 
       setUser({ name: null })
       setNotes(JSON.parse(localStorage.notes || '[]'))

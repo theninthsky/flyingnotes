@@ -42,18 +42,6 @@ export const Cancel = styled.img`
     opacity: 1;
   }
 `
-export const Edit = styled.img`
-  position: absolute;
-  bottom: 6px;
-  left: 2.5%;
-  height: 75%;
-  opacity: 0.5;
-  cursor: pointer;
-
-  &:hover {
-    opacity: 1;
-  }
-`
 export const Delete = styled.img`
   position: absolute;
   bottom: 6px;

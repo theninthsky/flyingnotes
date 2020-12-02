@@ -1,19 +1,18 @@
 import { useState } from 'react'
-import { useRecoilValue } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { ws } from 'websocket-connection'
-import { themeState, userState } from 'atoms'
+import { themeState, userState, notesState } from 'atoms'
 import { Wrapper, Category, Title, Content, Save } from './style'
 
-const NewNote = props => {
-  const { updateMode, toggleEditMode, closeOptions, addNote, modifyNote } = props
-
+const NewNote = () => {
   const theme = useRecoilValue(themeState)
   const user = useRecoilValue(userState)
+  const [notes, setNotes] = useRecoilState(notesState)
 
-  const [category, setCategory] = useState(props.category || '')
-  const [title, setTitle] = useState(props.title || '')
-  const [content, setContent] = useState(props.content || '')
+  const [category, setCategory] = useState('')
+  const [title, setTitle] = useState('')
+  const [content, setContent] = useState('')
   const [adding, setAdding] = useState(false)
 
   const resetNote = () => {
@@ -22,76 +21,33 @@ const NewNote = props => {
     setContent('')
   }
 
-  const createNote = async newNote => {
-    if (user.name) {
-      setAdding(true)
-
-      const { newNote: note } = await ws.json({ type: 'createNote', newNote })
-
-      setAdding(false)
-      addNote(note)
-      return resetNote()
-    }
-
-    newNote = { ...newNote, _id: Date.now(), date: Date.now() }
-    localStorage.setItem(
-      'notes',
-      JSON.stringify(localStorage.notes ? [...JSON.parse(localStorage.notes), newNote] : [newNote])
-    )
-
-    addNote(newNote)
-    resetNote()
-  }
-
-  const updateNote = async updatedNote => {
-    if (user.name) {
-      setAdding(true)
-
-      const { updatedNote: note } = await ws.json({ type: 'updateNote', updatedNote })
-
-      setAdding(false)
-      return modifyNote(note)
-    }
-
-    updatedNote.date = Date.now()
-    localStorage.setItem(
-      'notes',
-      JSON.stringify(JSON.parse(localStorage.notes).map(note => (note._id === updatedNote._id ? updatedNote : note)))
-    )
-
-    modifyNote(updatedNote)
-  }
-
-  const saveNoteLocallyHandler = event => {
+  const createNote = async event => {
     event.preventDefault()
 
     const note = {
-      _id: props._id,
       category: category.trim(),
       title: title.trim(),
       content
     }
+    let newNote
 
-    if (!updateMode) return createNote(note)
+    setAdding(true)
 
-    updateNote(note)
-    toggleEditMode()
-    closeOptions()
-  }
+    if (user.name) {
+      newNote = (await ws.json({ type: 'createNote', newNote: note })).newNote
+    } else {
+      newNote = { ...note, _id: Date.now(), date: Date.now() }
+      localStorage.setItem('notes', JSON.stringify([...notes, newNote]))
+    }
 
-  const saveNoteOnCloudHandler = event => {
-    event.preventDefault()
-
-    if (!updateMode) return createNote({ category, title, content })
-
-    updateNote({ _id: props._id, category, title, content })
-    toggleEditMode()
-    closeOptions()
+    setAdding(false)
+    setNotes([...notes, newNote])
+    resetNote()
   }
 
   return (
     <Wrapper saving={adding}>
-      <form onSubmit={user.name ? saveNoteOnCloudHandler : saveNoteLocallyHandler} autoComplete="off">
+      <form onSubmit={createNote} autoComplete="off">
         <Category
           type="text"
           value={category}

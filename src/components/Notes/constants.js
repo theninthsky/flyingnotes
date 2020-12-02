@@ -1,7 +1,7 @@
 export const exampleNote = {
   _id: 'example',
-  category: 'Demo',
+  category: 'DEMO',
   title: 'Example',
   content: 'This is an example note.',
-  date: Date.now(),
+  date: Date.now()
 }
