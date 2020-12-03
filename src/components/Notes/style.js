@@ -19,11 +19,12 @@ export const Filters = styled.div`
   }
 `
 export const CategoryFilter = styled.select`
-  width: 15%;
+  width: 25%;
   border-radius: 5px 0 0 5px;
   outline: none;
   cursor: pointer;
   border: 0.5px solid #ccc;
+  letter-spacing: 1px;
   color: inherit;
   background-color: ${({ theme }) => (theme === 'dark' ? '#222' : 'white')};
 `

@@ -60,7 +60,7 @@ export const Title = styled(Input)`
   font-size: 24px;
 `
 export const Content = styled.textarea`
-  margin: 0 12px 10px;
+  margin: 2px 12px 10px;
   padding: 0;
   border: none;
   outline: none;
