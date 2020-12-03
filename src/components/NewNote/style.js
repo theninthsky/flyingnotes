@@ -1,23 +1,38 @@
 import styled from 'styled-components'
 
-export const Wrapper = styled.div`
+const Input = styled.input`
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  background-color: inherit;
+  text-align: center;
+  color: inherit;
+
+  &::placeholder {
+    color: rgb(200, 200, 200);
+  }
+`
+
+export const Wrapper = styled.form`
   position: relative;
   margin: 15px;
   width: 300px;
   display: flex;
   flex-direction: column;
+  max-height: 250px;
   border-radius: 4px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.2s;
-  animation: showNewNote 0.5s;
+  animation: show 0.25s;
   opacity: ${({ saving }) => (saving ? '0.5' : '1')};
   pointer-events: ${({ saving }) => (saving ? 'none' : 'auto')};
 
   &:hover {
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.2);
   }
 
-  @keyframes showNewNote {
+  @keyframes show {
     from {
       opacity: 0;
     }
@@ -28,61 +43,33 @@ export const Wrapper = styled.div`
 
   @media (max-width: 480px) {
     width: 100%;
-    height: 200px;
     margin: 10px 0;
   }
 `
-export const Category = styled.input`
-  display: block;
-  width: 100%;
-  padding: 2px 0;
-  border: none;
+export const Category = styled(Input)`
+  padding: 1px;
   border-radius: 4px 4px 0 0;
-  outline: none;
-  font-family: inherit;
-  text-align: center;
   font-size: 12px;
   letter-spacing: 3px;
   color: rgb(150, 150, 150);
   background-color: #ffffde;
-
-  &::placeholder {
-    color: rgb(190, 190, 190);
-  }
 `
-export const Title = styled.input`
-  display: block;
-  width: 100%;
-  margin: 6px auto;
-  margin-bottom: 0;
-  padding: 0 5%;
-  box-sizing: border-box;
-  border: none;
-  outline: none;
-  font-family: inherit;
-  background-color: inherit;
-  text-align: center;
-  color: inherit;
+export const Title = styled(Input)`
+  margin: 2px 12px 0;
+  padding: 0;
   font-size: 24px;
-
-  &::placeholder {
-    color: ${({ theme }) => (theme === 'dark' ? 'rgb(200, 200, 200)' : 'auto')};
-  }
 `
 export const Content = styled.textarea`
-  display: block;
-  width: 90%;
-  margin: 4px 12px 2.5px 12px;
-  padding-bottom: 12.5vh;
+  margin: 0 12px 10px;
+  padding: 0;
   border: none;
   outline: none;
+  resize: none;
+  white-space: pre;
   font-family: inherit;
   font-size: 16px;
   color: inherit;
   background-color: inherit;
-  resize: none;
-  white-space: pre;
-  overflow: auto;
 
   &::-webkit-scrollbar-thumb {
     visibility: hidden;
@@ -107,15 +94,11 @@ export const Content = styled.textarea`
   }
 `
 export const Save = styled.input`
-  display: block;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
   border: none;
+  border-radius: 0 0 4px 4px;
   outline: none;
   font-family: inherit;
   text-align: center;
-  border-radius: 0 0 4px 4px;
   color: white;
   font-size: 14px;
   background-color: green;

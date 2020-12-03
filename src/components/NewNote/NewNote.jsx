@@ -46,39 +46,37 @@ const NewNote = () => {
   }
 
   return (
-    <Wrapper saving={adding}>
-      <form onSubmit={createNote} autoComplete="off">
-        <Category
-          type="text"
-          value={category}
-          dir="auto"
-          placeholder="CATEGORY"
-          maxLength="24"
-          title="Optional"
-          onChange={event => setCategory(event.target.value.toUpperCase().slice(0, 24))} // forces maxLength on mobile devices
-        />
+    <Wrapper saving={adding} autoComplete="off" onSubmit={createNote}>
+      <Category
+        type="text"
+        value={category}
+        dir="auto"
+        placeholder="CATEGORY"
+        maxLength="24"
+        title="Optional"
+        onChange={event => setCategory(event.target.value.toUpperCase().slice(0, 24))} // forces maxLength on mobile devices
+      />
 
-        <Title
-          theme={theme}
-          type="text"
-          dir="auto"
-          placeholder="Title"
-          value={title}
-          title="Optional"
-          maxLength="60"
-          onChange={event => setTitle(event.target.value)}
-        />
+      <Title
+        type="text"
+        dir="auto"
+        placeholder="Title"
+        value={title}
+        title="Optional"
+        maxLength="60"
+        onChange={event => setTitle(event.target.value)}
+      />
 
-        <Content
-          dir={/^[\u0591-\u07FF\uFB1D-\uFDFD\uFE70-\uFEFC]/.test(content) ? 'rtl' : 'ltr'}
-          value={content}
-          title="Note's content"
-          required
-          onChange={event => setContent(event.target.value)}
-        ></Content>
+      <Content
+        style={{ height: `${(content.match(/\n/g) || []).length * 15 + 50}px` }}
+        dir={/^[\u0591-\u07FF\uFB1D-\uFDFD\uFE70-\uFEFC]/.test(content) ? 'rtl' : 'ltr'}
+        value={content}
+        title="Note's content"
+        required
+        onChange={event => setContent(event.target.value)}
+      ></Content>
 
-        <Save type="submit" value="SAVE" />
-      </form>
+      <Save type="submit" value="SAVE" />
     </Wrapper>
   )
 }

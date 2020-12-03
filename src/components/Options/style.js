@@ -21,7 +21,7 @@ export const Wrapper = styled.div`
 export const Confirm = styled.img`
   position: absolute;
   bottom: 6px;
-  left: 2.5%;
+  left: 10px;
   height: 75%;
   opacity: 0.5;
   cursor: pointer;
@@ -33,7 +33,7 @@ export const Confirm = styled.img`
 export const Cancel = styled.img`
   position: absolute;
   bottom: 6px;
-  left: 15%;
+  right: 10px;
   height: 75%;
   opacity: 0.5;
   cursor: pointer;
@@ -44,8 +44,8 @@ export const Cancel = styled.img`
 `
 export const Delete = styled.img`
   position: absolute;
-  bottom: 6px;
-  left: 15%;
+  bottom: 5px;
+  left: 12px;
   height: 75%;
   opacity: 0.5;
   cursor: pointer;

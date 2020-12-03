@@ -85,10 +85,21 @@ const Note = ({ _id: noteID, category: noteCategory, title: noteTitle, content: 
       </If>
 
       <If condition={title || editMode}>
-        <Title value={title} dir="auto" placeholder="Title" onChange={event => setTitle(event.target.value)} />
+        <Title
+          value={title}
+          dir="auto"
+          placeholder="Title"
+          maxLength="60"
+          onChange={event => setTitle(event.target.value)}
+        />
       </If>
 
-      <Content value={content} dir="auto" onChange={event => setContent(event.target.value)} />
+      <Content
+        style={{ height: `${(content.match(/\n/g) || []).length * 15 + 45}px` }}
+        dir={/^[\u0591-\u07FF\uFB1D-\uFDFD\uFE70-\uFEFC]/.test(content) ? 'rtl' : 'ltr'}
+        value={content}
+        onChange={event => setContent(event.target.value)}
+      />
 
       <If condition={optionsAreVisible}>
         <Options onDelete={deleteNote} toggleConfirmMessage={mode => setConfirmMessageIsVisible(mode)} />

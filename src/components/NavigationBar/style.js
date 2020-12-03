@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom'
 export const Wrapper = styled.nav`
   display: flex;
   margin-bottom: 40px;
-  padding: 5px 10px;
+  padding: 0 10px;
   width: 100%;
   box-sizing: border-box;
   justify-content: space-between;
@@ -19,7 +19,7 @@ export const LogoWrap = styled.div`
 `
 export const Logo = styled.img`
   align-self: center;
-  height: 40px;
+  height: 35px;
 `
 export const StyledNavLink = styled(NavLink)`
   padding: 0 6px;
