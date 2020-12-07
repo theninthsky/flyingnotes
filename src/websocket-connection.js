@@ -22,8 +22,6 @@ export const createWebSocketConnection = () => {
 
       ws.onopen = resolve
 
-      ws.onclose = () => createWebSocketConnection()
-
       ws.onmessage = ({ data }) => {
         const { messageID, ...message } = JSON.parse(data)
 

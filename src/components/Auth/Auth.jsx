@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 
-import { createWebSocketConnection } from 'websocket-connection'
 import { themeState, authIsVisibleState, userState, notesState } from 'atoms'
 import { REGISTER, LOGIN } from './constants'
 import If from 'components/If'
@@ -57,8 +56,6 @@ const Auth = () => {
     localStorage.clear()
     localStorage.setItem('name', name)
 
-    createWebSocketConnection()
-
     setUser({ name })
     setNotes(notes)
     setAuthIsVisible(false)
@@ -85,8 +82,7 @@ const Auth = () => {
     }
 
     localStorage.setItem('user', name)
-
-    createWebSocketConnection()
+    localStorage.userNotes = JSON.stringify(notes)
 
     setUser({ name })
     setNotes(notes)

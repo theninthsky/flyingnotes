@@ -2,12 +2,10 @@ import { useState, useEffect, useMemo } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { createWebSocketConnection, ws } from 'websocket-connection'
-import { themeState, userState, loadingNotesState } from 'atoms'
+import { themeState, userState } from 'atoms'
 import { notesSelector, categoriesSelector } from 'selectors'
-import { exampleNote } from './constants'
 import NewNote from 'components/NewNote'
 import Note from 'components/Note'
-import { Loader } from 'components/UI'
 import { Filters, CategoryFilter, SearchFilter, SearchBox, NotesWrap } from './style'
 
 const Notes = () => {
@@ -15,30 +13,22 @@ const Notes = () => {
   const user = useRecoilValue(userState)
   const [notes, setNotes] = useRecoilState(notesSelector)
   const categories = useRecoilValue(categoriesSelector)
-  const [loading, setLoading] = useRecoilState(loadingNotesState)
 
   const [categoryFilter, setCategoryFilter] = useState('')
   const [searchFilter, setSearchFilter] = useState('')
 
   useEffect(() => {
     const getNotes = async () => {
-      let notes
+      if (!ws) await createWebSocketConnection()
 
-      if (user.name) {
-        if (!ws) await createWebSocketConnection()
-
-        notes = (await ws.json({ type: 'getNotes' })).notes
-        setNotes(notes)
-      } else {
-        notes = JSON.parse(localStorage.notes || `[${JSON.stringify(exampleNote)}]`)
-      }
+      const { notes } = await ws.json({ type: 'getNotes' })
 
       setNotes(notes)
-      setLoading(false)
+      localStorage.userNotes = JSON.stringify(notes)
     }
 
-    if (!notes.length) getNotes()
-  }, [notes.length, setLoading, setNotes, user.name])
+    if (user.name) getNotes()
+  }, [user.name, setNotes])
 
   const filteredNotes = useMemo(
     () =>
@@ -50,8 +40,6 @@ const Notes = () => {
         )),
     [notes, categoryFilter, searchFilter]
   )
-
-  if (loading) return <Loader />
 
   return (
     <>

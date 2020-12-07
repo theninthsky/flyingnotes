@@ -34,6 +34,7 @@ const NewNote = () => {
 
     if (user.name) {
       newNote = (await ws.json({ type: 'createNote', newNote: note })).newNote
+      localStorage.setItem('userNotes', JSON.stringify([...notes, newNote]))
     } else {
       newNote = { ...note, _id: Date.now(), date: Date.now() }
       localStorage.setItem('notes', JSON.stringify([...notes, newNote]))

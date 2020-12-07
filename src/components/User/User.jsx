@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue, useSetRecoilState, useResetRecoilState } from 'recoil'
 
 import { ws } from 'websocket-connection'
-import { themeState, authIsVisibleState, userState, notesState } from 'atoms'
+import { themeState, authIsVisibleState, userState, notesState, filesState } from 'atoms'
 import If from 'components/If'
 import { Backdrop } from 'components/UI'
 import { Wrapper, UserLogo, Name, ErrorMessage, Input, Submit, ChangePassword } from './style'
@@ -14,8 +14,9 @@ const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
 const User = () => {
   const theme = useRecoilValue(themeState)
   const [user, setUser] = useRecoilState(userState)
-  const setAuthIsVisible = useSetRecoilState(authIsVisibleState)
+  const resetAuthIsVisible = useResetRecoilState(authIsVisibleState)
   const setNotes = useSetRecoilState(notesState)
+  const resetFiles = useResetRecoilState(filesState)
 
   const [name, setName] = useState(user.name)
   const [password, setPassword] = useState('')
@@ -38,7 +39,7 @@ const User = () => {
 
     const { status, error } = await ws.json({ type: 'changePassword', password, newPassword })
 
-    if (status === 'SUCCESS') return setAuthIsVisible(false)
+    if (status === 'SUCCESS') return resetAuthIsVisible(false)
 
     setError(error)
     setLoading(false)
@@ -51,10 +52,12 @@ const User = () => {
       await fetch(`${REACT_APP_SERVER_URL}/logout`, { method: 'POST' })
 
       localStorage.removeItem('user')
+      localStorage.removeItem('userNotes')
 
       setUser({ name: null })
       setNotes(JSON.parse(localStorage.notes || '[]'))
-      setAuthIsVisible(false)
+      resetFiles()
+      resetAuthIsVisible(false)
 
       ws.close()
     } catch (err) {
@@ -65,7 +68,7 @@ const User = () => {
 
   return (
     <>
-      <Backdrop onClick={() => setAuthIsVisible(false)} />
+      <Backdrop onClick={resetAuthIsVisible} />
 
       <Wrapper theme={theme}>
         <UserLogo theme={theme} src={userLogo} alt="User" />

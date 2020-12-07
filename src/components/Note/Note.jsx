@@ -34,6 +34,10 @@ const Note = ({ _id: noteID, category: noteCategory, title: noteTitle, content: 
 
       if (user.name) {
         updatedNote = (await ws.json({ type: 'updateNote', updatedNote: note })).updatedNote
+        localStorage.setItem(
+          'userNotes',
+          JSON.stringify(notes.map(note => (note._id === updatedNote._id ? updatedNote : note)))
+        )
       } else {
         updatedNote = { ...note, date: Date.now() }
         localStorage.setItem(
@@ -58,10 +62,14 @@ const Note = ({ _id: noteID, category: noteCategory, title: noteTitle, content: 
 
       const { status } = await ws.json({ type: 'deleteNote', noteID })
 
-      if (status === 'SUCCESS') return setNotes(notes.filter(({ _id }) => _id !== noteID))
+      if (status === 'SUCCESS') {
+        setNotes(notes.filter(({ _id }) => _id !== noteID))
+        localStorage.setItem('userNotes', JSON.stringify(notes.filter(({ _id }) => _id !== noteID)))
+      }
+    } else {
+      localStorage.setItem('notes', JSON.stringify(notes.filter(({ _id }) => _id !== noteID)))
     }
 
-    localStorage.setItem('notes', JSON.stringify(JSON.parse(localStorage.notes).filter(({ _id }) => _id !== noteID)))
     setNotes(notes.filter(({ _id }) => _id !== noteID))
   }
 
