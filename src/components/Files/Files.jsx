@@ -3,7 +3,6 @@ import { useRecoilState } from 'recoil'
 
 import { createWebSocketConnection, ws } from 'websocket-connection'
 import { filesSelector } from 'selectors'
-import NewFile from 'components/NewFile'
 import File from 'components/File'
 import { Wrapper } from './style'
 
@@ -11,8 +10,6 @@ const Files = () => {
   const [files, setFiles] = useRecoilState(filesSelector)
 
   useEffect(() => {
-    console.log('[Files] rendered')
-
     const getFiles = async () => {
       if (!ws) await createWebSocketConnection()
 
@@ -26,10 +23,10 @@ const Files = () => {
 
   return (
     <Wrapper>
-      <NewFile />
+      <File newFile />
 
       {files.map(file => (
-        <File key={file._id} file={file} />
+        <File key={file._id} {...file} />
       ))}
     </Wrapper>
   )

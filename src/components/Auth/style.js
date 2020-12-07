@@ -93,12 +93,13 @@ export const Submit = styled(Input)`
   outline: none;
   cursor: pointer;
 
-  &:hover {
+  &:hover:enabled {
     color: white;
     background-color: gray;
   }
 
   &:disabled {
     opacity: 0.5;
+    cursor: default;
   }
 `
