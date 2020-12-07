@@ -11,6 +11,8 @@ const Files = () => {
   const [files, setFiles] = useRecoilState(filesSelector)
 
   useEffect(() => {
+    console.log('[Files] rendered')
+
     const getFiles = async () => {
       if (!ws) await createWebSocketConnection()
 
