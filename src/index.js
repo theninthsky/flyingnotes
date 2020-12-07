@@ -15,4 +15,7 @@ ReactDOM.render(
   document.getElementById('root')
 )
 
-serviceWorkerRegistration.register()
+const appIsInstalled = window.matchMedia('(display-mode: standalone)').matches
+
+if (appIsInstalled) serviceWorkerRegistration.register()
+else serviceWorkerRegistration.unregister()
