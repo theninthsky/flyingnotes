@@ -33,7 +33,7 @@ export const Wrapper = styled.form`
   }
 `
 export const Name = styled.input`
-  width: 50%;
+  width: 100%;
   margin: 0 10px;
   padding: 4px 0;
   border: none;
