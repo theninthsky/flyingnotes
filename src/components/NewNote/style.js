@@ -10,7 +10,7 @@ const Input = styled.input`
   color: inherit;
 
   &::placeholder {
-    color: rgb(200, 200, 200);
+    color: rgb(180, 180, 180);
   }
 `
 

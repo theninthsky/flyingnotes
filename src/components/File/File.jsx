@@ -1,40 +1,20 @@
 import { useState } from 'react'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState } from 'recoil'
 
 import { ws } from 'websocket-connection'
 import { toBase64, fromBase64, saveFile } from 'util/base64'
-import { themeState, filesState } from 'atoms'
+import { filesState } from 'atoms'
 import If from 'components/If'
 import { MAX_FILESIZE_IN_MB } from './constants'
-import {
-  Wrapper,
-  Category,
-  Name,
-  InfoWrap,
-  Extension,
-  FileLabel,
-  FileSelect,
-  FileInput,
-  Upload,
-  Download,
-  Delete
-} from './style'
+import { Wrapper, Name, InfoWrap, Extension, FileLabel, FileSelect, FileInput, Upload, Download, Delete } from './style'
 
 import uploadIcon from 'assets/images/upload.svg'
 import downloadIcon from 'assets/images/download.svg'
 import deleteIcon from 'assets/images/delete.svg'
 
-const File = ({
-  newFile,
-  _id: fileID,
-  category: fileCategory = '',
-  name: fileName = '',
-  extension: fileExtension = ''
-}) => {
-  const theme = useRecoilValue(themeState)
+const File = ({ newFile, _id: fileID, name: fileName = '', extension: fileExtension = '' }) => {
   const [files, setFiles] = useRecoilState(filesState)
 
-  const [category, setCategory] = useState(fileCategory)
   const [name, setName] = useState(fileName)
   const [extension, setExtension] = useState(fileExtension)
   const [selectedFile, setSelectedFile] = useState()
@@ -44,7 +24,6 @@ const File = ({
   const [deleteIsVisible, setDeleteIsVisible] = useState(false)
 
   const resetFile = () => {
-    setCategory('')
     setName('')
     setExtension('')
     setSelectedFile(null)
@@ -77,7 +56,7 @@ const File = ({
     setLoading(true)
 
     const base64 = await toBase64(selectedFile)
-    const { file } = await ws.json({ type: 'uploadFile', file: { category, name, extension, base64 } })
+    const { file } = await ws.json({ type: 'uploadFile', file: { name, extension, base64 } })
 
     setFiles([...files, file])
     resetFile()
@@ -114,24 +93,11 @@ const File = ({
       onMouseLeave={() => setDeleteIsVisible(false)}
       onSubmit={uploadFile}
     >
-      <If condition={category || newFile}>
-        <Category
-          type="text"
-          value={category}
-          dir="auto"
-          placeholder="CATEGORY"
-          maxLength="24"
-          title="Optional"
-          onChange={event => setCategory(event.target.value.toUpperCase().slice(0, 24))} // forces maxLength on mobile
-        />
-      </If>
-
       <Name
-        theme={theme}
         type="text"
-        dir="auto"
         placeholder="Name"
         value={name}
+        disabled={!newFile}
         onChange={event => setName(event.target.value)}
       />
 
@@ -150,18 +116,16 @@ const File = ({
         )}
 
         <If condition={newFile}>
-          <FileLabel htmlFor="file-input">
-            <FileSelect
-              src={uploadIcon}
-              alt={selectedFile?.name || 'Upload a File'}
-              title={selectedFile?.name || 'Upload a File'}
-            />
-          </FileLabel>
-          <FileInput id="file-input" type="file" onChange={loadFile} />
-
-          <If condition={selectedFile}>
+          {selectedFile ? (
             <Upload type="submit" value="UPLOAD" />
-          </If>
+          ) : (
+            <>
+              <FileLabel htmlFor="file-input">
+                <FileSelect src={uploadIcon} alt="Select File" title="Select File" />
+              </FileLabel>
+              <FileInput id="file-input" type="file" onChange={loadFile} />
+            </>
+          )}
         </If>
 
         <If condition={!newFile}>

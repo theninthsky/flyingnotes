@@ -4,7 +4,8 @@ export const Wrapper = styled.form`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 500px;
+  width: 400px;
+  height: 26px;
   margin: 20px;
   border-radius: 4px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -31,23 +32,6 @@ export const Wrapper = styled.form`
     margin: 10px 0;
   }
 `
-export const Category = styled.input`
-  width: 25%;
-  padding: 8px 5px;
-  text-align: center;
-  border: none;
-  border-radius: 4px 0 0 4px;
-  outline: none;
-  font-family: inherit;
-  font-size: 12px;
-  letter-spacing: 3px;
-  color: rgb(150, 150, 150);
-  background-color: #ffffde;
-
-  &::placeholder {
-    color: rgb(190, 190, 190);
-  }
-`
 export const Name = styled.input`
   width: 50%;
   margin: 0 10px;
@@ -60,19 +44,20 @@ export const Name = styled.input`
   font-size: 18px;
 
   &::placeholder {
-    color: ${({ theme }) => (theme === 'dark' ? 'rgb(200, 200, 200)' : 'auto')};
+    color: rgb(180, 180, 180);
   }
 `
 export const Extension = styled.div`
+  margin-right: 15px;
+
   @media (max-width: 480px) {
     font-size: 12px;
   }
 `
 export const InfoWrap = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-end;
   align-items: center;
-  width: 25%;
   height: 100%;
 
   @media (max-width: 480px) {
@@ -85,6 +70,7 @@ export const FileLabel = styled.label`
 `
 export const FileSelect = styled.img`
   width: 15px;
+  margin-right: 6px;
   cursor: pointer;
 
   &:hover {
@@ -95,12 +81,14 @@ export const FileInput = styled.input`
   display: none;
 `
 export const Upload = styled.input`
-  padding: 0;
+  height: 100%;
+  padding: 0 4px;
   border: none;
+  border-radius: 0 4px 4px 0;
   outline: none;
   font-family: inherit;
-  color: red;
-  background-color: inherit;
+  color: white;
+  background-color: red;
   font-size: 12px;
   cursor: pointer;
 
@@ -114,6 +102,8 @@ export const Upload = styled.input`
 `
 export const Download = styled.img`
   width: 15px;
+  margin-right: 6px;
+  text-align: center;
   cursor: ${({ downloading }) => (downloading ? 'default' : 'pointer')};
   pointer-events: ${({ downloading }) => (downloading ? 'none' : 'auto')};
   animation: ${({ downloading }) => (downloading ? 'loading 0.75s infinite alternate' : 'none')};
@@ -133,7 +123,7 @@ export const Download = styled.img`
 `
 export const Delete = styled.img`
   width: 14px;
-  opacity: 1;
+  margin-right: 15px;
   cursor: pointer;
   animation: show 0.25s;
 
