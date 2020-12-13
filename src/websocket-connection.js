@@ -4,7 +4,7 @@ const RECONNECT_INTERVAL_IN_SECONDS = 1
 export let ws
 let resolvers = {}
 
-export const createWebSocketConnection = () => {
+export const createWebSocketConnection = message => {
   resolvers = {}
 
   return new Promise(async resolve => {
@@ -20,9 +20,14 @@ export const createWebSocketConnection = () => {
 
       ws = new WebSocket(REACT_APP_WS_SERVER_URL, bearerToken)
 
-      ws.onopen = resolve
+      ws.onopen = async () => {
+        if (message) {
+          await ws.json(message)
+          window.location.reload()
+        }
 
-      ws.onclose = () => (ws = undefined)
+        resolve()
+      }
 
       ws.onmessage = ({ data }) => {
         const { messageID, ...message } = JSON.parse(data)
@@ -33,6 +38,8 @@ export const createWebSocketConnection = () => {
       }
 
       ws.json = message => {
+        if (ws.readyState !== 1) return createWebSocketConnection(message)
+
         return new Promise(resolve => {
           const messageID = Math.floor((1 + Math.random()) * 0x100000000)
             .toString(16)
