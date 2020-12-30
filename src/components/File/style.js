@@ -7,15 +7,16 @@ export const Wrapper = styled.form`
   width: 400px;
   height: 26px;
   margin: 20px;
+  padding: 4px 0;
+  border: ${({ theme }) => (theme === 'dark' ? '1px solid #30363d' : '1px solid #e1e4e8')};
   border-radius: 4px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   opacity: ${({ transparent }) => (transparent ? '0.5' : '1')};
   pointer-events: ${({ transparent }) => (transparent ? 'none' : 'auto')};
-  transition: 0.2s;
+  transition: 0.15s;
   animation: show 0.25s;
 
   &:hover {
-    box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.2);
+    border-color: #b4b4b4;
   }
 
   @keyframes show {
@@ -35,7 +36,6 @@ export const Wrapper = styled.form`
 export const Name = styled.input`
   width: 100%;
   margin: 0 10px;
-  padding: 4px 0;
   border: none;
   outline: none;
   font-family: inherit;
@@ -44,7 +44,7 @@ export const Name = styled.input`
   font-size: 18px;
 
   &::placeholder {
-    color: rgb(180, 180, 180);
+    color: ${({ theme }) => (theme === 'dark' ? '#787878' : '#b4b4b4')};
   }
 `
 export const Extension = styled.div`

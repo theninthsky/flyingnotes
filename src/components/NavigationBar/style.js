@@ -4,14 +4,13 @@ import { NavLink } from 'react-router-dom'
 export const Wrapper = styled.nav`
   display: flex;
   margin-bottom: 40px;
-  padding: 4px 10px;
+  padding: 10px 25px;
   width: 100%;
   box-sizing: border-box;
   justify-content: space-between;
   align-items: center;
-  background-color: #3d3c42;
+  background-color: #161b22;
   color: white;
-  box-shadow: 0 2px 5px gray;
 `
 export const LogoWrap = styled.div`
   display: flex;
@@ -28,7 +27,7 @@ export const StyledNavLink = styled(NavLink)`
   cursor: pointer;
   user-select: none;
   text-decoration: none;
-  font-size: 24px;
+  font-size: 22px;
   opacity: 0.5;
 
   &:hover {

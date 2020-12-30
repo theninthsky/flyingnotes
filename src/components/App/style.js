@@ -5,13 +5,10 @@ export const GlobalStyle = createGlobalStyle`
     -webkit-tap-highlight-color: transparent;
   }  
 
-  html {
-    height: 100vh; // fixes gradient on mobile
-  }
-
   body {
-    color: ${({ theme }) => (theme === 'light' ? 'rgb(80, 80, 80)' : 'white')};
-    background: ${({ theme }) => (theme === 'light' ? 'initial' : 'linear-gradient(#202020, #404040) fixed')};
+    color: ${({ theme }) => (theme === 'dark' ? '#d2d2d2' : '#505050')};
+    background: ${({ theme }) => (theme === 'dark' ? '#0d1117' : 'initial')};
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
   }
 
   img {

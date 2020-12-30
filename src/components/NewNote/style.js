@@ -1,19 +1,5 @@
 import styled from 'styled-components'
 
-const Input = styled.input`
-  box-sizing: border-box;
-  border: none;
-  outline: none;
-  font-family: inherit;
-  background-color: inherit;
-  text-align: center;
-  color: inherit;
-
-  &::placeholder {
-    color: rgb(180, 180, 180);
-  }
-`
-
 export const Wrapper = styled.form`
   position: relative;
   margin: 15px;
@@ -21,15 +7,15 @@ export const Wrapper = styled.form`
   display: flex;
   flex-direction: column;
   max-height: 250px;
+  border: ${({ theme }) => (theme === 'dark' ? '1px solid #30363d' : '1px solid #e1e4e8')};
   border-radius: 4px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  transition: 0.2s;
+  transition: 0.15s;
   animation: show 0.25s;
   opacity: ${({ saving }) => (saving ? '0.5' : '1')};
   pointer-events: ${({ saving }) => (saving ? 'none' : 'auto')};
 
   &:hover {
-    box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.2);
+    border-color: #b4b4b4;
   }
 
   @keyframes show {
@@ -46,13 +32,25 @@ export const Wrapper = styled.form`
     margin: 10px 0;
   }
 `
+const Input = styled.input`
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  color: inherit;
+  background-color: inherit;
+  text-align: center;
+
+  &::placeholder {
+    color: ${({ theme }) => (theme === 'dark' ? '#787878' : '#b4b4b4')};
+  }
+`
 export const Category = styled(Input)`
-  padding: 1px;
+  padding: 4px;
+  border-bottom: ${({ theme }) => (theme === 'dark' ? '1px solid #30363d' : '1px solid #e1e4e8')};
   border-radius: 4px 4px 0 0;
   font-size: 12px;
   letter-spacing: 3px;
-  color: rgb(150, 150, 150);
-  background-color: #ffffde;
 `
 export const Title = styled(Input)`
   margin: 2px 12px 0;
@@ -60,7 +58,7 @@ export const Title = styled(Input)`
   font-size: 24px;
 `
 export const Content = styled.textarea`
-  margin: 2px 12px 10px;
+  margin: 4px 12px 10px;
   padding: 0;
   border: none;
   outline: none;
@@ -94,17 +92,21 @@ export const Content = styled.textarea`
   }
 `
 export const Save = styled.input`
-  border: none;
-  border-radius: 0 0 4px 4px;
+  width: 100px;
+  margin: 0 auto;
+  padding: 2px 0;
+  border: ${({ theme }) => (theme === 'dark' ? '1px solid #30363d' : '1px solid #e1e4e8')};
+  border-radius: 4px 4px 0 0;
+  box-sizing: border-box;
   outline: none;
   font-family: inherit;
   text-align: center;
-  color: white;
-  font-size: 14px;
-  background-color: green;
+  color: inherit;
+  background-color: transparent;
+  font-size: 12px;
   cursor: pointer;
 
   &:hover {
-    background-color: rgb(44, 179, 44);
+    border-color: #b4b4b4;
   }
 `

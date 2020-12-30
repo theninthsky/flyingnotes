@@ -53,7 +53,7 @@ const Notes = () => {
           ))}
         </CategoryFilter>
 
-        <SearchFilter>
+        <SearchFilter theme={theme}>
           <SearchBox
             theme={theme}
             type="search"
