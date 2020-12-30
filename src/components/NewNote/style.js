@@ -55,7 +55,7 @@ export const Category = styled(Input)`
 export const Title = styled(Input)`
   margin: 2px 12px 0;
   padding: 0;
-  font-size: 24px;
+  font-size: 22px;
 `
 export const Content = styled.textarea`
   margin: 4px 12px 10px;
