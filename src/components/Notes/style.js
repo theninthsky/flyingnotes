@@ -4,19 +4,10 @@ import magnifyingGlassBlackIcon from '../../assets/images/magnifying-glass-black
 import magnifyingGlassWhiteIcon from '../../assets/images/magnifying-glass-white.svg'
 
 export const Filters = styled.div`
-  margin: 20px auto;
-  width: 25vw;
+  margin-top: 25px;
   height: 32px;
   display: flex;
   justify-content: center;
-
-  @media (max-width: 768px) {
-    width: 70vw;
-  }
-
-  @media (max-width: 480px) {
-    width: 90vw;
-  }
 `
 export const CategoryFilter = styled.select`
   padding: 0 2px;
@@ -52,8 +43,8 @@ export const SearchBox = styled.input`
   }
 `
 export const NotesWrap = styled.div`
-  margin: 0 auto;
   width: 95%;
+  margin: 15px auto;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

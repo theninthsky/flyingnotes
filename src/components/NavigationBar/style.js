@@ -3,7 +3,6 @@ import { NavLink } from 'react-router-dom'
 
 export const Wrapper = styled.nav`
   display: flex;
-  margin-bottom: 40px;
   padding: 10px 25px;
   width: 100%;
   box-sizing: border-box;
