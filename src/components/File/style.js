@@ -5,9 +5,8 @@ export const Wrapper = styled.form`
   justify-content: space-between;
   align-items: center;
   width: 400px;
-  height: 26px;
+  height: 36px;
   margin: 20px;
-  padding: 4px 0;
   border: 1px solid var(--secondary-color);
   border-radius: 4px;
   background-color: var(--primary-color);
@@ -83,22 +82,19 @@ export const FileInput = styled.input`
 `
 export const Upload = styled.input`
   height: 100%;
-  padding: 0 4px;
+  padding: 0 10px;
   border: none;
   border-radius: 0 4px 4px 0;
   outline: none;
   font-family: inherit;
-  color: white;
-  background-color: red;
+  color: inherit;
+  background-color: var(--secondary-color);
   font-size: 12px;
+  font-weight: 500;
   cursor: pointer;
 
   &:hover {
-    opacity: 0.5;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 10px;
+    opacity: 0.75;
   }
 `
 export const Download = styled.img`

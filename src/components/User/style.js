@@ -77,21 +77,20 @@ export const ChangePassword = styled.button`
 `
 export const Submit = styled(Input)`
   margin-top: 10%;
-  padding: 6px;
-  border: 1px solid gray;
-  border-width: 1px;
+  padding: 6px 8px;
+  border: 1px solid var(--secondary-color);
   border-radius: 4px;
-  background-color: transparent;
   color: inherit;
+  background-color: var(--secondary-color);
   outline: none;
   cursor: pointer;
 
   &:hover {
-    color: white;
-    background-color: gray;
+    opacity: 0.75;
   }
 
   &:disabled {
     opacity: 0.5;
+    cursor: default;
   }
 `

@@ -22,8 +22,8 @@ const NavigationBar = () => {
   const toggleTheme = () => {
     const newTheme = theme === THEME_DARK ? THEME_LIGHT : THEME_DARK
 
-    setTheme(newTheme)
     document.documentElement.setAttribute('data-theme', newTheme)
+    setTheme(newTheme)
     localStorage.setItem('theme', newTheme)
   }
 

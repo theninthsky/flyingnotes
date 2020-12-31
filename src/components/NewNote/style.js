@@ -52,10 +52,11 @@ export const Category = styled(Input)`
   background-color: var(--secondary-color);
   border-radius: 4px 4px 0 0;
   font-size: 10px;
+  font-weight: 500;
   letter-spacing: 3px;
 `
 export const Title = styled(Input)`
-  margin: 6px 12px 0;
+  margin: 8px 12px 0;
   padding: 0;
   font-size: 18px;
   font-weight: bold;
@@ -95,9 +96,8 @@ export const Content = styled.textarea`
   }
 `
 export const Save = styled.input`
-  width: 80px;
   margin: 0 auto;
-  padding: 4px 0;
+  padding: 4px 20px;
   border: 1px solid var(--secondary-color);
   border-bottom: none;
   border-radius: 4px 4px 0 0;
@@ -108,9 +108,10 @@ export const Save = styled.input`
   color: inherit;
   background-color: var(--secondary-color);
   font-size: 12px;
+  font-weight: 500;
   cursor: pointer;
 
   &:hover {
-    border-color: #b4b4b4;
+    opacity: 0.75;
   }
 `
