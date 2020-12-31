@@ -5,7 +5,7 @@ export const Wrapper = styled.form`
   justify-content: space-between;
   align-items: center;
   width: 400px;
-  height: 36px;
+  height: 40px;
   margin: 20px;
   border: 1px solid var(--secondary-color);
   border-radius: 4px;
@@ -34,7 +34,7 @@ export const Wrapper = styled.form`
   }
 `
 export const Name = styled.input`
-  width: 100%;
+  flex-grow: 1;
   margin: 0 10px;
   border: none;
   outline: none;
@@ -58,10 +58,10 @@ export const InfoWrap = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  max-width: 30%;
   height: 100%;
 
   @media (max-width: 480px) {
-    width: 25%;
     font-size: 12px;
   }
 `
