@@ -42,6 +42,8 @@ export const Name = styled.input`
   border: none;
   text-align: center;
   font-size: 20px;
+  color: inherit;
+  background-color: transparent;
 `
 export const ErrorMessage = styled.p`
   text-align: center;

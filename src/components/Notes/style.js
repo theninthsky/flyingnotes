@@ -4,7 +4,9 @@ import magnifyingGlassBlackIcon from '../../assets/images/magnifying-glass-black
 import magnifyingGlassWhiteIcon from '../../assets/images/magnifying-glass-white.svg'
 
 export const Filters = styled.div`
-  margin-top: 25px;
+  width: 80vw;
+  max-width: 400px;
+  margin: 40px auto 0;
   height: 32px;
   display: flex;
   justify-content: center;
@@ -21,6 +23,7 @@ export const CategoryFilter = styled.select`
   background-color: ${({ theme }) => (theme === 'dark' ? '#21262d' : '#efefef')};
 `
 export const SearchFilter = styled.div`
+  flex-grow: 1;
   display: flex;
   align-items: center;
   border: ${({ theme }) => (theme === 'dark' ? '1px solid #30363d' : '1px solid #e1e4e8')};
@@ -45,7 +48,7 @@ export const SearchBox = styled.input`
 `
 export const NotesWrap = styled.div`
   width: 95%;
-  margin: 15px auto;
+  margin: 30px auto;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
