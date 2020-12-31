@@ -10,6 +10,7 @@ export const Wrapper = styled.form`
   padding: 4px 0;
   border: ${({ theme }) => (theme === 'dark' ? '1px solid #30363d' : '1px solid #e1e4e8')};
   border-radius: 4px;
+  background-color: ${({ theme }) => (theme === 'dark' ? '#161b22' : 'white')};
   opacity: ${({ transparent }) => (transparent ? '0.5' : '1')};
   pointer-events: ${({ transparent }) => (transparent ? 'none' : 'auto')};
   transition: 0.15s;
@@ -41,7 +42,7 @@ export const Name = styled.input`
   font-family: inherit;
   background-color: inherit;
   color: inherit;
-  font-size: 18px;
+  font-size: 16px;
 
   &::placeholder {
     color: ${({ theme }) => (theme === 'dark' ? '#787878' : '#b4b4b4')};

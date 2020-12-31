@@ -19,7 +19,6 @@ export const Filters = styled.div`
   }
 `
 export const CategoryFilter = styled.select`
-  width: 25%;
   padding: 0 2px;
   border-radius: 5px 0 0 5px;
   outline: none;
@@ -27,13 +26,14 @@ export const CategoryFilter = styled.select`
   border: ${({ theme }) => (theme === 'dark' ? '1px solid #30363d' : '1px solid #e1e4e8')};
   letter-spacing: 1px;
   color: inherit;
-  background-color: ${({ theme }) => (theme === 'dark' ? '#0d1117' : 'white')};
+  background-color: ${({ theme }) => (theme === 'dark' ? '#21262d' : '#efefef')};
 `
 export const SearchFilter = styled.div`
   display: flex;
   align-items: center;
   border: ${({ theme }) => (theme === 'dark' ? '1px solid #30363d' : '1px solid #e1e4e8')};
   border-radius: 0 5px 5px 0;
+  background-color: ${({ theme }) => (theme === 'dark' ? '#21262d' : '#efefef')};
 `
 
 export const SearchBox = styled.input`

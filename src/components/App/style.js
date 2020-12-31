@@ -7,7 +7,7 @@ export const GlobalStyle = createGlobalStyle`
 
   body {
     color: ${({ theme }) => (theme === 'dark' ? '#d2d2d2' : '#505050')};
-    background: ${({ theme }) => (theme === 'dark' ? '#0d1117' : 'initial')};
+    background-color: ${({ theme }) => (theme === 'dark' ? '#0d1117' : '#fafafa')};
     font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
   }
 

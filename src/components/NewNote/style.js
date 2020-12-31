@@ -9,6 +9,7 @@ export const Wrapper = styled.form`
   max-height: 250px;
   border: ${({ theme }) => (theme === 'dark' ? '1px solid #30363d' : '1px solid #e1e4e8')};
   border-radius: 4px;
+  background-color: ${({ theme }) => (theme === 'dark' ? '#161b22' : 'white')};
   transition: 0.15s;
   animation: show 0.25s;
   opacity: ${({ saving }) => (saving ? '0.5' : '1')};
@@ -48,17 +49,19 @@ const Input = styled.input`
 export const Category = styled(Input)`
   padding: 4px;
   border-bottom: ${({ theme }) => (theme === 'dark' ? '1px solid #30363d' : '1px solid #e1e4e8')};
+  background-color: ${({ theme }) => (theme === 'dark' ? '#21262d' : '#efefef')};
   border-radius: 4px 4px 0 0;
-  font-size: 12px;
+  font-size: 10px;
   letter-spacing: 3px;
 `
 export const Title = styled(Input)`
-  margin: 2px 12px 0;
+  margin: 6px 12px 0;
   padding: 0;
-  font-size: 22px;
+  font-size: 18px;
+  font-weight: bold;
 `
 export const Content = styled.textarea`
-  margin: 4px 12px 10px;
+  margin: 6px 12px 10px;
   padding: 0;
   border: none;
   outline: none;
@@ -92,17 +95,18 @@ export const Content = styled.textarea`
   }
 `
 export const Save = styled.input`
-  width: 100px;
+  width: 80px;
   margin: 0 auto;
-  padding: 2px 0;
+  padding: 4px 0;
   border: ${({ theme }) => (theme === 'dark' ? '1px solid #30363d' : '1px solid #e1e4e8')};
+  border-bottom: none;
   border-radius: 4px 4px 0 0;
   box-sizing: border-box;
   outline: none;
   font-family: inherit;
   text-align: center;
   color: inherit;
-  background-color: transparent;
+  background-color: ${({ theme }) => (theme === 'dark' ? '#21262d' : '#efefef')};
   font-size: 12px;
   cursor: pointer;
 
