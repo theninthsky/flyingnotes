@@ -10,6 +10,7 @@ export const Filters = styled.div`
   justify-content: center;
 `
 export const CategoryFilter = styled.select`
+  width: 90px;
   padding: 0 2px;
   border-radius: 5px 0 0 5px;
   outline: none;
