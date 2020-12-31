@@ -15,7 +15,7 @@ export const Filters = styled.div`
   }
 
   @media (max-width: 480px) {
-    width: 90%;
+    width: 90vw;
   }
 `
 export const CategoryFilter = styled.select`
