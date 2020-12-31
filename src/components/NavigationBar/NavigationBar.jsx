@@ -23,6 +23,7 @@ const NavigationBar = () => {
     const newTheme = theme === THEME_DARK ? THEME_LIGHT : THEME_DARK
 
     setTheme(newTheme)
+    document.documentElement.setAttribute('data-theme', newTheme)
     localStorage.setItem('theme', newTheme)
   }
 
@@ -72,7 +73,7 @@ const NavigationBar = () => {
       </Wrapper>
 
       <If condition={cookiesMessageIsVisible && !user.name}>
-        <CookiesMessage theme={theme} toggle={mode => setCookiesMessageIsVisible(mode)} />
+        <CookiesMessage toggle={mode => setCookiesMessageIsVisible(mode)} />
       </If>
     </>
   )

@@ -8,11 +8,10 @@ export const Wrapper = styled.div`
   width: 45vw;
   margin: 0 auto;
   padding: 10px;
+  border: 1px solid var(--secondary-color);
   box-sizing: border-box;
-  box-shadow: 0 0 4px gray;
   text-align: center;
-  color: ${({ theme }) => (theme === 'light' ? 'rgb(112, 112, 112)' : 'inherit')};
-  background-color: ${({ theme }) => (theme === 'light' ? 'rgb(240, 240, 240)' : 'rgb(48, 48, 48)')};
+  background-color: var(--primary-color);
   cursor: pointer;
   user-select: none;
   animation: showMessage 8s;

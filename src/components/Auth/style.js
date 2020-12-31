@@ -15,7 +15,7 @@ export const Wrapper = styled.div`
   justify-content: space-around;
   border-radius: 2px;
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.5);
-  background-color: ${({ theme }) => (theme === 'dark' ? '#222' : 'white')};
+  background-color: var(--primary-color);
   animation: showAuth 0.5s;
 
   @keyframes showAuth {

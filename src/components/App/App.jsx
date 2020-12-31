@@ -3,7 +3,7 @@ import { Switch, Route, useHistory } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import 'normalize.css'
 
-import { themeState, authIsVisibleState, userState } from 'atoms'
+import { authIsVisibleState, userState } from 'atoms'
 import If from 'components/If'
 import NavigationBar from 'components/NavigationBar'
 import Auth from 'components/Auth'
@@ -13,8 +13,9 @@ import Files from 'components/Files'
 import { GlobalStyle } from './style'
 import 'util/preload-images'
 
+document.documentElement.setAttribute('data-theme', localStorage.theme || 'light')
+
 const App = () => {
-  const theme = useRecoilValue(themeState)
   const user = useRecoilValue(userState)
   const authIsVisible = useRecoilValue(authIsVisibleState)
 
@@ -26,7 +27,7 @@ const App = () => {
 
   return (
     <>
-      <GlobalStyle theme={theme} />
+      <GlobalStyle />
 
       <NavigationBar />
 

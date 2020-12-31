@@ -44,7 +44,7 @@ const Notes = () => {
   return (
     <>
       <Filters>
-        <CategoryFilter theme={theme} title="Category" onChange={event => setCategoryFilter(event.target.value)}>
+        <CategoryFilter title="Category" onChange={event => setCategoryFilter(event.target.value)}>
           <option defaultValue value="">
             ALL
           </option>
@@ -53,7 +53,7 @@ const Notes = () => {
           ))}
         </CategoryFilter>
 
-        <SearchFilter theme={theme}>
+        <SearchFilter>
           <SearchBox
             theme={theme}
             type="search"

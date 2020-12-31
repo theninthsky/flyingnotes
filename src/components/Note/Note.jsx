@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { ws } from 'websocket-connection'
-import { themeState, userState } from 'atoms'
+import { userState } from 'atoms'
 import { notesSelector } from 'selectors'
 import { UPDATE_DEBOUNCE_IN_SECONDS } from './constants'
 import If from 'components/If'
@@ -10,7 +10,6 @@ import Options from 'components/Options'
 import { Wrapper, Category, Title, Content, ConfirmMessage, StyledDate } from './style'
 
 const Note = ({ _id: noteID, category: noteCategory, title: noteTitle, content: noteContent, date: noteDate }) => {
-  const theme = useRecoilValue(themeState)
   const user = useRecoilValue(userState)
   const [notes, setNotes] = useRecoilState(notesSelector)
 
@@ -76,7 +75,6 @@ const Note = ({ _id: noteID, category: noteCategory, title: noteTitle, content: 
 
   return (
     <Wrapper
-      theme={theme}
       deleting={deleting}
       onClick={() => setEditMode(true)}
       onMouseMove={() => setOptionsAreVisible(true)}
@@ -87,7 +85,6 @@ const Note = ({ _id: noteID, category: noteCategory, title: noteTitle, content: 
     >
       <If condition={category || editMode}>
         <Category
-          theme={theme}
           value={category}
           dir="auto"
           placeholder="CATEGORY"
@@ -97,7 +94,6 @@ const Note = ({ _id: noteID, category: noteCategory, title: noteTitle, content: 
 
       <If condition={title || editMode}>
         <Title
-          theme={theme}
           value={title}
           dir="auto"
           placeholder="Title"

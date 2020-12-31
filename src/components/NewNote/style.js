@@ -7,9 +7,9 @@ export const Wrapper = styled.form`
   display: flex;
   flex-direction: column;
   max-height: 250px;
-  border: ${({ theme }) => (theme === 'dark' ? '1px solid #30363d' : '1px solid #e1e4e8')};
+  border: 1px solid var(--secondary-color);
   border-radius: 4px;
-  background-color: ${({ theme }) => (theme === 'dark' ? '#161b22' : 'white')};
+  background-color: var(--primary-color);
   transition: 0.15s;
   animation: show 0.25s;
   opacity: ${({ saving }) => (saving ? '0.5' : '1')};
@@ -43,13 +43,13 @@ const Input = styled.input`
   text-align: center;
 
   &::placeholder {
-    color: ${({ theme }) => (theme === 'dark' ? '#787878' : '#b4b4b4')};
+    color: var(--placeholder-color);
   }
 `
 export const Category = styled(Input)`
   padding: 4px;
-  border-bottom: ${({ theme }) => (theme === 'dark' ? '1px solid #30363d' : '1px solid #e1e4e8')};
-  background-color: ${({ theme }) => (theme === 'dark' ? '#21262d' : '#efefef')};
+  border-bottom: 1px solid var(--secondary-color);
+  background-color: var(--secondary-color);
   border-radius: 4px 4px 0 0;
   font-size: 10px;
   letter-spacing: 3px;
@@ -98,7 +98,7 @@ export const Save = styled.input`
   width: 80px;
   margin: 0 auto;
   padding: 4px 0;
-  border: ${({ theme }) => (theme === 'dark' ? '1px solid #30363d' : '1px solid #e1e4e8')};
+  border: 1px solid var(--secondary-color);
   border-bottom: none;
   border-radius: 4px 4px 0 0;
   box-sizing: border-box;
@@ -106,7 +106,7 @@ export const Save = styled.input`
   font-family: inherit;
   text-align: center;
   color: inherit;
-  background-color: ${({ theme }) => (theme === 'dark' ? '#21262d' : '#efefef')};
+  background-color: var(--secondary-color);
   font-size: 12px;
   cursor: pointer;
 

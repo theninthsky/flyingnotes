@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { useSetRecoilState } from 'recoil'
 
-import { themeState, authIsVisibleState, userState, notesState } from 'atoms'
+import { authIsVisibleState, userState, notesState } from 'atoms'
 import { REGISTER, LOGIN } from './constants'
 import If from 'components/If'
 import { Backdrop } from 'components/UI'
@@ -10,7 +10,6 @@ import { Wrapper, Title, Login, Divider, Register, ErrorMessage, LoginMessage, I
 const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
 
 const Auth = () => {
-  const theme = useRecoilValue(themeState)
   const setUser = useSetRecoilState(userState)
   const setAuthIsVisible = useSetRecoilState(authIsVisibleState)
   const setNotes = useSetRecoilState(notesState)
@@ -107,7 +106,7 @@ const Auth = () => {
     <>
       <Backdrop onClick={() => setAuthIsVisible(false)} />
 
-      <Wrapper theme={theme}>
+      <Wrapper>
         <Title>
           <Login action={action} onClick={actionChangedHandler}>
             {LOGIN}

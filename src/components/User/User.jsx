@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useRecoilState, useRecoilValue, useSetRecoilState, useResetRecoilState } from 'recoil'
+import { useRecoilState, useSetRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 
 import { ws } from 'websocket-connection'
 import { themeState, authIsVisibleState, userState, notesState, filesState } from 'atoms'
@@ -70,7 +70,7 @@ const User = () => {
     <>
       <Backdrop onClick={resetAuthIsVisible} />
 
-      <Wrapper theme={theme}>
+      <Wrapper>
         <UserLogo theme={theme} src={userLogo} alt="User" />
 
         <Name

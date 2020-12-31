@@ -17,18 +17,18 @@ export const CategoryFilter = styled.select`
   border-radius: 5px 0 0 5px;
   outline: none;
   cursor: pointer;
-  border: ${({ theme }) => (theme === 'dark' ? '1px solid #30363d' : '1px solid #e1e4e8')};
+  border: 1px solid var(--secondary-color);
   letter-spacing: 1px;
   color: inherit;
-  background-color: ${({ theme }) => (theme === 'dark' ? '#21262d' : '#efefef')};
+  background-color: var(--primary-color);
 `
 export const SearchFilter = styled.div`
   flex-grow: 1;
   display: flex;
   align-items: center;
-  border: ${({ theme }) => (theme === 'dark' ? '1px solid #30363d' : '1px solid #e1e4e8')};
+  border: 1px solid var(--secondary-color);
   border-radius: 0 5px 5px 0;
-  background-color: ${({ theme }) => (theme === 'dark' ? '#21262d' : '#efefef')};
+  background-color: var(--primary-color);
 `
 
 export const SearchBox = styled.input`
@@ -43,7 +43,7 @@ export const SearchBox = styled.input`
     }) no-repeat 7.5px scroll transparent`};
 
   &::placeholder {
-    color: ${({ theme }) => (theme === 'dark' ? '#787878' : '#b4b4b4')};
+    color: var(--placeholder-color);
   }
 `
 export const NotesWrap = styled.div`

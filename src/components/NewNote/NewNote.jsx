@@ -2,11 +2,10 @@ import { useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { ws } from 'websocket-connection'
-import { themeState, userState, notesState } from 'atoms'
+import { userState, notesState } from 'atoms'
 import { Wrapper, Category, Title, Content, Save } from './style'
 
 const NewNote = () => {
-  const theme = useRecoilValue(themeState)
   const user = useRecoilValue(userState)
   const [notes, setNotes] = useRecoilState(notesState)
 
@@ -47,9 +46,8 @@ const NewNote = () => {
   }
 
   return (
-    <Wrapper theme={theme} saving={adding} autoComplete="off" onSubmit={createNote}>
+    <Wrapper saving={adding} autoComplete="off" onSubmit={createNote}>
       <Category
-        theme={theme}
         type="text"
         value={category}
         dir="auto"
@@ -60,7 +58,6 @@ const NewNote = () => {
       />
 
       <Title
-        theme={theme}
         type="text"
         dir="auto"
         placeholder="Title"
@@ -79,7 +76,7 @@ const NewNote = () => {
         onChange={event => setContent(event.target.value)}
       ></Content>
 
-      <Save theme={theme} type="submit" value="SAVE" />
+      <Save type="submit" value="SAVE" />
     </Wrapper>
   )
 }

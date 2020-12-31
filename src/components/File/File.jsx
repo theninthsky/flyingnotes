@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState } from 'recoil'
 
 import { ws } from 'websocket-connection'
 import { toBase64, fromBase64, saveFile } from 'util/base64'
-import { themeState, filesState } from 'atoms'
+import { filesState } from 'atoms'
 import If from 'components/If'
 import { MAX_FILESIZE_IN_MB } from './constants'
 import { Wrapper, Name, InfoWrap, Extension, FileLabel, FileSelect, FileInput, Upload, Download, Delete } from './style'
@@ -13,7 +13,6 @@ import downloadIcon from 'assets/images/download.svg'
 import deleteIcon from 'assets/images/delete.svg'
 
 const File = ({ newFile, _id: fileID, name: fileName = '', extension: fileExtension = '' }) => {
-  const theme = useRecoilValue(themeState)
   const [files, setFiles] = useRecoilState(filesState)
 
   const [name, setName] = useState(fileName)
@@ -88,7 +87,6 @@ const File = ({ newFile, _id: fileID, name: fileName = '', extension: fileExtens
 
   return (
     <Wrapper
-      theme={theme}
       transparent={loading}
       autoComplete="off"
       onMouseMove={() => setDeleteIsVisible(true)}
@@ -96,7 +94,6 @@ const File = ({ newFile, _id: fileID, name: fileName = '', extension: fileExtens
       onSubmit={uploadFile}
     >
       <Name
-        theme={theme}
         type="text"
         placeholder="Name"
         value={name}
