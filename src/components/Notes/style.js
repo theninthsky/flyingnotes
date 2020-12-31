@@ -48,7 +48,7 @@ export const SearchBox = styled.input`
     }) no-repeat 7.5px scroll transparent`};
 
   &::placeholder {
-    color: ${({ theme }) => (theme === 'dark' ? 'rgb(200, 200, 200)' : 'auto')};
+    color: ${({ theme }) => (theme === 'dark' ? '#787878' : '#b4b4b4')};
   }
 `
 export const NotesWrap = styled.div`
