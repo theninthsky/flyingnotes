@@ -72,26 +72,27 @@ export const Content = styled.textarea`
   font-size: 16px;
   color: inherit;
   background-color: inherit;
+  cursor: auto;
 
-  &::-webkit-scrollbar-thumb {
-    visibility: hidden;
-  }
+  @media (pointer: fine) {
+    overflow: hidden;
 
-  &:hover {
-    &::-webkit-scrollbar-thumb {
-      visibility: visible;
+    &:hover {
+      overflow: scroll;
     }
-  }
 
-  @media (max-width: 480px) {
     &::-webkit-scrollbar {
-      width: 4px;
-      height: 4px;
+      width: 7.5px;
+      height: 7.5px;
     }
 
     &::-webkit-scrollbar-thumb {
-      border-radius: 8px;
-      background: #999;
+      border-radius: 4px;
+      background-color: var(--secondary-color);
+    }
+
+    &::-webkit-scrollbar-corner {
+      display: none;
     }
   }
 `
