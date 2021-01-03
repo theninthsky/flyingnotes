@@ -88,6 +88,7 @@ const Note = ({ _id: noteID, category: noteCategory, title: noteTitle, content: 
           value={category}
           dir="auto"
           placeholder="CATEGORY"
+          aria-label="category"
           onChange={event => setCategory(event.target.value.toUpperCase().slice(0, 24))}
         />
       </If>
@@ -98,6 +99,7 @@ const Note = ({ _id: noteID, category: noteCategory, title: noteTitle, content: 
           dir="auto"
           placeholder="Title"
           maxLength="60"
+          aria-label="title"
           onChange={event => setTitle(event.target.value)}
         />
       </If>
@@ -106,6 +108,7 @@ const Note = ({ _id: noteID, category: noteCategory, title: noteTitle, content: 
         style={{ height: `${(content.match(/\n/g) || []).length * 15 + 45}px` }}
         dir={/^[\u0591-\u07FF\uFB1D-\uFDFD\uFE70-\uFEFC]/.test(content) ? 'rtl' : 'ltr'}
         value={content}
+        aria-label="content"
         onChange={event => setContent(event.target.value)}
       />
 

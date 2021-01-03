@@ -57,6 +57,7 @@ const Notes = () => {
             type="search"
             value={searchFilter}
             placeholder="Search..."
+            aria-label="search"
             onChange={event => setSearchFilter(event.target.value.toLowerCase())}
           />
         </SearchFilter>

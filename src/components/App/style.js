@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components'
+import styled, { createGlobalStyle } from 'styled-components'
 
 import magnifyingGlassBlackIcon from 'assets/images/magnifying-glass-black.svg'
 import magnifyingGlassWhiteIcon from 'assets/images/magnifying-glass-white.svg'
@@ -41,4 +41,9 @@ export const GlobalStyle = createGlobalStyle`
       color: unset;
     }
   }
+`
+
+export const Title = styled.h1`
+  position: absolute;
+  left: -9999px;
 `

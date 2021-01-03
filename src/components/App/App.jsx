@@ -10,7 +10,7 @@ import Auth from 'components/Auth'
 import User from 'components/User'
 import Notes from 'components/Notes'
 import Files from 'components/Files'
-import { GlobalStyle } from './style'
+import { GlobalStyle, Title } from './style'
 import 'util/preload-images'
 
 document.documentElement.setAttribute('data-theme', localStorage.theme || 'light')
@@ -35,9 +35,11 @@ const App = () => {
 
       <Switch>
         <Route exact path="/">
+          <Title>Notes</Title>
           <Notes />
         </Route>
         <Route path="/files">
+          <Title>Files</Title>
           <Files />
         </Route>
       </Switch>

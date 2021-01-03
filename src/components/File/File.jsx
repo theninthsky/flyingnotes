@@ -98,6 +98,7 @@ const File = ({ newFile, _id: fileID, name: fileName = '', extension: fileExtens
         placeholder="Name"
         value={name}
         disabled={!newFile}
+        aria-label="name"
         onChange={event => setName(event.target.value)}
       />
 

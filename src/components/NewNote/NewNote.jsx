@@ -54,6 +54,7 @@ const NewNote = () => {
         placeholder="CATEGORY"
         maxLength="24"
         title="Optional"
+        aria-label="category"
         onChange={event => setCategory(event.target.value.toUpperCase().slice(0, 24))} // forces maxLength on mobile devices
       />
 
@@ -64,6 +65,7 @@ const NewNote = () => {
         value={title}
         title="Optional"
         maxLength="60"
+        aria-label="title"
         onChange={event => setTitle(event.target.value)}
       />
 
@@ -72,11 +74,12 @@ const NewNote = () => {
         dir={/^[\u0591-\u07FF\uFB1D-\uFDFD\uFE70-\uFEFC]/.test(content) ? 'rtl' : 'ltr'}
         value={content}
         title="Note's content"
+        aria-label="content"
         required
         onChange={event => setContent(event.target.value)}
       ></Content>
 
-      <Save type="submit" value="SAVE" />
+      <Save type="submit" value="SAVE" aria-label="save" />
     </Wrapper>
   )
 }
