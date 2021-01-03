@@ -74,7 +74,7 @@ export const Content = styled.textarea`
   background-color: inherit;
   cursor: auto;
 
-  @media (pointer: fine) {
+  @media (hover: hover) {
     overflow: hidden;
 
     &:hover {

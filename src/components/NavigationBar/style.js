@@ -29,13 +29,15 @@ export const StyledNavLink = styled(NavLink)`
   font-size: 22px;
   opacity: 0.5;
 
-  &:hover {
-    opacity: 1;
-  }
-
   &.active {
     cursor: default;
     opacity: 1;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      opacity: 1;
+    }
   }
 `
 export const Util = styled.div`

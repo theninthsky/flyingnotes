@@ -1,5 +1,8 @@
 import { createGlobalStyle } from 'styled-components'
 
+import magnifyingGlassBlackIcon from 'assets/images/magnifying-glass-black.svg'
+import magnifyingGlassWhiteIcon from 'assets/images/magnifying-glass-white.svg'
+
 export const GlobalStyle = createGlobalStyle`
   * {
     -webkit-tap-highlight-color: transparent;
@@ -11,6 +14,7 @@ export const GlobalStyle = createGlobalStyle`
     --primary-color: white;
     --secondary-color: #e1e4e8;
     --placeholder-color: #b4b4b4;
+    --magnifying-glass-icon: url(${magnifyingGlassBlackIcon});
   }
 
   [data-theme="dark"] {
@@ -19,6 +23,7 @@ export const GlobalStyle = createGlobalStyle`
     --primary-color: #161b22;
     --secondary-color: #30363d;
     --placeholder-color: #787878;
+    --magnifying-glass-icon: url(${magnifyingGlassWhiteIcon});
   }
 
   body {

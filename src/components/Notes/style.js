@@ -1,8 +1,5 @@
 import styled from 'styled-components'
 
-import magnifyingGlassBlackIcon from '../../assets/images/magnifying-glass-black.svg'
-import magnifyingGlassWhiteIcon from '../../assets/images/magnifying-glass-white.svg'
-
 export const Filters = styled.div`
   width: 80vw;
   max-width: 400px;
@@ -37,10 +34,7 @@ export const SearchBox = styled.input`
   border: none;
   color: inherit;
   outline: none;
-  background: ${({ theme }) =>
-    `url(${
-      theme === 'dark' ? magnifyingGlassWhiteIcon : magnifyingGlassBlackIcon
-    }) no-repeat 7.5px scroll transparent`};
+  background: var(--magnifying-glass-icon) no-repeat 7.5px scroll transparent;
 
   &::placeholder {
     color: var(--placeholder-color);

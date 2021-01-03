@@ -2,14 +2,13 @@ import { useState, useEffect, useMemo } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { createWebSocketConnection, ws } from 'websocket-connection'
-import { themeState, userState } from 'atoms'
+import { userState } from 'atoms'
 import { notesSelector, categoriesSelector } from 'selectors'
 import NewNote from 'components/NewNote'
 import Note from 'components/Note'
 import { Filters, CategoryFilter, SearchFilter, SearchBox, NotesWrap } from './style'
 
 const Notes = () => {
-  const theme = useRecoilValue(themeState)
   const user = useRecoilValue(userState)
   const [notes, setNotes] = useRecoilState(notesSelector)
   const categories = useRecoilValue(categoriesSelector)
@@ -55,7 +54,6 @@ const Notes = () => {
 
         <SearchFilter>
           <SearchBox
-            theme={theme}
             type="search"
             value={searchFilter}
             placeholder="Search..."
