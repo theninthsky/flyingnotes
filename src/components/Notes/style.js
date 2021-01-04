@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { VIEWPORT_4 } from 'style'
+import { VIEWPORT_4 } from 'media-queries'
 
 export const Filters = styled.div`
   width: 80vw;

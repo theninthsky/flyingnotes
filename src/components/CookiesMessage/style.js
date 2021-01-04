@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { VIEWPORT_4 } from 'style'
+import { VIEWPORT_4 } from 'media-queries'
 
 export const Wrapper = styled.div`
   z-index: 1;

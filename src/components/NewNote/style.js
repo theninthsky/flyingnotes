@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { VIEWPORT_4 } from 'style'
+import { VIEWPORT_4, NOT_MOBILE } from 'media-queries'
 
 export const Wrapper = styled.form`
   position: relative;
@@ -76,7 +76,7 @@ export const Content = styled.textarea`
   background-color: inherit;
   cursor: auto;
 
-  @media (hover: hover) {
+  @media ${NOT_MOBILE} {
     overflow: hidden;
 
     &:hover {

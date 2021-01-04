@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
-import { VIEWPORT_4 } from 'style'
+import { VIEWPORT_4, NOT_MOBILE } from 'media-queries'
 
 export const Wrapper = styled.nav`
   display: flex;
@@ -38,7 +38,7 @@ export const StyledNavLink = styled(NavLink)`
     opacity: 1;
   }
 
-  @media (hover: hover) {
+  @media ${NOT_MOBILE} {
     &:hover {
       opacity: 1;
     }
@@ -54,7 +54,7 @@ export const ThemeImage = styled.img`
   cursor: pointer;
   user-select: none;
 
-  @media (hover: hover) {
+  @media ${NOT_MOBILE} {
     &:hover {
       opacity: 0.5;
     }
@@ -77,7 +77,7 @@ export const Auth = styled.button`
   cursor: pointer;
   user-select: none;
 
-  @media (hover: hover) {
+  @media ${NOT_MOBILE} {
     &:hover {
       opacity: 0.5;
     }
