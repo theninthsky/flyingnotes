@@ -1,6 +1,6 @@
 # Flying Notes React Client
 
-![Notes](src/assets/images/notes.png)
+![Notes](src/assets/images/notes.jpg)
 
 ## Environment Variables
 
