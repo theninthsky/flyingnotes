@@ -67,7 +67,7 @@ export const UserImage = styled.img`
 `
 export const Auth = styled.button`
   display: flex;
-  margin-left: 10px;
+  margin-left: 7.5px;
   font-family: inherit;
   font-size: 22px;
   color: inherit;

@@ -7,7 +7,7 @@ import If from 'components/If'
 import { Backdrop } from 'components/UI'
 import { Wrapper, UserLogo, Name, ErrorMessage, Input, Submit, ChangePassword } from './style'
 
-import userLogo from 'assets/images/user-astronaut.svg'
+import userLogo from 'images/user-astronaut.svg'
 
 const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
 

@@ -7,10 +7,10 @@ import If from 'components/If'
 import CookiesMessage from 'components/CookiesMessage'
 import { Wrapper, Logo, NavItems, StyledNavLink, Util, ThemeImage, UserImage, Auth } from './style'
 
-import logo from 'assets/images/logo.svg'
-import lightThemeIcon from 'assets/images/theme-light.svg'
-import darkThemeIcon from 'assets/images/theme-dark.svg'
-import userIcon from 'assets/images/user-astronaut.svg'
+import logo from 'images/logo.svg'
+import lightThemeIcon from 'images/theme-light.svg'
+import darkThemeIcon from 'images/theme-dark.svg'
+import userIcon from 'images/user-astronaut.svg'
 
 const NavigationBar = () => {
   const [theme, setTheme] = useRecoilState(themeState)

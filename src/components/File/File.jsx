@@ -8,9 +8,9 @@ import If from 'components/If'
 import { MAX_FILESIZE_IN_MB } from './constants'
 import { Wrapper, Name, InfoWrap, Extension, FileLabel, FileSelect, FileInput, Upload, Download, Delete } from './style'
 
-import uploadIcon from 'assets/images/upload.svg'
-import downloadIcon from 'assets/images/download.svg'
-import deleteIcon from 'assets/images/delete.svg'
+import uploadIcon from 'images/upload.svg'
+import downloadIcon from 'images/download.svg'
+import deleteIcon from 'images/delete.svg'
 
 const File = ({ newFile, _id: fileID, name: fileName = '', extension: fileExtension = '' }) => {
   const [files, setFiles] = useRecoilState(filesState)

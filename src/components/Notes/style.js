@@ -16,7 +16,6 @@ export const Filters = styled.div`
 `
 export const CategoryFilter = styled.select`
   width: 90px;
-  padding: 0 2px;
   border-radius: 5px 0 0 5px;
   outline: none;
   cursor: pointer;

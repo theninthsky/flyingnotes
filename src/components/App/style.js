@@ -1,13 +1,10 @@
 import styled, { createGlobalStyle } from 'styled-components'
 
-import magnifyingGlassBlackIcon from 'assets/images/magnifying-glass-black.svg'
-import magnifyingGlassWhiteIcon from 'assets/images/magnifying-glass-white.svg'
+import magnifyingGlassBlackIcon from 'images/magnifying-glass-black.svg'
+import magnifyingGlassWhiteIcon from 'images/magnifying-glass-white.svg'
+import arrowIcon from 'images/arrow.svg'
 
 export const GlobalStyle = createGlobalStyle`
-  * {
-    -webkit-tap-highlight-color: transparent;
-  }
-  
   :root {
     --font-color: #505050;
     --bg-color: #fafafa;
@@ -32,6 +29,10 @@ export const GlobalStyle = createGlobalStyle`
     font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
   }
 
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
   img {
     user-select: none;
   }
@@ -40,6 +41,14 @@ export const GlobalStyle = createGlobalStyle`
     &:visited {
       color: unset;
     }
+  }
+
+  select {
+    appearance: none;
+    padding: 0 30px 0 7.5px;
+    background-image: url(${arrowIcon});
+    background-position: right 7.5px top 50%;
+    background-repeat: no-repeat;
   }
 `
 
