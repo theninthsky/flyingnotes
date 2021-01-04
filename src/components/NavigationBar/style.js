@@ -4,7 +4,7 @@ import { VIEWPORT_4 } from 'style'
 
 export const Wrapper = styled.nav`
   display: flex;
-  padding: 12.5px 15px;
+  padding: 10px 15px;
   width: 100%;
   box-sizing: border-box;
   align-items: center;

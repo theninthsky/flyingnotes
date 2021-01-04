@@ -1,5 +1,6 @@
+import ReconnectingWebSocket from 'reconnecting-websocket'
+
 const { REACT_APP_SERVER_URL = 'http://localhost:5000', REACT_APP_WS_SERVER_URL = 'ws://localhost:5000' } = process.env
-const RECONNECT_INTERVAL_IN_SECONDS = 1
 
 export let ws
 let resolvers = {}
@@ -18,7 +19,7 @@ export const createWebSocketConnection = message => {
 
       const { bearerToken, userID } = await res.json()
 
-      ws = new WebSocket(REACT_APP_WS_SERVER_URL, bearerToken)
+      ws = new ReconnectingWebSocket(REACT_APP_WS_SERVER_URL, bearerToken)
 
       ws.onopen = async () => {
         if (message) {
@@ -38,8 +39,6 @@ export const createWebSocketConnection = message => {
       }
 
       ws.json = message => {
-        if (ws.readyState !== 1) return createWebSocketConnection(message)
-
         return new Promise(resolve => {
           const messageID = Math.floor((1 + Math.random()) * 0x100000000)
             .toString(16)
@@ -51,7 +50,7 @@ export const createWebSocketConnection = message => {
         })
       }
     } catch (err) {
-      setTimeout(createWebSocketConnection, RECONNECT_INTERVAL_IN_SECONDS * 1000)
+      createWebSocketConnection()
     }
   })
 }
