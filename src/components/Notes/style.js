@@ -1,12 +1,18 @@
 import styled from 'styled-components'
 
+import { VIEWPORT_4 } from 'style'
+
 export const Filters = styled.div`
   width: 80vw;
   max-width: 400px;
-  margin: 40px auto 0;
+  margin: 25px auto 0;
   height: 32px;
   display: flex;
   justify-content: center;
+
+  @media ${VIEWPORT_4} {
+    margin-top: 40px;
+  }
 `
 export const CategoryFilter = styled.select`
   width: 90px;
@@ -16,6 +22,7 @@ export const CategoryFilter = styled.select`
   cursor: pointer;
   border: 1px solid var(--secondary-color);
   letter-spacing: 1px;
+  font-size: 14px;
   color: inherit;
   background-color: var(--primary-color);
 `
@@ -42,10 +49,14 @@ export const SearchBox = styled.input`
 `
 export const NotesWrap = styled.div`
   width: 95%;
-  margin: 30px auto;
+  margin: 15px auto;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
   align-items: center;
+
+  @media ${VIEWPORT_4} {
+    margin-top: 30px;
+  }
 `

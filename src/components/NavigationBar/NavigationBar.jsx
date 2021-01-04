@@ -5,7 +5,7 @@ import { themeState, authIsVisibleState, userState } from 'atoms'
 import { THEME_LIGHT, THEME_DARK, LOGIN } from './constants'
 import If from 'components/If'
 import CookiesMessage from 'components/CookiesMessage'
-import { Wrapper, LogoWrap, Logo, StyledNavLink, Util, ThemeImage, UserImage, Auth } from './style'
+import { Wrapper, Logo, NavItems, StyledNavLink, Util, ThemeImage, UserImage, Auth } from './style'
 
 import logo from 'assets/images/logo.svg'
 import lightThemeIcon from 'assets/images/theme-light.svg'
@@ -30,11 +30,9 @@ const NavigationBar = () => {
   return (
     <>
       <Wrapper>
-        <LogoWrap>
-          <Logo src={logo} alt="logo" />
-        </LogoWrap>
+        <Logo src={logo} alt="logo" />
 
-        <div>
+        <NavItems>
           <StyledNavLink exact to="/">
             Notes
           </StyledNavLink>
@@ -44,7 +42,7 @@ const NavigationBar = () => {
               Files
             </StyledNavLink>
           )}
-        </div>
+        </NavItems>
 
         <Util>
           <ThemeImage
@@ -55,7 +53,7 @@ const NavigationBar = () => {
           />
 
           {user.name ? (
-            <Auth title={`Logged in as ${user.name}`} onClick={() => setAuthIsVisible(!authIsVisible)}>
+            <Auth title={user.name} onClick={() => setAuthIsVisible(!authIsVisible)}>
               <UserImage src={userIcon} alt={user.name} />
             </Auth>
           ) : (

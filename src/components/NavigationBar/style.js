@@ -4,21 +4,23 @@ import { VIEWPORT_4 } from 'style'
 
 export const Wrapper = styled.nav`
   display: flex;
-  padding: 10px 25px;
+  padding: 12.5px 15px;
   width: 100%;
   box-sizing: border-box;
-  justify-content: space-between;
   align-items: center;
   background-color: #161b22;
   color: white;
-`
-export const LogoWrap = styled.div`
-  display: flex;
-  width: 15%;
+
+  @media ${VIEWPORT_4} {
+    padding: 12.5px 30px;
+  }
 `
 export const Logo = styled.img`
-  align-self: center;
-  height: 35px;
+  width: 34px;
+  margin-right: 10px;
+`
+export const NavItems = styled.div`
+  flex-grow: 1;
 `
 export const StyledNavLink = styled(NavLink)`
   padding: 0 6px;
@@ -27,7 +29,8 @@ export const StyledNavLink = styled(NavLink)`
   cursor: pointer;
   user-select: none;
   text-decoration: none;
-  font-size: 22px;
+  font-size: 18px;
+  font-weight: 600;
   opacity: 0.5;
 
   &.active {
@@ -43,12 +46,10 @@ export const StyledNavLink = styled(NavLink)`
 `
 export const Util = styled.div`
   display: flex;
-  justify-content: flex-end;
   align-items: center;
-  width: 15%;
 `
 export const ThemeImage = styled.img`
-  width: 26px;
+  width: 24px;
   filter: invert(100%);
   cursor: pointer;
   user-select: none;
@@ -61,16 +62,12 @@ export const ThemeImage = styled.img`
 `
 export const UserImage = styled.img`
   align-self: center;
-  width: 20px;
+  width: 18px;
   filter: invert(100%);
-
-  @media ${VIEWPORT_4} {
-    width: 22px;
-  }
 `
 export const Auth = styled.button`
   display: flex;
-  margin-left: 15px;
+  margin-left: 10px;
   font-family: inherit;
   font-size: 22px;
   color: inherit;
