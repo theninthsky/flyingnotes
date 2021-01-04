@@ -1,12 +1,14 @@
 import styled from 'styled-components'
 
+import { VIEWPORT_4 } from 'style'
+
 export const Wrapper = styled.form`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 400px;
+  width: 100%;
   height: 40px;
-  margin: 20px;
+  margin: 10px 0;
   border: 1px solid var(--secondary-color);
   border-radius: 4px;
   background-color: var(--primary-color);
@@ -28,9 +30,9 @@ export const Wrapper = styled.form`
     }
   }
 
-  @media (max-width: 480px) {
-    width: 100%;
-    margin: 10px 0;
+  @media ${VIEWPORT_4} {
+    width: 400px;
+    margin: 20px;
   }
 `
 export const Name = styled.input`
@@ -49,9 +51,10 @@ export const Name = styled.input`
 `
 export const Extension = styled.div`
   margin-right: 15px;
+  font-size: 12px;
 
-  @media (max-width: 480px) {
-    font-size: 12px;
+  @media ${VIEWPORT_4} {
+    font-size: 16px;
   }
 `
 export const InfoWrap = styled.div`
@@ -60,9 +63,10 @@ export const InfoWrap = styled.div`
   align-items: center;
   max-width: 30%;
   height: 100%;
+  font-size: 12px;
 
-  @media (max-width: 480px) {
-    font-size: 12px;
+  @media ${VIEWPORT_4} {
+    font-size: 16px;
   }
 `
 export const FileLabel = styled.label`

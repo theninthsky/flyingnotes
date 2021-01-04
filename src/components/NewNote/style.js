@@ -1,12 +1,14 @@
 import styled from 'styled-components'
 
+import { VIEWPORT_4 } from 'style'
+
 export const Wrapper = styled.form`
   position: relative;
-  margin: 15px;
-  width: 300px;
   display: flex;
   flex-direction: column;
+  width: 100%;
   max-height: 250px;
+  margin: 10px 0;
   border: 1px solid var(--secondary-color);
   border-radius: 4px;
   background-color: var(--primary-color);
@@ -28,9 +30,9 @@ export const Wrapper = styled.form`
     }
   }
 
-  @media (max-width: 480px) {
-    width: 100%;
-    margin: 10px 0;
+  @media ${VIEWPORT_4} {
+    width: 300px;
+    margin: 15px;
   }
 `
 const Input = styled.input`

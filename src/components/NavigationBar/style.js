@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
+import { VIEWPORT_4 } from 'style'
 
 export const Wrapper = styled.nav`
   display: flex;
@@ -52,22 +53,19 @@ export const ThemeImage = styled.img`
   cursor: pointer;
   user-select: none;
 
-  &:hover {
-    opacity: 0.5;
-
-    @media (max-width: 480px) {
-      opacity: 1;
+  @media (hover: hover) {
+    &:hover {
+      opacity: 0.5;
     }
   }
 `
 export const UserImage = styled.img`
   align-self: center;
-  width: 22px;
+  width: 20px;
   filter: invert(100%);
 
-  @media (max-width: 480px) {
-    width: 20px;
-    opacity: 1;
+  @media ${VIEWPORT_4} {
+    width: 22px;
   }
 `
 export const Auth = styled.button`
@@ -82,13 +80,9 @@ export const Auth = styled.button`
   cursor: pointer;
   user-select: none;
 
-  &:hover {
-    opacity: 0.5;
-  }
-
-  @media (max-width: 480px) {
+  @media (hover: hover) {
     &:hover {
-      opacity: 1;
+      opacity: 0.5;
     }
   }
 `

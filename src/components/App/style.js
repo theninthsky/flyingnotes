@@ -43,7 +43,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 `
 
-export const Title = styled.h1`
+export const Heading = styled.h1`
   position: absolute;
   left: -9999px;
 `

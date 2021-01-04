@@ -1,19 +1,21 @@
 import styled from 'styled-components'
 
+import { VIEWPORT_4 } from 'style'
+
 export const Wrapper = styled.div`
   z-index: 2;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  margin: auto;
-  width: 30vw;
+  width: 90vw;
   height: 50vh;
   min-height: 400px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  border-radius: 2px;
+  margin: auto;
+  border-radius: 4px;
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.5);
   background-color: var(--primary-color);
   animation: showAuth 0.5s;
@@ -27,8 +29,8 @@ export const Wrapper = styled.div`
     }
   }
 
-  @media (max-width: 480px) {
-    width: 90vw;
+  @media ${VIEWPORT_4} {
+    width: 420px;
   }
 `
 export const Title = styled.div`

@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 
+import { VIEWPORT_4 } from 'style'
 import {
   Wrapper as NewNoteWrapper,
   Category as NewNoteCategory,
@@ -19,20 +20,20 @@ export const Content = styled(NewNoteContent)``
 export const ConfirmMessage = styled.div`
   padding: 2.5px 0;
   text-align: center;
-  font-size: 14px;
+  font-size: 12px;
   color: inherit;
 
-  @media (max-width: 480px) {
-    font-size: 12px;
+  @media ${VIEWPORT_4} {
+    font-size: 14px;
   }
 `
 export const StyledDate = styled.div`
   padding: 2.5px 0;
   text-align: center;
-  font-size: 14px;
+  font-size: 12px;
   color: rgb(160, 160, 160);
 
-  @media (max-width: 480px) {
-    font-size: 12px;
+  @media ${VIEWPORT_4} {
+    font-size: 14px;
   }
 `
