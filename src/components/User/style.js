@@ -1,37 +1,9 @@
 import styled from 'styled-components'
 
-import { VIEWPORT_4 } from 'media-queries'
+import { Wrapper as AuthWrapper, Input as AuthInput, Submit as AuthSubmit } from 'components/Auth/style'
 
-export const Wrapper = styled.div`
-  z-index: 2;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90vw;
-  height: 60vh;
-  min-height: 450px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  margin: auto;
-  border-radius: 4px;
-  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.5);
-  background-color: var(--primary-color);
-  animation: showUser 0.5s;
-
-  @keyframes showUser {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  @media ${VIEWPORT_4} {
-    width: 420px;
-  }
+export const Wrapper = styled(AuthWrapper)`
+  height: 380px;
 `
 export const UserLogo = styled.img`
   margin: 10px auto;
@@ -51,19 +23,8 @@ export const ErrorMessage = styled.p`
   text-align: center;
   color: red;
 `
-export const Input = styled.input`
-  display: block;
-  margin: 1vh auto;
-  padding: 4px;
-  border: none;
-  border-bottom: 1px solid lightgray;
-  outline: none;
-  font-size: 16px;
+export const Input = styled(AuthInput)``
 
-  &:-webkit-autofill {
-    box-shadow: 0 0 0 100px white inset;
-  }
-`
 export const ChangePassword = styled.button`
   display: block;
   margin: 0 auto;
@@ -77,22 +38,4 @@ export const ChangePassword = styled.button`
     opacity: 0.75;
   }
 `
-export const Submit = styled(Input)`
-  margin-top: 10%;
-  padding: 6px 8px;
-  border: 1px solid var(--secondary-color);
-  border-radius: 4px;
-  color: inherit;
-  background-color: var(--secondary-color);
-  outline: none;
-  cursor: pointer;
-
-  &:hover {
-    opacity: 0.75;
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: default;
-  }
-`
+export const Submit = styled(AuthSubmit)``

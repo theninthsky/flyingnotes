@@ -14,7 +14,7 @@ import Files from 'components/Files'
 import { GlobalStyle, Heading } from './style'
 import 'util/preload-images'
 
-document.documentElement.setAttribute('data-theme', localStorage.theme || 'light')
+document.documentElement.setAttribute('data-theme', localStorage.theme || 'dark')
 
 const App = () => {
   const user = useRecoilValue(userState)

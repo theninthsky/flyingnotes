@@ -9,18 +9,18 @@ export const Wrapper = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   width: 90vw;
-  height: 50vh;
-  min-height: 400px;
+  height: 440px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  margin: auto;
+  padding: 0 10px;
+  border: 1px solid var(--secondary-color);
   border-radius: 4px;
-  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
   background-color: var(--primary-color);
-  animation: showAuth 0.5s;
+  animation: show 0.25s;
 
-  @keyframes showAuth {
+  @keyframes show {
     from {
       opacity: 0;
     }
@@ -78,16 +78,17 @@ export const Input = styled.input`
   border: none;
   border-bottom: 1px solid lightgray;
   outline: none;
-  font-size: 16px;
+  color: var(--text-color);
+  background-color: var(--primary-color);
 
-  &:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0 100px white inset;
+  &::placeholder {
+    color: var(--placeholder-color);
   }
 `
 export const Submit = styled(Input)`
-  margin-top: 10%;
+  margin-top: 30px;
   padding: 6px 8px;
-  border: 1px solid var(--secondary-color);
+  border: 1px solid var(--text-color);
   border-radius: 4px;
   color: inherit;
   background-color: var(--secondary-color);

@@ -4,7 +4,7 @@ import { VIEWPORT_4, NOT_MOBILE } from 'media-queries'
 
 export const Wrapper = styled.nav`
   display: flex;
-  padding: 10px 15px;
+  padding: 7.5px 15px;
   width: 100%;
   box-sizing: border-box;
   align-items: center;
