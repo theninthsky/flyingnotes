@@ -12,7 +12,7 @@ export const Wrapper = styled.nav`
   color: white;
 
   @media ${VIEWPORT_4} {
-    padding: 12.5px 30px;
+    padding: 10.5px 30px;
   }
 `
 export const Logo = styled.img`

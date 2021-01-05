@@ -38,6 +38,10 @@ export const createWebSocketConnection = message => {
         delete resolvers[messageID]
       }
 
+      ws.destroy = () => {
+        ws = undefined
+      }
+
       ws.json = message => {
         return new Promise(resolve => {
           const messageID = Math.floor((1 + Math.random()) * 0x100000000)

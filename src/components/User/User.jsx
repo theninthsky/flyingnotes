@@ -60,6 +60,7 @@ const User = () => {
       resetAuthIsVisible(false)
 
       ws.close()
+      ws.destroy()
     } catch (err) {
       setError('Failed to logout')
       setLoading(false)

@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 
+import { NOT_MOBILE } from 'media-queries'
+
 export const Wrapper = styled.div`
   position: absolute;
   bottom: 0;
@@ -23,11 +25,12 @@ export const Confirm = styled.img`
   bottom: 6px;
   left: 10px;
   height: 75%;
-  opacity: 0.5;
   cursor: pointer;
 
-  &:hover {
-    opacity: 1;
+  @media ${NOT_MOBILE} {
+    &:hover {
+      opacity: 0.5;
+    }
   }
 `
 export const Cancel = styled.img`
@@ -35,11 +38,12 @@ export const Cancel = styled.img`
   bottom: 6px;
   right: 10px;
   height: 75%;
-  opacity: 0.5;
   cursor: pointer;
 
-  &:hover {
-    opacity: 1;
+  @media ${NOT_MOBILE} {
+    &:hover {
+      opacity: 0.5;
+    }
   }
 `
 export const Delete = styled.img`
@@ -47,10 +51,11 @@ export const Delete = styled.img`
   bottom: 5px;
   left: 12px;
   height: 75%;
-  opacity: 0.5;
   cursor: pointer;
 
-  &:hover {
-    opacity: 1;
+  @media ${NOT_MOBILE} {
+    &:hover {
+      opacity: 0.5;
+    }
   }
 `

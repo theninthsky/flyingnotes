@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { VIEWPORT_4 } from 'media-queries'
+import { VIEWPORT_4, NOT_MOBILE } from 'media-queries'
 
 export const Wrapper = styled.form`
   display: flex;
@@ -77,8 +77,10 @@ export const FileSelect = styled.img`
   margin-right: 6px;
   cursor: pointer;
 
-  &:hover {
-    opacity: 0.5;
+  @media ${NOT_MOBILE} {
+    &:hover {
+      opacity: 0.5;
+    }
   }
 `
 export const FileInput = styled.input`
@@ -109,8 +111,10 @@ export const Download = styled.img`
   pointer-events: ${({ downloading }) => (downloading ? 'none' : 'auto')};
   animation: ${({ downloading }) => (downloading ? 'loading 0.75s infinite alternate' : 'none')};
 
-  &:hover {
-    opacity: 0.5;
+  @media ${NOT_MOBILE} {
+    &:hover {
+      opacity: 0.5;
+    }
   }
 
   @keyframes loading {
@@ -128,8 +132,10 @@ export const Delete = styled.img`
   cursor: pointer;
   animation: showDelete 0.25s;
 
-  &:hover {
-    opacity: 0.5;
+  @media ${NOT_MOBILE} {
+    &:hover {
+      opacity: 0.5;
+    }
   }
 
   @keyframes showDelete {
