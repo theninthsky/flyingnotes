@@ -13,7 +13,7 @@ export const Wrapper = styled.form`
   border-radius: 4px;
   background-color: var(--primary-color);
   transition: 0.15s;
-  animation: show 0.25s;
+  animation: showNewNote 0.25s;
   opacity: ${({ saving }) => (saving ? '0.5' : '1')};
   pointer-events: ${({ saving }) => (saving ? 'none' : 'auto')};
 
@@ -21,7 +21,7 @@ export const Wrapper = styled.form`
     border-color: #b4b4b4;
   }
 
-  @keyframes show {
+  @keyframes showNewNote {
     from {
       opacity: 0;
     }

@@ -18,9 +18,9 @@ export const Wrapper = styled.div`
   border-radius: 4px;
   box-sizing: border-box;
   background-color: var(--primary-color);
-  animation: show 0.25s;
+  animation: showAuth 0.25s;
 
-  @keyframes show {
+  @keyframes showAuth {
     from {
       opacity: 0;
     }

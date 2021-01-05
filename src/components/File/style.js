@@ -15,13 +15,13 @@ export const Wrapper = styled.form`
   opacity: ${({ transparent }) => (transparent ? '0.5' : '1')};
   pointer-events: ${({ transparent }) => (transparent ? 'none' : 'auto')};
   transition: 0.15s;
-  animation: show 0.25s;
+  animation: showFile 0.25s;
 
   &:hover {
     border-color: #b4b4b4;
   }
 
-  @keyframes show {
+  @keyframes showFile {
     from {
       opacity: 0;
     }
@@ -126,13 +126,13 @@ export const Delete = styled.img`
   width: 14px;
   margin-right: 15px;
   cursor: pointer;
-  animation: show 0.25s;
+  animation: showDelete 0.25s;
 
   &:hover {
     opacity: 0.5;
   }
 
-  @keyframes show {
+  @keyframes showDelete {
     from {
       opacity: 0;
     }

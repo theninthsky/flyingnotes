@@ -5,7 +5,7 @@ const StyledBackdrop = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(14px);
 `
 
 const Backdrop = ({ onClick }) => {

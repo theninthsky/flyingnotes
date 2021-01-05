@@ -1,17 +1,17 @@
 import styled from 'styled-components'
 
-import { VIEWPORT_4 } from 'media-queries'
-
 export const Wrapper = styled.div`
   z-index: 1;
   position: fixed;
   bottom: 25px;
   left: 0;
   right: 0;
-  width: 90vw;
+  width: 820px;
+  max-width: 90vw;
   margin: auto;
   padding: 10px;
   border: 1px solid var(--secondary-color);
+  border-radius: 2px;
   box-sizing: border-box;
   text-align: center;
   font-size: 14px;
@@ -19,10 +19,6 @@ export const Wrapper = styled.div`
   cursor: pointer;
   user-select: none;
   animation: showMessage 8s;
-
-  @media ${VIEWPORT_4} {
-    width: 75vw;
-  }
 
   @keyframes showMessage {
     0% {
