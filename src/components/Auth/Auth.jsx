@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useSetRecoilState } from 'recoil'
 
 import { authIsVisibleState, userState, notesState } from 'atoms'
-import { REGISTER, LOGIN } from './constants'
+import { SIGN_UP, LOG_IN } from './constants'
 import If from 'components/If'
 import { Backdrop } from 'components/UI'
 import { Wrapper, Title, Login, Divider, Register, ErrorMessage, LoginMessage, Input, Submit } from './style'
@@ -14,7 +14,7 @@ const Auth = () => {
   const setAuthIsVisible = useSetRecoilState(authIsVisibleState)
   const setNotes = useSetRecoilState(notesState)
 
-  const [action, setAction] = useState(LOGIN)
+  const [action, setAction] = useState(LOG_IN)
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -97,7 +97,7 @@ const Auth = () => {
   const submitFormHandler = event => {
     event.preventDefault()
 
-    action === REGISTER
+    action === SIGN_UP
       ? register({ name: name.trim(), email, password })
       : login({ name: name.trim(), email, password })
   }
@@ -109,13 +109,13 @@ const Auth = () => {
       <Wrapper>
         <Title>
           <Login action={action} onClick={actionChangedHandler}>
-            {LOGIN}
+            {LOG_IN}
           </Login>
 
           <Divider />
 
           <Register action={action} onClick={actionChangedHandler}>
-            {REGISTER}
+            {SIGN_UP}
           </Register>
         </Title>
 
@@ -124,7 +124,7 @@ const Auth = () => {
             <ErrorMessage>{error}</ErrorMessage>
           </If>
 
-          {action === REGISTER ? (
+          {action === SIGN_UP ? (
             <Input
               type="text"
               value={name}

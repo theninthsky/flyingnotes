@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { themeState, authIsVisibleState, userState } from 'atoms'
-import { THEME_LIGHT, THEME_DARK, LOGIN } from './constants'
+import { THEME_LIGHT, THEME_DARK, LOG_IN } from './constants'
 import If from 'components/If'
 import CookiesMessage from 'components/CookiesMessage'
 import { Wrapper, Logo, NavItems, StyledNavLink, Util, ThemeImage, UserImage, Auth } from './style'
@@ -58,13 +58,13 @@ const NavigationBar = () => {
             </Auth>
           ) : (
             <Auth
-              title={LOGIN}
+              title={LOG_IN}
               onClick={() => {
                 setAuthIsVisible(!authIsVisible)
                 setCookiesMessageIsVisible(false)
               }}
             >
-              {LOGIN}
+              {LOG_IN}
             </Auth>
           )}
         </Util>

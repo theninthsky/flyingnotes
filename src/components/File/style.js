@@ -74,7 +74,7 @@ export const FileLabel = styled.label`
 `
 export const FileSelect = styled.img`
   width: 15px;
-  margin-right: 6px;
+  margin-right: 10px;
   cursor: pointer;
 
   @media ${NOT_MOBILE} {
@@ -105,7 +105,7 @@ export const Upload = styled.input`
 `
 export const Download = styled.img`
   width: 15px;
-  margin-right: 6px;
+  margin-right: 10px;
   text-align: center;
   cursor: ${({ downloading }) => (downloading ? 'default' : 'pointer')};
   pointer-events: ${({ downloading }) => (downloading ? 'none' : 'auto')};

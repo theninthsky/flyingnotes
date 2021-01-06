@@ -4,7 +4,7 @@ import { VIEWPORT_4, NOT_MOBILE } from 'media-queries'
 
 export const Wrapper = styled.nav`
   display: flex;
-  padding: 7.5px 15px;
+  padding: 10px 15px;
   width: 100%;
   box-sizing: border-box;
   align-items: center;
@@ -12,7 +12,7 @@ export const Wrapper = styled.nav`
   color: white;
 
   @media ${VIEWPORT_4} {
-    padding: 10.5px 30px;
+    padding: 12.5px 30px;
   }
 `
 export const Logo = styled.img`
@@ -67,9 +67,10 @@ export const UserImage = styled.img`
 `
 export const Auth = styled.button`
   display: flex;
-  margin-left: 7.5px;
+  margin-left: 10px;
+  padding: 0;
   font-family: inherit;
-  font-size: 19px;
+  font-size: 18px;
   color: inherit;
   background-color: transparent;
   border: none;

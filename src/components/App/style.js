@@ -1,8 +1,9 @@
 import styled, { createGlobalStyle } from 'styled-components'
 
-import magnifyingGlassBlackIcon from 'images/magnifying-glass-black.svg'
-import magnifyingGlassWhiteIcon from 'images/magnifying-glass-white.svg'
-import arrowIcon from 'images/arrow.svg'
+import arrowLightIcon from 'images/arrow-light.svg'
+import arrowLDarkIcon from 'images/arrow-dark.svg'
+import magnifyingGlassLightIcon from 'images/magnifying-glass-light.svg'
+import magnifyingGlassDarkIcon from 'images/magnifying-glass-dark.svg'
 
 export const GlobalStyle = createGlobalStyle`
   :root {
@@ -11,7 +12,8 @@ export const GlobalStyle = createGlobalStyle`
     --primary-color: white;
     --secondary-color: #e1e4e8;
     --placeholder-color: #b4b4b4;
-    --magnifying-glass-icon: url(${magnifyingGlassBlackIcon});
+    --magnifying-glass-icon: url(${magnifyingGlassDarkIcon});
+    --select-arrow-icon: url(${arrowLDarkIcon});
   }
 
   [data-theme="dark"] {
@@ -20,7 +22,8 @@ export const GlobalStyle = createGlobalStyle`
     --primary-color: #161b22;
     --secondary-color: #30363d;
     --placeholder-color: #787878;
-    --magnifying-glass-icon: url(${magnifyingGlassWhiteIcon});
+    --magnifying-glass-icon: url(${magnifyingGlassLightIcon});
+    --select-arrow-icon: url(${arrowLightIcon});
   }
 
   body {
@@ -46,7 +49,7 @@ export const GlobalStyle = createGlobalStyle`
   select {
     appearance: none;
     padding: 0 30px 0 7.5px;
-    background-image: url(${arrowIcon});
+    background-image: var(--select-arrow-icon);
     background-position: right 7.5px top 50%;
     background-repeat: no-repeat;
   }

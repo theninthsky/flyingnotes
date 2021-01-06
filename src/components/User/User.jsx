@@ -3,6 +3,7 @@ import { useRecoilState, useSetRecoilState, useRecoilValue, useResetRecoilState 
 
 import { ws } from 'websocket-connection'
 import { themeState, authIsVisibleState, userState, notesState, filesState } from 'atoms'
+import { LOGOUT } from './constants'
 import If from 'components/If'
 import { Backdrop } from 'components/UI'
 import { Wrapper, UserLogo, Name, ErrorMessage, Input, Submit, ChangePassword } from './style'
@@ -112,7 +113,7 @@ const User = () => {
           <>
             <ChangePassword onClick={() => setChangePasswordMode(true)}>Change Password</ChangePassword>
 
-            <Submit type="submit" value="Logout" disabled={loading} onClick={logout} />
+            <Submit type="submit" value={LOGOUT} disabled={loading} onClick={logout} />
           </>
         )}
       </Wrapper>
