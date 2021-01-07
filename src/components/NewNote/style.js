@@ -12,13 +12,15 @@ export const Wrapper = styled.form`
   border: 1px solid var(--secondary-color);
   border-radius: 4px;
   background-color: var(--primary-color);
-  transition: 0.15s;
-  animation: showNewNote 0.25s;
   opacity: ${({ saving }) => (saving ? '0.5' : '1')};
   pointer-events: ${({ saving }) => (saving ? 'none' : 'auto')};
+  transition: border-color 0.1s;
+  animation: showNewNote 0.25s;
 
-  &:hover {
-    border-color: #b4b4b4;
+  @media ${NOT_MOBILE} {
+    &:hover {
+      border-color: #b4b4b4;
+    }
   }
 
   @keyframes showNewNote {

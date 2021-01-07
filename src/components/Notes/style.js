@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { VIEWPORT_4 } from 'media-queries'
+import { VIEWPORT_4, NOT_MOBILE } from 'media-queries'
 
 export const Filters = styled.div`
   width: 80vw;
@@ -24,6 +24,13 @@ export const CategoryFilter = styled.select`
   font-size: 14px;
   color: inherit;
   background-color: var(--primary-color);
+  transition: border-color 0.1s;
+
+  @media ${NOT_MOBILE} {
+    &:hover {
+      border-color: #b4b4b4;
+    }
+  }
 `
 export const SearchFilter = styled.div`
   flex-grow: 1;
@@ -32,6 +39,13 @@ export const SearchFilter = styled.div`
   border: 1px solid var(--secondary-color);
   border-radius: 0 5px 5px 0;
   background-color: var(--primary-color);
+  transition: border-color 0.1s;
+
+  @media ${NOT_MOBILE} {
+    &:hover {
+      border-color: #b4b4b4;
+    }
+  }
 `
 
 export const SearchBox = styled.input`

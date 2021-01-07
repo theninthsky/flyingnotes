@@ -70,7 +70,6 @@ export const Auth = styled.button`
   margin-left: 10px;
   padding: 0;
   font-family: inherit;
-  font-size: 18px;
   color: inherit;
   background-color: transparent;
   border: none;

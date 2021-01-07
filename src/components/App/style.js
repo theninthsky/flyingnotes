@@ -27,9 +27,9 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   body {
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
     color: var(--text-color);
     background-color: var(--bg-color);
-    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
   }
 
   * {
