@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
 import { VIEWPORT_4 } from 'media-queries'
+import { LOG_IN, SIGN_UP } from './constants'
 
 export const Wrapper = styled.div`
   z-index: 2;
@@ -13,7 +14,7 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  padding: 0 10px;
+  padding: 0 25px;
   border: 1px solid var(--secondary-color);
   border-radius: 4px;
   box-sizing: border-box;
@@ -43,8 +44,10 @@ export const Title = styled.div`
     cursor: pointer;
   }
 `
-export const Login = styled.h1`
-  opacity: ${({ action }) => (action === 'Login' ? '1' : '0.4')};
+export const Login = styled.h2`
+  font-size: 28px;
+  opacity: ${({ action }) => (action === LOG_IN ? '1' : '0.4')};
+  cursor: default;
 
   &:hover {
     opacity: 1;
@@ -55,8 +58,10 @@ export const Divider = styled.div`
   height: 50px;
   border: 0.5px solid rgb(128, 128, 128);
 `
-export const Register = styled.h1`
-  opacity: ${({ action }) => (action === 'Register' ? '1' : '0.4')};
+export const Signup = styled.h2`
+  font-size: 28px;
+  opacity: ${({ action }) => (action === SIGN_UP ? '1' : '0.4')};
+  cursor: default;
 
   &:hover {
     opacity: 1;

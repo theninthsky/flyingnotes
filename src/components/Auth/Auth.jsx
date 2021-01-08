@@ -5,7 +5,7 @@ import { authIsVisibleState, userState, notesState } from 'atoms'
 import { SIGN_UP, LOG_IN } from './constants'
 import If from 'components/If'
 import { Backdrop } from 'components/UI'
-import { Wrapper, Title, Login, Divider, Register, ErrorMessage, LoginMessage, Input, Submit } from './style'
+import { Wrapper, Title, Login, Divider, Signup, ErrorMessage, LoginMessage, Input, Submit } from './style'
 
 const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
 
@@ -114,9 +114,9 @@ const Auth = () => {
 
           <Divider />
 
-          <Register action={action} onClick={actionChangedHandler}>
+          <Signup action={action} onClick={actionChangedHandler}>
             {SIGN_UP}
-          </Register>
+          </Signup>
         </Title>
 
         <form onSubmit={submitFormHandler}>

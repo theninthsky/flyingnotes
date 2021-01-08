@@ -13,11 +13,18 @@ export const UserLogo = styled.img`
 `
 export const Name = styled.input`
   align-self: center;
-  border: none;
+  padding: 4px 0;
+  outline: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
   text-align: center;
   font-size: 20px;
   color: inherit;
   background-color: transparent;
+
+  &:focus {
+    border: 1px solid var(--secondary-color);
+  }
 `
 export const ErrorMessage = styled.p`
   text-align: center;
