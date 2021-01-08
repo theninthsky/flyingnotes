@@ -5,30 +5,20 @@ const { REACT_APP_SERVER_URL = 'http://localhost:5000', REACT_APP_WS_SERVER_URL 
 export let ws
 let resolvers = {}
 
-export const createWebSocketConnection = message => {
+export const createWebSocketConnection = () => {
   resolvers = {}
 
   return new Promise(async resolve => {
     try {
       const res = await fetch(`${REACT_APP_SERVER_URL}/get-new-token`, { credentials: 'include' })
 
-      if (!res.ok) {
-        localStorage.removeItem('name')
-        window.location.reload()
-      }
+      if (res.status === 401) throw Error('UNAUTORIZED')
 
       const { bearerToken, userID } = await res.json()
 
       ws = new ReconnectingWebSocket(REACT_APP_WS_SERVER_URL, bearerToken)
 
-      ws.onopen = async () => {
-        if (message) {
-          await ws.json(message)
-          window.location.reload()
-        }
-
-        resolve()
-      }
+      ws.onopen = resolve
 
       ws.onmessage = ({ data }) => {
         const { messageID, ...message } = JSON.parse(data)
@@ -54,6 +44,11 @@ export const createWebSocketConnection = message => {
         })
       }
     } catch (err) {
+      if (err.message === 'UNAUTORIZED') {
+        localStorage.removeItem('user')
+        return window.location.reload()
+      }
+
       createWebSocketConnection()
     }
   })
