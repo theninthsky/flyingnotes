@@ -98,7 +98,6 @@ const Note = ({ _id: noteID, category: noteCategory, title: noteTitle, content: 
           value={title}
           dir="auto"
           placeholder="Title"
-          maxLength="60"
           aria-label="title"
           onChange={event => setTitle(event.target.value)}
         />

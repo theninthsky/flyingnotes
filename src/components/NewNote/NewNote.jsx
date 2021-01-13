@@ -64,7 +64,6 @@ const NewNote = () => {
         placeholder="Title"
         value={title}
         title="Optional"
-        maxLength="60"
         aria-label="title"
         onChange={event => setTitle(event.target.value)}
       />

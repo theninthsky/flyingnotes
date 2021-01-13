@@ -1,4 +1,4 @@
-# Flying Notes React Client
+# Flying Notes Client
 
 ![Notes](src/images/notes.jpg)
 
