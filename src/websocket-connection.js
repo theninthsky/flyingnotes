@@ -10,13 +10,13 @@ export const createWebSocketConnection = () => {
 
   return new Promise(async resolve => {
     try {
-      const res = await fetch(`${REACT_APP_SERVER_URL}/get-new-token`, { credentials: 'include' })
+      const res = await fetch(`${REACT_APP_SERVER_URL}/renew-token`, { credentials: 'include' })
 
       if (res.status === 401) throw Error('UNAUTORIZED')
 
-      const { bearerToken, userID } = await res.json()
+      const { userID } = await res.json()
 
-      ws = new ReconnectingWebSocket(REACT_APP_WS_SERVER_URL, bearerToken)
+      ws = new ReconnectingWebSocket(REACT_APP_WS_SERVER_URL)
 
       ws.onopen = resolve
 

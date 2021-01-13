@@ -38,9 +38,16 @@ const User = () => {
     setError()
     setLoading(true)
 
-    const { status, error } = await ws.json({ type: 'changePassword', password, newPassword })
+    const body = JSON.stringify({ password, newPassword })
 
-    if (status === 'SUCCESS') return resetAuthIsVisible(false)
+    const res = await fetch(`${REACT_APP_SERVER_URL}/change-password`, {
+      method: 'PUT',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body
+    })
+
+    if (res.ok) return resetAuthIsVisible(false)
 
     setError(error)
     setLoading(false)
