@@ -53,7 +53,7 @@ const Auth = () => {
     }
 
     localStorage.clear()
-    localStorage.setItem('name', name)
+    localStorage.setItem('user', name)
 
     setUser({ name })
     setNotes(notes)
