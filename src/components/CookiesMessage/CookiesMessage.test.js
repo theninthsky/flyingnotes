@@ -1,5 +1,4 @@
-import { render, screen } from '@testing-library/react'
-
+import { render, screen } from 'setup-tests'
 import { MESSAGE } from './constants'
 import CookiesMessage from './CookiesMessage'
 
