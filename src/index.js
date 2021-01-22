@@ -1,3 +1,5 @@
+/* eslint-disable no-restricted-globals */
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter as Router } from 'react-router-dom'
@@ -15,4 +17,9 @@ ReactDOM.render(
   document.getElementById('root')
 )
 
-serviceWorkerRegistration.register()
+serviceWorkerRegistration.register({
+  onUpdate: () => {
+    self.skipWaiting()
+    console.log('New content rendered')
+  }
+})
