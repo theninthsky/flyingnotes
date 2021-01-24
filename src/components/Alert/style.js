@@ -5,7 +5,7 @@ export const Wrapper = styled.button`
   position: sticky;
   top: 0;
   width: 100%;
-  padding: 14px 0;
+  padding: 16px 0;
   border: none;
   outline: none;
   color: #f0f6fc;
@@ -13,7 +13,7 @@ export const Wrapper = styled.button`
   animation: showUpdateAlert 0.5s;
 
   &:hover {
-    opacity: 0.5;
+    color: #787878;
   }
 
   @keyframes showUpdateAlert {
