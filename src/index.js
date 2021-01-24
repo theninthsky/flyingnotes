@@ -18,5 +18,3 @@ ReactDOM.render(
 serviceWorkerRegistration.register({
   onUpdate: registration => window.dispatchEvent(new CustomEvent('sw_update', { detail: registration }))
 })
-
-setTimeout(() => window.dispatchEvent(new CustomEvent('sw_update', { detail: { waiting: true } })), 2000)

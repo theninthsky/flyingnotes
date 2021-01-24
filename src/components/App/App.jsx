@@ -52,7 +52,7 @@ const App = () => {
     <>
       <GlobalStyle />
 
-      <If condition={registrationWaiting}>
+      <If condition={window.matchMedia('(display-mode: standalone)').matches && registrationWaiting}>
         <Alert onClick={replaceSW}>{UPDATE_MESSAGE}</Alert>
       </If>
 
