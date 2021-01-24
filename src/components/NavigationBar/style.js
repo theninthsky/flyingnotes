@@ -8,7 +8,7 @@ export const Wrapper = styled.nav`
   width: 100%;
   box-sizing: border-box;
   align-items: center;
-  background-color: #161b22;
+  background-color: white;
   color: white;
 
   @media ${VIEWPORT_4} {
