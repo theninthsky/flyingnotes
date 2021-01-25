@@ -10,7 +10,7 @@ export const createWebSocketConnection = () => {
 
   return new Promise(async resolve => {
     try {
-      const res = await fetch(`${REACT_APP_SERVER_URL}/renew-token`, { mode: 'cors', credentials: 'include' })
+      const res = await fetch(`${REACT_APP_SERVER_URL}/renew-token`, { credentials: 'include' })
 
       if (res.status === 401) throw Error('UNAUTHORIZED')
 

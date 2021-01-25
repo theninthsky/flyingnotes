@@ -33,9 +33,9 @@ const App = () => {
   useEffect(() => {
     const handleRegistration = ({ detail: registration }) => setRegistrationWaiting(registration.waiting)
 
-    window.addEventListener('sw_update', handleRegistration)
+    window.addEventListener('serviceworkerupdate', handleRegistration)
 
-    return () => window.removeEventListener('sw_update', handleRegistration)
+    return () => window.removeEventListener('serviceworkerupdate', handleRegistration)
   }, [])
 
   const replaceSW = () => {

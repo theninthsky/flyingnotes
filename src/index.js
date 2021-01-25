@@ -16,5 +16,5 @@ ReactDOM.render(
 )
 
 serviceWorkerRegistration.register({
-  onUpdate: registration => window.dispatchEvent(new CustomEvent('sw_update', { detail: registration }))
+  onUpdate: registration => window.dispatchEvent(new CustomEvent('serviceworkerupdate', { detail: registration }))
 })
