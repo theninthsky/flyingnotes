@@ -36,7 +36,7 @@ const App = () => {
     window.addEventListener('sw_update', handleRegistration)
 
     return () => window.removeEventListener('sw_update', handleRegistration)
-  }, [registrationWaiting])
+  }, [])
 
   const replaceSW = () => {
     if (!registrationWaiting) return
