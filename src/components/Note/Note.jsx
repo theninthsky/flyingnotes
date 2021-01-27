@@ -2,16 +2,22 @@ import { useState, useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { ws } from 'websocket-connection'
-import { userState } from 'atoms'
-import { notesSelector } from 'selectors'
-import { UPDATE_DEBOUNCE_IN_SECONDS } from './constants'
+import { userState, notesState } from 'atoms'
+import { CATEGORY, TITLE, SAVE, UPDATE_DEBOUNCE } from './constants'
 import If from 'components/If'
 import Options from 'components/Options'
-import { Wrapper, Category, Title, Content, ConfirmMessage, StyledDate } from './style'
+import { Wrapper, Category, Title, Content, ConfirmMessage, StyledDate, Save } from './style'
 
-const Note = ({ _id: noteID, category: noteCategory, title: noteTitle, content: noteContent, date: noteDate }) => {
+const Note = ({
+  newNote,
+  _id: noteID,
+  category: noteCategory = '',
+  title: noteTitle = '',
+  content: noteContent = '',
+  date: noteDate
+}) => {
   const user = useRecoilValue(userState)
-  const [notes, setNotes] = useRecoilState(notesSelector)
+  const [notes, setNotes] = useRecoilState(notesState)
 
   const [category, setCategory] = useState(noteCategory)
   const [title, setTitle] = useState(noteTitle)
@@ -20,9 +26,11 @@ const Note = ({ _id: noteID, category: noteCategory, title: noteTitle, content: 
   const [editMode, setEditMode] = useState(false)
   const [optionsAreVisible, setOptionsAreVisible] = useState(false)
   const [confirmMessageIsVisible, setConfirmMessageIsVisible] = useState(false)
-  const [deleting, setDeleting] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
+    if (newNote) return
+
     const updateNote = async () => {
       const note = {
         _id: noteID,
@@ -50,15 +58,46 @@ const Note = ({ _id: noteID, category: noteCategory, title: noteTitle, content: 
     }
 
     if (noteCategory !== category || noteTitle !== title || noteContent !== content) {
-      const updateTimeoutID = setTimeout(updateNote, UPDATE_DEBOUNCE_IN_SECONDS * 1000)
+      const updateTimeoutID = setTimeout(updateNote, UPDATE_DEBOUNCE)
 
       return () => clearTimeout(updateTimeoutID)
     }
-  }, [noteID, noteCategory, noteContent, noteTitle, notes, setNotes, user.name, category, title, content])
+  }, [newNote, noteID, noteCategory, noteContent, noteTitle, notes, setNotes, user.name, category, title, content])
+
+  const resetNote = () => {
+    setCategory('')
+    setTitle('')
+    setContent('')
+  }
+
+  const createNote = async event => {
+    event.preventDefault()
+
+    const note = {
+      category: category.trim(),
+      title: title.trim(),
+      content
+    }
+    let savedNote
+
+    setLoading(true)
+
+    if (user.name) {
+      savedNote = (await ws.json({ type: 'createNote', newNote: note })).newNote
+      localStorage.setItem('userNotes', JSON.stringify([...notes, savedNote]))
+    } else {
+      savedNote = { ...note, _id: Date.now(), date: Date.now() }
+      localStorage.setItem('notes', JSON.stringify([...notes, savedNote]))
+    }
+
+    setLoading(false)
+    setNotes([...notes, savedNote])
+    resetNote()
+  }
 
   const deleteNote = async () => {
     if (user.name) {
-      setDeleting(true)
+      setLoading(true)
 
       const { status } = await ws.json({ type: 'deleteNote', noteID })
 
@@ -75,39 +114,44 @@ const Note = ({ _id: noteID, category: noteCategory, title: noteTitle, content: 
 
   return (
     <Wrapper
-      deleting={deleting}
+      faded={loading}
+      autoComplete="off"
       onClick={() => setEditMode(true)}
-      onMouseMove={() => setOptionsAreVisible(true)}
+      onMouseMove={() => {
+        if (!newNote) setOptionsAreVisible(true)
+      }}
       onMouseLeave={() => {
         setOptionsAreVisible(confirmMessageIsVisible)
         setEditMode(false)
       }}
+      onSubmit={createNote}
     >
-      <If condition={category || editMode}>
+      <If condition={category || newNote || editMode}>
         <Category
           value={category}
           dir="auto"
-          placeholder="CATEGORY"
+          placeholder={CATEGORY}
           aria-label="category"
           onChange={event => setCategory(event.target.value.toUpperCase().slice(0, 24))}
         />
       </If>
 
-      <If condition={title || editMode}>
+      <If condition={title || newNote || editMode}>
         <Title
           value={title}
           dir="auto"
-          placeholder="Title"
+          placeholder={TITLE}
           aria-label="title"
           onChange={event => setTitle(event.target.value)}
         />
       </If>
 
       <Content
-        style={{ height: `${(content.match(/\n/g) || []).length * 15 + 45}px` }}
+        height={`${(content.match(/\n/g) || []).length * 15 + 45}px`}
         dir={/^[\u0591-\u07FF\uFB1D-\uFDFD\uFE70-\uFEFC]/.test(content) ? 'rtl' : 'ltr'}
         value={content}
         aria-label="content"
+        required
         onChange={event => setContent(event.target.value)}
       />
 
@@ -115,7 +159,9 @@ const Note = ({ _id: noteID, category: noteCategory, title: noteTitle, content: 
         <Options onDelete={deleteNote} toggleConfirmMessage={mode => setConfirmMessageIsVisible(mode)} />
       </If>
 
-      {confirmMessageIsVisible ? (
+      {newNote ? (
+        <Save type="submit" value={SAVE} aria-label="save" />
+      ) : confirmMessageIsVisible ? (
         <ConfirmMessage>Delete this note?</ConfirmMessage>
       ) : (
         <StyledDate>{new Date(date).toLocaleString('en-GB').replace(',', '').slice(0, -3)}</StyledDate>

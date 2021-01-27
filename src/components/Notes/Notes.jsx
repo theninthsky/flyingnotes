@@ -4,7 +4,6 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 import { createWebSocketConnection, ws } from 'websocket-connection'
 import { userState } from 'atoms'
 import { notesSelector, categoriesSelector } from 'selectors'
-import NewNote from 'components/NewNote'
 import Note from 'components/Note'
 import { Filters, CategoryFilter, SearchFilter, SearchBox, NotesWrap } from './style'
 
@@ -64,7 +63,7 @@ const Notes = () => {
       </Filters>
 
       <NotesWrap>
-        <NewNote />
+        <Note newNote />
         {filteredNotes}
       </NotesWrap>
     </>
