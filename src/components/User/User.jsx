@@ -61,6 +61,7 @@ const User = () => {
 
       localStorage.removeItem('user')
       localStorage.removeItem('userNotes')
+      localStorage.removeItem('token')
 
       setUser({ name: null })
       setNotes(JSON.parse(localStorage.notes || '[]'))

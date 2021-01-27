@@ -3,6 +3,7 @@ import { useSetRecoilState } from 'recoil'
 
 import { authIsVisibleState, userState, notesState } from 'atoms'
 import { SIGN_UP, LOG_IN } from './constants'
+import { safari } from 'util/user-agent'
 import If from 'components/If'
 import { Backdrop } from 'components/UI'
 import { Wrapper, Title, Login, Divider, Signup, ErrorMessage, LoginMessage, Input, Submit } from './style'
@@ -45,7 +46,7 @@ const Auth = () => {
       body
     })
 
-    const { name, notes, err } = await res.json()
+    const { name, notes, token, err } = await res.json()
 
     if (err) {
       setError(err)
@@ -54,6 +55,8 @@ const Auth = () => {
 
     localStorage.clear()
     localStorage.setItem('user', name)
+
+    if (safari) localStorage.setItem('token', token)
 
     setUser({ name })
     setNotes(notes)
@@ -73,7 +76,7 @@ const Auth = () => {
       body
     })
 
-    const { name, notes, err } = await res.json()
+    const { name, notes, token, err } = await res.json()
 
     if (err) {
       setError(err)
@@ -82,6 +85,8 @@ const Auth = () => {
 
     localStorage.setItem('user', name)
     localStorage.userNotes = JSON.stringify(notes)
+
+    if (safari) localStorage.setItem('token', token)
 
     setUser({ name })
     setNotes(notes)
