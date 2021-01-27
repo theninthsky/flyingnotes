@@ -1,26 +1,19 @@
 import ReconnectingWebSocket from 'reconnecting-websocket'
 
-import { safari } from 'util/user-agent'
-
 const { REACT_APP_SERVER_URL = 'http://localhost:5000', REACT_APP_WS_SERVER_URL = 'ws://localhost:5000' } = process.env
 
 export let ws
 let resolvers = {}
-
-const renewToken = () => {
-  if (!safari) return fetch(`${REACT_APP_SERVER_URL}/renew-token`, { credentials: 'include' })
-
-  const token = `Bearer=${localStorage.token}`
-
-  return fetch(`${REACT_APP_SERVER_URL}/renew-token`, { headers: { authorization: token } })
-}
 
 export const createWebSocketConnection = () => {
   resolvers = {}
 
   return new Promise(async resolve => {
     try {
-      const res = await renewToken()
+      const res = await fetch(`${REACT_APP_SERVER_URL}/renew-token`, {
+        credentials: 'include',
+        headers: { Authorization: `Bearer=${localStorage.token}` }
+      })
 
       if (res.status === 401) throw Error('UNAUTHORIZED')
 

@@ -43,7 +43,7 @@ const User = () => {
     const res = await fetch(`${REACT_APP_SERVER_URL}/change-password`, {
       method: 'PUT',
       credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer=${localStorage.token}` },
       body
     })
 
