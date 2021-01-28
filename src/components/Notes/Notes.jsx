@@ -36,7 +36,7 @@ const Notes = () => {
         .map(({ _id, category, title, content, date }) => (
           <Note key={_id} _id={_id} category={category} title={title} content={content} date={date} />
         )),
-    [notes, categoryFilter, searchFilter]
+    [notes.length, categoryFilter, searchFilter] // eslint-disable-line
   )
 
   return (
