@@ -54,13 +54,16 @@ const Note = ({
         )
       }
 
-      setDate(Date.now())
+      const date = Date.now()
+
+      setDate(date)
+      setNotes(notes.map(originalNote => (originalNote._id === noteID ? { ...note, date } : originalNote)))
     }
 
     if (noteCategory !== category || noteTitle !== title || noteContent !== content) {
-      const updateTimeoutID = setTimeout(updateNote, UPDATE_DEBOUNCE)
+      const updateTimeout = setTimeout(updateNote, UPDATE_DEBOUNCE)
 
-      return () => clearTimeout(updateTimeoutID)
+      return () => clearTimeout(updateTimeout)
     }
   }, [newNote, noteID, noteCategory, noteContent, noteTitle, notes, setNotes, user.name, category, title, content])
 
