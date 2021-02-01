@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 const StyledBackdrop = styled.div`
-  z-index: 1;
+  z-index: 2;
   position: absolute;
   width: 100%;
   height: 100%;

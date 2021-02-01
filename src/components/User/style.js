@@ -4,7 +4,6 @@ import { Wrapper as AuthWrapper, Input as AuthInput, Submit as AuthSubmit } from
 
 export const Wrapper = styled(AuthWrapper)`
   height: 380px;
-
   animation: showUser 0.25s;
 
   @keyframes showUser {

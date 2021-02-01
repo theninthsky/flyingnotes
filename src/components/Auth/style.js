@@ -4,7 +4,7 @@ import { VIEWPORT_4 } from 'media-queries'
 import { LOG_IN, SIGN_UP } from './constants'
 
 export const Wrapper = styled.div`
-  z-index: 2;
+  z-index: 3;
   position: absolute;
   top: 50%;
   left: 50%;
