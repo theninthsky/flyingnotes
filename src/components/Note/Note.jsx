@@ -148,7 +148,11 @@ const Note = ({
       onSubmit={createNote}
     >
       <If condition={pinned || optionsAreVisible}>
-        <Pin pinned={pinned} src="" onClick={() => setPinned(!pinned)} />
+        <Pin
+          pinned={pinned}
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          onClick={() => setPinned(!pinned)}
+        />
       </If>
 
       <If condition={category || newNote || editMode}>
