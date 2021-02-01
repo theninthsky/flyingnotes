@@ -15,7 +15,7 @@ export const Wrapper = styled.form`
   opacity: ${({ faded }) => (faded ? '0.5' : '1')};
   pointer-events: ${({ faded }) => (faded ? 'none' : 'auto')};
   transition: border-color 0.1s;
-  animation: showNewNote 0.25s;
+  animation: showNote 0.25s;
 
   @media ${NOT_MOBILE} {
     &:hover {
@@ -23,18 +23,31 @@ export const Wrapper = styled.form`
     }
   }
 
-  @keyframes showNewNote {
+  @keyframes showNote {
     from {
       opacity: 0;
-    }
-    to {
-      opacity: 1;
     }
   }
 
   @media ${VIEWPORT_4} {
     width: 400px;
     margin: 15px;
+  }
+`
+export const Pin = styled.img`
+  position: absolute;
+  top: 2.5px;
+  right: 3px;
+  width: 14px;
+  height: 14px;
+  background-image: ${({ pinned }) => (pinned ? `var(--pin-checked-icon)` : `var(--pin-unchecked-icon)`)};
+  cursor: pointer;
+  animation: showPin 0.25s;
+
+  @keyframes showPin {
+    from {
+      opacity: 0;
+    }
   }
 `
 const Input = styled.input`
@@ -58,17 +71,38 @@ export const Category = styled(Input)`
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 3px;
+  animation: showCategory 0.1s;
+
+  @keyframes showCategory {
+    from {
+      max-height: 0;
+    }
+    to {
+      max-height: 20px;
+    }
+  }
 `
 export const Title = styled(Input)`
-  margin: 8px 12px 0;
+  margin: 8px 24px 0;
   padding: 0;
   font-size: 18px;
   font-weight: bold;
+  animation: showTitle 0.1s;
+
+  @keyframes showTitle {
+    from {
+      max-height: 0;
+    }
+    to {
+      max-height: 20px;
+    }
+  }
 `
 export const Content = styled.textarea`
   height: ${({ height }) => height};
   margin: 6px 12px 10px;
-  padding: 0;
+  margin-right: ${({ clipped }) => (clipped ? '24px' : '12px')};
+  padding: 0 5px;
   border: none;
   outline: none;
   resize: none;

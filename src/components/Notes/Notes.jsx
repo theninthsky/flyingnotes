@@ -33,10 +33,10 @@ const Notes = () => {
       notes
         .filter(({ category }) => (!categoryFilter ? true : category === categoryFilter))
         .filter(({ title, content }) => `${title} ${content}`.toLowerCase().includes(searchFilter))
-        .map(({ _id, category, title, content, date }) => (
-          <Note key={_id} _id={_id} category={category} title={title} content={content} date={date} />
+        .map(({ _id, pinned, category, title, content, date }) => (
+          <Note key={_id} _id={_id} pinned={pinned} category={category} title={title} content={content} date={date} />
         )),
-    [notes.length, categoryFilter, searchFilter] // eslint-disable-line
+    [notes, categoryFilter, searchFilter]
   )
 
   return (

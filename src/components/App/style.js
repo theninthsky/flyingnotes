@@ -4,6 +4,10 @@ import arrowLightIcon from 'images/arrow-light.svg'
 import arrowLDarkIcon from 'images/arrow-dark.svg'
 import magnifyingGlassLightIcon from 'images/magnifying-glass-light.svg'
 import magnifyingGlassDarkIcon from 'images/magnifying-glass-dark.svg'
+import pinLightUncheckedIcon from 'images/pin-light-unchecked.svg'
+import pinLightCheckedIcon from 'images/pin-light-checked.svg'
+import pinDarkUncheckedIcon from 'images/pin-dark-unchecked.svg'
+import pinDarkCheckedIcon from 'images/pin-dark-checked.svg'
 
 export const GlobalStyle = createGlobalStyle`
   :root {
@@ -14,6 +18,8 @@ export const GlobalStyle = createGlobalStyle`
     --placeholder-color: #b4b4b4;
     --magnifying-glass-icon: url(${magnifyingGlassDarkIcon});
     --select-arrow-icon: url(${arrowLDarkIcon});
+    --pin-unchecked-icon: url(${pinDarkUncheckedIcon});
+    --pin-checked-icon: url(${pinDarkCheckedIcon});
   }
 
   [data-theme="dark"] {
@@ -24,6 +30,8 @@ export const GlobalStyle = createGlobalStyle`
     --placeholder-color: #787878;
     --magnifying-glass-icon: url(${magnifyingGlassLightIcon});
     --select-arrow-icon: url(${arrowLightIcon});
+    --pin-unchecked-icon: url(${pinLightUncheckedIcon});
+    --pin-checked-icon: url(${pinLightCheckedIcon});
   }
 
   body {

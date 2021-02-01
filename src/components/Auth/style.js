@@ -25,9 +25,6 @@ export const Wrapper = styled.div`
     from {
       opacity: 0;
     }
-    to {
-      opacity: 1;
-    }
   }
 
   @media ${VIEWPORT_4} {

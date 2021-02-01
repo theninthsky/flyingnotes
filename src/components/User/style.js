@@ -4,6 +4,14 @@ import { Wrapper as AuthWrapper, Input as AuthInput, Submit as AuthSubmit } from
 
 export const Wrapper = styled(AuthWrapper)`
   height: 380px;
+
+  animation: showUser 0.25s;
+
+  @keyframes showUser {
+    from {
+      opacity: 0;
+    }
+  }
 `
 export const UserLogo = styled.img`
   margin: 10px auto;

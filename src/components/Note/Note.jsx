@@ -6,11 +6,12 @@ import { userState, notesState } from 'atoms'
 import { CATEGORY, TITLE, SAVE, UPDATE_DEBOUNCE } from './constants'
 import If from 'components/If'
 import Options from 'components/Options'
-import { Wrapper, Category, Title, Content, ConfirmMessage, StyledDate, Save } from './style'
+import { Wrapper, Pin, Category, Title, Content, ConfirmMessage, StyledDate, Save } from './style'
 
 const Note = ({
   newNote,
   _id: noteID,
+  pinned: noteIsPinned = false,
   category: noteCategory = '',
   title: noteTitle = '',
   content: noteContent = '',
@@ -19,6 +20,7 @@ const Note = ({
   const user = useRecoilValue(userState)
   const [notes, setNotes] = useRecoilState(notesState)
 
+  const [pinned, setPinned] = useState(noteIsPinned)
   const [category, setCategory] = useState(noteCategory)
   const [title, setTitle] = useState(noteTitle)
   const [content, setContent] = useState(noteContent)
@@ -34,6 +36,7 @@ const Note = ({
     const updateNote = async () => {
       const note = {
         _id: noteID,
+        pinned,
         category: category.trim(),
         title: title.trim(),
         content
@@ -60,12 +63,26 @@ const Note = ({
       setNotes(notes.map(originalNote => (originalNote._id === noteID ? { ...note, date } : originalNote)))
     }
 
-    if (noteCategory !== category || noteTitle !== title || noteContent !== content) {
+    if (noteIsPinned !== pinned || noteCategory !== category || noteTitle !== title || noteContent !== content) {
       const updateTimeout = setTimeout(updateNote, UPDATE_DEBOUNCE)
 
       return () => clearTimeout(updateTimeout)
     }
-  }, [newNote, noteID, noteCategory, noteContent, noteTitle, notes, setNotes, user.name, category, title, content])
+  }, [
+    newNote,
+    noteID,
+    noteIsPinned,
+    noteCategory,
+    noteContent,
+    noteTitle,
+    notes,
+    setNotes,
+    user.name,
+    pinned,
+    category,
+    title,
+    content
+  ])
 
   const resetNote = () => {
     setCategory('')
@@ -122,6 +139,7 @@ const Note = ({
       onClick={() => setEditMode(true)}
       onMouseMove={() => {
         if (!newNote) setOptionsAreVisible(true)
+        setEditMode(true)
       }}
       onMouseLeave={() => {
         setOptionsAreVisible(confirmMessageIsVisible)
@@ -129,6 +147,10 @@ const Note = ({
       }}
       onSubmit={createNote}
     >
+      <If condition={pinned || optionsAreVisible}>
+        <Pin pinned={pinned} src="" onClick={() => setPinned(!pinned)} />
+      </If>
+
       <If condition={category || newNote || editMode}>
         <Category
           value={category}
@@ -151,6 +173,7 @@ const Note = ({
 
       <Content
         height={`${(content.match(/\n/g) || []).length * 15 + 45}px`}
+        clipped={pinned && !category && !title}
         dir={/^[\u0591-\u07FF\uFB1D-\uFDFD\uFE70-\uFEFC]/.test(content) ? 'rtl' : 'ltr'}
         value={content}
         aria-label="content"

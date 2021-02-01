@@ -27,9 +27,6 @@ export const Wrapper = styled.form`
     from {
       opacity: 0;
     }
-    to {
-      opacity: 1;
-    }
   }
 
   @media ${VIEWPORT_4} {
@@ -143,9 +140,6 @@ export const Delete = styled.img`
   @keyframes showDelete {
     from {
       opacity: 0;
-    }
-    to {
-      opacity: 1;
     }
   }
 `

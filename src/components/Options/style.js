@@ -9,14 +9,11 @@ export const Wrapper = styled.div`
   height: 21.5px;
   border-radius: 4px 4px 0 0;
   background-color: transparent;
-  animation: showOptions 0.5s;
+  animation: showOptions 0.25s;
 
   @keyframes showOptions {
     from {
       opacity: 0;
-    }
-    to {
-      opacity: 1;
     }
   }
 `
