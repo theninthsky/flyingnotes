@@ -93,6 +93,8 @@ const Note = ({
 
     const date = Date.now()
 
+    setEditMode(false)
+    setOptionsAreVisible(false)
     setDate(date)
     setNotes(notes.map(originalNote => (originalNote._id === noteID ? { ...note, date } : originalNote)))
   }
