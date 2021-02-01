@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { ws } from 'websocket-connection'
@@ -29,6 +29,14 @@ const Note = ({
   const [optionsAreVisible, setOptionsAreVisible] = useState(false)
   const [confirmMessageIsVisible, setConfirmMessageIsVisible] = useState(false)
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    setPinned(noteIsPinned)
+    setCategory(noteCategory)
+    setTitle(noteTitle)
+    setContent(noteContent)
+    setDate(noteDate)
+  }, [noteIsPinned, noteCategory, noteTitle, noteContent, noteDate])
 
   const resetNote = () => {
     setCategory('')
