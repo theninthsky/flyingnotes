@@ -19,7 +19,7 @@ export const createWebSocketConnection = () => {
 
       const { userID } = await res.json()
 
-      ws = new ReconnectingWebSocket(REACT_APP_WS_SERVER_URL)
+      ws = new ReconnectingWebSocket(`${REACT_APP_WS_SERVER_URL}?${localStorage.token}`)
 
       ws.onopen = resolve
 
