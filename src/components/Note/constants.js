@@ -1,5 +1,4 @@
 export const CATEGORY = 'CATEGORY'
 export const TITLE = 'Title'
 export const SAVE = 'SAVE'
-
-export const UPDATE_DEBOUNCE = 2000
+export const DELETE_MESSAGE = 'Delete this note?'

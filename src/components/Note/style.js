@@ -136,26 +136,19 @@ export const Content = styled.textarea`
   }
 `
 export const ConfirmMessage = styled.div`
-  padding: 2.5px 0;
+  padding: 3px 0;
   text-align: center;
-  font-size: 12px;
+  font-size: 14px;
   color: inherit;
-
-  @media ${VIEWPORT_4} {
-    font-size: 14px;
-  }
 `
 export const StyledDate = styled.div`
-  padding: 2.5px 0;
+  padding: 3px 0;
   text-align: center;
-  font-size: 12px;
+  font-size: 14px;
   color: rgb(160, 160, 160);
-
-  @media ${VIEWPORT_4} {
-    font-size: 14px;
-  }
 `
 export const Save = styled.input`
+  z-index: 1;
   margin: 0 auto;
   padding: 4px 20px;
   border: 1px solid var(--secondary-color);
@@ -171,7 +164,9 @@ export const Save = styled.input`
   font-weight: 500;
   cursor: pointer;
 
-  &:hover {
-    opacity: 0.75;
+  @media ${NOT_MOBILE} {
+    &:hover {
+      opacity: 0.75;
+    }
   }
 `

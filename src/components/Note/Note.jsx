@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { ws } from 'websocket-connection'
 import { userState, notesState } from 'atoms'
-import { CATEGORY, TITLE, SAVE, UPDATE_DEBOUNCE } from './constants'
+import { CATEGORY, TITLE, SAVE, DELETE_MESSAGE } from './constants'
 import If from 'components/If'
 import Options from 'components/Options'
 import { Wrapper, Pin, Category, Title, Content, ConfirmMessage, StyledDate, Save } from './style'
@@ -29,60 +29,6 @@ const Note = ({
   const [optionsAreVisible, setOptionsAreVisible] = useState(false)
   const [confirmMessageIsVisible, setConfirmMessageIsVisible] = useState(false)
   const [loading, setLoading] = useState(false)
-
-  useEffect(() => {
-    if (newNote) return
-
-    const updateNote = async () => {
-      const note = {
-        _id: noteID,
-        pinned,
-        category: category.trim(),
-        title: title.trim(),
-        content
-      }
-      let updatedNote
-
-      if (user.name) {
-        updatedNote = (await ws.json({ type: 'updateNote', updatedNote: note })).updatedNote
-        localStorage.setItem(
-          'userNotes',
-          JSON.stringify(notes.map(note => (note._id === updatedNote._id ? updatedNote : note)))
-        )
-      } else {
-        updatedNote = { ...note, date: Date.now() }
-        localStorage.setItem(
-          'notes',
-          JSON.stringify(notes.map(note => (note._id === updatedNote._id ? updatedNote : note)))
-        )
-      }
-
-      const date = Date.now()
-
-      setDate(date)
-      setNotes(notes.map(originalNote => (originalNote._id === noteID ? { ...note, date } : originalNote)))
-    }
-
-    if (noteIsPinned !== pinned || noteCategory !== category || noteTitle !== title || noteContent !== content) {
-      const updateTimeout = setTimeout(updateNote, UPDATE_DEBOUNCE)
-
-      return () => clearTimeout(updateTimeout)
-    }
-  }, [
-    newNote,
-    noteID,
-    noteIsPinned,
-    noteCategory,
-    noteContent,
-    noteTitle,
-    notes,
-    setNotes,
-    user.name,
-    pinned,
-    category,
-    title,
-    content
-  ])
 
   const resetNote = () => {
     setCategory('')
@@ -115,6 +61,42 @@ const Note = ({
     resetNote()
   }
 
+  const updateNote = async event => {
+    event.preventDefault()
+
+    const note = {
+      _id: noteID,
+      pinned,
+      category: category.trim(),
+      title: title.trim(),
+      content
+    }
+    let updatedNote
+
+    if (user.name) {
+      setLoading(true)
+
+      updatedNote = (await ws.json({ type: 'updateNote', updatedNote: note })).updatedNote
+      localStorage.setItem(
+        'userNotes',
+        JSON.stringify(notes.map(note => (note._id === updatedNote._id ? updatedNote : note)))
+      )
+
+      setLoading(false)
+    } else {
+      updatedNote = { ...note, date: Date.now() }
+      localStorage.setItem(
+        'notes',
+        JSON.stringify(notes.map(note => (note._id === updatedNote._id ? updatedNote : note)))
+      )
+    }
+
+    const date = Date.now()
+
+    setDate(date)
+    setNotes(notes.map(originalNote => (originalNote._id === noteID ? { ...note, date } : originalNote)))
+  }
+
   const deleteNote = async () => {
     if (user.name) {
       setLoading(true)
@@ -145,7 +127,7 @@ const Note = ({
         setOptionsAreVisible(confirmMessageIsVisible)
         setEditMode(false)
       }}
-      onSubmit={createNote}
+      onSubmit={newNote ? createNote : updateNote}
     >
       <If condition={pinned || optionsAreVisible}>
         <Pin
@@ -189,10 +171,10 @@ const Note = ({
         <Options onDelete={deleteNote} toggleConfirmMessage={mode => setConfirmMessageIsVisible(mode)} />
       </If>
 
-      {newNote ? (
+      {confirmMessageIsVisible ? (
+        <ConfirmMessage>{DELETE_MESSAGE}</ConfirmMessage>
+      ) : newNote || editMode ? (
         <Save type="submit" value={SAVE} aria-label="save" />
-      ) : confirmMessageIsVisible ? (
-        <ConfirmMessage>Delete this note?</ConfirmMessage>
       ) : (
         <StyledDate>{new Date(date).toLocaleString('en-GB').replace(',', '').slice(0, -3)}</StyledDate>
       )}
