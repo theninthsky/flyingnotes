@@ -39,6 +39,7 @@ const Note = ({
   }, [noteIsPinned, noteCategory, noteTitle, noteContent, noteDate])
 
   const resetNote = () => {
+    setPinned(false)
     setCategory('')
     setTitle('')
     setContent('')
@@ -48,6 +49,7 @@ const Note = ({
     event.preventDefault()
 
     const note = {
+      pinned,
       category: category.trim(),
       title: title.trim(),
       content
@@ -139,7 +141,7 @@ const Note = ({
       }}
       onSubmit={newNote ? createNote : updateNote}
     >
-      <If condition={pinned || optionsAreVisible}>
+      <If condition={newNote || pinned || optionsAreVisible}>
         <Pin
           pinned={pinned}
           src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
