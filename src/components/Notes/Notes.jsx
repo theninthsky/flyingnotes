@@ -4,6 +4,7 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 import { createWebSocketConnection, ws } from 'websocket-connection'
 import { userState } from 'atoms'
 import { notesSelector, categoriesSelector } from 'selectors'
+import { RENDER_LIMIT, REMOVE_RENDER_LIMIT_TIMEOUT } from './constants'
 import Note from 'components/Note'
 import { Filters, CategoryFilter, SearchFilter, SearchBox, NotesWrap } from './style'
 
@@ -14,6 +15,13 @@ const Notes = () => {
 
   const [categoryFilter, setCategoryFilter] = useState('')
   const [searchFilter, setSearchFilter] = useState('')
+  const [renderLimit, setRenderLimit] = useState(RENDER_LIMIT)
+
+  useEffect(() => {
+    const renderLimitTimeout = setTimeout(() => setRenderLimit(Infinity), REMOVE_RENDER_LIMIT_TIMEOUT)
+
+    return () => clearTimeout(renderLimitTimeout)
+  }, [])
 
   useEffect(() => {
     const getNotes = async () => {
@@ -64,7 +72,7 @@ const Notes = () => {
 
       <NotesWrap>
         <Note newNote />
-        {filteredNotes}
+        {filteredNotes.slice(0, renderLimit)}
       </NotesWrap>
     </>
   )
