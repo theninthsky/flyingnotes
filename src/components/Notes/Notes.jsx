@@ -2,9 +2,10 @@ import { useState, useEffect, useMemo } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { createWebSocketConnection, ws } from 'websocket-connection'
+import { ANIMATION_DURATION } from 'media-queries'
 import { userState } from 'atoms'
 import { notesSelector, categoriesSelector } from 'selectors'
-import { RENDER_LIMIT, REMOVE_RENDER_LIMIT_TIMEOUT } from './constants'
+import { RENDER_LIMIT } from './constants'
 import Note from 'components/Note'
 import { Filters, CategoryFilter, SearchFilter, SearchBox, NotesWrap } from './style'
 
@@ -18,7 +19,7 @@ const Notes = () => {
   const [renderLimit, setRenderLimit] = useState(RENDER_LIMIT)
 
   useEffect(() => {
-    const renderLimitTimeout = setTimeout(() => setRenderLimit(Infinity), REMOVE_RENDER_LIMIT_TIMEOUT)
+    const renderLimitTimeout = setTimeout(() => setRenderLimit(Infinity), ANIMATION_DURATION)
 
     return () => clearTimeout(renderLimitTimeout)
   }, [])

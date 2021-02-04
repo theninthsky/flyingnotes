@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { NOT_MOBILE } from 'media-queries'
+import { NOT_MOBILE, ANIMATION_DURATION } from 'media-queries'
 
 export const Wrapper = styled.div`
   position: absolute;
@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
   height: 21.5px;
   border-radius: 4px 4px 0 0;
   background-color: transparent;
-  animation: showOptions 0.25s;
+  animation: showOptions ${ANIMATION_DURATION}ms;
 
   @keyframes showOptions {
     from {

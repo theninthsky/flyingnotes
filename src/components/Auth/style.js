@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { VIEWPORT_4 } from 'media-queries'
+import { VIEWPORT_4, ANIMATION_DURATION } from 'media-queries'
 import { LOG_IN, SIGN_UP } from './constants'
 
 export const Wrapper = styled.div`
@@ -19,7 +19,7 @@ export const Wrapper = styled.div`
   border-radius: 4px;
   box-sizing: border-box;
   background-color: var(--primary-color);
-  animation: showAuth 0.25s;
+  animation: showAuth ${ANIMATION_DURATION}ms;
 
   @keyframes showAuth {
     from {

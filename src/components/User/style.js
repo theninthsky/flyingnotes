@@ -1,10 +1,11 @@
 import styled from 'styled-components'
 
+import { ANIMATION_DURATION } from 'media-queries'
 import { Wrapper as AuthWrapper, Input as AuthInput, Submit as AuthSubmit } from 'components/Auth/style'
 
 export const Wrapper = styled(AuthWrapper)`
   height: 380px;
-  animation: showUser 0.25s;
+  animation: showUser ${ANIMATION_DURATION}ms;
 
   @keyframes showUser {
     from {

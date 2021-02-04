@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { VIEWPORT_4, NOT_MOBILE } from 'media-queries'
+import { VIEWPORT_4, NOT_MOBILE, ANIMATION_DURATION } from 'media-queries'
 
 export const Wrapper = styled.form`
   position: relative;
@@ -15,7 +15,7 @@ export const Wrapper = styled.form`
   opacity: ${({ faded }) => (faded ? '0.5' : '1')};
   pointer-events: ${({ faded }) => (faded ? 'none' : 'auto')};
   transition: border-color 0.1s;
-  animation: showNote 0.25s;
+  animation: showNote ${ANIMATION_DURATION}ms;
 
   @media ${NOT_MOBILE} {
     &:hover {
@@ -42,7 +42,7 @@ export const Pin = styled.img`
   height: 14px;
   background-image: ${({ pinned }) => (pinned ? `var(--pin-checked-icon)` : `var(--pin-unchecked-icon)`)};
   cursor: pointer;
-  animation: showPin 0.25s;
+  animation: showPin ${ANIMATION_DURATION}ms;
 
   @keyframes showPin {
     from {
