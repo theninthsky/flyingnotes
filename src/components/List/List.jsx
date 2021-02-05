@@ -197,7 +197,7 @@ const List = ({
               onKeyDown={event => handleBackspacePress(event, ind)}
               onKeyUp={event => handleEnterPress(event, ind)}
               onBlur={() => {
-                if (!value) setItems(prevItems => prevItems.filter((_, index) => index !== ind))
+                if (!value && items.length > 1) setItems(prevItems => prevItems.filter((_, index) => index !== ind))
               }}
             />
           </Item>
