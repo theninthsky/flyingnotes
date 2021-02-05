@@ -11,6 +11,7 @@ import NavigationBar from 'components/NavigationBar'
 import Auth from 'components/Auth'
 import User from 'components/User'
 import Notes from 'components/Notes'
+import Lists from 'components/Lists'
 import Files from 'components/Files'
 import Alert from 'components/Alert'
 import { GlobalStyle, Heading } from './style'
@@ -67,6 +68,14 @@ const App = () => {
           </Helmet>
           <Heading>Notes</Heading>
           <Notes />
+        </Route>
+
+        <Route exact path="/lists">
+          <Helmet>
+            <title>My Lists</title>
+          </Helmet>
+          <Heading>Lists</Heading>
+          <Lists />
         </Route>
 
         <Route path="/files">

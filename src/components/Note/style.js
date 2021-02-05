@@ -9,19 +9,13 @@ export const Wrapper = styled.form`
   width: 100%;
   max-height: 250px;
   margin: 10px 0;
-  border: 1px solid var(--secondary-color);
+  border: ${({ focused }) => `1px solid ${focused ? '#b4b4b4' : 'var(--secondary-color)'}`};
   border-radius: 4px;
   background-color: var(--primary-color);
   opacity: ${({ faded }) => (faded ? '0.5' : '1')};
   pointer-events: ${({ faded }) => (faded ? 'none' : 'auto')};
   transition: border-color 0.1s;
   animation: showNote ${ANIMATION_DURATION}ms;
-
-  @media ${NOT_MOBILE} {
-    &:hover {
-      border-color: #b4b4b4;
-    }
-  }
 
   @keyframes showNote {
     from {

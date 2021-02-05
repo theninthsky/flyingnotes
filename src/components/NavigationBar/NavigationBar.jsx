@@ -37,6 +37,10 @@ const NavigationBar = () => {
             Notes
           </StyledNavLink>
 
+          <StyledNavLink exact to="/lists">
+            Lists
+          </StyledNavLink>
+
           {user.name && (
             <StyledNavLink exact to="/files">
               Files

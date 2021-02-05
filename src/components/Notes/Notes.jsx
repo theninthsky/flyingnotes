@@ -19,7 +19,7 @@ const Notes = () => {
   const [renderLimit, setRenderLimit] = useState(RENDER_LIMIT)
 
   useEffect(() => {
-    const renderLimitTimeout = setTimeout(() => setRenderLimit(Infinity), ANIMATION_DURATION)
+    const renderLimitTimeout = setTimeout(() => setRenderLimit(Infinity), ANIMATION_DURATION + 50)
 
     return () => clearTimeout(renderLimitTimeout)
   }, [])

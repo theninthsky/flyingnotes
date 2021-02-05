@@ -3,6 +3,7 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { ws } from 'websocket-connection'
 import { userState, notesState } from 'atoms'
+import { RTL_REGEX } from 'global-constants'
 import { CATEGORY, TITLE, SAVE, DELETE_MESSAGE } from './constants'
 import If from 'components/If'
 import Options from 'components/Options'
@@ -52,7 +53,7 @@ const Note = ({
       pinned,
       category: category.trim(),
       title: title.trim(),
-      content
+      content: content.trim()
     }
     let savedNote
 
@@ -79,7 +80,7 @@ const Note = ({
       pinned,
       category: category.trim(),
       title: title.trim(),
-      content
+      content: content.trim()
     }
     let updatedNote
 
@@ -129,9 +130,9 @@ const Note = ({
   return (
     <Wrapper
       faded={loading}
+      focused={editMode}
       autoComplete="off"
-      onClick={() => setEditMode(true)}
-      onMouseMove={() => {
+      onClick={() => {
         if (!newNote) setOptionsAreVisible(true)
         setEditMode(true)
       }}
@@ -172,7 +173,7 @@ const Note = ({
       <Content
         height={`${(content.match(/\n/g) || []).length * 15 + 45}px`}
         clipped={pinned && !category && !title}
-        dir={/^[\u0591-\u07FF\uFB1D-\uFDFD\uFE70-\uFEFC]/.test(content) ? 'rtl' : 'ltr'}
+        dir={RTL_REGEX.test(content) ? 'rtl' : 'ltr'}
         value={content}
         aria-label="content"
         required
