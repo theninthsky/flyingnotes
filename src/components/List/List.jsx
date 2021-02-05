@@ -49,6 +49,8 @@ const List = ({
 
   const handleBackspacePress = (event, index) => {
     if ((event.key === 'Backspace' || event.key === 'Delete') && items.length > 1 && !items[index].value) {
+      event.preventDefault()
+
       setItems(prevItems => prevItems.filter((_, ind) => ind !== index))
 
       const items = contentRef.current.childNodes
