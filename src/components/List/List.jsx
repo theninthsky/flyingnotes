@@ -34,7 +34,9 @@ const List = ({
   const contentRef = useRef()
 
   const handleEnterPress = (event, index) => {
-    if (event.key === 'Enter' && event.target.value) {
+    const { value } = event.target
+
+    if ((event.code === 'Enter' && value) || (event.code === 'Space' && value[value.length - 2] === ' ')) {
       setItems(prevItems => [...prevItems.slice(0, index + 1), emptyItem, ...prevItems.slice(index + 1)])
 
       const items = contentRef.current.childNodes
@@ -45,7 +47,7 @@ const List = ({
   }
 
   const handleBackspacePress = (event, index) => {
-    if ((event.key === 'Backspace' || event.key === 'Delete') && items.length > 1 && !items[index].value) {
+    if ((event.code === 'Backspace' || event.code === 'Delete') && items.length > 1 && !items[index].value) {
       event.preventDefault()
 
       setItems(prevItems => prevItems.filter((_, ind) => ind !== index))
