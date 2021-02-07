@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { ws } from 'websocket-connection'
@@ -33,10 +33,17 @@ const List = ({
 
   const contentRef = useRef()
 
+  useEffect(() => {
+    setPinned(listIsPinned)
+    setTitle(listTitle)
+    setItems(listItems)
+    setDate(listDate)
+  }, [listIsPinned, listTitle, listItems, listDate])
+
   const handleEnterPress = (event, index) => {
     const { value } = event.target
 
-    if ((event.code === 'Enter' && value) || (event.code === 'Space' && value[value.length - 2] === ' ')) {
+    if (event.key === 'Enter' && value) {
       setItems(prevItems => [...prevItems.slice(0, index + 1), emptyItem, ...prevItems.slice(index + 1)])
 
       const items = contentRef.current.childNodes
@@ -47,7 +54,7 @@ const List = ({
   }
 
   const handleBackspacePress = (event, index) => {
-    if ((event.code === 'Backspace' || event.code === 'Delete') && items.length > 1 && !items[index].value) {
+    if ((event.key === 'Backspace' || event.key === 'Delete') && items.length > 1 && !items[index].value) {
       event.preventDefault()
 
       setItems(prevItems => prevItems.filter((_, ind) => ind !== index))
@@ -82,7 +89,7 @@ const List = ({
     const list = {
       pinned,
       title: title.trim(),
-      items // trim values
+      items: items.map(item => ({ ...item, value: item.value.trim() }))
     }
     let savedList
 
@@ -108,7 +115,7 @@ const List = ({
       _id: listID,
       pinned,
       title: title.trim(),
-      items // trim values
+      items: items.map(item => ({ ...item, value: item.value.trim() }))
     }
     let updatedList
 
