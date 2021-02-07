@@ -1,16 +1,13 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { ws } from 'websocket-connection'
 import { userState, listsState } from 'atoms'
-import { RTL_REGEX } from 'global-constants'
+import { RTL_REGEX, EMPTY_IMAGE } from 'global-constants'
 import { TITLE, SAVE, DELETE_MESSAGE } from './constants'
 import If from 'components/If'
 import Options from 'components/Options'
 import { Wrapper, Pin, Title, Content, Item, Checked, Value, ConfirmMessage, StyledDate, Save } from './style'
-
-import checkedIcon from 'images/confirm.svg'
-import uncheckedIcon from 'images/cancel.svg'
 
 const emptyItem = { value: '', checked: false }
 
@@ -60,10 +57,21 @@ const List = ({
     }
   }
 
+  const checkItem = ind => {
+    if (!items[ind].value) return
+
+    setItems(prevItems => {
+      const item = prevItems[ind]
+      const otherItems = items.filter((_, index) => index !== ind)
+
+      return item.checked ? [{ ...item, checked: false }, ...otherItems] : [...otherItems, { ...item, checked: true }]
+    })
+  }
+
   const resetList = () => {
     setPinned(false)
     setTitle('')
-    setItems([])
+    setItems([emptyItem])
   }
 
   const createList = async event => {
@@ -164,11 +172,7 @@ const List = ({
       onSubmit={newList ? createList : updateList}
     >
       <If condition={newList || pinned || optionsAreVisible}>
-        <Pin
-          pinned={pinned}
-          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-          onClick={() => setPinned(!pinned)}
-        />
+        <Pin pinned={pinned} src={EMPTY_IMAGE} onClick={() => setPinned(!pinned)} />
       </If>
 
       <If condition={title || newList || editMode}>
@@ -182,26 +186,30 @@ const List = ({
       </If>
 
       <Content as="div" clipped={pinned && !title} ref={contentRef} aria-label="content">
-        {items.map(({ value, checked }, ind) => (
-          <Item key={ind}>
-            <Checked src={checked ? checkedIcon : uncheckedIcon} />
+        {[...items]
+          .sort((a, b) => a.checked - b.checked)
+          .map(({ value, checked }, ind) => (
+            <Item key={ind}>
+              <Checked checked={checked} src={EMPTY_IMAGE} onClick={() => checkItem(ind)} />
 
-            <Value
-              dir={RTL_REGEX.test(value) ? 'rtl' : 'ltr'}
-              value={value}
-              onChange={event =>
-                setItems(prevItems =>
-                  prevItems.map((item, index) => (index === ind ? { ...item, value: event.target.value } : item))
-                )
-              }
-              onKeyDown={event => handleBackspacePress(event, ind)}
-              onKeyUp={event => handleEnterPress(event, ind)}
-              onBlur={() => {
-                if (!value && items.length > 1) setItems(prevItems => prevItems.filter((_, index) => index !== ind))
-              }}
-            />
-          </Item>
-        ))}
+              <Value
+                dir={RTL_REGEX.test(value) ? 'rtl' : 'ltr'}
+                value={value}
+                disabled={checked}
+                required
+                onChange={event =>
+                  setItems(prevItems =>
+                    prevItems.map((item, index) => (index === ind ? { ...item, value: event.target.value } : item))
+                  )
+                }
+                onKeyDown={event => handleBackspacePress(event, ind)}
+                onKeyUp={event => handleEnterPress(event, ind)}
+                onBlur={() => {
+                  if (!value && items.length > 1) setItems(prevItems => prevItems.filter((_, index) => index !== ind))
+                }}
+              />
+            </Item>
+          ))}
       </Content>
 
       <If condition={optionsAreVisible}>

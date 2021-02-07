@@ -31,26 +31,14 @@ const Lists = () => {
       localStorage.userLists = JSON.stringify(lists)
     }
 
-    //if (user.name) getLists()
+    if (user.name) getLists()
   }, [user.name, setLists])
-
-  const dummyLists = [
-    {
-      _id: '4234235235',
-      pinned: true,
-      title: 'קניות',
-      items: [
-        { value: 'מלפפון', checked: true },
-        { value: 'עגבנייה', checked: false }
-      ]
-    }
-  ]
 
   return (
     <ListsWrap>
       <List newList />
-      {dummyLists.slice(0, renderLimit).map(({ _id, pinned, title, items }) => (
-        <List key={_id} id={_id} pinned={pinned} title={title} items={items} date={Date.now()} />
+      {lists.slice(0, renderLimit).map(({ _id, pinned, title, items }) => (
+        <List key={_id} _id={_id} pinned={pinned} title={title} items={items} date={Date.now()} />
       ))}
     </ListsWrap>
   )

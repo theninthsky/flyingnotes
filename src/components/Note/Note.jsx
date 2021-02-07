@@ -3,7 +3,7 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { ws } from 'websocket-connection'
 import { userState, notesState } from 'atoms'
-import { RTL_REGEX } from 'global-constants'
+import { RTL_REGEX, EMPTY_IMAGE } from 'global-constants'
 import { CATEGORY, TITLE, SAVE, DELETE_MESSAGE } from './constants'
 import If from 'components/If'
 import Options from 'components/Options'
@@ -143,11 +143,7 @@ const Note = ({
       onSubmit={newNote ? createNote : updateNote}
     >
       <If condition={newNote || pinned || optionsAreVisible}>
-        <Pin
-          pinned={pinned}
-          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-          onClick={() => setPinned(!pinned)}
-        />
+        <Pin pinned={pinned} src={EMPTY_IMAGE} onClick={() => setPinned(!pinned)} />
       </If>
 
       <If condition={category || newNote || editMode}>

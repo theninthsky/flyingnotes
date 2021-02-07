@@ -35,6 +35,7 @@ export const Pin = styled.img`
   width: 14px;
   height: 14px;
   background-image: ${({ pinned }) => (pinned ? `var(--pin-checked-icon)` : `var(--pin-unchecked-icon)`)};
+  background-repeat: no-repeat;
   cursor: pointer;
   animation: showPin ${ANIMATION_DURATION}ms;
 
@@ -111,7 +112,7 @@ export const Content = styled.textarea`
     overflow: hidden;
 
     &:hover {
-      overflow: scroll;
+      overflow: auto;
     }
 
     &::-webkit-scrollbar {

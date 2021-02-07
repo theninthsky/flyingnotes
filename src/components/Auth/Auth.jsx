@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useSetRecoilState } from 'recoil'
 
-import { authIsVisibleState, userState, notesState } from 'atoms'
+import { authIsVisibleState, userState, notesState, listsState } from 'atoms'
 import { SIGN_UP, LOG_IN } from './constants'
 import { safari } from 'util/user-agent'
 import If from 'components/If'
@@ -14,6 +14,7 @@ const Auth = () => {
   const setUser = useSetRecoilState(userState)
   const setAuthIsVisible = useSetRecoilState(authIsVisibleState)
   const setNotes = useSetRecoilState(notesState)
+  const setLists = useSetRecoilState(listsState)
 
   const [action, setAction] = useState(LOG_IN)
   const [name, setName] = useState('')
@@ -32,11 +33,13 @@ const Auth = () => {
     setError()
     setLoading(true)
 
+    const localNotes = localStorage.notes ? JSON.parse(localStorage.notes) : []
+    const localLists = localStorage.lists ? JSON.parse(localStorage.lists) : []
+
     const body = JSON.stringify({
       ...credentials,
-      notes: localStorage.notes
-        ? JSON.parse(localStorage.notes).map(note => ({ ...note, _id: null })) // _id is removed to prevent ObjectId errors on server side
-        : []
+      notes: localNotes,
+      lists: localLists
     })
 
     const res = await fetch(`${REACT_APP_SERVER_URL}/register`, {
@@ -46,7 +49,7 @@ const Auth = () => {
       body
     })
 
-    const { name, notes, token, err } = await res.json()
+    const { name, notes, lists, token, err } = await res.json()
 
     if (err) {
       setError(err)
@@ -55,11 +58,14 @@ const Auth = () => {
 
     localStorage.clear()
     localStorage.setItem('user', name)
+    localStorage.setItem('userNotes', JSON.stringify(notes))
+    localStorage.setItem('userLists', JSON.stringify(lists))
 
     if (safari) localStorage.setItem('token', token)
 
     setUser({ name })
     setNotes(notes)
+    setLists(lists)
     setAuthIsVisible(false)
   }
 
@@ -76,7 +82,7 @@ const Auth = () => {
       body
     })
 
-    const { name, notes, token, err } = await res.json()
+    const { name, notes, lists, token, err } = await res.json()
 
     if (err) {
       setError(err)
@@ -84,12 +90,14 @@ const Auth = () => {
     }
 
     localStorage.setItem('user', name)
-    localStorage.userNotes = JSON.stringify(notes)
+    localStorage.setItem('userNotes', JSON.stringify(notes))
+    localStorage.setItem('userLists', JSON.stringify(lists))
 
     if (safari) localStorage.setItem('token', token)
 
     setUser({ name })
     setNotes(notes)
+    setLists(lists)
     setAuthIsVisible(false)
   }
 

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useRecoilState, useSetRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 
 import { ws } from 'websocket-connection'
-import { themeState, authIsVisibleState, userState, notesState, filesState } from 'atoms'
+import { themeState, authIsVisibleState, userState, notesState, listsState, filesState } from 'atoms'
 import { LOGOUT } from './constants'
 import If from 'components/If'
 import { Backdrop } from 'components/UI'
@@ -17,6 +17,7 @@ const User = () => {
   const [user, setUser] = useRecoilState(userState)
   const resetAuthIsVisible = useResetRecoilState(authIsVisibleState)
   const setNotes = useSetRecoilState(notesState)
+  const setLists = useSetRecoilState(listsState)
   const resetFiles = useResetRecoilState(filesState)
 
   const [name, setName] = useState(user.name)
@@ -61,10 +62,12 @@ const User = () => {
 
       localStorage.removeItem('user')
       localStorage.removeItem('userNotes')
+      localStorage.removeItem('userLists')
       localStorage.removeItem('token')
 
       setUser({ name: null })
       setNotes(JSON.parse(localStorage.notes || '[]'))
+      setLists(JSON.parse(localStorage.lists || '[]'))
       resetFiles()
       resetAuthIsVisible(false)
 

@@ -19,19 +19,22 @@ export const Title = styled(NoteTitle)``
 
 export const Content = styled(NoteContent)`
   min-height: 100px;
+  overflow: auto;
 `
 export const Item = styled.div`
   display: flex;
-  opacity: ${({ faded }) => (faded ? '0.5' : '1')};
 `
 export const Checked = styled.img`
-  width: 14px;
-  margin-right: 20px;
+  width: 20px;
+  margin-top: 10px;
+  background-image: ${({ checked }) => (checked ? `var(--item-checked-icon)` : `var(--item-unchecked-icon)`)};
+  background-repeat: no-repeat;
+  cursor: pointer;
 `
 export const Value = styled.input`
   display: block;
-  width: 96%;
-  margin: 10px auto;
+  width: 84%;
+  margin: 10px;
   border: none;
   border-bottom: 1px solid var(--secondary-color);
   outline: none;

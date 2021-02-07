@@ -4,10 +4,14 @@ import arrowLightIcon from 'images/arrow-light.svg'
 import arrowLDarkIcon from 'images/arrow-dark.svg'
 import magnifyingGlassLightIcon from 'images/magnifying-glass-light.svg'
 import magnifyingGlassDarkIcon from 'images/magnifying-glass-dark.svg'
-import pinLightUncheckedIcon from 'images/pin-light-unchecked.svg'
-import pinLightCheckedIcon from 'images/pin-light-checked.svg'
-import pinDarkUncheckedIcon from 'images/pin-dark-unchecked.svg'
-import pinDarkCheckedIcon from 'images/pin-dark-checked.svg'
+import pinUncheckedLightIcon from 'images/pin-unchecked-light.svg'
+import pinCheckedLightIcon from 'images/pin-checked-light.svg'
+import pinUncheckedDarkIcon from 'images/pin-unchecked-dark.svg'
+import pinCheckedDarkIcon from 'images/pin-checked-dark.svg'
+import itemUncheckedLightIcon from 'images/item-unchecked-light.svg'
+import itemCheckedLightIcon from 'images/item-checked-light.svg'
+import itemUncheckedDarkIcon from 'images/item-unchecked-dark.svg'
+import itemCheckedDarkIcon from 'images/item-checked-dark.svg'
 
 export const GlobalStyle = createGlobalStyle`
   :root {
@@ -18,8 +22,10 @@ export const GlobalStyle = createGlobalStyle`
     --placeholder-color: #b4b4b4;
     --magnifying-glass-icon: url(${magnifyingGlassDarkIcon});
     --select-arrow-icon: url(${arrowLDarkIcon});
-    --pin-unchecked-icon: url(${pinDarkUncheckedIcon});
-    --pin-checked-icon: url(${pinDarkCheckedIcon});
+    --pin-unchecked-icon: url(${pinUncheckedDarkIcon});
+    --pin-checked-icon: url(${pinCheckedDarkIcon});
+    --item-unchecked-icon: url(${itemUncheckedDarkIcon});
+    --item-checked-icon: url(${itemCheckedDarkIcon});
   }
 
   [data-theme="dark"] {
@@ -30,8 +36,10 @@ export const GlobalStyle = createGlobalStyle`
     --placeholder-color: #787878;
     --magnifying-glass-icon: url(${magnifyingGlassLightIcon});
     --select-arrow-icon: url(${arrowLightIcon});
-    --pin-unchecked-icon: url(${pinLightUncheckedIcon});
-    --pin-checked-icon: url(${pinLightCheckedIcon});
+    --pin-unchecked-icon: url(${pinUncheckedLightIcon});
+    --pin-checked-icon: url(${pinCheckedLightIcon});
+    --item-unchecked-icon: url(${itemUncheckedLightIcon});
+    --item-checked-icon: url(${itemCheckedLightIcon});
   }
 
   body {
