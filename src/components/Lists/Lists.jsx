@@ -36,7 +36,7 @@ const Lists = () => {
 
   return (
     <ListsWrap>
-      <List newList />
+      <List newList items={[{ value: '', checked: false }]} />
       {lists.slice(0, renderLimit).map(({ _id, pinned, title, items }) => (
         <List key={_id} _id={_id} pinned={pinned} title={title} items={items} date={Date.now()} />
       ))}

@@ -16,7 +16,7 @@ const List = ({
   _id: listID,
   pinned: listIsPinned = false,
   title: listTitle = '',
-  items: listItems = [emptyItem],
+  items: listItems,
   date: listDate
 }) => {
   const user = useRecoilValue(userState)
