@@ -61,7 +61,6 @@ export const Category = styled(Input)`
   padding: 4px;
   border-bottom: 1px solid var(--secondary-color);
   background-color: var(--secondary-color);
-  border-radius: 4px 4px 0 0;
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 3px;

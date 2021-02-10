@@ -1,6 +1,8 @@
 # Flying Notes Client
 
-![Notes](src/images/notes.jpg)
+![Notes](src/images/notes-screenshot.png) ![Lists](src/images/lists-screenshot.png)
+
+The app is deployed here: https://flyingnotes.netlify.app/
 
 ## Environment Variables
 
