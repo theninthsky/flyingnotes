@@ -194,7 +194,16 @@ const List = ({ newList, _id: listID, pinned = false, title: listTitle = '', ite
     setLists(lists.filter(({ _id }) => _id !== listID))
   }
 
-  const listChanged = title !== listTitle || items.some(({ value }, index) => value !== listItems[index]?.value)
+  const originalItems = [...listItems]
+    .sort((a, b) => a.value.localeCompare(b.value))
+    .map(({ value }) => value)
+    .toString()
+  const currentItems = [...items]
+    .sort((a, b) => a.value.localeCompare(b.value))
+    .map(({ value }) => value)
+    .toString()
+
+  const listChanged = title !== listTitle || originalItems !== currentItems
 
   return (
     <Wrapper
