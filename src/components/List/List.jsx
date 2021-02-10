@@ -234,7 +234,18 @@ const List = ({ newList, _id: listID, pinned = false, title: listTitle = '', ite
         />
       </If>
 
-      <Content as="div" clipped={pinned && !title} ref={contentRef} aria-label="content">
+      <Content
+        as="div"
+        clipped={pinned && !title}
+        ref={contentRef}
+        aria-label="content"
+        onClick={() => {
+          if (items.every(({ checked }) => checked)) {
+            setItems([emptyItem, ...items])
+            setTimeout(() => contentRef.current.childNodes[0].childNodes[1].focus())
+          }
+        }}
+      >
         {[...items]
           .sort((a, b) => a.checked - b.checked)
           .map(({ value, checked }, ind) => (
