@@ -1,16 +1,17 @@
 import styled from 'styled-components'
 
-export const Wrapper = styled.button`
+export const Wrapper = styled.div`
   z-index: 1;
   position: sticky;
   top: 0;
   width: 100%;
-  padding: 16px 0;
-  border: none;
-  outline: none;
+  max-height: 48px;
+  padding: 15px 0;
+  overflow: hidden;
+  text-align: center;
   color: #f0f6fc;
   background-color: black;
-  animation: showUpdateAlert 0.5s;
+  animation: showUpdateAlert 0.5s linear;
 
   &:hover {
     color: #787878;
@@ -18,9 +19,8 @@ export const Wrapper = styled.button`
 
   @keyframes showUpdateAlert {
     from {
-      height: 0;
+      max-height: 0;
       padding: 0;
-      opacity: 0;
     }
   }
 `
