@@ -13,7 +13,7 @@ import User from 'components/User'
 import Notes from 'components/Notes'
 import Lists from 'components/Lists'
 import Files from 'components/Files'
-import Alert from 'components/Alert'
+import UpdateAlert from 'components/UpdateAlert'
 import { GlobalStyle, Heading } from './style'
 import 'util/preload-images'
 
@@ -54,7 +54,7 @@ const App = () => {
       <GlobalStyle />
 
       <If condition={window.matchMedia('(display-mode: standalone)').matches && registrationWaiting}>
-        <Alert onClick={replaceSW}>{UPDATE_MESSAGE}</Alert>
+        <UpdateAlert onClick={replaceSW}>{UPDATE_MESSAGE}</UpdateAlert>
       </If>
 
       <NavigationBar />

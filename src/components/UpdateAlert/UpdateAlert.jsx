@@ -1,7 +1,7 @@
 import { Wrapper } from './style'
 
-const Alert = ({ children, onClick }) => {
+const UpdateAlert = ({ children, onClick }) => {
   return <Wrapper onClick={onClick}>{children}</Wrapper>
 }
 
-export default Alert
+export default UpdateAlert

@@ -11,39 +11,32 @@ import { Wrapper, Pin, Title, Content, Item, Checked, Value, ConfirmMessage, Sty
 
 const emptyItem = { value: '', checked: false }
 
-const List = ({
-  newList,
-  _id: listID,
-  pinned: listIsPinned = false,
-  title: listTitle = '',
-  items: listItems,
-  date: listDate
-}) => {
+const List = ({ newList, _id: listID, pinned = false, title: listTitle = '', items: listItems, date }) => {
   const user = useRecoilValue(userState)
   const [lists, setLists] = useRecoilState(listsState)
 
-  const [pinned, setPinned] = useState(listIsPinned)
   const [title, setTitle] = useState(listTitle)
   const [items, setItems] = useState(listItems)
-  const [date, setDate] = useState(listDate)
   const [editMode, setEditMode] = useState(false)
   const [optionsAreVisible, setOptionsAreVisible] = useState(false)
   const [confirmMessageIsVisible, setConfirmMessageIsVisible] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [checkingItem, setCheckingItem] = useState(false)
 
   const contentRef = useRef()
 
   useEffect(() => {
-    setPinned(listIsPinned)
     setTitle(listTitle)
     setItems(listItems)
-    setDate(listDate)
-  }, [listIsPinned, listTitle, listItems, listDate])
+  }, [listTitle, listItems])
+
+  const resetList = () => {
+    setTitle('')
+    setItems([emptyItem])
+  }
 
   const handleEnterPress = (event, index) => {
-    const { value } = event.target
-
-    if (event.key === 'Enter' && value) {
+    if (event.key === 'Enter' && event.target.value) {
       setItems(prevItems => [...prevItems.slice(0, index + 1), emptyItem, ...prevItems.slice(index + 1)])
 
       const items = contentRef.current.childNodes
@@ -64,23 +57,6 @@ const List = ({
 
       setTimeout(() => items[prevIndex > 0 ? prevIndex : 0].childNodes[1].focus())
     }
-  }
-
-  const checkItem = ind => {
-    if (!items[ind].value) return
-
-    setItems(prevItems => {
-      const item = prevItems[ind]
-      const otherItems = items.filter((_, index) => index !== ind)
-
-      return item.checked ? [{ ...item, checked: false }, ...otherItems] : [...otherItems, { ...item, checked: true }]
-    })
-  }
-
-  const resetList = () => {
-    setPinned(false)
-    setTitle('')
-    setItems([emptyItem])
   }
 
   const createList = async event => {
@@ -106,6 +82,63 @@ const List = ({
     setLoading(false)
     setLists([...lists, savedList])
     resetList()
+  }
+
+  const updatePin = async event => {
+    event.stopPropagation()
+
+    if (user.name) {
+      const { status } = await ws.json({ type: 'updateListPin', listID, pinned: !pinned })
+
+      if (status !== 'SUCCESS') return
+
+      localStorage.setItem(
+        'userLists',
+        JSON.stringify(lists.map(list => (list._id === listID ? { ...list, pinned: !pinned } : list)))
+      )
+    } else {
+      localStorage.setItem(
+        'lists',
+        JSON.stringify(lists.map(list => (list._id === listID ? { ...list, pinned: !pinned } : list)))
+      )
+    }
+
+    setLists(lists.map(list => (list._id === listID ? { ...list, pinned: !pinned } : list)))
+  }
+
+  const checkItem = async (event, index) => {
+    event.stopPropagation()
+
+    const item = items[index]
+
+    if (!item.value || checkingItem) return
+
+    setCheckingItem(true)
+
+    const otherItems = items.filter((_, ind) => ind !== index)
+
+    const updatedItems = item.checked
+      ? [{ ...item, checked: false }, ...otherItems]
+      : [...otherItems, { ...item, checked: true }]
+
+    if (user.name) {
+      const { status } = await ws.json({ type: 'checkItem', listID, index, item })
+
+      if (status !== 'SUCCESS') return
+
+      localStorage.setItem(
+        'userLists',
+        JSON.stringify(lists.map(list => (list._id === listID ? { ...list, items: updatedItems } : list)))
+      )
+    } else {
+      localStorage.setItem(
+        'lists',
+        JSON.stringify(lists.map(list => (list._id === listID ? { ...list, items: updatedItems } : list)))
+      )
+    }
+
+    setItems(updatedItems)
+    setCheckingItem(false)
   }
 
   const updateList = async event => {
@@ -141,7 +174,6 @@ const List = ({
 
     setEditMode(false)
     setOptionsAreVisible(false)
-    setDate(date)
     setLists(lists.map(originalList => (originalList._id === listID ? { ...list, date } : originalList)))
   }
 
@@ -162,14 +194,14 @@ const List = ({
     setLists(lists.filter(({ _id }) => _id !== listID))
   }
 
+  const listChanged = title !== listTitle || items.some(({ value }, index) => value !== listItems[index]?.value)
+
   return (
     <Wrapper
       faded={loading}
-      focused={editMode}
       autoComplete="off"
       onClick={() => {
         if (!newList) setOptionsAreVisible(true)
-        setEditMode(true)
       }}
       onMouseLeave={() => {
         setOptionsAreVisible(confirmMessageIsVisible)
@@ -180,9 +212,7 @@ const List = ({
       }}
       onSubmit={newList ? createList : updateList}
     >
-      <If condition={newList || pinned || optionsAreVisible}>
-        <Pin pinned={pinned} src={EMPTY_IMAGE} onClick={() => setPinned(!pinned)} />
-      </If>
+      <Pin pinned={pinned} src={EMPTY_IMAGE} onClick={updatePin} />
 
       <If condition={title || newList || editMode}>
         <Title
@@ -190,6 +220,7 @@ const List = ({
           dir="auto"
           placeholder={TITLE}
           aria-label="title"
+          onClick={() => setEditMode(true)}
           onChange={event => setTitle(event.target.value)}
         />
       </If>
@@ -199,13 +230,14 @@ const List = ({
           .sort((a, b) => a.checked - b.checked)
           .map(({ value, checked }, ind) => (
             <Item key={ind}>
-              <Checked checked={checked} src={EMPTY_IMAGE} onClick={() => checkItem(ind)} />
+              <Checked checked={checked} src={EMPTY_IMAGE} onClick={event => checkItem(event, ind)} />
 
               <Value
                 dir={RTL_REGEX.test(value) ? 'rtl' : 'ltr'}
                 value={value}
                 disabled={checked}
                 required
+                onClick={() => setEditMode(true)}
                 onChange={event =>
                   setItems(prevItems =>
                     prevItems.map((item, index) => (index === ind ? { ...item, value: event.target.value } : item))
@@ -227,10 +259,12 @@ const List = ({
 
       {confirmMessageIsVisible ? (
         <ConfirmMessage>{DELETE_MESSAGE}</ConfirmMessage>
-      ) : newList || editMode ? (
-        <Save type="submit" value={SAVE} aria-label="save" />
+      ) : newList || listChanged ? (
+        <Save hidden={!listChanged && !newList} type="submit" value={SAVE} aria-label="save" />
       ) : (
-        <StyledDate>{new Date(date).toLocaleString('en-GB').replace(',', '').slice(0, -3)}</StyledDate>
+        <If condition={!newList}>
+          <StyledDate>{new Date(date).toLocaleString('en-GB').replace(',', '').slice(0, -3)}</StyledDate>
+        </If>
       )}
     </Wrapper>
   )

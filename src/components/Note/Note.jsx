@@ -12,35 +12,30 @@ import { Wrapper, Pin, Category, Title, Content, ConfirmMessage, StyledDate, Sav
 const Note = ({
   newNote,
   _id: noteID,
-  pinned: noteIsPinned = false,
+  pinned = false,
   category: noteCategory = '',
   title: noteTitle = '',
   content: noteContent = '',
-  date: noteDate
+  date
 }) => {
   const user = useRecoilValue(userState)
   const [notes, setNotes] = useRecoilState(notesState)
 
-  const [pinned, setPinned] = useState(noteIsPinned)
   const [category, setCategory] = useState(noteCategory)
   const [title, setTitle] = useState(noteTitle)
   const [content, setContent] = useState(noteContent)
-  const [date, setDate] = useState(noteDate)
   const [editMode, setEditMode] = useState(false)
   const [optionsAreVisible, setOptionsAreVisible] = useState(false)
   const [confirmMessageIsVisible, setConfirmMessageIsVisible] = useState(false)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    setPinned(noteIsPinned)
     setCategory(noteCategory)
     setTitle(noteTitle)
     setContent(noteContent)
-    setDate(noteDate)
-  }, [noteIsPinned, noteCategory, noteTitle, noteContent, noteDate])
+  }, [noteCategory, noteTitle, noteContent])
 
   const resetNote = () => {
-    setPinned(false)
     setCategory('')
     setTitle('')
     setContent('')
@@ -70,6 +65,28 @@ const Note = ({
     setLoading(false)
     setNotes([...notes, savedNote])
     resetNote()
+  }
+
+  const updatePin = async event => {
+    event.stopPropagation()
+
+    if (user.name) {
+      const { status } = await ws.json({ type: 'updateNotePin', noteID, pinned: !pinned })
+
+      if (status !== 'SUCCESS') return
+
+      localStorage.setItem(
+        'userNotes',
+        JSON.stringify(notes.map(note => (note._id === noteID ? { ...note, pinned: !pinned } : note)))
+      )
+    } else {
+      localStorage.setItem(
+        'notes',
+        JSON.stringify(notes.map(note => (note._id === noteID ? { ...note, pinned: !pinned } : note)))
+      )
+    }
+
+    setNotes(notes.map(note => (note._id === noteID ? { ...note, pinned: !pinned } : note)))
   }
 
   const updateNote = async event => {
@@ -106,7 +123,6 @@ const Note = ({
 
     setEditMode(false)
     setOptionsAreVisible(false)
-    setDate(date)
     setNotes(notes.map(originalNote => (originalNote._id === noteID ? { ...note, date } : originalNote)))
   }
 
@@ -116,10 +132,9 @@ const Note = ({
 
       const { status } = await ws.json({ type: 'deleteNote', noteID })
 
-      if (status === 'SUCCESS') {
-        setNotes(notes.filter(({ _id }) => _id !== noteID))
-        localStorage.setItem('userNotes', JSON.stringify(notes.filter(({ _id }) => _id !== noteID)))
-      }
+      if (status !== 'SUCCESS') return
+
+      localStorage.setItem('userNotes', JSON.stringify(notes.filter(({ _id }) => _id !== noteID)))
     } else {
       localStorage.setItem('notes', JSON.stringify(notes.filter(({ _id }) => _id !== noteID)))
     }
@@ -127,14 +142,14 @@ const Note = ({
     setNotes(notes.filter(({ _id }) => _id !== noteID))
   }
 
+  const noteChanged = category !== noteCategory || title !== noteTitle || content !== noteContent
+
   return (
     <Wrapper
       faded={loading}
-      focused={editMode}
       autoComplete="off"
       onClick={() => {
         if (!newNote) setOptionsAreVisible(true)
-        setEditMode(true)
       }}
       onMouseLeave={() => {
         setOptionsAreVisible(confirmMessageIsVisible)
@@ -142,9 +157,7 @@ const Note = ({
       }}
       onSubmit={newNote ? createNote : updateNote}
     >
-      <If condition={newNote || pinned || optionsAreVisible}>
-        <Pin pinned={pinned} src={EMPTY_IMAGE} onClick={() => setPinned(!pinned)} />
-      </If>
+      <Pin pinned={pinned} src={EMPTY_IMAGE} onClick={updatePin} />
 
       <If condition={category || newNote || editMode}>
         <Category
@@ -152,6 +165,7 @@ const Note = ({
           dir="auto"
           placeholder={CATEGORY}
           aria-label="category"
+          onClick={() => setEditMode(true)}
           onChange={event => setCategory(event.target.value.toUpperCase().slice(0, 24))}
         />
       </If>
@@ -162,6 +176,7 @@ const Note = ({
           dir="auto"
           placeholder={TITLE}
           aria-label="title"
+          onClick={() => setEditMode(true)}
           onChange={event => setTitle(event.target.value)}
         />
       </If>
@@ -173,6 +188,7 @@ const Note = ({
         value={content}
         aria-label="content"
         required
+        onClick={() => setEditMode(true)}
         onChange={event => setContent(event.target.value)}
       />
 
@@ -182,10 +198,12 @@ const Note = ({
 
       {confirmMessageIsVisible ? (
         <ConfirmMessage>{DELETE_MESSAGE}</ConfirmMessage>
-      ) : newNote || editMode ? (
-        <Save type="submit" value={SAVE} aria-label="save" />
+      ) : noteChanged || newNote ? (
+        <Save hidden={!noteChanged && !newNote} type="submit" value={SAVE} aria-label="save" />
       ) : (
-        <StyledDate>{new Date(date).toLocaleString('en-GB').replace(',', '').slice(0, -3)}</StyledDate>
+        <If condition={!newNote}>
+          <StyledDate>{new Date(date).toLocaleString('en-GB').replace(',', '').slice(0, -3)}</StyledDate>
+        </If>
       )}
     </Wrapper>
   )
