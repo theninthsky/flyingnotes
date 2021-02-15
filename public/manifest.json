@@ -3,24 +3,6 @@
   "name": "Flying Notes",
   "icons": [
     {
-      "src": "maskable_icon_x152.png",
-      "type": "image/png",
-      "sizes": "152x152",
-      "purpose": "maskable"
-    },
-    {
-      "src": "maskable_icon_x384.png",
-      "type": "image/png",
-      "sizes": "384x384",
-      "purpose": "maskable"
-    },
-    {
-      "src": "maskable_icon_x512.png",
-      "type": "image/png",
-      "sizes": "512x512",
-      "purpose": "maskable"
-    },
-    {
       "src": "favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
