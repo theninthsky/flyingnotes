@@ -4,8 +4,7 @@ import { useRecoilState, useSetRecoilState, useRecoilValue, useResetRecoilState 
 import { ws } from 'websocket-connection'
 import { themeState, authIsVisibleState, userState, notesState, listsState, filesState } from 'atoms'
 import { LOGOUT } from './constants'
-import If from 'components/If'
-import { Backdrop } from 'components/UI'
+import { If, Backdrop } from 'components'
 import { Wrapper, UserLogo, Name, ErrorMessage, Input, Submit, ChangePassword } from './style'
 
 import userLogo from 'images/user-astronaut.svg'

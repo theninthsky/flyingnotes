@@ -3,7 +3,7 @@ import { useRecoilState } from 'recoil'
 
 import { createWebSocketConnection, ws } from 'websocket-connection'
 import { filesSelector } from 'selectors'
-import File from 'components/File'
+import { File } from 'components'
 import { Wrapper } from './style'
 
 const Files = () => {

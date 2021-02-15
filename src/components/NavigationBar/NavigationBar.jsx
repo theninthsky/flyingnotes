@@ -3,8 +3,7 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { themeState, authIsVisibleState, userState } from 'atoms'
 import { THEME_LIGHT, THEME_DARK, LOG_IN } from './constants'
-import If from 'components/If'
-import CookiesMessage from 'components/CookiesMessage'
+import { If, CookiesMessage } from 'components'
 import { Wrapper, Logo, NavItems, StyledNavLink, Util, ThemeImage, UserImage, Auth } from './style'
 
 import logo from 'images/logo.svg'

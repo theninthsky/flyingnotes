@@ -4,8 +4,7 @@ import { useSetRecoilState } from 'recoil'
 import { authIsVisibleState, userState, notesState, listsState } from 'atoms'
 import { SIGN_UP, LOG_IN } from './constants'
 import { safari } from 'util/user-agent'
-import If from 'components/If'
-import { Backdrop } from 'components/UI'
+import { If, Backdrop } from 'components'
 import { Wrapper, Title, Login, Divider, Signup, ErrorMessage, LoginMessage, Input, Submit } from './style'
 
 const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env

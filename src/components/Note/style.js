@@ -74,8 +74,7 @@ export const Title = styled(Input)`
 export const Content = styled.textarea`
   height: ${({ height }) => height};
   margin: 6px 12px 10px;
-  margin-right: ${({ clipped }) => (clipped ? '24px' : '12px')};
-  padding: 0 5px;
+  padding: 0 10px;
   border: none;
   outline: none;
   resize: none;

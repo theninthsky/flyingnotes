@@ -40,6 +40,7 @@ export const Value = styled.input`
   outline: none;
   color: inherit;
   background-color: inherit;
+  opacity: ${({ disabled }) => (disabled ? '0.5' : '1')};
 `
 export const ConfirmMessage = styled(NoteConfirmMessage)``
 

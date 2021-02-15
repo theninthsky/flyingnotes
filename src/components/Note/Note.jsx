@@ -5,8 +5,7 @@ import { ws } from 'websocket-connection'
 import { userState, notesState } from 'atoms'
 import { RTL_REGEX, EMPTY_IMAGE } from 'global-constants'
 import { CATEGORY, TITLE, SAVE, DELETE_MESSAGE } from './constants'
-import If from 'components/If'
-import Options from 'components/Options'
+import { If, Options } from 'components'
 import { Wrapper, Pin, Category, Title, Content, ConfirmMessage, StyledDate, Save } from './style'
 
 const Note = ({
@@ -183,7 +182,6 @@ const Note = ({
 
       <Content
         height={`${(content.match(/\n/g) || []).length * 15 + 45}px`}
-        clipped={pinned && !category && !title}
         dir={RTL_REGEX.test(content) ? 'rtl' : 'ltr'}
         value={content}
         aria-label="content"

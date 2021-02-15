@@ -5,8 +5,7 @@ import { createWebSocketConnection, ws } from 'websocket-connection'
 import { userState } from 'atoms'
 import { listsSelector } from 'selectors'
 import { RENDER_BATCH } from './constants'
-import List from 'components/List'
-import LazyRender from 'components/LazyRender'
+import { List, LazyRender } from 'components'
 import { ListsWrap } from './style'
 
 const Lists = () => {

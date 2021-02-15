@@ -5,8 +5,7 @@ import { ws } from 'websocket-connection'
 import { userState, listsState } from 'atoms'
 import { RTL_REGEX, EMPTY_IMAGE } from 'global-constants'
 import { TITLE, SAVE, DELETE_MESSAGE } from './constants'
-import If from 'components/If'
-import Options from 'components/Options'
+import { If, Options } from 'components'
 import { Wrapper, Pin, Title, Content, Item, Checked, Value, ConfirmMessage, StyledDate, Save } from './style'
 
 const emptyItem = { value: '', checked: false }

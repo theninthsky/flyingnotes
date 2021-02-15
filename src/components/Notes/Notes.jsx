@@ -5,8 +5,7 @@ import { createWebSocketConnection, ws } from 'websocket-connection'
 import { userState } from 'atoms'
 import { notesSelector, categoriesSelector } from 'selectors'
 import { RENDER_BATCH } from './constants'
-import Note from 'components/Note'
-import LazyRender from 'components/LazyRender'
+import { Note, LazyRender } from 'components'
 import { Filters, CategoryFilter, SearchFilter, SearchBox, NotesWrap } from './style'
 
 const Notes = () => {

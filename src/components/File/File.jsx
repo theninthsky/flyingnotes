@@ -4,7 +4,7 @@ import { useRecoilState } from 'recoil'
 import { ws } from 'websocket-connection'
 import { toBase64, fromBase64, saveFile } from 'util/base64'
 import { filesState } from 'atoms'
-import If from 'components/If'
+import { If } from 'components'
 import { MAX_FILESIZE_IN_MB } from './constants'
 import { Wrapper, Name, InfoWrap, Extension, FileLabel, FileSelect, FileInput, Upload, Download, Delete } from './style'
 

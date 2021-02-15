@@ -4,7 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
 
 import * as serviceWorkerRegistration from 'service-worker-registration'
-import App from 'components/App'
+import { App } from 'components'
 
 ReactDOM.render(
   <RecoilRoot>
