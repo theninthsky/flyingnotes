@@ -2,24 +2,18 @@ import { useState, useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { createWebSocketConnection, ws } from 'websocket-connection'
-import { ANIMATION_DURATION } from 'media-queries'
 import { userState } from 'atoms'
 import { listsSelector } from 'selectors'
-import { RENDER_LIMIT } from './constants'
+import { RENDER_BATCH } from './constants'
 import List from 'components/List'
+import LazyRender from 'components/LazyRender'
 import { ListsWrap } from './style'
 
 const Lists = () => {
   const user = useRecoilValue(userState)
   const [lists, setLists] = useRecoilState(listsSelector)
 
-  const [renderLimit, setRenderLimit] = useState(RENDER_LIMIT)
-
-  useEffect(() => {
-    const renderLimitTimeout = setTimeout(() => setRenderLimit(Infinity), ANIMATION_DURATION + 50)
-
-    return () => clearTimeout(renderLimitTimeout)
-  }, [])
+  const [renderedLists, setRenderedLists] = useState([])
 
   useEffect(() => {
     const getLists = async () => {
@@ -37,9 +31,12 @@ const Lists = () => {
   return (
     <ListsWrap>
       <List newList items={[{ value: '', checked: false }]} />
-      {lists.slice(0, renderLimit).map(({ _id, pinned, title, items }) => (
+
+      {renderedLists.map(({ _id, pinned, title, items }) => (
         <List key={_id} _id={_id} pinned={pinned} title={title} items={items} date={Date.now()} />
       ))}
+
+      <LazyRender batch={RENDER_BATCH} items={lists} setItems={setRenderedLists} />
     </ListsWrap>
   )
 }

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { VIEWPORT_4, NOT_MOBILE, ANIMATION_DURATION } from 'media-queries'
+import { VIEWPORT_4, NOT_MOBILE } from 'media-queries'
 
 export const Wrapper = styled.form`
   display: flex;
@@ -15,7 +15,7 @@ export const Wrapper = styled.form`
   opacity: ${({ transparent }) => (transparent ? '0.5' : '1')};
   pointer-events: ${({ transparent }) => (transparent ? 'none' : 'auto')};
   transition: border-color 0.1s;
-  animation: showFile ${ANIMATION_DURATION}ms;
+  animation: showFile 0.25s;
 
   @media ${NOT_MOBILE} {
     &:hover {
@@ -129,7 +129,7 @@ export const Delete = styled.img`
   width: 14px;
   margin-right: 15px;
   cursor: pointer;
-  animation: showDelete ${ANIMATION_DURATION}ms;
+  animation: showDelete 0.25s;
 
   @media ${NOT_MOBILE} {
     &:hover {

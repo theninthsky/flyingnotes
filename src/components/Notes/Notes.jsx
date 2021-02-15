@@ -2,11 +2,11 @@ import { useState, useEffect, useMemo } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { createWebSocketConnection, ws } from 'websocket-connection'
-import { ANIMATION_DURATION } from 'media-queries'
 import { userState } from 'atoms'
 import { notesSelector, categoriesSelector } from 'selectors'
-import { RENDER_LIMIT } from './constants'
+import { RENDER_BATCH } from './constants'
 import Note from 'components/Note'
+import LazyRender from 'components/LazyRender'
 import { Filters, CategoryFilter, SearchFilter, SearchBox, NotesWrap } from './style'
 
 const Notes = () => {
@@ -14,15 +14,9 @@ const Notes = () => {
   const [notes, setNotes] = useRecoilState(notesSelector)
   const categories = useRecoilValue(categoriesSelector)
 
+  const [renderedNotes, setRenderedNotes] = useState([])
   const [categoryFilter, setCategoryFilter] = useState('')
   const [searchFilter, setSearchFilter] = useState('')
-  const [renderLimit, setRenderLimit] = useState(RENDER_LIMIT)
-
-  useEffect(() => {
-    const renderLimitTimeout = setTimeout(() => setRenderLimit(Infinity), ANIMATION_DURATION + 50)
-
-    return () => clearTimeout(renderLimitTimeout)
-  }, [])
 
   useEffect(() => {
     const getNotes = async () => {
@@ -41,10 +35,7 @@ const Notes = () => {
     () =>
       notes
         .filter(({ category }) => (!categoryFilter ? true : category === categoryFilter))
-        .filter(({ title, content }) => `${title} ${content}`.toLowerCase().includes(searchFilter))
-        .map(({ _id, pinned, category, title, content, date }) => (
-          <Note key={_id} _id={_id} pinned={pinned} category={category} title={title} content={content} date={date} />
-        )),
+        .filter(({ title, content }) => `${title} ${content}`.toLowerCase().includes(searchFilter)),
     [notes, categoryFilter, searchFilter]
   )
 
@@ -73,7 +64,12 @@ const Notes = () => {
 
       <NotesWrap>
         <Note newNote />
-        {filteredNotes.slice(0, renderLimit)}
+
+        {renderedNotes.map(({ _id, pinned, category, title, content, date }) => (
+          <Note key={_id} _id={_id} pinned={pinned} category={category} title={title} content={content} date={date} />
+        ))}
+
+        <LazyRender batch={RENDER_BATCH} items={filteredNotes} setItems={setRenderedNotes} />
       </NotesWrap>
     </>
   )

@@ -11,6 +11,7 @@ export const Wrapper = styled.div`
   text-align: center;
   color: #f0f6fc;
   background-color: black;
+  user-select: none;
   animation: showUpdateAlert 0.5s linear;
 
   &:hover {

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { VIEWPORT_4, NOT_MOBILE, ANIMATION_DURATION } from 'media-queries'
+import { VIEWPORT_4, NOT_MOBILE } from 'media-queries'
 
 export const Wrapper = styled.form`
   position: relative;
@@ -14,7 +14,7 @@ export const Wrapper = styled.form`
   background-color: var(--primary-color);
   opacity: ${({ faded }) => (faded ? '0.5' : '1')};
   pointer-events: ${({ faded }) => (faded ? 'none' : 'auto')};
-  animation: showNote ${ANIMATION_DURATION}ms;
+  animation: showNote 0.25s;
 
   @keyframes showNote {
     from {
@@ -36,7 +36,7 @@ export const Pin = styled.img`
   background-image: ${({ pinned }) => (pinned ? `var(--pin-checked-icon)` : `var(--pin-unchecked-icon)`)};
   background-repeat: no-repeat;
   cursor: pointer;
-  animation: showPin ${ANIMATION_DURATION}ms;
+  animation: showPin 0.25s;
 
   @keyframes showPin {
     from {
@@ -64,32 +64,12 @@ export const Category = styled(Input)`
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 3px;
-  animation: showCategory 0.1s;
-
-  @keyframes showCategory {
-    from {
-      max-height: 0;
-    }
-    to {
-      max-height: 20px;
-    }
-  }
 `
 export const Title = styled(Input)`
   margin: 8px 24px 0;
   padding: 0;
   font-size: 18px;
   font-weight: bold;
-  animation: showTitle 0.1s;
-
-  @keyframes showTitle {
-    from {
-      max-height: 0;
-    }
-    to {
-      max-height: 20px;
-    }
-  }
 `
 export const Content = styled.textarea`
   height: ${({ height }) => height};
