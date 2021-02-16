@@ -72,6 +72,9 @@ const List = ({ newList, _id: listID, pinned = false, title: listTitle = '', ite
 
     if (user.name) {
       savedList = (await ws.json({ type: 'createList', newList: list })).newList
+
+      if (!savedList) return
+
       localStorage.setItem('userLists', JSON.stringify([...lists, savedList]))
     } else {
       savedList = { ...list, _id: Date.now(), date: Date.now() }
