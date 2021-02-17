@@ -13,7 +13,7 @@ const Notes = () => {
   const [notes, setNotes] = useRecoilState(notesSelector)
   const categories = useRecoilValue(categoriesSelector)
 
-  const [renderedNotes, setRenderedNotes] = useState([])
+  const [renderedNotes, setRenderedNotes] = useState(notes.slice(0, RENDER_BATCH))
   const [categoryFilter, setCategoryFilter] = useState('')
   const [searchFilter, setSearchFilter] = useState('')
 

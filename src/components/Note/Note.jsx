@@ -159,7 +159,9 @@ const Note = ({
       }}
       onSubmit={newNote ? createNote : updateNote}
     >
-      <Pin pinned={pinned} src={EMPTY_IMAGE} onClick={updatePin} />
+      <If condition={!newNote}>
+        <Pin pinned={pinned} src={EMPTY_IMAGE} onClick={updatePin} />
+      </If>
 
       <If condition={category || newNote || editMode}>
         <Category

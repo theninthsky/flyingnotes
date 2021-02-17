@@ -12,7 +12,7 @@ const Lists = () => {
   const user = useRecoilValue(userState)
   const [lists, setLists] = useRecoilState(listsSelector)
 
-  const [renderedLists, setRenderedLists] = useState([])
+  const [renderedLists, setRenderedLists] = useState(lists.slice(0, RENDER_BATCH))
 
   useEffect(() => {
     const getLists = async () => {

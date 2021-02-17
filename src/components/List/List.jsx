@@ -223,7 +223,9 @@ const List = ({ newList, _id: listID, pinned = false, title: listTitle = '', ite
       }}
       onSubmit={newList ? createList : updateList}
     >
-      <Pin pinned={pinned} src={EMPTY_IMAGE} onClick={updatePin} />
+      <If condition={!newList}>
+        <Pin pinned={pinned} src={EMPTY_IMAGE} onClick={updatePin} />
+      </If>
 
       <If condition={title || newList || editMode}>
         <Title

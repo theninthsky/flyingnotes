@@ -8,7 +8,6 @@ import { authIsVisibleState, userState } from 'atoms'
 import { UPDATE_MESSAGE } from './constants'
 import { If, NavigationBar, Auth, User, Notes, Lists, Files, UpdateAlert } from 'components'
 import { GlobalStyle, Heading } from './style'
-import 'util/preload-images'
 
 document.documentElement.setAttribute('data-theme', localStorage.theme || 'dark')
 

@@ -14,14 +14,7 @@ export const Wrapper = styled.form`
   background-color: var(--primary-color);
   opacity: ${({ transparent }) => (transparent ? '0.5' : '1')};
   pointer-events: ${({ transparent }) => (transparent ? 'none' : 'auto')};
-  transition: border-color 0.1s;
   animation: showFile 0.25s;
-
-  @media ${NOT_MOBILE} {
-    &:hover {
-      border-color: #b4b4b4;
-    }
-  }
 
   @keyframes showFile {
     from {
