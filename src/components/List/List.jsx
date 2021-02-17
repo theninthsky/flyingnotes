@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
+import { bool, string, arrayOf, shape } from 'prop-types'
 
 import { ws } from 'websocket-connection'
 import { userState, listsState } from 'atoms'
@@ -292,6 +293,15 @@ const List = ({ newList, _id: listID, pinned = false, title: listTitle = '', ite
       )}
     </Wrapper>
   )
+}
+
+List.propTypes = {
+  newList: bool,
+  _id: string,
+  pinned: bool,
+  title: string,
+  items: arrayOf(shape({ checked: bool, value: string })),
+  date: string
 }
 
 export default List

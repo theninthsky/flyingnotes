@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { number, array, func } from 'prop-types'
 
 const LazyRender = ({ batch, items, setItems }) => {
   const [renderLimit, setRenderLimit] = useState(0)
@@ -27,6 +28,12 @@ const LazyRender = ({ batch, items, setItems }) => {
   }, [items]) // eslint-disable-line
 
   return <div ref={targetRef}></div>
+}
+
+LazyRender.propTypes = {
+  batch: number.isRequired,
+  items: array.isRequired,
+  setItems: func.isRequired
 }
 
 export default LazyRender

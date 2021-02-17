@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useRecoilState } from 'recoil'
+import { bool, string } from 'prop-types'
 
 import { ws } from 'websocket-connection'
 import { toBase64, fromBase64, saveFile } from 'util/base64'
@@ -141,6 +142,13 @@ const File = ({ newFile, _id: fileID, name: fileName = '', extension: fileExtens
       </InfoWrap>
     </Wrapper>
   )
+}
+
+File.propTypes = {
+  newFile: bool,
+  _id: string,
+  name: string,
+  extension: string
 }
 
 export default File

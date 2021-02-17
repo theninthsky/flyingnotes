@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { func } from 'prop-types'
 
 const StyledBackdrop = styled.div`
   z-index: 2;
@@ -10,6 +11,10 @@ const StyledBackdrop = styled.div`
 
 const Backdrop = ({ onClick }) => {
   return <StyledBackdrop onClick={onClick} />
+}
+
+Backdrop.propTypes = {
+  onClick: func
 }
 
 export default Backdrop

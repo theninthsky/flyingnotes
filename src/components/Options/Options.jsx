@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { func } from 'prop-types'
 
 import { Wrapper, Confirm, Cancel, Delete } from './style'
 
@@ -26,6 +27,11 @@ const Options = ({ onDelete, toggleConfirmMessage }) => {
       )}
     </Wrapper>
   )
+}
+
+Options.propTypes = {
+  onDelete: func,
+  toggleConfirmMessage: func
 }
 
 export default Options

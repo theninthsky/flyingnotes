@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { any, string } from 'prop-types'
 
 const Media = ({ query, children: component }) => {
   const [matches, setMatches] = useState()
@@ -18,6 +19,11 @@ const Media = ({ query, children: component }) => {
   }, [query])
 
   return component && matches ? component : null
+}
+
+Media.propTypes = {
+  query: string,
+  children: any.isRequired
 }
 
 export default Media

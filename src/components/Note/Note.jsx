@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
+import { bool, string } from 'prop-types'
 
 import { ws } from 'websocket-connection'
 import { userState, notesState } from 'atoms'
@@ -210,6 +211,16 @@ const Note = ({
       )}
     </Wrapper>
   )
+}
+
+Note.propTypes = {
+  newNote: bool,
+  _id: string,
+  pinned: bool,
+  category: string,
+  title: string,
+  content: string,
+  date: string
 }
 
 export default Note
