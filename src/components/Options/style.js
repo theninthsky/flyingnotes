@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 21.5px;
+  height: 21px;
   border-radius: 4px 4px 0 0;
   background-color: transparent;
   animation: showOptions 0.25s;

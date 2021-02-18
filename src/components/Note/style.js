@@ -73,12 +73,11 @@ export const Title = styled(Input)`
 `
 export const Content = styled.textarea`
   height: ${({ height }) => height};
-  margin: 6px 12px 10px;
-  padding: 0 10px;
+  margin: 6px 24px 10px 15px;
   border: none;
   outline: none;
   resize: none;
-  white-space: pre;
+  white-space: pre-line;
   font-family: inherit;
   font-size: 16px;
   color: inherit;
@@ -108,13 +107,13 @@ export const Content = styled.textarea`
   }
 `
 export const ConfirmMessage = styled.div`
-  padding: 3px 0;
+  margin-bottom: 5px;
   text-align: center;
   font-size: 14px;
   color: inherit;
 `
 export const StyledDate = styled.div`
-  padding: 3px 0;
+  margin: 2.5px 0;
   text-align: center;
   font-size: 14px;
   color: rgb(160, 160, 160);
@@ -123,8 +122,7 @@ export const Save = styled.input`
   z-index: 1;
   margin: 0 auto;
   padding: 4px 20px;
-  border: 1px solid var(--secondary-color);
-  border-bottom: none;
+  border: none;
   border-radius: 4px 4px 0 0;
   box-sizing: border-box;
   outline: none;

@@ -61,7 +61,7 @@ const Note = ({
 
       localStorage.setItem('userNotes', JSON.stringify([...notes, savedNote]))
     } else {
-      savedNote = { ...note, _id: Date.now(), date: Date.now() }
+      savedNote = { ...note, _id: Date.now(), date: new Date().toISOString() }
       localStorage.setItem('notes', JSON.stringify([...notes, savedNote]))
     }
 
@@ -115,18 +115,20 @@ const Note = ({
 
       setLoading(false)
     } else {
-      updatedNote = { ...note, date: Date.now() }
+      updatedNote = { ...note, date: new Date() }
       localStorage.setItem(
         'notes',
         JSON.stringify(notes.map(note => (note._id === updatedNote._id ? updatedNote : note)))
       )
     }
 
-    const date = Date.now()
-
     setEditMode(false)
     setOptionsAreVisible(false)
-    setNotes(notes.map(originalNote => (originalNote._id === noteID ? { ...note, date } : originalNote)))
+    setNotes(
+      notes.map(originalNote =>
+        originalNote._id === noteID ? { ...note, date: new Date().toISOString() } : originalNote
+      )
+    )
   }
 
   const deleteNote = async () => {
@@ -187,7 +189,7 @@ const Note = ({
       </If>
 
       <Content
-        height={`${(content.match(/\n/g) || []).length * 15 + 45}px`}
+        height={`${(content.match(/\n/g) || []).length * 15 + 50}px`}
         dir={RTL_REGEX.test(content) ? 'rtl' : 'ltr'}
         value={content}
         aria-label="content"

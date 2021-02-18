@@ -78,7 +78,7 @@ const List = ({ newList, _id: listID, pinned = false, title: listTitle = '', ite
 
       localStorage.setItem('userLists', JSON.stringify([...lists, savedList]))
     } else {
-      savedList = { ...list, _id: Date.now(), date: Date.now() }
+      savedList = { ...list, _id: Date.now(), date: new Date().toISOString() }
       localStorage.setItem('lists', JSON.stringify([...lists, savedList]))
     }
 
@@ -166,18 +166,20 @@ const List = ({ newList, _id: listID, pinned = false, title: listTitle = '', ite
 
       setLoading(false)
     } else {
-      updatedList = { ...list, date: Date.now() }
+      updatedList = { ...list, date: new Date().toISOString() }
       localStorage.setItem(
         'lists',
         JSON.stringify(lists.map(list => (list._id === updatedList._id ? updatedList : list)))
       )
     }
 
-    const date = Date.now()
-
     setEditMode(false)
     setOptionsAreVisible(false)
-    setLists(lists.map(originalList => (originalList._id === listID ? { ...list, date } : originalList)))
+    setLists(
+      lists.map(originalList =>
+        originalList._id === listID ? { ...list, date: new Date().toISOString() } : originalList
+      )
+    )
   }
 
   const deleteList = async () => {

@@ -19,6 +19,7 @@ export const Title = styled(NoteTitle)``
 
 export const Content = styled(NoteContent)`
   min-height: 100px;
+  margin: 6px 15px;
   overflow: auto;
 `
 export const Item = styled.div`
@@ -33,7 +34,7 @@ export const Checked = styled.img`
 `
 export const Value = styled.input`
   display: block;
-  width: 84%;
+  width: 85%;
   margin: 10px;
   border: none;
   border-bottom: 1px solid var(--secondary-color);
