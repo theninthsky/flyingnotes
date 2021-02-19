@@ -121,7 +121,7 @@ export const StyledDate = styled.div`
 export const Save = styled.input`
   z-index: 1;
   margin: 0 auto;
-  padding: 4px 20px;
+  padding: 3.5px 20px;
   border: none;
   border-radius: 4px 4px 0 0;
   box-sizing: border-box;

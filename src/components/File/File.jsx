@@ -90,7 +90,7 @@ const File = ({ newFile, _id: fileID, name: fileName = '', extension: fileExtens
     <Wrapper
       transparent={loading}
       autoComplete="off"
-      onMouseMove={() => setDeleteIsVisible(true)}
+      onClick={() => setDeleteIsVisible(true)}
       onMouseLeave={() => setDeleteIsVisible(false)}
       onSubmit={uploadFile}
     >

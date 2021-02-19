@@ -24,13 +24,6 @@ export const CategoryFilter = styled.select`
   font-size: 14px;
   color: inherit;
   background-color: var(--primary-color);
-  transition: border-color 0.1s;
-
-  @media ${NOT_MOBILE} {
-    &:hover {
-      border-color: #b4b4b4;
-    }
-  }
 `
 export const SearchFilter = styled.div`
   flex-grow: 1;
@@ -39,13 +32,6 @@ export const SearchFilter = styled.div`
   border: 1px solid var(--secondary-color);
   border-radius: 0 5px 5px 0;
   background-color: var(--primary-color);
-  transition: border-color 0.1s;
-
-  @media ${NOT_MOBILE} {
-    &:hover {
-      border-color: #b4b4b4;
-    }
-  }
 `
 
 export const SearchBox = styled.input`

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { any, string } from 'prop-types'
+import { any, string, arrayOf } from 'prop-types'
 
 const Media = ({ query, children: component }) => {
   const [matches, setMatches] = useState()
@@ -22,7 +22,7 @@ const Media = ({ query, children: component }) => {
 }
 
 Media.propTypes = {
-  query: string,
+  query: arrayOf(string),
   children: any.isRequired
 }
 
