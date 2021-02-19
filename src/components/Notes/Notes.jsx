@@ -5,17 +5,16 @@ import { createWebSocketConnection, ws } from 'websocket-connection'
 import { userState } from 'atoms'
 import { notesSelector, categoriesSelector } from 'selectors'
 import { RENDER_BATCH } from './constants'
-import { Note, LazyRender } from 'components'
-import { Filters, CategoryFilter, SearchFilter, SearchBox, NotesWrap } from './style'
+import { Filters, Note, LazyRender } from 'components'
+import { NotesWrap } from './style'
 
 const Notes = () => {
   const user = useRecoilValue(userState)
   const [notes, setNotes] = useRecoilState(notesSelector)
   const categories = useRecoilValue(categoriesSelector)
 
-  const [renderedNotes, setRenderedNotes] = useState(notes.slice(0, RENDER_BATCH))
-  const [categoryFilter, setCategoryFilter] = useState('')
-  const [searchFilter, setSearchFilter] = useState('')
+  const [filteredNotes, setFilteredNotes] = useState(notes)
+  const [renderedNotes, setRenderedNotes] = useState(filteredNotes.slice(0, RENDER_BATCH))
 
   useEffect(() => {
     const getNotes = async () => {
@@ -30,36 +29,19 @@ const Notes = () => {
     if (user.name) getNotes()
   }, [user.name, setNotes])
 
-  const filteredNotes = useMemo(
-    () =>
-      notes
-        .filter(({ category }) => (!categoryFilter ? true : category === categoryFilter))
-        .filter(({ title, content }) => `${title} ${content}`.toLowerCase().includes(searchFilter)),
-    [notes, categoryFilter, searchFilter]
-  )
-
   return (
     <>
-      <Filters>
-        <CategoryFilter title="Category" onChange={event => setCategoryFilter(event.target.value)}>
-          <option defaultValue value="">
-            ALL
-          </option>
-          {categories.map(category => (
-            <option key={category}>{category}</option>
-          ))}
-        </CategoryFilter>
-
-        <SearchFilter>
-          <SearchBox
-            type="search"
-            value={searchFilter}
-            placeholder="Search..."
-            aria-label="search"
-            onChange={event => setSearchFilter(event.target.value.toLowerCase())}
-          />
-        </SearchFilter>
-      </Filters>
+      <Filters
+        categories={categories}
+        onSelect={categoryFilter =>
+          setFilteredNotes(notes.filter(({ category }) => (!categoryFilter ? true : category === categoryFilter)))
+        }
+        onSearch={searchFilter =>
+          setFilteredNotes(
+            notes.filter(({ title, content }) => `${title} ${content}`.toLowerCase().includes(searchFilter))
+          )
+        }
+      />
 
       <NotesWrap>
         <Note newNote />
