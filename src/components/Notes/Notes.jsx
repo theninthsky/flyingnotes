@@ -29,6 +29,10 @@ const Notes = () => {
     if (user.name) getNotes()
   }, [user.name, setNotes])
 
+  useEffect(() => {
+    setFilteredNotes(notes)
+  }, [notes])
+
   return (
     <>
       <Filters
