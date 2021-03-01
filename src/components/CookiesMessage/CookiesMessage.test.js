@@ -4,7 +4,7 @@ import CookiesMessage from './CookiesMessage'
 
 describe('CookiesMessage', () => {
   it('should render with the correct message', () => {
-    render(<CookiesMessage />)
+    render(<CookiesMessage onClick={() => {}} />)
 
     expect(screen.getByText(MESSAGE)).toBeDefined()
   })

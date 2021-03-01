@@ -65,7 +65,7 @@ const NavigationBar = () => {
       </Wrapper>
 
       <If condition={cookiesMessageIsVisible && !user.name}>
-        <CookiesMessage toggle={mode => setCookiesMessageIsVisible(mode)} />
+        <CookiesMessage onClick={() => setCookiesMessageIsVisible(false)} />
       </If>
     </>
   )

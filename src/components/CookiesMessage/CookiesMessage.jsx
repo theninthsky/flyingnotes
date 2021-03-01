@@ -3,12 +3,12 @@ import { func } from 'prop-types'
 import { MESSAGE } from './constants'
 import { Wrapper } from './style'
 
-const CookiesMessage = ({ toggle }) => {
-  return <Wrapper onClick={() => toggle(false)}>{MESSAGE}</Wrapper>
+const CookiesMessage = ({ onClick }) => {
+  return <Wrapper onClick={onClick}>{MESSAGE}</Wrapper>
 }
 
 CookiesMessage.propTypes = {
-  toggle: func.isRequired
+  onClick: func.isRequired
 }
 
 export default CookiesMessage

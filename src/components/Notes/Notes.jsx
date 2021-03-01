@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { createWebSocketConnection, ws } from 'websocket-connection'
