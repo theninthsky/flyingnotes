@@ -2,6 +2,8 @@ import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
 import { VIEWPORT_4, NOT_MOBILE } from 'media-queries'
 
+import userLightIcon from 'images/user-astronaut-light.svg'
+
 export const Wrapper = styled.nav`
   display: flex;
   padding: 10px 15px;
@@ -50,6 +52,8 @@ export const Util = styled.div`
 `
 export const ThemeImage = styled.img`
   width: 24px;
+  background-image: var(--theme-icon);
+  background-repeat: no-repeat;
   filter: invert(100%);
   cursor: pointer;
   user-select: none;
@@ -62,8 +66,9 @@ export const ThemeImage = styled.img`
 `
 export const UserImage = styled.img`
   align-self: center;
-  width: 18px;
-  filter: invert(100%);
+  width: 20px;
+  background-image: url(${userLightIcon});
+  background-repeat: no-repeat;
 `
 export const Auth = styled.button`
   display: flex;

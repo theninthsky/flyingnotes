@@ -1,18 +1,16 @@
 import { useState, useEffect } from 'react'
-import { useRecoilState, useSetRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
+import { useRecoilState, useSetRecoilState, useResetRecoilState } from 'recoil'
 
 import { ws } from 'websocket-connection'
-import { themeState, authIsVisibleState, userState, notesState, listsState, filesState } from 'atoms'
+import { authIsVisibleState, userState, notesState, listsState, filesState } from 'atoms'
+import { EMPTY_IMAGE } from 'global-constants'
 import { LOGOUT } from './constants'
 import { If, Backdrop } from 'components'
 import { Wrapper, UserLogo, Name, ErrorMessage, Input, Submit, ChangePassword } from './style'
 
-import userLogo from 'images/user-astronaut.svg'
-
 const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
 
 const User = () => {
-  const theme = useRecoilValue(themeState)
   const [user, setUser] = useRecoilState(userState)
   const resetAuthIsVisible = useResetRecoilState(authIsVisibleState)
   const setNotes = useSetRecoilState(notesState)
@@ -83,7 +81,7 @@ const User = () => {
       <Backdrop onClick={resetAuthIsVisible} />
 
       <Wrapper>
-        <UserLogo theme={theme} src={userLogo} alt="User" />
+        <UserLogo src={EMPTY_IMAGE} alt="User" />
 
         <Name
           value={name}

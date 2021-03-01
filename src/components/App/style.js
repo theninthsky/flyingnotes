@@ -1,5 +1,9 @@
 import styled, { createGlobalStyle } from 'styled-components'
 
+import themeLightIcon from 'images/theme-light.svg'
+import themeDarkIcon from 'images/theme-dark.svg'
+import userLightIcon from 'images/user-astronaut-light.svg'
+import userDarkIcon from 'images/user-astronaut-dark.svg'
 import arrowLightIcon from 'images/arrow-light.svg'
 import arrowLDarkIcon from 'images/arrow-dark.svg'
 import magnifyingGlassLightIcon from 'images/magnifying-glass-light.svg'
@@ -20,6 +24,8 @@ export const GlobalStyle = createGlobalStyle`
     --primary-color: white;
     --secondary-color: #e1e4e8;
     --placeholder-color: #b4b4b4;
+    --theme-icon: url(${themeLightIcon});
+    --user-icon: url(${userDarkIcon});
     --magnifying-glass-icon: url(${magnifyingGlassDarkIcon});
     --select-arrow-icon: url(${arrowLDarkIcon});
     --pin-unchecked-icon: url(${pinUncheckedDarkIcon});
@@ -34,6 +40,8 @@ export const GlobalStyle = createGlobalStyle`
     --primary-color: #161b22;
     --secondary-color: #30363d;
     --placeholder-color: #787878;
+    --theme-icon: url(${themeDarkIcon});
+    --user-icon: url(${userLightIcon});
     --magnifying-glass-icon: url(${magnifyingGlassLightIcon});
     --select-arrow-icon: url(${arrowLightIcon});
     --pin-unchecked-icon: url(${pinUncheckedLightIcon});

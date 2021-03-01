@@ -13,10 +13,12 @@ export const Wrapper = styled(AuthWrapper)`
   }
 `
 export const UserLogo = styled.img`
-  margin: 10px auto;
-  width: 20%;
-  border-radius: 100%;
-  filter: ${({ theme }) => (theme === 'dark' ? 'invert(100%)' : 'none')};
+  position: relative;
+  left: 5px;
+  margin: 20px auto 0;
+  width: 60px;
+  background-image: var(--user-icon);
+  background-repeat: no-repeat;
 `
 export const Name = styled.input`
   align-self: center;

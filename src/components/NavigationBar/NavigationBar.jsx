@@ -1,28 +1,24 @@
 import { useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
-import { themeState, authIsVisibleState, userState } from 'atoms'
+import { authIsVisibleState, userState } from 'atoms'
+import { EMPTY_IMAGE } from 'global-constants'
 import { THEME_LIGHT, THEME_DARK, LOG_IN } from './constants'
 import { If, CookiesMessage } from 'components'
 import { Wrapper, Logo, NavItems, StyledNavLink, Util, ThemeImage, UserImage, Auth } from './style'
 
 import logo from 'images/logo.svg'
-import lightThemeIcon from 'images/theme-light.svg'
-import darkThemeIcon from 'images/theme-dark.svg'
-import userIcon from 'images/user-astronaut.svg'
 
 const NavigationBar = () => {
-  const [theme, setTheme] = useRecoilState(themeState)
   const user = useRecoilValue(userState)
   const [authIsVisible, setAuthIsVisible] = useRecoilState(authIsVisibleState)
 
   const [cookiesMessageIsVisible, setCookiesMessageIsVisible] = useState(true)
 
   const toggleTheme = () => {
-    const newTheme = theme === THEME_DARK ? THEME_LIGHT : THEME_DARK
+    const newTheme = document.documentElement.getAttribute('data-theme') === THEME_DARK ? THEME_LIGHT : THEME_DARK
 
     document.documentElement.setAttribute('data-theme', newTheme)
-    setTheme(newTheme)
     localStorage.setItem('theme', newTheme)
   }
 
@@ -48,16 +44,11 @@ const NavigationBar = () => {
         </NavItems>
 
         <Util>
-          <ThemeImage
-            src={theme === THEME_LIGHT ? lightThemeIcon : darkThemeIcon}
-            alt="Theme"
-            title="Change Theme"
-            onClick={toggleTheme}
-          />
+          <ThemeImage src={EMPTY_IMAGE} alt="Theme" title="Change Theme" onClick={toggleTheme} />
 
           {user.name ? (
             <Auth title={user.name} onClick={() => setAuthIsVisible(!authIsVisible)}>
-              <UserImage src={userIcon} alt={user.name} />
+              <UserImage src={EMPTY_IMAGE} alt={user.name} />
             </Auth>
           ) : (
             <Auth
