@@ -60,6 +60,7 @@ const Input = styled.input`
 export const Category = styled(Input)`
   padding: 4px;
   border-bottom: 1px solid var(--secondary-color);
+  border-radius: 4px 4px 0 0;
   background-color: var(--secondary-color);
   font-size: 10px;
   font-weight: 500;

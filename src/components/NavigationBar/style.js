@@ -2,16 +2,13 @@ import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
 import { VIEWPORT_4, NOT_MOBILE } from 'media-queries'
 
-import userLightIcon from 'images/user-astronaut-light.svg'
-
 export const Wrapper = styled.nav`
   display: flex;
   padding: 10px 15px;
   width: 100%;
+  border-bottom: 2.5px solid var(--secondary-color);
   box-sizing: border-box;
   align-items: center;
-  background-color: #161b22;
-  color: white;
 
   @media ${VIEWPORT_4} {
     padding: 12.5px 30px;
@@ -27,7 +24,7 @@ export const NavItems = styled.div`
 export const StyledNavLink = styled(NavLink)`
   padding: 0 6px;
   box-sizing: border-box;
-  color: inherit;
+  color: var(--text-color);
   cursor: pointer;
   user-select: none;
   text-decoration: none;
@@ -54,7 +51,6 @@ export const ThemeImage = styled.img`
   width: 24px;
   background-image: var(--theme-icon);
   background-repeat: no-repeat;
-  filter: invert(100%);
   cursor: pointer;
   user-select: none;
 
@@ -67,7 +63,7 @@ export const ThemeImage = styled.img`
 export const UserImage = styled.img`
   align-self: center;
   width: 20px;
-  background-image: url(${userLightIcon});
+  background-image: var(--user-icon);
   background-repeat: no-repeat;
 `
 export const Auth = styled.button`

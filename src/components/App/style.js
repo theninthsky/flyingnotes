@@ -21,7 +21,7 @@ export const GlobalStyle = createGlobalStyle`
   :root {
     --text-color: #24292e;
     --bg-color: #fafafa;
-    --primary-color: white;
+    --primary-color: #fff;
     --secondary-color: #e1e4e8;
     --placeholder-color: #b4b4b4;
     --theme-icon: url(${themeLightIcon});
@@ -36,9 +36,9 @@ export const GlobalStyle = createGlobalStyle`
 
   [data-theme="dark"] {
     --text-color: #f0f6fc;
-    --bg-color: #0d1117;
-    --primary-color: #161b22;
-    --secondary-color: #30363d;
+    --bg-color: #0a0a0a;
+    --primary-color: #141414;
+    --secondary-color: #1f1f1f;
     --placeholder-color: #787878;
     --theme-icon: url(${themeDarkIcon});
     --user-icon: url(${userLightIcon});

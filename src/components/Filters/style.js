@@ -15,7 +15,7 @@ export const Wrapper = styled.div`
   }
 `
 export const CategoryFilter = styled.select`
-  width: 90px;
+  width: 75px;
   border-radius: 5px 0 0 5px;
   outline: none;
   cursor: pointer;
@@ -24,6 +24,10 @@ export const CategoryFilter = styled.select`
   font-size: 14px;
   color: inherit;
   background-color: var(--primary-color);
+
+  @media ${VIEWPORT_4} {
+    width: 90px;
+  }
 `
 export const SearchFilter = styled.div`
   flex-grow: 1;

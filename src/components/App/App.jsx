@@ -62,7 +62,7 @@ const App = () => {
           <Notes />
         </Route>
 
-        <Route exact path="/lists">
+        <Route path="/lists">
           <Helmet>
             <title>My Lists</title>
           </Helmet>
