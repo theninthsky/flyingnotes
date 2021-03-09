@@ -1,33 +1,19 @@
 import { useState, useEffect } from 'react'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilValue } from 'recoil'
 
-import { createWebSocketConnection, ws } from 'websocket-connection'
-import { userState } from 'atoms'
-import { notesSelector, categoriesSelector } from 'selectors'
+import { categoriesSelector } from 'selectors'
 import { RENDER_BATCH } from './constants'
+import { useGetNotes } from 'hooks'
 import { Filters, Note, LazyRender } from 'components'
 import { NotesWrap } from './style'
 
 const Notes = () => {
-  const user = useRecoilValue(userState)
-  const [notes, setNotes] = useRecoilState(notesSelector)
+  const notes = useGetNotes()
+
   const categories = useRecoilValue(categoriesSelector)
 
   const [filteredNotes, setFilteredNotes] = useState(notes)
   const [renderedNotes, setRenderedNotes] = useState(filteredNotes.slice(0, RENDER_BATCH))
-
-  useEffect(() => {
-    const getNotes = async () => {
-      if (!ws) await createWebSocketConnection()
-
-      const { notes } = await ws.json({ type: 'getNotes' })
-
-      setNotes(notes)
-      localStorage.userNotes = JSON.stringify(notes)
-    }
-
-    if (user.name) getNotes()
-  }, [user.name, setNotes])
 
   useEffect(() => {
     setFilteredNotes(notes)
