@@ -14,13 +14,6 @@ export const Wrapper = styled.nav`
     padding: 12.5px 30px;
   }
 `
-export const Logo = styled.img`
-  width: 34px;
-  margin-right: 10px;
-`
-export const NavItems = styled.div`
-  flex-grow: 1;
-`
 export const StyledNavLink = styled(NavLink)`
   padding: 0 6px;
   box-sizing: border-box;
@@ -42,10 +35,6 @@ export const StyledNavLink = styled(NavLink)`
       opacity: 1;
     }
   }
-`
-export const Util = styled.div`
-  display: flex;
-  align-items: center;
 `
 export const ThemeImage = styled.img`
   width: 24px;

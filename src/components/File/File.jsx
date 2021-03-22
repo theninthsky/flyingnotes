@@ -7,7 +7,7 @@ import { toBase64, fromBase64, saveFile } from 'util/base64'
 import { filesState } from 'atoms'
 import { If } from 'components'
 import { MAX_FILESIZE_IN_MB } from './constants'
-import { Wrapper, Name, InfoWrap, Extension, FileLabel, FileSelect, FileInput, Upload, Download, Delete } from './style'
+import { Wrapper, Name, InfoWrap, Extension, FileSelect, Upload, Download, Delete } from './style'
 
 import uploadIcon from 'images/upload.svg'
 import downloadIcon from 'images/download.svg'
@@ -122,10 +122,10 @@ const File = ({ newFile, _id: fileID, name: fileName = '', extension: fileExtens
             <Upload type="submit" value="UPLOAD" />
           ) : (
             <>
-              <FileLabel htmlFor="file-input">
+              <label style={{ height: '15px' }} htmlFor="file-input">
                 <FileSelect src={uploadIcon} alt="Select File" title="Select File" />
-              </FileLabel>
-              <FileInput id="file-input" type="file" onChange={loadFile} />
+              </label>
+              <input style={{ display: 'none' }} id="file-input" type="file" onChange={loadFile} />
             </>
           )}
         </If>

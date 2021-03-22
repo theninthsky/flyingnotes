@@ -5,7 +5,7 @@ import { authIsVisibleState, userState, notesState, listsState } from 'atoms'
 import { SIGN_UP, LOG_IN } from './constants'
 import { safari } from 'util/user-agent'
 import { If, Backdrop } from 'components'
-import { Wrapper, Title, Login, Divider, Signup, ErrorMessage, LoginMessage, Input, Submit } from './style'
+import { Wrapper, Title, Login, Divider, Signup, ErrorMessage, Input, Submit } from './style'
 
 const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
 
@@ -145,7 +145,9 @@ const Auth = () => {
               onChange={event => setName(event.target.value)}
             />
           ) : (
-            <LoginMessage>Login to have your notes and files saved on the cloud</LoginMessage>
+            <p style={{ marginBottom: '40px', textAlign: 'center' }}>
+              Login to have your notes and files saved on the cloud
+            </p>
           )}
 
           <Input

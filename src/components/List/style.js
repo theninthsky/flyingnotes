@@ -22,9 +22,6 @@ export const Content = styled(NoteContent)`
   margin: 6px 15px;
   overflow: auto;
 `
-export const Item = styled.div`
-  display: flex;
-`
 export const Checked = styled.img`
   width: 20px;
   margin-top: 10px;

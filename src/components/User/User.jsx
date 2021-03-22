@@ -6,7 +6,7 @@ import { authIsVisibleState, userState, notesState, listsState, filesState } fro
 import { EMPTY_IMAGE } from 'global-constants'
 import { LOGOUT } from './constants'
 import { If, Backdrop } from 'components'
-import { Wrapper, UserLogo, Name, ErrorMessage, Input, Submit, ChangePassword } from './style'
+import { Wrapper, UserLogo, Name, Input, Submit, ChangePassword } from './style'
 
 const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
 
@@ -93,7 +93,7 @@ const User = () => {
         />
 
         <If condition={error}>
-          <ErrorMessage>{error}</ErrorMessage>
+          <p style={{ textAlign: 'center', color: 'red' }}>{error}</p>
         </If>
 
         {changePasswordMode ? (

@@ -5,7 +5,7 @@ import { authIsVisibleState, userState } from 'atoms'
 import { EMPTY_IMAGE } from 'global-constants'
 import { THEME_LIGHT, THEME_DARK, LOG_IN } from './constants'
 import { If, CookiesMessage } from 'components'
-import { Wrapper, Logo, NavItems, StyledNavLink, Util, ThemeImage, UserImage, Auth } from './style'
+import { Wrapper, StyledNavLink, ThemeImage, UserImage, Auth } from './style'
 
 import logo from 'images/logo.svg'
 
@@ -25,9 +25,9 @@ const NavigationBar = () => {
   return (
     <>
       <Wrapper>
-        <Logo src={logo} alt="logo" />
+        <img style={{ width: '34px', marginRight: '10px' }} src={logo} alt="logo" />
 
-        <NavItems>
+        <div style={{ flexGrow: '1' }}>
           <StyledNavLink exact to="/">
             Notes
           </StyledNavLink>
@@ -41,9 +41,9 @@ const NavigationBar = () => {
               Files
             </StyledNavLink>
           )}
-        </NavItems>
+        </div>
 
-        <Util>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
           <ThemeImage src={EMPTY_IMAGE} alt="Theme" title="Change Theme" onClick={toggleTheme} />
 
           {user.name ? (
@@ -61,7 +61,7 @@ const NavigationBar = () => {
               {LOG_IN}
             </Auth>
           )}
-        </Util>
+        </div>
       </Wrapper>
 
       <If condition={cookiesMessageIsVisible && !user.name}>

@@ -35,11 +35,6 @@ export const Title = styled.div`
   display: flex;
   justify-content: space-evenly;
   text-align: center;
-
-  h1 {
-    font-weight: normal;
-    cursor: pointer;
-  }
 `
 export const Login = styled.h2`
   font-size: 28px;
@@ -68,10 +63,6 @@ export const ErrorMessage = styled.p`
   margin-bottom: 10%;
   text-align: center;
   color: red;
-`
-export const LoginMessage = styled.p`
-  margin-bottom: 10%;
-  text-align: center;
 `
 export const Input = styled.input`
   display: block;

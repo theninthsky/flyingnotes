@@ -61,9 +61,6 @@ export const InfoWrap = styled.div`
     font-size: 16px;
   }
 `
-export const FileLabel = styled.label`
-  height: 15px;
-`
 export const FileSelect = styled.img`
   width: 15px;
   margin-right: 10px;
@@ -74,9 +71,6 @@ export const FileSelect = styled.img`
       opacity: 0.5;
     }
   }
-`
-export const FileInput = styled.input`
-  display: none;
 `
 export const Upload = styled.input`
   height: 100%;

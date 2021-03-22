@@ -35,10 +35,6 @@ export const Name = styled.input`
     border: 1px solid var(--secondary-color);
   }
 `
-export const ErrorMessage = styled.p`
-  text-align: center;
-  color: red;
-`
 export const Input = styled(AuthInput)``
 
 export const ChangePassword = styled.button`

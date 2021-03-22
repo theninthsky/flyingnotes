@@ -2,15 +2,13 @@
 
 ![Notes](src/images/notes-screenshot.png) ![Lists](src/images/lists-screenshot.png)
 
-The app is deployed here: https://flyingnotes.netlify.app/
+The app is deployed here: https://flyingnotes.netlify.app
 
 ## Environment Variables
 
-A `.env` file (https://www.npmjs.com/package/dotenv) should be placed at the root directory which will specify the following variables:
+`REACT_APP_SERVER_URL` (default: http://localhost:5000)
 
-`REACT_APP_SERVER_URL` (required, default: http://localhost:5000)
-
-`REACT_APP_WS_SERVER_URL` (required, default: ws://localhost:5000)
+`REACT_APP_WS_SERVER_URL` (default: ws://localhost:5000)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

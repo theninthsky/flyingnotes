@@ -7,7 +7,7 @@ import { userState, listsState } from 'atoms'
 import { RTL_REGEX, EMPTY_IMAGE } from 'global-constants'
 import { TITLE, SAVE, DELETE_MESSAGE } from './constants'
 import { If, Options } from 'components'
-import { Wrapper, Pin, Title, Content, Item, Checked, Value, ConfirmMessage, StyledDate, Save } from './style'
+import { Wrapper, Pin, Title, Content, Checked, Value, ConfirmMessage, StyledDate, Save } from './style'
 
 const emptyItem = { value: '', checked: false }
 
@@ -256,7 +256,7 @@ const List = ({ newList, _id: listID, pinned = false, title: listTitle = '', ite
         {[...items]
           .sort((a, b) => a.checked - b.checked)
           .map(({ value, checked }, ind) => (
-            <Item key={ind}>
+            <div style={{ display: 'flex' }} key={ind}>
               <Checked checked={checked} src={EMPTY_IMAGE} onClick={event => checkItem(event, ind)} />
 
               <Value
@@ -276,7 +276,7 @@ const List = ({ newList, _id: listID, pinned = false, title: listTitle = '', ite
                   if (!value && items.length > 1) setItems(prevItems => prevItems.filter((_, index) => index !== ind))
                 }}
               />
-            </Item>
+            </div>
           ))}
       </Content>
 
