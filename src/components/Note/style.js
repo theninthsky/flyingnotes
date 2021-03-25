@@ -65,6 +65,7 @@ export const Category = styled(Input)`
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 3px;
+  text-transform: uppercase;
 `
 export const Title = styled(Input)`
   margin: 8px 24px 0;
