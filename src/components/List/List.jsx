@@ -1,9 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
-import { useRecoilState, useRecoilValue } from 'recoil'
-import { bool, string, arrayOf, shape } from 'prop-types'
+import { bool, string, func, arrayOf, shape } from 'prop-types'
 
-import { ws } from 'websocket-connection'
-import { userState, listsState } from 'atoms'
 import { RTL_REGEX, EMPTY_IMAGE } from 'global-constants'
 import { TITLE, SAVE, DELETE_MESSAGE } from './constants'
 import { If, Options } from 'components'
@@ -11,10 +8,19 @@ import { Wrapper, Pin, Title, Content, Checked, Value, ConfirmMessage, StyledDat
 
 const emptyItem = { value: '', checked: false }
 
-const List = ({ newList, _id: listID, pinned = false, title: listTitle = '', items: listItems, date }) => {
-  const user = useRecoilValue(userState)
-  const [lists, setLists] = useRecoilState(listsState)
-
+const List = ({
+  newList,
+  _id: listID,
+  pinned = false,
+  title: listTitle = '',
+  items: listItems,
+  date,
+  onCreateList,
+  onUpdatePin,
+  onCheckItem,
+  onUpdateList,
+  onDeleteList
+}) => {
   const [title, setTitle] = useState(listTitle)
   const [items, setItems] = useState(listItems)
   const [editMode, setEditMode] = useState(false)
@@ -59,7 +65,7 @@ const List = ({ newList, _id: listID, pinned = false, title: listTitle = '', ite
     }
   }
 
-  const createList = async event => {
+  const saveList = async event => {
     event.preventDefault()
 
     const list = {
@@ -67,46 +73,27 @@ const List = ({ newList, _id: listID, pinned = false, title: listTitle = '', ite
       title: title.trim(),
       items: items.map(item => ({ ...item, value: item.value.trim() }))
     }
-    let savedList
 
     setLoading(true)
 
-    if (user.name) {
-      savedList = (await ws.json({ type: 'createList', newList: list })).newList
-
-      if (!savedList) return
-
-      localStorage.setItem('userLists', JSON.stringify([...lists, savedList]))
+    if (newList) {
+      await onCreateList(list)
+      resetList()
     } else {
-      savedList = { ...list, _id: Date.now(), date: new Date().toISOString() }
-      localStorage.setItem('lists', JSON.stringify([...lists, savedList]))
+      list._id = listID
+
+      await onUpdateList(list)
     }
 
+    setEditMode(false)
+    setOptionsAreVisible(false)
     setLoading(false)
-    setLists([...lists, savedList])
-    resetList()
   }
 
   const updatePin = async event => {
     event.stopPropagation()
 
-    if (user.name) {
-      const { status } = await ws.json({ type: 'updateListPin', listID, pinned: !pinned })
-
-      if (status !== 'SUCCESS') return
-
-      localStorage.setItem(
-        'userLists',
-        JSON.stringify(lists.map(list => (list._id === listID ? { ...list, pinned: !pinned } : list)))
-      )
-    } else {
-      localStorage.setItem(
-        'lists',
-        JSON.stringify(lists.map(list => (list._id === listID ? { ...list, pinned: !pinned } : list)))
-      )
-    }
-
-    setLists(lists.map(list => (list._id === listID ? { ...list, pinned: !pinned } : list)))
+    onUpdatePin(listID, pinned)
   }
 
   const checkItem = async (event, index) => {
@@ -119,84 +106,18 @@ const List = ({ newList, _id: listID, pinned = false, title: listTitle = '', ite
     setCheckingItem(true)
 
     const otherItems = items.filter((_, ind) => ind !== index)
-
     const updatedItems = item.checked
       ? [{ ...item, checked: false }, ...otherItems]
       : [...otherItems, { ...item, checked: true }]
 
-    if (user.name) {
-      const { status } = await ws.json({ type: 'checkItem', listID, index, item })
-
-      if (status !== 'SUCCESS') return
-
-      localStorage.setItem(
-        'userLists',
-        JSON.stringify(lists.map(list => (list._id === listID ? { ...list, items: updatedItems } : list)))
-      )
-    } else {
-      localStorage.setItem(
-        'lists',
-        JSON.stringify(lists.map(list => (list._id === listID ? { ...list, items: updatedItems } : list)))
-      )
-    }
-
+    await onCheckItem(listID, index, item, updatedItems)
     setItems(updatedItems)
     setCheckingItem(false)
   }
 
-  const updateList = async event => {
-    event.preventDefault()
-
-    const list = {
-      _id: listID,
-      pinned,
-      title: title.trim(),
-      items: items.map(item => ({ ...item, value: item.value.trim() }))
-    }
-    let updatedList
-
-    if (user.name) {
-      setLoading(true)
-
-      updatedList = (await ws.json({ type: 'updateList', updatedList: list })).updatedList
-      localStorage.setItem(
-        'userLists',
-        JSON.stringify(lists.map(list => (list._id === updatedList._id ? updatedList : list)))
-      )
-
-      setLoading(false)
-    } else {
-      updatedList = { ...list, date: new Date().toISOString() }
-      localStorage.setItem(
-        'lists',
-        JSON.stringify(lists.map(list => (list._id === updatedList._id ? updatedList : list)))
-      )
-    }
-
-    setEditMode(false)
-    setOptionsAreVisible(false)
-    setLists(
-      lists.map(originalList =>
-        originalList._id === listID ? { ...list, date: new Date().toISOString() } : originalList
-      )
-    )
-  }
-
   const deleteList = async () => {
-    if (user.name) {
-      setLoading(true)
-
-      const { status } = await ws.json({ type: 'deleteList', listID })
-
-      if (status === 'SUCCESS') {
-        setLists(lists.filter(({ _id }) => _id !== listID))
-        localStorage.setItem('userLists', JSON.stringify(lists.filter(({ _id }) => _id !== listID)))
-      }
-    } else {
-      localStorage.setItem('lists', JSON.stringify(lists.filter(({ _id }) => _id !== listID)))
-    }
-
-    setLists(lists.filter(({ _id }) => _id !== listID))
+    setLoading(true)
+    onDeleteList(listID)
   }
 
   const originalItems = [...listItems]
@@ -207,7 +128,6 @@ const List = ({ newList, _id: listID, pinned = false, title: listTitle = '', ite
     .sort((a, b) => a.value.localeCompare(b.value))
     .map(({ value }) => value)
     .toString()
-
   const listChanged = title !== listTitle || originalItems !== currentItems
 
   return (
@@ -224,7 +144,7 @@ const List = ({ newList, _id: listID, pinned = false, title: listTitle = '', ite
       onKeyPress={event => {
         if (event.key === 'Enter') event.preventDefault()
       }}
-      onSubmit={newList ? createList : updateList}
+      onSubmit={saveList}
     >
       <If condition={!newList}>
         <Pin pinned={pinned} src={EMPTY_IMAGE} onClick={updatePin} />
@@ -303,7 +223,12 @@ List.propTypes = {
   pinned: bool,
   title: string,
   items: arrayOf(shape({ checked: bool, value: string })),
-  date: string
+  date: string,
+  onCreateList: func,
+  onUpdatePin: func,
+  onCheckItem: func,
+  onUpdateList: func,
+  onDeleteList: func
 }
 
 export default List

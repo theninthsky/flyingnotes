@@ -1,5 +1,3 @@
-import { RecoilRoot } from 'recoil'
-
 import List from './List'
 
 export default {
@@ -8,11 +6,7 @@ export default {
   argTypes: {}
 }
 
-const Template = args => (
-  <RecoilRoot>
-    <List {...args} />
-  </RecoilRoot>
-)
+const Template = args => <List {...args} />
 
 export const Primary = Template.bind({})
 
@@ -23,7 +17,7 @@ Primary.args = {
     { checked: false, value: 'Item 2' },
     { checked: true, value: 'Item 3' }
   ],
-  date: new Date()
+  date: new Date().toISOString()
 }
 
 export const New = Template.bind({})

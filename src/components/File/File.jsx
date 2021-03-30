@@ -1,10 +1,7 @@
 import { useState } from 'react'
-import { useRecoilState } from 'recoil'
-import { bool, string } from 'prop-types'
+import { bool, string, func } from 'prop-types'
 
-import { ws } from 'websocket-connection'
-import { toBase64, fromBase64, saveFile } from 'util/base64'
-import { filesState } from 'atoms'
+import { saveFile } from 'util/base64'
 import { If } from 'components'
 import { MAX_FILESIZE_IN_MB } from './constants'
 import { Wrapper, Name, InfoWrap, Extension, FileSelect, Upload, Download, Delete } from './style'
@@ -13,9 +10,15 @@ import uploadIcon from 'images/upload.svg'
 import downloadIcon from 'images/download.svg'
 import deleteIcon from 'images/delete.svg'
 
-const File = ({ newFile, _id: fileID, name: fileName = '', extension: fileExtension = '' }) => {
-  const [files, setFiles] = useRecoilState(filesState)
-
+const File = ({
+  newFile,
+  _id: fileID,
+  name: fileName = '',
+  extension: fileExtension = '',
+  onUploadFile,
+  onDownloadFile,
+  onDeleteFile
+}) => {
   const [name, setName] = useState(fileName)
   const [extension, setExtension] = useState(fileExtension)
   const [selectedFile, setSelectedFile] = useState()
@@ -55,13 +58,8 @@ const File = ({ newFile, _id: fileID, name: fileName = '', extension: fileExtens
     if (!name) return alert('File name is required')
 
     setLoading(true)
-
-    const base64 = await toBase64(selectedFile)
-    const { file } = await ws.json({ type: 'uploadFile', file: { name, extension, base64 } })
-
-    setFiles([...files, file])
+    await onUploadFile(selectedFile, name, extension)
     resetFile()
-
     setLoading(false)
   }
 
@@ -70,20 +68,15 @@ const File = ({ newFile, _id: fileID, name: fileName = '', extension: fileExtens
 
     setDownloading(true)
 
-    const { base64 } = await ws.json({ type: 'downloadFile', fileID })
-    const fileAttachment = await fromBase64(name, base64)
+    const fileAttachment = await onDownloadFile(fileID, name, extension)
 
-    setDownloading(false)
     setAttachment(fileAttachment)
-    saveFile(name, extension, fileAttachment)
+    setDownloading(false)
   }
 
   const deleteFile = async () => {
     setLoading(true)
-
-    const { status } = await ws.json({ type: 'deleteFile', fileID })
-
-    if (status === 'SUCCESS') setFiles(files.filter(({ _id }) => _id !== fileID))
+    onDeleteFile(fileID)
   }
 
   return (
@@ -148,7 +141,10 @@ File.propTypes = {
   newFile: bool,
   _id: string,
   name: string,
-  extension: string
+  extension: string,
+  onUploadFile: func,
+  onDownloadFile: func,
+  onDeleteFile: func
 }
 
 export default File

@@ -1,9 +1,6 @@
 import { useState, useEffect } from 'react'
-import { useRecoilState, useRecoilValue } from 'recoil'
-import { bool, string } from 'prop-types'
+import { bool, string, func } from 'prop-types'
 
-import { ws } from 'websocket-connection'
-import { userState, notesState } from 'atoms'
 import { RTL_REGEX, EMPTY_IMAGE } from 'global-constants'
 import { CATEGORY, TITLE, SAVE, DELETE_MESSAGE } from './constants'
 import { If, Options } from 'components'
@@ -16,11 +13,12 @@ const Note = ({
   category: noteCategory = '',
   title: noteTitle = '',
   content: noteContent = '',
-  date
+  date,
+  onCreateNote,
+  onUpdatePin,
+  onUpdateNote,
+  onDeleteNote
 }) => {
-  const user = useRecoilValue(userState)
-  const [notes, setNotes] = useRecoilState(notesState)
-
   const [category, setCategory] = useState(noteCategory)
   const [title, setTitle] = useState(noteTitle)
   const [content, setContent] = useState(noteContent)
@@ -41,7 +39,7 @@ const Note = ({
     setContent('')
   }
 
-  const createNote = async event => {
+  const saveNote = async event => {
     event.preventDefault()
 
     const note = {
@@ -50,101 +48,32 @@ const Note = ({
       title: title.trim(),
       content: content.trim()
     }
-    let savedNote
 
     setLoading(true)
 
-    if (user.name) {
-      savedNote = (await ws.json({ type: 'createNote', newNote: note })).newNote
-
-      if (!savedNote) return
-
-      localStorage.setItem('userNotes', JSON.stringify([...notes, savedNote]))
+    if (newNote) {
+      await onCreateNote(note)
+      resetNote()
     } else {
-      savedNote = { ...note, _id: Date.now(), date: new Date().toISOString() }
-      localStorage.setItem('notes', JSON.stringify([...notes, savedNote]))
+      note._id = noteID
+
+      await onUpdateNote(note)
+      setEditMode(false)
+      setOptionsAreVisible(false)
     }
 
     setLoading(false)
-    setNotes([...notes, savedNote])
-    resetNote()
   }
 
   const updatePin = async event => {
     event.stopPropagation()
 
-    if (user.name) {
-      const { status } = await ws.json({ type: 'updateNotePin', noteID, pinned: !pinned })
-
-      if (status !== 'SUCCESS') return
-
-      localStorage.setItem(
-        'userNotes',
-        JSON.stringify(notes.map(note => (note._id === noteID ? { ...note, pinned: !pinned } : note)))
-      )
-    } else {
-      localStorage.setItem(
-        'notes',
-        JSON.stringify(notes.map(note => (note._id === noteID ? { ...note, pinned: !pinned } : note)))
-      )
-    }
-
-    setNotes(notes.map(note => (note._id === noteID ? { ...note, pinned: !pinned } : note)))
-  }
-
-  const updateNote = async event => {
-    event.preventDefault()
-
-    const note = {
-      _id: noteID,
-      pinned,
-      category: category.trim(),
-      title: title.trim(),
-      content: content.trim()
-    }
-    let updatedNote
-
-    if (user.name) {
-      setLoading(true)
-
-      updatedNote = (await ws.json({ type: 'updateNote', updatedNote: note })).updatedNote
-      localStorage.setItem(
-        'userNotes',
-        JSON.stringify(notes.map(note => (note._id === updatedNote._id ? updatedNote : note)))
-      )
-
-      setLoading(false)
-    } else {
-      updatedNote = { ...note, date: new Date() }
-      localStorage.setItem(
-        'notes',
-        JSON.stringify(notes.map(note => (note._id === updatedNote._id ? updatedNote : note)))
-      )
-    }
-
-    setEditMode(false)
-    setOptionsAreVisible(false)
-    setNotes(
-      notes.map(originalNote =>
-        originalNote._id === noteID ? { ...note, date: new Date().toISOString() } : originalNote
-      )
-    )
+    onUpdatePin(noteID, pinned)
   }
 
   const deleteNote = async () => {
-    if (user.name) {
-      setLoading(true)
-
-      const { status } = await ws.json({ type: 'deleteNote', noteID })
-
-      if (status !== 'SUCCESS') return
-
-      localStorage.setItem('userNotes', JSON.stringify(notes.filter(({ _id }) => _id !== noteID)))
-    } else {
-      localStorage.setItem('notes', JSON.stringify(notes.filter(({ _id }) => _id !== noteID)))
-    }
-
-    setNotes(notes.filter(({ _id }) => _id !== noteID))
+    setLoading(true)
+    onDeleteNote(noteID)
   }
 
   const noteChanged = category !== noteCategory || title !== noteTitle || content !== noteContent
@@ -160,7 +89,7 @@ const Note = ({
         setOptionsAreVisible(confirmMessageIsVisible)
         setEditMode(false)
       }}
-      onSubmit={newNote ? createNote : updateNote}
+      onSubmit={saveNote}
     >
       <If condition={!newNote}>
         <Pin pinned={pinned} src={EMPTY_IMAGE} onClick={updatePin} />
@@ -222,7 +151,11 @@ Note.propTypes = {
   category: string,
   title: string,
   content: string,
-  date: string
+  date: string,
+  onCreateNote: func,
+  onUpdatePin: func,
+  onUpdateNote: func,
+  onDeleteNote: func
 }
 
 export default Note

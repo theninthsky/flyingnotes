@@ -1,5 +1,3 @@
-import { RecoilRoot } from 'recoil'
-
 import File from './File'
 
 export default {
@@ -8,11 +6,7 @@ export default {
   argTypes: {}
 }
 
-const Template = args => (
-  <RecoilRoot>
-    <File {...args} />
-  </RecoilRoot>
-)
+const Template = args => <File {...args} />
 
 export const Primary = Template.bind({})
 

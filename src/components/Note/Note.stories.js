@@ -1,5 +1,3 @@
-import { RecoilRoot } from 'recoil'
-
 import Note from './Note'
 
 export default {
@@ -8,11 +6,7 @@ export default {
   argTypes: {}
 }
 
-const Template = args => (
-  <RecoilRoot>
-    <Note {...args} />
-  </RecoilRoot>
-)
+const Template = args => <Note {...args} />
 
 export const Primary = Template.bind({})
 
@@ -20,7 +14,7 @@ Primary.args = {
   category: 'example',
   title: 'Demo',
   content: 'Lorem ipsum dolor sit amet...',
-  date: new Date()
+  date: new Date().toISOString()
 }
 
 export const New = Template.bind({})
