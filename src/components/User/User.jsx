@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import { useRecoilState, useSetRecoilState, useResetRecoilState } from 'recoil'
 
 import { ws } from 'websocket-connection'
@@ -11,6 +12,8 @@ import { Wrapper, UserLogo, Name, Input, Submit, ChangePassword } from './style'
 const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
 
 const User = () => {
+  const history = useHistory()
+
   const [user, setUser] = useRecoilState(userState)
   const resetAuthIsVisible = useResetRecoilState(authIsVisibleState)
   const setNotes = useSetRecoilState(notesState)
@@ -57,7 +60,7 @@ const User = () => {
     try {
       await fetch(`${REACT_APP_SERVER_URL}/logout`, { method: 'POST' })
 
-      localStorage.removeItem('user')
+      localStorage.setItem('user', '{}')
       localStorage.removeItem('userNotes')
       localStorage.removeItem('userLists')
       localStorage.removeItem('token')
@@ -70,6 +73,8 @@ const User = () => {
 
       ws.close()
       ws.destroy()
+
+      history.push('/')
     } catch (err) {
       setError('Failed to logout')
       setLoading(false)

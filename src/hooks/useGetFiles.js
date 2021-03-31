@@ -1,13 +1,19 @@
 import { useEffect } from 'react'
-import { useRecoilState } from 'recoil'
+import { useHistory } from 'react-router-dom'
+import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { createWebSocketConnection, ws } from 'websocket-connection'
-import { filesSelector } from 'selectors'
+import { userLoggedInSelector, filesSelector } from 'selectors'
 
 export const useGetFiles = () => {
+  const history = useHistory()
+
+  const userLoggedIn = useRecoilValue(userLoggedInSelector)
   const [files, setFiles] = useRecoilState(filesSelector)
 
   useEffect(() => {
+    if (!userLoggedIn) history.replace('/')
+
     const getFiles = async () => {
       if (!ws) await createWebSocketConnection()
 
@@ -17,7 +23,7 @@ export const useGetFiles = () => {
     }
 
     getFiles()
-  }, [setFiles])
+  }, [history, userLoggedIn, setFiles])
 
   return files
 }

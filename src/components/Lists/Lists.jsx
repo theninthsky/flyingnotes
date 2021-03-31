@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 
 import { ws } from 'websocket-connection'
-import { userState, listsState } from 'atoms'
+import { listsState } from 'atoms'
+import { userLoggedInSelector } from 'selectors'
 import { RENDER_BATCH } from './constants'
 import { useGetLists } from 'hooks'
 import { List, LazyRender } from 'components'
@@ -11,7 +12,7 @@ import { ListsWrap } from './style'
 const Lists = () => {
   const lists = useGetLists()
 
-  const user = useRecoilValue(userState)
+  const userLoggedIn = useRecoilValue(userLoggedInSelector)
   const setLists = useSetRecoilState(listsState)
 
   const [renderedLists, setRenderedLists] = useState(lists.slice(0, RENDER_BATCH))
@@ -19,7 +20,7 @@ const Lists = () => {
   const createList = async list => {
     let savedList
 
-    if (user.name) {
+    if (userLoggedIn) {
       savedList = (await ws.json({ type: 'createList', newList: list })).newList
 
       if (!savedList) return
@@ -34,7 +35,7 @@ const Lists = () => {
   }
 
   const updatePin = async (listID, pinned) => {
-    if (user.name) {
+    if (userLoggedIn) {
       const { status } = await ws.json({ type: 'updateListPin', listID, pinned: !pinned })
 
       if (status !== 'SUCCESS') return
@@ -54,7 +55,7 @@ const Lists = () => {
   }
 
   const checkItem = async (listID, index, item, updatedItems) => {
-    if (user.name) {
+    if (userLoggedIn) {
       const { status } = await ws.json({ type: 'checkItem', listID, index, item })
 
       if (status !== 'SUCCESS') return
@@ -74,7 +75,7 @@ const Lists = () => {
   const updateList = async list => {
     let updatedList
 
-    if (user.name) {
+    if (userLoggedIn) {
       updatedList = (await ws.json({ type: 'updateList', updatedList: list })).updatedList
       localStorage.setItem(
         'userLists',
@@ -96,7 +97,7 @@ const Lists = () => {
   }
 
   const deleteList = async listID => {
-    if (user.name) {
+    if (userLoggedIn) {
       const { status } = await ws.json({ type: 'deleteList', listID })
 
       if (status === 'SUCCESS') {

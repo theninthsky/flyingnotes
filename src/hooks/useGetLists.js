@@ -2,11 +2,10 @@ import { useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { createWebSocketConnection, ws } from 'websocket-connection'
-import { userState } from 'atoms'
-import { listsSelector } from 'selectors'
+import { userLoggedInSelector, listsSelector } from 'selectors'
 
 export const useGetLists = () => {
-  const user = useRecoilValue(userState)
+  const userLoggedIn = useRecoilValue(userLoggedInSelector)
   const [lists, setLists] = useRecoilState(listsSelector)
 
   useEffect(() => {
@@ -19,8 +18,8 @@ export const useGetLists = () => {
       localStorage.userLists = JSON.stringify(lists)
     }
 
-    if (user.name) getLists()
-  }, [user.name, setLists])
+    if (userLoggedIn) getLists()
+  }, [userLoggedIn, setLists])
 
   return lists
 }

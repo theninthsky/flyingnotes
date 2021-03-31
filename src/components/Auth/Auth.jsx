@@ -88,7 +88,7 @@ const Auth = () => {
       return setLoading(false)
     }
 
-    localStorage.setItem('user', name)
+    localStorage.setItem('user', JSON.stringify({ name }))
     localStorage.setItem('userNotes', JSON.stringify(notes))
     localStorage.setItem('userLists', JSON.stringify(lists))
 

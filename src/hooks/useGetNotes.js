@@ -2,11 +2,10 @@ import { useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { createWebSocketConnection, ws } from 'websocket-connection'
-import { userState } from 'atoms'
-import { notesSelector } from 'selectors'
+import { userLoggedInSelector, notesSelector } from 'selectors'
 
 export const useGetNotes = () => {
-  const user = useRecoilValue(userState)
+  const userLoggedIn = useRecoilValue(userLoggedInSelector)
   const [notes, setNotes] = useRecoilState(notesSelector)
 
   useEffect(() => {
@@ -19,8 +18,8 @@ export const useGetNotes = () => {
       localStorage.userNotes = JSON.stringify(notes)
     }
 
-    if (user.name) getNotes()
-  }, [user.name, setNotes])
+    if (userLoggedIn) getNotes()
+  }, [userLoggedIn, setNotes])
 
   return notes
 }

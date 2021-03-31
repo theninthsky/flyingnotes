@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
-import { Switch, Route, useHistory } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { Helmet } from 'react-helmet'
 import 'normalize.css'
 
-import { authIsVisibleState, userState } from 'atoms'
+import { authIsVisibleState } from 'atoms'
+import { userLoggedInSelector } from 'selectors'
 import { UPDATE_MESSAGE } from './constants'
 import { If, NavigationBar, Auth, User, Notes, Lists, Files, UpdateAlert } from 'components'
 import { GlobalStyle, Heading } from './style'
@@ -12,16 +13,10 @@ import { GlobalStyle, Heading } from './style'
 document.documentElement.setAttribute('data-theme', localStorage.theme || 'dark')
 
 const App = () => {
-  const user = useRecoilValue(userState)
+  const userLoggedIn = useRecoilValue(userLoggedInSelector)
   const authIsVisible = useRecoilValue(authIsVisibleState)
 
-  const history = useHistory()
-
   const [registrationWaiting, setRegistrationWaiting] = useState()
-
-  useEffect(() => {
-    if (!user.name) history.replace('/')
-  }, [user.name, history])
 
   useEffect(() => {
     const handleRegistration = ({ detail: registration }) => setRegistrationWaiting(registration.waiting)
@@ -51,7 +46,7 @@ const App = () => {
 
       <NavigationBar />
 
-      <If condition={authIsVisible}>{!user.name ? <Auth /> : <User />}</If>
+      <If condition={authIsVisible}>{userLoggedIn ? <User /> : <Auth />}</If>
 
       <Switch>
         <Route exact path="/">

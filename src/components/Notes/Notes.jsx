@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 
 import { ws } from 'websocket-connection'
-import { userState, notesState } from 'atoms'
-import { categoriesSelector } from 'selectors'
+import { notesState } from 'atoms'
+import { userLoggedInSelector, categoriesSelector } from 'selectors'
 import { RENDER_BATCH } from './constants'
 import { useGetNotes } from 'hooks'
 import { Filters, Note, LazyRender } from 'components'
@@ -12,7 +12,7 @@ import { NotesWrap } from './style'
 const Notes = () => {
   const notes = useGetNotes()
 
-  const user = useRecoilValue(userState)
+  const userLoggedIn = useRecoilValue(userLoggedInSelector)
   const categories = useRecoilValue(categoriesSelector)
   const setNotes = useSetRecoilState(notesState)
 
@@ -26,7 +26,7 @@ const Notes = () => {
   const createNote = async note => {
     let savedNote
 
-    if (user.name) {
+    if (userLoggedIn) {
       savedNote = (await ws.json({ type: 'createNote', newNote: note })).newNote
 
       if (!savedNote) return
@@ -41,7 +41,7 @@ const Notes = () => {
   }
 
   const updatePin = async (noteID, pinned) => {
-    if (user.name) {
+    if (userLoggedIn) {
       const { status } = await ws.json({ type: 'updateNotePin', noteID, pinned: !pinned })
 
       if (status !== 'SUCCESS') return
@@ -63,7 +63,7 @@ const Notes = () => {
   const updateNote = async note => {
     let updatedNote
 
-    if (user.name) {
+    if (userLoggedIn) {
       updatedNote = (await ws.json({ type: 'updateNote', updatedNote: note })).updatedNote
       localStorage.setItem(
         'userNotes',
@@ -85,7 +85,7 @@ const Notes = () => {
   }
 
   const deleteNote = async noteID => {
-    if (user.name) {
+    if (userLoggedIn) {
       const { status } = await ws.json({ type: 'deleteNote', noteID })
 
       if (status !== 'SUCCESS') return

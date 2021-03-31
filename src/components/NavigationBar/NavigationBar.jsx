@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { authIsVisibleState, userState } from 'atoms'
+import { userLoggedInSelector } from 'selectors'
 import { EMPTY_IMAGE } from 'global-constants'
 import { THEME_LIGHT, THEME_DARK, LOG_IN } from './constants'
 import { If, CookiesMessage } from 'components'
@@ -11,6 +12,7 @@ import logo from 'images/logo.svg'
 
 const NavigationBar = () => {
   const user = useRecoilValue(userState)
+  const userLoggedIn = useRecoilValue(userLoggedInSelector)
   const [authIsVisible, setAuthIsVisible] = useRecoilState(authIsVisibleState)
 
   const [cookiesMessageIsVisible, setCookiesMessageIsVisible] = useState(true)
@@ -32,21 +34,17 @@ const NavigationBar = () => {
             Notes
           </StyledNavLink>
 
-          <StyledNavLink exact to="/lists">
-            Lists
-          </StyledNavLink>
+          <StyledNavLink to="/lists">Lists</StyledNavLink>
 
-          {user.name && (
-            <StyledNavLink exact to="/files">
-              Files
-            </StyledNavLink>
-          )}
+          <If condition={userLoggedIn}>
+            <StyledNavLink to="/files">Files</StyledNavLink>
+          </If>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <ThemeImage src={EMPTY_IMAGE} alt="Theme" title="Change Theme" onClick={toggleTheme} />
 
-          {user.name ? (
+          {userLoggedIn ? (
             <Auth title={user.name} onClick={() => setAuthIsVisible(!authIsVisible)}>
               <UserImage src={EMPTY_IMAGE} alt={user.name} />
             </Auth>
@@ -64,7 +62,7 @@ const NavigationBar = () => {
         </div>
       </Wrapper>
 
-      <If condition={cookiesMessageIsVisible && !user.name}>
+      <If condition={cookiesMessageIsVisible && !userLoggedIn}>
         <CookiesMessage onClick={() => setCookiesMessageIsVisible(false)} />
       </If>
     </>
