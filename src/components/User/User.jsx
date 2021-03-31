@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { useRecoilState, useSetRecoilState, useResetRecoilState } from 'recoil'
 
 import { ws } from 'websocket-connection'
-import { authIsVisibleState, userState, notesState, listsState, filesState } from 'atoms'
+import { userState, authVisibleState, notesState, listsState, filesState } from 'atoms'
 import { EMPTY_IMAGE } from 'global-constants'
 import { LOGOUT } from './constants'
 import { If, Backdrop } from 'components'
@@ -15,7 +15,7 @@ const User = () => {
   const history = useHistory()
 
   const [user, setUser] = useRecoilState(userState)
-  const resetAuthIsVisible = useResetRecoilState(authIsVisibleState)
+  const resetAuthVisible = useResetRecoilState(authVisibleState)
   const setNotes = useSetRecoilState(notesState)
   const setLists = useSetRecoilState(listsState)
   const resetFiles = useResetRecoilState(filesState)
@@ -48,7 +48,7 @@ const User = () => {
       body
     })
 
-    if (res.ok) return resetAuthIsVisible(false)
+    if (res.ok) return resetAuthVisible()
 
     setError(error)
     setLoading(false)
@@ -69,7 +69,7 @@ const User = () => {
       setNotes(JSON.parse(localStorage.notes || '[]'))
       setLists(JSON.parse(localStorage.lists || '[]'))
       resetFiles()
-      resetAuthIsVisible(false)
+      resetAuthVisible()
 
       ws.close()
       ws.destroy()
@@ -83,7 +83,7 @@ const User = () => {
 
   return (
     <>
-      <Backdrop onClick={resetAuthIsVisible} />
+      <Backdrop onClick={resetAuthVisible} />
 
       <Wrapper>
         <UserLogo src={EMPTY_IMAGE} alt="User" />

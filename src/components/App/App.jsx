@@ -4,7 +4,7 @@ import { useRecoilValue } from 'recoil'
 import { Helmet } from 'react-helmet'
 import 'normalize.css'
 
-import { authIsVisibleState } from 'atoms'
+import { authVisibleState } from 'atoms'
 import { userLoggedInSelector } from 'selectors'
 import { UPDATE_MESSAGE } from './constants'
 import { If, NavigationBar, Auth, User, Notes, Lists, Files, UpdateAlert } from 'components'
@@ -14,7 +14,7 @@ document.documentElement.setAttribute('data-theme', localStorage.theme || 'dark'
 
 const App = () => {
   const userLoggedIn = useRecoilValue(userLoggedInSelector)
-  const authIsVisible = useRecoilValue(authIsVisibleState)
+  const authVisible = useRecoilValue(authVisibleState)
 
   const [registrationWaiting, setRegistrationWaiting] = useState()
 
@@ -46,7 +46,7 @@ const App = () => {
 
       <NavigationBar />
 
-      <If condition={authIsVisible}>{userLoggedIn ? <User /> : <Auth />}</If>
+      <If condition={authVisible}>{userLoggedIn ? <User /> : <Auth />}</If>
 
       <Switch>
         <Route exact path="/">

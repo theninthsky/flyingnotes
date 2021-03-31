@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
-import { authIsVisibleState, userState } from 'atoms'
+import { userState, authVisibleState } from 'atoms'
 import { userLoggedInSelector } from 'selectors'
 import { EMPTY_IMAGE } from 'global-constants'
 import { THEME_LIGHT, THEME_DARK, LOG_IN } from './constants'
@@ -13,7 +13,7 @@ import logo from 'images/logo.svg'
 const NavigationBar = () => {
   const user = useRecoilValue(userState)
   const userLoggedIn = useRecoilValue(userLoggedInSelector)
-  const [authIsVisible, setAuthIsVisible] = useRecoilState(authIsVisibleState)
+  const [authVisible, setAuthVisible] = useRecoilState(authVisibleState)
 
   const [cookiesMessageIsVisible, setCookiesMessageIsVisible] = useState(true)
 
@@ -45,14 +45,14 @@ const NavigationBar = () => {
           <ThemeImage src={EMPTY_IMAGE} alt="Theme" title="Change Theme" onClick={toggleTheme} />
 
           {userLoggedIn ? (
-            <Auth title={user.name} onClick={() => setAuthIsVisible(!authIsVisible)}>
+            <Auth title={user.name} onClick={() => setAuthVisible(!authVisible)}>
               <UserImage src={EMPTY_IMAGE} alt={user.name} />
             </Auth>
           ) : (
             <Auth
               title={LOG_IN}
               onClick={() => {
-                setAuthIsVisible(!authIsVisible)
+                setAuthVisible(!authVisible)
                 setCookiesMessageIsVisible(false)
               }}
             >

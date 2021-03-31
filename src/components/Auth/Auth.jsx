@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import { useSetRecoilState } from 'recoil'
+import { useSetRecoilState, useResetRecoilState } from 'recoil'
 
-import { authIsVisibleState, userState, notesState, listsState } from 'atoms'
+import { userState, authVisibleState, notesState, listsState } from 'atoms'
 import { SIGN_UP, LOG_IN } from './constants'
 import { safari } from 'util/user-agent'
 import { If, Backdrop } from 'components'
@@ -11,7 +11,7 @@ const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
 
 const Auth = () => {
   const setUser = useSetRecoilState(userState)
-  const setAuthIsVisible = useSetRecoilState(authIsVisibleState)
+  const resetAuthVisible = useResetRecoilState(authVisibleState)
   const setNotes = useSetRecoilState(notesState)
   const setLists = useSetRecoilState(listsState)
 
@@ -65,7 +65,7 @@ const Auth = () => {
     setUser({ name })
     setNotes(notes)
     setLists(lists)
-    setAuthIsVisible(false)
+    resetAuthVisible()
   }
 
   const login = async credentials => {
@@ -97,7 +97,7 @@ const Auth = () => {
     setUser({ name })
     setNotes(notes)
     setLists(lists)
-    setAuthIsVisible(false)
+    resetAuthVisible()
   }
 
   const actionChangedHandler = event => {
@@ -116,7 +116,7 @@ const Auth = () => {
 
   return (
     <>
-      <Backdrop onClick={() => setAuthIsVisible(false)} />
+      <Backdrop onClick={resetAuthVisible} />
 
       <Wrapper>
         <Title>

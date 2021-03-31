@@ -118,7 +118,7 @@ const Note = ({
       </If>
 
       <Content
-        height={`${(content.match(/\n/g) || []).length * 15 + 50}px`}
+        height={`${~~(content.length / 70) * 25 + 50}px`}
         dir={RTL_REGEX.test(content) ? 'rtl' : 'ltr'}
         value={content}
         aria-label="content"
