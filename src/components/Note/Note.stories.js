@@ -8,9 +8,9 @@ export default {
 
 const Template = args => <Note {...args} />
 
-export const Primary = Template.bind({})
+export const Normal = Template.bind({})
 
-Primary.args = {
+Normal.args = {
   category: 'example',
   title: 'Demo',
   content: 'Lorem ipsum dolor sit amet...',

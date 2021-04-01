@@ -8,9 +8,9 @@ export default {
 
 const Template = args => <File {...args} />
 
-export const Primary = Template.bind({})
+export const Normal = Template.bind({})
 
-Primary.args = {
+Normal.args = {
   name: 'File',
   extension: 'txt'
 }

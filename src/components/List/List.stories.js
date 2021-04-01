@@ -8,9 +8,9 @@ export default {
 
 const Template = args => <List {...args} />
 
-export const Primary = Template.bind({})
+export const Normal = Template.bind({})
 
-Primary.args = {
+Normal.args = {
   title: 'Demo',
   items: [
     { checked: false, value: 'Item 1' },
