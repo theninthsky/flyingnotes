@@ -40,7 +40,7 @@
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
     "build:react": "react-app-rewired build",
-    "build:storybook": "build-storybook -o public/storybook"
+    "build:storybook": "build-storybook --quiet -o public/storybook"
   },
   "eslintConfig": {
     "extends": [
