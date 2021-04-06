@@ -24,7 +24,7 @@ export const Wrapper = styled.form`
 
   @media ${VIEWPORT_4} {
     width: 400px;
-    margin: 30px;
+    margin: 20px;
   }
 `
 export const Pin = styled.img`
