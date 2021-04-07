@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { any, string, arrayOf } from 'prop-types'
+import { string, element, arrayOf, oneOfType } from 'prop-types'
 
 const Media = ({ query, children: component }) => {
   const [matches, setMatches] = useState()
@@ -22,8 +22,8 @@ const Media = ({ query, children: component }) => {
 }
 
 Media.propTypes = {
-  query: arrayOf(string),
-  children: any.isRequired
+  query: oneOfType([string, arrayOf(string)]).isRequired,
+  children: element.isRequired
 }
 
 export default Media
