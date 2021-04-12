@@ -14,7 +14,7 @@ export function register(config) {
     if (publicURL.origin !== window.location.origin) return
 
     window.addEventListener('load', () => {
-      const swURL = `${PUBLIC_URL}/stale-while-revalidate-sw.js`
+      const swURL = `${PUBLIC_URL}/service-worker.js`
 
       if (!localhost) return registerValidSW(swURL, config)
 
