@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route, Redirect } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { Helmet } from 'react-helmet'
 import 'normalize.css'
@@ -72,6 +72,12 @@ const App = () => {
           <Heading>Files</Heading>
           <Files />
         </Route>
+
+        <Route path="/storybook">
+          <Redirect to="/storybook/index.html" />
+        </Route>
+
+        <Redirect to="/" />
       </Switch>
     </>
   )
