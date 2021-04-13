@@ -2,13 +2,20 @@
 
 ![Notes](src/images/notes-screenshot.png) ![Lists](src/images/lists-screenshot.png)
 
-The app is deployed here: https://flyingnotes.netlify.app
+<strong>App</strong>: https://flyingnotes.netlify.app
+
+<strong>Storybook</strong>: https://flyingnotes.netlify.app/storybook/index.html
+
+<br/>
 
 ## Environment Variables
 
 `REACT_APP_SERVER_URL` (default: http://localhost:5000)
 
 `REACT_APP_WS_SERVER_URL` (default: ws://localhost:5000)
+
+<br/>
+<br/>
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

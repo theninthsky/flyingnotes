@@ -62,7 +62,7 @@ export const Category = styled(Input)`
   border-bottom: 1px solid var(--secondary-color);
   border-radius: 4px 4px 0 0;
   background-color: var(--secondary-color);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: 3px;
   text-transform: uppercase;
@@ -70,7 +70,7 @@ export const Category = styled(Input)`
 export const Title = styled(Input)`
   margin: 8px 24px 0;
   padding: 0;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
 `
 export const Content = styled.textarea`
@@ -81,7 +81,7 @@ export const Content = styled.textarea`
   resize: none;
   white-space: pre-line;
   font-family: inherit;
-  font-size: 16px;
+  font-size: 18px;
   color: inherit;
   background-color: inherit;
   cursor: auto;

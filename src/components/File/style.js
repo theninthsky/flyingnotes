@@ -35,7 +35,7 @@ export const Name = styled.input`
   font-family: inherit;
   background-color: inherit;
   color: inherit;
-  font-size: 16px;
+  font-size: 18px;
 
   &::placeholder {
     color: var(--placeholder-color);

@@ -73,10 +73,6 @@ const App = () => {
           <Files />
         </Route>
 
-        <Route path="/storybook">
-          <Redirect to="/storybook/index.html" />
-        </Route>
-
         <Redirect to="/" />
       </Switch>
     </>
