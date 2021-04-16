@@ -1,5 +1,5 @@
 import styled from 'styled-components'
 
-import { NotesWrap } from 'components/Notes/style'
+import { NotesWrap } from 'containers/Notes/style'
 
 export const ListsWrap = styled(NotesWrap)``

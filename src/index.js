@@ -5,7 +5,7 @@ import { RecoilRoot } from 'recoil'
 import { ErrorBoundary } from 'react-error-boundary'
 
 import * as serviceWorkerRegistration from 'service-worker-registration'
-import { App } from 'components'
+import { App } from 'containers'
 
 ReactDOM.render(
   <RecoilRoot>

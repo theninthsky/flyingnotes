@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
   justify-content: center;
 
   @media ${VIEWPORT_4} {
-    margin-top: 40px;
+    margin-top: 50px;
   }
 `
 export const CategoryFilter = styled.select`

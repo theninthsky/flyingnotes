@@ -7,7 +7,8 @@ import 'normalize.css'
 import { authVisibleState } from 'atoms'
 import { userLoggedInSelector } from 'selectors'
 import { UPDATE_MESSAGE } from './constants'
-import { If, NavigationBar, Auth, User, Notes, Lists, Files, UpdateAlert } from 'components'
+import { Notes, Lists, Files } from 'containers'
+import { If, NavigationBar, Auth, User, UpdateAlert } from 'components'
 import { GlobalStyle, Heading } from './style'
 
 document.documentElement.setAttribute('data-theme', localStorage.theme || 'dark')
@@ -30,7 +31,6 @@ const App = () => {
     if (!registrationWaiting) return
 
     registrationWaiting.postMessage({ type: 'SKIP_WAITING' })
-
     registrationWaiting.addEventListener('statechange', event => {
       if (event.target.state === 'activated') window.location.reload()
     })
