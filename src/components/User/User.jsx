@@ -3,7 +3,8 @@ import { useHistory } from 'react-router-dom'
 import { useRecoilState, useSetRecoilState, useResetRecoilState } from 'recoil'
 
 import { ws } from 'websocket-connection'
-import { userState, authVisibleState, notesState, listsState, filesState } from 'atoms'
+import { authVisibleState, notesState, listsState, filesState } from 'atoms'
+import { userSelector } from 'selectors'
 import { EMPTY_IMAGE } from 'global-constants'
 import { LOGOUT } from './constants'
 import { If, Backdrop } from 'components'
@@ -14,7 +15,7 @@ const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
 const User = () => {
   const history = useHistory()
 
-  const [user, setUser] = useRecoilState(userState)
+  const [user, setUser] = useRecoilState(userSelector)
   const resetAuthVisible = useResetRecoilState(authVisibleState)
   const setNotes = useSetRecoilState(notesState)
   const setLists = useSetRecoilState(listsState)
@@ -60,7 +61,6 @@ const User = () => {
     try {
       await fetch(`${REACT_APP_SERVER_URL}/logout`, { method: 'POST' })
 
-      localStorage.setItem('user', '{}')
       localStorage.removeItem('userNotes')
       localStorage.removeItem('userLists')
       localStorage.removeItem('token')

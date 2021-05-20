@@ -1,6 +1,7 @@
 import { selector } from 'recoil'
 
 import { notesState } from 'atoms'
+import { userLoggedInSelector } from 'selectors'
 
 export const notesSelector = selector({
   key: 'notesSelector',
@@ -8,7 +9,12 @@ export const notesSelector = selector({
     [...get(notesState)].sort(
       (a, b) => (b.pinned || false) - (a.pinned || false) || new Date(b.date) - new Date(a.date)
     ),
-  set: ({ set }, notes) => set(notesState, notes)
+  set: ({ get, set }, notes) => {
+    const userLoggedIn = get(userLoggedInSelector)
+
+    localStorage.setItem(userLoggedIn ? 'userNotes' : 'notes', JSON.stringify(notes))
+    set(notesState, notes)
+  }
 })
 
 export const categoriesSelector = selector({

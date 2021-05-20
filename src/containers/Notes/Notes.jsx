@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 
 import { ws } from 'websocket-connection'
-import { notesState } from 'atoms'
-import { userLoggedInSelector, categoriesSelector } from 'selectors'
+import { userLoggedInSelector, notesSelector, categoriesSelector } from 'selectors'
 import { RENDER_BATCH } from './constants'
 import { useGetNotes } from 'hooks'
 import { Filters, Note, LazyRender } from 'components'
@@ -13,8 +12,8 @@ const Notes = () => {
   const notes = useGetNotes()
 
   const userLoggedIn = useRecoilValue(userLoggedInSelector)
+  const setNotes = useSetRecoilState(notesSelector)
   const categories = useRecoilValue(categoriesSelector)
-  const setNotes = useSetRecoilState(notesState)
 
   const [filteredNotes, setFilteredNotes] = useState(notes)
   const [renderedNotes, setRenderedNotes] = useState(filteredNotes.slice(0, RENDER_BATCH))
@@ -24,18 +23,11 @@ const Notes = () => {
   }, [notes])
 
   const createNote = async note => {
-    let savedNote
+    const savedNote = userLoggedIn
+      ? (await ws.json({ type: 'createNote', newNote: note })).newNote
+      : { ...note, _id: Date.now().toString(), date: new Date().toISOString() }
 
-    if (userLoggedIn) {
-      savedNote = (await ws.json({ type: 'createNote', newNote: note })).newNote
-
-      if (!savedNote) return
-
-      localStorage.setItem('userNotes', JSON.stringify([...notes, savedNote]))
-    } else {
-      savedNote = { ...note, _id: Date.now().toString(), date: new Date().toISOString() }
-      localStorage.setItem('notes', JSON.stringify([...notes, savedNote]))
-    }
+    if (!savedNote) return
 
     setNotes([...notes, savedNote])
   }
@@ -45,43 +37,19 @@ const Notes = () => {
       const { status } = await ws.json({ type: 'updateNotePin', noteID, pinned: !pinned })
 
       if (status !== 'SUCCESS') return
-
-      localStorage.setItem(
-        'userNotes',
-        JSON.stringify(notes.map(note => (note._id === noteID ? { ...note, pinned: !pinned } : note)))
-      )
-    } else {
-      localStorage.setItem(
-        'notes',
-        JSON.stringify(notes.map(note => (note._id === noteID ? { ...note, pinned: !pinned } : note)))
-      )
     }
 
     setNotes(notes.map(note => (note._id === noteID ? { ...note, pinned: !pinned } : note)))
   }
 
   const updateNote = async note => {
-    let updatedNote
+    const updatedNote = userLoggedIn
+      ? (await ws.json({ type: 'updateNote', updatedNote: note })).updatedNote
+      : { ...note, date: new Date() }
 
-    if (userLoggedIn) {
-      updatedNote = (await ws.json({ type: 'updateNote', updatedNote: note })).updatedNote
-      localStorage.setItem(
-        'userNotes',
-        JSON.stringify(notes.map(note => (note._id === updatedNote._id ? updatedNote : note)))
-      )
-    } else {
-      updatedNote = { ...note, date: new Date() }
-      localStorage.setItem(
-        'notes',
-        JSON.stringify(notes.map(note => (note._id === updatedNote._id ? updatedNote : note)))
-      )
-    }
+    if (!updateNote) return
 
-    setNotes(
-      notes.map(originalNote =>
-        originalNote._id === note._id ? { ...note, date: new Date().toISOString() } : originalNote
-      )
-    )
+    setNotes(notes.map(note => (note._id === updatedNote._id ? updatedNote : note)))
   }
 
   const deleteNote = async noteID => {
@@ -89,10 +57,6 @@ const Notes = () => {
       const { status } = await ws.json({ type: 'deleteNote', noteID })
 
       if (status !== 'SUCCESS') return
-
-      localStorage.setItem('userNotes', JSON.stringify(notes.filter(({ _id }) => _id !== noteID)))
-    } else {
-      localStorage.setItem('notes', JSON.stringify(notes.filter(({ _id }) => _id !== noteID)))
     }
 
     setNotes(notes.filter(({ _id }) => _id !== noteID))

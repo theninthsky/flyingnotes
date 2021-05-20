@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useSetRecoilState, useResetRecoilState } from 'recoil'
 
-import { userState, authVisibleState, notesState, listsState } from 'atoms'
+import { authVisibleState } from 'atoms'
+import { userSelector, notesSelector, listsSelector } from 'selectors'
 import { SIGN_UP, LOG_IN } from './constants'
 import { safari } from 'util/user-agent'
 import { If, Backdrop } from 'components'
@@ -10,10 +11,10 @@ import { Wrapper, Title, Login, Divider, Signup, ErrorMessage, Input, Submit } f
 const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
 
 const Auth = () => {
-  const setUser = useSetRecoilState(userState)
+  const setUser = useSetRecoilState(userSelector)
   const resetAuthVisible = useResetRecoilState(authVisibleState)
-  const setNotes = useSetRecoilState(notesState)
-  const setLists = useSetRecoilState(listsState)
+  const setNotes = useSetRecoilState(notesSelector)
+  const setLists = useSetRecoilState(listsSelector)
 
   const [action, setAction] = useState(LOG_IN)
   const [name, setName] = useState('')
@@ -56,9 +57,6 @@ const Auth = () => {
     }
 
     localStorage.clear()
-    localStorage.setItem('user', name)
-    localStorage.setItem('userNotes', JSON.stringify(notes))
-    localStorage.setItem('userLists', JSON.stringify(lists))
 
     if (safari) localStorage.setItem('token', token)
 
@@ -87,10 +85,6 @@ const Auth = () => {
       setError(err)
       return setLoading(false)
     }
-
-    localStorage.setItem('user', JSON.stringify({ name }))
-    localStorage.setItem('userNotes', JSON.stringify(notes))
-    localStorage.setItem('userLists', JSON.stringify(lists))
 
     if (safari) localStorage.setItem('token', token)
 

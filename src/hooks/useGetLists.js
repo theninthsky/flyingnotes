@@ -15,7 +15,6 @@ export const useGetLists = () => {
       const { lists } = await ws.json({ type: 'getLists' })
 
       setLists(lists)
-      localStorage.userLists = JSON.stringify(lists)
     }
 
     if (userLoggedIn) getLists()

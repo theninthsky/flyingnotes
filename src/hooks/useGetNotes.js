@@ -15,7 +15,6 @@ export const useGetNotes = () => {
       const { notes } = await ws.json({ type: 'getNotes' })
 
       setNotes(notes)
-      localStorage.userNotes = JSON.stringify(notes)
     }
 
     if (userLoggedIn) getNotes()

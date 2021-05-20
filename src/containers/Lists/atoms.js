@@ -1,6 +1,8 @@
 import { atom } from 'recoil'
 
+const { user, userLists, lists } = localStorage
+
 export const listsState = atom({
   key: 'listsState',
-  default: JSON.parse((localStorage.user ? localStorage.userLists : localStorage.lists) || '[]')
+  default: JSON.parse((JSON.parse(user).name ? userLists : lists) || '[]')
 })
