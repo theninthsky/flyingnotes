@@ -10,8 +10,6 @@ import { LOGOUT } from './constants'
 import { If, Backdrop } from 'components'
 import { Wrapper, UserLogo, Name, Input, Submit, ChangePassword } from './style'
 
-const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
-
 const User = () => {
   const history = useHistory()
 
@@ -42,7 +40,7 @@ const User = () => {
 
     const body = JSON.stringify({ password, newPassword })
 
-    const res = await fetch(`${REACT_APP_SERVER_URL}/change-password`, {
+    const res = await fetch(`${process.env.REACT_APP_SERVER_URL}/change-password`, {
       method: 'PUT',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer=${localStorage.token}` },

@@ -8,8 +8,6 @@ import { safari } from 'util/user-agent'
 import { If, Backdrop } from 'components'
 import { Wrapper, Title, Login, Divider, Signup, ErrorMessage, Input, Submit } from './style'
 
-const { REACT_APP_SERVER_URL = 'http://localhost:5000' } = process.env
-
 const Auth = () => {
   const setUser = useSetRecoilState(userSelector)
   const resetAuthVisible = useResetRecoilState(authVisibleState)
@@ -42,7 +40,7 @@ const Auth = () => {
       lists: localLists
     })
 
-    const res = await fetch(`${REACT_APP_SERVER_URL}/register`, {
+    const res = await fetch(`${process.env.REACT_APP_SERVER_URL}/register`, {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
@@ -72,7 +70,7 @@ const Auth = () => {
 
     const body = JSON.stringify({ ...credentials })
 
-    const res = await fetch(`${REACT_APP_SERVER_URL}/login`, {
+    const res = await fetch(`${process.env.REACT_APP_SERVER_URL}/login`, {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },

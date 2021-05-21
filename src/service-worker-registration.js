@@ -1,4 +1,3 @@
-const { NODE_ENV, PUBLIC_URL } = process.env
 const { hostname } = window.location
 
 const localhost = Boolean(
@@ -8,13 +7,13 @@ const localhost = Boolean(
 )
 
 export function register(config) {
-  if (NODE_ENV === 'production' && 'serviceWorker' in navigator) {
-    const publicURL = new URL(PUBLIC_URL, window.location.href)
+  if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
+    const publicURL = new URL(process.env.PUBLIC_URL, window.location.href)
 
     if (publicURL.origin !== window.location.origin) return
 
     window.addEventListener('load', () => {
-      const swURL = `${PUBLIC_URL}/service-worker.js`
+      const swURL = `${process.env.PUBLIC_URL}/service-worker.js`
 
       if (!localhost) return registerValidSW(swURL, config)
 
