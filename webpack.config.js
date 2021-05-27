@@ -33,6 +33,13 @@ module.exports = (_, { mode }) => ({
       }
     }
   },
+  externals: {
+    react: 'React',
+    'react-dom': 'ReactDOM',
+    'react-router-dom': 'ReactRouterDOM',
+    recoil: 'Recoil',
+    'styled-components': 'styled'
+  },
   module: {
     rules: [
       {
