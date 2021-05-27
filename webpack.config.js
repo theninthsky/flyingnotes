@@ -70,15 +70,13 @@ module.exports = (_, { mode }) => ({
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
         type: 'asset/resource',
         generator: {
-          filename: 'font/[name].[hash][ext]'
+          filename: 'fonts/[name].[hash][ext]'
         }
       }
     ]
   },
   plugins: [
     new EnvironmentPlugin({
-      NODE_ENV: 'development',
-      PUBLIC_URL: '',
       REACT_APP_SERVER_URL: 'http://localhost:5000',
       REACT_APP_WS_SERVER_URL: 'ws://localhost:5000'
     }),
