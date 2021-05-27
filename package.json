@@ -6,9 +6,10 @@
     "build": "npm-run-all --serial -c build:storybook build:app",
     "serve": "serve build -p 3000",
     "test": "jest",
-    "storybook": "start-storybook -p 6006 -s public",
+    "storybook": "start-storybook -p 6006",
     "build:app": "webpack --mode production",
-    "build:storybook": "build-storybook --quiet -o public/storybook"
+    "build:storybook": "build-storybook --quiet -o public/storybook",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "@babel/runtime": "^7.14.0",
@@ -39,8 +40,6 @@
     "@storybook/addon-actions": "^6.2.9",
     "@storybook/addon-essentials": "^6.2.9",
     "@storybook/addon-links": "^6.2.9",
-    "@storybook/node-logger": "^6.2.9",
-    "@storybook/preset-create-react-app": "^3.1.7",
     "@storybook/react": "^6.2.9",
     "babel-loader": "^8.2.2",
     "copy-webpack-plugin": "^9.0.0",

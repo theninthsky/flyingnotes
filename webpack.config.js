@@ -1,17 +1,17 @@
 const path = require('path')
 const { EnvironmentPlugin } = require('webpack')
 const ESLintPlugin = require('eslint-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const HtmlPlugin = require('html-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 
-module.exports = {
+module.exports = (_, { mode }) => ({
   devServer: {
     contentBase: 'public',
     port: 3000,
     // open: true,
     stats: 'errors-warnings'
   },
-  devtool: 'source-map',
+  devtool: mode === 'development' ? 'source-map' : undefined,
   resolve: {
     modules: ['src', 'node_modules'],
     extensions: ['*', '.js', '.jsx']
@@ -20,6 +20,18 @@ module.exports = {
     path: path.join(__dirname, 'build'),
     filename: '[name].[contenthash].js',
     clean: true
+  },
+  optimization: {
+    runtimeChunk: 'single',
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all'
+        }
+      }
+    }
   },
   module: {
     rules: [
@@ -64,7 +76,7 @@ module.exports = {
       REACT_APP_WS_SERVER_URL: 'ws://localhost:5000'
     }),
     new ESLintPlugin(),
-    new HtmlWebpackPlugin({ template: 'public/index.html' }),
+    new HtmlPlugin({ template: 'public/index.html' }),
     new CopyPlugin({
       patterns: [
         {
@@ -76,4 +88,4 @@ module.exports = {
       ]
     })
   ]
-}
+})
