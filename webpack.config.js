@@ -2,11 +2,11 @@ const path = require('path')
 const { EnvironmentPlugin } = require('webpack')
 const ESLintPlugin = require('eslint-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const InterpolateHtmlPlugin = require('interpolate-html-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
 
 module.exports = {
   devServer: {
-    contentBase: 'build',
+    contentBase: 'public',
     port: 3000,
     // open: true,
     stats: 'errors-warnings'
@@ -41,12 +41,18 @@ module.exports = {
         ]
       },
       {
-        test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        type: 'asset/resource'
+        test: /\.(png|svg|jpe?g|gif)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'images/[name].[hash][ext]'
+        }
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
-        type: 'asset/resource'
+        type: 'asset/resource',
+        generator: {
+          filename: 'font/[name].[hash][ext]'
+        }
       }
     ]
   },
@@ -59,6 +65,15 @@ module.exports = {
     }),
     new ESLintPlugin(),
     new HtmlWebpackPlugin({ template: 'public/index.html' }),
-    new InterpolateHtmlPlugin({ PUBLIC_URL: 'public' })
+    new CopyPlugin({
+      patterns: [
+        {
+          from: 'public',
+          globOptions: {
+            ignore: '**/index.html'
+          }
+        }
+      ]
+    })
   ]
 }
