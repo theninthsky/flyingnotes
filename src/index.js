@@ -4,13 +4,15 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
 import { ErrorBoundary } from 'react-error-boundary'
 
-import * as serviceWorkerRegistration from 'service-worker-registration'
 import { App } from 'containers'
 
 ReactDOM.render(
   <RecoilRoot>
     <Router>
-      <ErrorBoundary fallback={<div></div>} onError={() => localStorage.clear()}>
+      <ErrorBoundary
+        fallback={<div>An error occured, please reload the app.</div>}
+        onError={() => localStorage.clear()}
+      >
         <App />
       </ErrorBoundary>
     </Router>
@@ -18,6 +20,15 @@ ReactDOM.render(
   document.getElementById('root')
 )
 
-serviceWorkerRegistration.register({
-  onUpdate: registration => window.dispatchEvent(new CustomEvent('serviceworkerupdate', { detail: registration }))
-})
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('service-worker.js')
+      .then(registration => {
+        console.log('SW registered: ', registration)
+      })
+      .catch(registrationError => {
+        console.log('SW registration failed: ', registrationError)
+      })
+  })
+}
