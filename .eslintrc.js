@@ -9,7 +9,8 @@ module.exports = {
   plugins: ['react'],
   rules: {
     'react/react-in-jsx-scope': 'off',
-    'no-async-promise-executor': 'off'
+    'no-async-promise-executor': 'off',
+    'no-unused-vars': 'warn'
   },
   settings: {
     react: { version: 'detect' }
