@@ -20,10 +20,12 @@ ReactDOM.render(
   document.getElementById('root')
 )
 
+const standalone = window.matchMedia('(display-mode: standalone)').matches
+
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker
-      .register('service-worker.js')
+      .register(standalone ? 'stale-while-revalidate-sw.js' : 'network-first-sw.js')
       .then(registration => {
         console.log('SW registered: ', registration)
       })

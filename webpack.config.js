@@ -3,6 +3,7 @@ const { EnvironmentPlugin } = require('webpack')
 const ESLintPlugin = require('eslint-webpack-plugin')
 const HtmlPlugin = require('html-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
+const WorkboxPlugin = require('workbox-webpack-plugin')
 
 module.exports = (_, { mode }) => ({
   devServer: {
@@ -53,9 +54,7 @@ module.exports = (_, { mode }) => ({
           'style-loader',
           {
             loader: 'css-loader',
-            options: {
-              modules: true
-            }
+            options: { modules: true }
           }
         ]
       },
@@ -86,11 +85,10 @@ module.exports = (_, { mode }) => ({
       patterns: [
         {
           from: 'public',
-          globOptions: {
-            ignore: '**/index.html'
-          }
+          globOptions: { ignore: '**/index.html' }
         }
       ]
-    })
+    }),
+    new WorkboxPlugin.InjectManifest({ swSrc: './public/stale-while-revalidate-sw.js' })
   ]
 })
