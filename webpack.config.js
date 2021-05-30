@@ -80,8 +80,8 @@ module.exports = (_, { mode }) => {
     },
     plugins: [
       new EnvironmentPlugin({
-        REACT_APP_SERVER_URL: 'http://localhost:5000',
-        REACT_APP_WS_SERVER_URL: 'ws://localhost:5000'
+        SERVER_URL: 'http://localhost:5000',
+        WS_SERVER_URL: 'ws://localhost:5000'
       }),
       new ESLintPlugin(),
       new HtmlPlugin({ template: 'public/index.html' }),

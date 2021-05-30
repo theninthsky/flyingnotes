@@ -10,6 +10,8 @@ import { LOGOUT } from './constants'
 import { If, Backdrop } from 'components'
 import { Wrapper, UserLogo, Name, Input, Submit, ChangePassword } from './style'
 
+const { SERVER_URL } = process.env
+
 const User = () => {
   const history = useHistory()
 
@@ -40,7 +42,7 @@ const User = () => {
 
     const body = JSON.stringify({ password, newPassword })
 
-    const res = await fetch(`${process.env.REACT_APP_SERVER_URL}/change-password`, {
+    const res = await fetch(`${SERVER_URL}/change-password`, {
       method: 'PUT',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer=${localStorage.token}` },
@@ -57,7 +59,7 @@ const User = () => {
     setLoading(true)
 
     try {
-      await fetch(`${REACT_APP_SERVER_URL}/logout`, { method: 'POST' })
+      await fetch(`${SERVER_URL}/logout`, { method: 'POST' })
 
       localStorage.removeItem('userNotes')
       localStorage.removeItem('userLists')

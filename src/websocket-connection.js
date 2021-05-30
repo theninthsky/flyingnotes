@@ -1,5 +1,8 @@
 import ReconnectingWebSocket from 'reconnecting-websocket'
 
+const { SERVER_URL } = process.env
+const { WS_SERVER_URL } = process.env
+
 export let ws
 let resolvers = {}
 
@@ -8,7 +11,7 @@ export const createWebSocketConnection = () => {
 
   return new Promise(async resolve => {
     try {
-      const res = await fetch(`${process.env.REACT_APP_SERVER_URL}/renew-token`, {
+      const res = await fetch(`${SERVER_URL}/renew-token`, {
         credentials: 'include',
         headers: { Authorization: `Bearer=${localStorage.token}` }
       })
@@ -17,7 +20,7 @@ export const createWebSocketConnection = () => {
 
       const { userID } = await res.json()
 
-      ws = new ReconnectingWebSocket(`${process.env.REACT_APP_WS_SERVER_URL}?${localStorage.token}`)
+      ws = new ReconnectingWebSocket(`${WS_SERVER_URL}?${localStorage.token}`)
 
       ws.onopen = resolve
 
