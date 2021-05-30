@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { Helmet } from 'react-helmet'
-import 'normalize.css'
 
 import { authVisibleState } from 'atoms'
 import { userLoggedInSelector } from 'selectors'

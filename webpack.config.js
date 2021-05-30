@@ -13,37 +13,13 @@ module.exports = (_, { mode }) => {
     devServer: {
       contentBase: 'public',
       port: 3000,
-      // open: true,
+      open: true,
       stats: 'errors-warnings'
     },
     devtool: development ? 'source-map' : undefined,
     resolve: {
       modules: ['src', 'node_modules'],
       extensions: ['*', '.js', '.jsx']
-    },
-    output: {
-      path: path.join(__dirname, 'build'),
-      filename: '[name].[contenthash].js',
-      clean: true
-    },
-    optimization: {
-      runtimeChunk: 'single',
-      splitChunks: {
-        cacheGroups: {
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            chunks: 'all'
-          }
-        }
-      }
-    },
-    externals: {
-      react: 'React',
-      'react-dom': 'ReactDOM',
-      'react-router-dom': 'ReactRouterDOM',
-      recoil: 'Recoil',
-      'styled-components': 'styled'
     },
     module: {
       rules: [
@@ -77,6 +53,30 @@ module.exports = (_, { mode }) => {
           }
         }
       ]
+    },
+    output: {
+      path: path.join(__dirname, 'build'),
+      filename: '[name].[contenthash].js',
+      clean: true
+    },
+    optimization: {
+      runtimeChunk: 'single',
+      splitChunks: {
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all'
+          }
+        }
+      }
+    },
+    externals: {
+      react: 'React',
+      'react-dom': 'ReactDOM',
+      'react-router-dom': 'ReactRouterDOM',
+      recoil: 'Recoil',
+      'styled-components': 'styled'
     },
     plugins: [
       new EnvironmentPlugin({
