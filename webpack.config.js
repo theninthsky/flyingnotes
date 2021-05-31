@@ -29,16 +29,6 @@ module.exports = (_, { mode }) => {
           loader: 'babel-loader'
         },
         {
-          test: /\.css$/,
-          use: [
-            'style-loader',
-            {
-              loader: 'css-loader',
-              options: { modules: true }
-            }
-          ]
-        },
-        {
           test: /\.(png|svg|jpe?g|gif)$/i,
           type: 'asset/resource',
           generator: {
