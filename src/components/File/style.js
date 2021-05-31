@@ -37,7 +37,7 @@ export const Name = styled.input`
   color: inherit;
   font-size: 18px;
 
-  &::placeholder {
+  ::placeholder {
     color: var(--placeholder-color);
   }
 `
@@ -67,7 +67,7 @@ export const FileSelect = styled.img`
   cursor: pointer;
 
   @media ${NOT_MOBILE} {
-    &:hover {
+    :hover {
       opacity: 0.5;
     }
   }
@@ -85,7 +85,7 @@ export const Upload = styled.input`
   font-weight: 500;
   cursor: pointer;
 
-  &:hover {
+  :hover {
     opacity: 0.75;
   }
 `
@@ -98,7 +98,7 @@ export const Download = styled.img`
   animation: ${({ downloading }) => (downloading ? 'loading 0.75s infinite alternate' : 'none')};
 
   @media ${NOT_MOBILE} {
-    &:hover {
+    :hover {
       opacity: 0.5;
     }
   }
@@ -119,7 +119,7 @@ export const Delete = styled.img`
   animation: showDelete 0.25s;
 
   @media ${NOT_MOBILE} {
-    &:hover {
+    :hover {
       opacity: 0.5;
     }
   }

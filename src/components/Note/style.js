@@ -53,7 +53,7 @@ const Input = styled.input`
   background-color: inherit;
   text-align: center;
 
-  &::placeholder {
+  ::placeholder {
     color: var(--placeholder-color);
   }
 `
@@ -75,7 +75,7 @@ export const Title = styled(Input)`
 `
 export const Content = styled.textarea`
   height: ${({ height }) => height};
-  margin: 6px 24px 10px 15px;
+  margin: 6px 15px 10px;
   border: none;
   outline: none;
   resize: none;
@@ -89,21 +89,21 @@ export const Content = styled.textarea`
   @media ${NOT_MOBILE} {
     overflow: hidden;
 
-    &:hover {
+    :hover {
       overflow: auto;
     }
 
-    &::-webkit-scrollbar {
+    ::-webkit-scrollbar {
       width: 7.5px;
       height: 7.5px;
     }
 
-    &::-webkit-scrollbar-thumb {
+    ::-webkit-scrollbar-thumb {
       border-radius: 4px;
       background-color: var(--secondary-color);
     }
 
-    &::-webkit-scrollbar-corner {
+    ::-webkit-scrollbar-corner {
       display: none;
     }
   }
@@ -138,7 +138,7 @@ export const Save = styled.input`
   cursor: pointer;
 
   @media ${NOT_MOBILE} {
-    &:hover {
+    :hover {
       opacity: 0.75;
     }
   }

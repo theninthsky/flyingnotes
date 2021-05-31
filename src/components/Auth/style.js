@@ -41,7 +41,7 @@ export const Login = styled.h2`
   opacity: ${({ action }) => (action === LOG_IN ? '1' : '0.4')};
   cursor: default;
 
-  &:hover {
+  :hover {
     opacity: 1;
   }
 `
@@ -55,7 +55,7 @@ export const Signup = styled.h2`
   opacity: ${({ action }) => (action === SIGN_UP ? '1' : '0.4')};
   cursor: default;
 
-  &:hover {
+  :hover {
     opacity: 1;
   }
 `
@@ -74,7 +74,7 @@ export const Input = styled.input`
   color: var(--text-color);
   background-color: var(--primary-color);
 
-  &::placeholder {
+  ::placeholder {
     color: var(--placeholder-color);
   }
 `
@@ -88,11 +88,11 @@ export const Submit = styled(Input)`
   outline: none;
   cursor: pointer;
 
-  &:hover {
+  :hover {
     opacity: 0.75;
   }
 
-  &:disabled {
+  :disabled {
     opacity: 0.5;
     cursor: default;
   }

@@ -14,7 +14,7 @@ export const Wrapper = styled.div`
   user-select: none;
   animation: showUpdateAlert 0.5s linear;
 
-  &:hover {
+  :hover {
     color: #787878;
   }
 

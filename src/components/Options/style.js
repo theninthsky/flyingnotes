@@ -25,7 +25,7 @@ export const Confirm = styled.img`
   cursor: pointer;
 
   @media ${NOT_MOBILE} {
-    &:hover {
+    :hover {
       opacity: 0.5;
     }
   }
@@ -38,7 +38,7 @@ export const Cancel = styled.img`
   cursor: pointer;
 
   @media ${NOT_MOBILE} {
-    &:hover {
+    :hover {
       opacity: 0.5;
     }
   }
@@ -51,7 +51,7 @@ export const Delete = styled.img`
   cursor: pointer;
 
   @media ${NOT_MOBILE} {
-    &:hover {
+    :hover {
       opacity: 0.5;
     }
   }

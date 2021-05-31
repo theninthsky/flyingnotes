@@ -47,7 +47,7 @@ export const SearchBox = styled.input`
   outline: none;
   background: var(--magnifying-glass-icon) no-repeat 7.5px scroll transparent;
 
-  &::placeholder {
+  ::placeholder {
     color: var(--placeholder-color);
   }
 `

@@ -31,7 +31,7 @@ export const Name = styled.input`
   color: inherit;
   background-color: transparent;
 
-  &:focus {
+  :focus {
     border: 1px solid var(--secondary-color);
   }
 `
@@ -46,7 +46,7 @@ export const ChangePassword = styled.button`
   background-color: transparent;
   cursor: pointer;
 
-  &:hover {
+  :hover {
     opacity: 0.75;
   }
 `

@@ -31,7 +31,7 @@ export const StyledNavLink = styled(NavLink)`
   }
 
   @media ${NOT_MOBILE} {
-    &:hover {
+    :hover {
       opacity: 1;
     }
   }
@@ -44,7 +44,7 @@ export const ThemeImage = styled.img`
   user-select: none;
 
   @media ${NOT_MOBILE} {
-    &:hover {
+    :hover {
       opacity: 0.5;
     }
   }
@@ -68,7 +68,7 @@ export const Auth = styled.button`
   user-select: none;
 
   @media ${NOT_MOBILE} {
-    &:hover {
+    :hover {
       opacity: 0.5;
     }
   }

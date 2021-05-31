@@ -65,7 +65,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   a {
-    &:visited {
+    :visited {
       color: unset;
     }
   }
