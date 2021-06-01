@@ -3,12 +3,11 @@ import { useSetRecoilState, useResetRecoilState } from 'recoil'
 
 import { authVisibleState } from 'atoms'
 import { userSelector, notesSelector, listsSelector } from 'selectors'
+import { registerService, loginService } from 'services'
 import { SIGN_UP, LOG_IN } from './constants'
 import { safari } from 'util/user-agent'
 import { If, Backdrop } from 'components'
 import { Wrapper, Title, Login, Divider, Signup, ErrorMessage, Input, Submit } from './style'
-
-const { SERVER_URL } = process.env
 
 const Auth = () => {
   const setUser = useSetRecoilState(userSelector)
@@ -36,17 +35,10 @@ const Auth = () => {
     const localNotes = localStorage.notes ? JSON.parse(localStorage.notes) : []
     const localLists = localStorage.lists ? JSON.parse(localStorage.lists) : []
 
-    const body = JSON.stringify({
+    const res = await registerService({
       ...credentials,
       notes: localNotes,
       lists: localLists
-    })
-
-    const res = await fetch(`${SERVER_URL}/register`, {
-      method: 'POST',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-      body
     })
 
     const { name, notes, lists, token, err } = await res.json()
@@ -70,14 +62,7 @@ const Auth = () => {
     setError()
     setLoading(true)
 
-    const body = JSON.stringify({ ...credentials })
-
-    const res = await fetch(`${SERVER_URL}/login`, {
-      method: 'POST',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-      body
-    })
+    const res = await loginService({ ...credentials })
 
     const { name, notes, lists, token, err } = await res.json()
 

@@ -5,12 +5,11 @@ import { useRecoilState, useSetRecoilState, useResetRecoilState } from 'recoil'
 import { ws } from 'websocket-connection'
 import { authVisibleState, notesState, listsState, filesState } from 'atoms'
 import { userSelector } from 'selectors'
+import { changePasswordService, logoutService } from 'services'
 import { EMPTY_IMAGE } from 'global-constants'
 import { LOGOUT } from './constants'
 import { If, Backdrop } from 'components'
 import { Wrapper, UserLogo, Name, Input, Submit, ChangePassword } from './style'
-
-const { SERVER_URL } = process.env
 
 const User = () => {
   const history = useHistory()
@@ -40,14 +39,7 @@ const User = () => {
     setError()
     setLoading(true)
 
-    const body = JSON.stringify({ password, newPassword })
-
-    const res = await fetch(`${SERVER_URL}/change-password`, {
-      method: 'PUT',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer=${localStorage.token}` },
-      body
-    })
+    const res = await changePasswordService({ password, newPassword })
 
     if (res.ok) return resetAuthVisible()
 
@@ -59,7 +51,7 @@ const User = () => {
     setLoading(true)
 
     try {
-      await fetch(`${SERVER_URL}/logout`, { method: 'POST' })
+      await logoutService()
 
       localStorage.removeItem('userNotes')
       localStorage.removeItem('userLists')
