@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { bool, string, func, arrayOf, shape } from 'prop-types'
+import useClickOutside from 'use-click-outside'
 
 import { RTL_REGEX, EMPTY_IMAGE } from 'global-constants'
 import { TITLE, SAVE, DELETE_MESSAGE } from './constants'
@@ -29,12 +30,18 @@ const List = ({
   const [loading, setLoading] = useState(false)
   const [checkingItem, setCheckingItem] = useState(false)
 
+  const listRef = useRef()
   const contentRef = useRef()
 
   useEffect(() => {
     setTitle(listTitle)
     setItems(listItems)
   }, [listTitle, listItems])
+
+  useClickOutside(listRef, () => {
+    setOptionsAreVisible(confirmMessageIsVisible)
+    setEditMode(false)
+  })
 
   const resetList = () => {
     setTitle('')
@@ -133,13 +140,10 @@ const List = ({
   return (
     <Wrapper
       faded={loading}
+      ref={listRef}
       autoComplete="off"
       onClick={() => {
         if (!newList) setOptionsAreVisible(true)
-      }}
-      onMouseLeave={() => {
-        setOptionsAreVisible(confirmMessageIsVisible)
-        setEditMode(false)
       }}
       onKeyPress={event => {
         if (event.key === 'Enter') event.preventDefault()

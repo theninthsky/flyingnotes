@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { bool, string, func } from 'prop-types'
+import useClickOutside from 'use-click-outside'
 
 import { saveFile } from 'util/base64'
 import { If } from 'components'
@@ -26,6 +27,10 @@ const File = ({
   const [loading, setLoading] = useState(false)
   const [downloading, setDownloading] = useState(false)
   const [deleteIsVisible, setDeleteIsVisible] = useState(false)
+
+  const fileRef = useRef()
+
+  useClickOutside(fileRef, () => setDeleteIsVisible(false))
 
   const resetFile = () => {
     setName('')
@@ -82,9 +87,9 @@ const File = ({
   return (
     <Wrapper
       transparent={loading}
+      ref={fileRef}
       autoComplete="off"
       onClick={() => setDeleteIsVisible(true)}
-      onMouseLeave={() => setDeleteIsVisible(false)}
       onSubmit={uploadFile}
     >
       <Name

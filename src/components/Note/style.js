@@ -75,6 +75,7 @@ export const Title = styled(Input)`
 `
 export const Content = styled.textarea`
   height: ${({ height }) => height};
+  min-height: 75px;
   margin: 6px 15px 10px;
   border: none;
   outline: none;

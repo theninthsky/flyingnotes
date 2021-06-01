@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { bool, string, func } from 'prop-types'
+import useClickOutside from 'use-click-outside'
 
 import { RTL_REGEX, EMPTY_IMAGE } from 'global-constants'
 import { CATEGORY, TITLE, SAVE, DELETE_MESSAGE } from './constants'
@@ -27,11 +28,18 @@ const Note = ({
   const [confirmMessageIsVisible, setConfirmMessageIsVisible] = useState(false)
   const [loading, setLoading] = useState(false)
 
+  const noteRef = useRef()
+
   useEffect(() => {
     setCategory(noteCategory)
     setTitle(noteTitle)
     setContent(noteContent)
   }, [noteCategory, noteTitle, noteContent])
+
+  useClickOutside(noteRef, () => {
+    setOptionsAreVisible(confirmMessageIsVisible)
+    setEditMode(false)
+  })
 
   const resetNote = () => {
     setCategory('')
@@ -81,13 +89,10 @@ const Note = ({
   return (
     <Wrapper
       faded={loading}
+      ref={noteRef}
       autoComplete="off"
       onClick={() => {
         if (!newNote) setOptionsAreVisible(true)
-      }}
-      onMouseLeave={() => {
-        setOptionsAreVisible(confirmMessageIsVisible)
-        setEditMode(false)
       }}
       onSubmit={saveNote}
     >
