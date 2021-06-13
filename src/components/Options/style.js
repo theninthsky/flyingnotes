@@ -2,6 +2,10 @@ import styled from 'styled-components'
 
 import { NOT_MOBILE } from 'media-queries'
 
+import Delete from 'images/delete.svg'
+import Confirm from 'images/confirm.svg'
+import Cancel from 'images/cancel.svg'
+
 export const Wrapper = styled.div`
   position: absolute;
   bottom: 0;
@@ -17,7 +21,7 @@ export const Wrapper = styled.div`
     }
   }
 `
-export const Confirm = styled.img`
+export const ConfirmIcon = styled(Confirm)`
   position: absolute;
   bottom: 6px;
   left: 10px;
@@ -30,7 +34,7 @@ export const Confirm = styled.img`
     }
   }
 `
-export const Cancel = styled.img`
+export const CancelIcon = styled(Cancel)`
   position: absolute;
   bottom: 6px;
   right: 10px;
@@ -43,7 +47,7 @@ export const Cancel = styled.img`
     }
   }
 `
-export const Delete = styled.img`
+export const DeleteIcon = styled(Delete)`
   position: absolute;
   bottom: 5px;
   left: 12px;

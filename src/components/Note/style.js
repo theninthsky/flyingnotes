@@ -2,6 +2,8 @@ import styled from 'styled-components'
 
 import { VIEWPORT_4, NOT_MOBILE } from 'media-queries'
 
+import Pin from 'images/pin.svg'
+
 export const Wrapper = styled.form`
   position: relative;
   display: flex;
@@ -27,14 +29,13 @@ export const Wrapper = styled.form`
     margin: 20px;
   }
 `
-export const Pin = styled.img`
+export const PinIcon = styled(Pin)`
   position: absolute;
   top: 2.5px;
   right: 3px;
   width: 14px;
   height: 14px;
-  background-image: ${({ pinned }) => (pinned ? `var(--pin-checked-icon)` : `var(--pin-unchecked-icon)`)};
-  background-repeat: no-repeat;
+  color: ${({ pinned }) => (pinned ? 'auto' : 'var(--placeholder-color)')};
   cursor: pointer;
   animation: showPin 0.25s;
 

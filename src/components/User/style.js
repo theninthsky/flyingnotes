@@ -2,6 +2,8 @@ import styled from 'styled-components'
 
 import { Wrapper as AuthWrapper, Input as AuthInput, Submit as AuthSubmit } from 'components/Auth/style'
 
+import UserLogoIcon from 'images/user-astronaut.svg'
+
 export const Wrapper = styled(AuthWrapper)`
   height: 380px;
   animation: showUser 0.25s;
@@ -12,13 +14,11 @@ export const Wrapper = styled(AuthWrapper)`
     }
   }
 `
-export const UserLogo = styled.img`
+export const UserLogo = styled(UserLogoIcon)`
   position: relative;
   left: 5px;
   margin: 20px auto 0;
   width: 60px;
-  background-image: var(--user-icon);
-  background-repeat: no-repeat;
 `
 export const Name = styled.input`
   align-self: center;

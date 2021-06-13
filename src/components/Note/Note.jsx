@@ -2,10 +2,10 @@ import { useState, useEffect, useRef } from 'react'
 import { bool, string, func } from 'prop-types'
 import useClickOutside from 'use-click-outside'
 
-import { RTL_REGEX, EMPTY_IMAGE } from 'global-constants'
+import { RTL_REGEX } from 'global-constants'
 import { CATEGORY, TITLE, SAVE, DELETE_MESSAGE } from './constants'
 import { If, Options } from 'components'
-import { Wrapper, Pin, Category, Title, Content, ConfirmMessage, StyledDate, Save } from './style'
+import { Wrapper, PinIcon, Category, Title, Content, ConfirmMessage, StyledDate, Save } from './style'
 
 const Note = ({
   newNote,
@@ -97,7 +97,7 @@ const Note = ({
       onSubmit={saveNote}
     >
       <If condition={!newNote}>
-        <Pin pinned={pinned} src={EMPTY_IMAGE} onClick={updatePin} />
+        <PinIcon pinned={pinned} onClick={updatePin} />
       </If>
 
       <If condition={category || newNote || editMode}>

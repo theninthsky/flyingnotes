@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import {
   Wrapper as NoteWrapper,
-  Pin as NotePin,
+  PinIcon as NotePin,
   Title as NoteTitle,
   Content as NoteContent,
   ConfirmMessage as NoteConfirmMessage,
@@ -10,10 +10,13 @@ import {
   Save as NoteSave
 } from 'components/Note/style'
 
+import Checked from 'images/checked.svg'
+import Unchecked from 'images/unchecked.svg'
+
 export const Wrapper = styled(NoteWrapper)`
   max-height: 350px;
 `
-export const Pin = styled(NotePin)``
+export const PinIcon = styled(NotePin)``
 
 export const Title = styled(NoteTitle)``
 
@@ -22,11 +25,14 @@ export const Content = styled(NoteContent)`
   margin: 6px 15px;
   overflow: auto;
 `
-export const Checked = styled.img`
+export const CheckedIcon = styled(Checked)`
   width: 20px;
   margin-top: 10px;
-  background-image: ${({ checked }) => (checked ? `var(--item-checked-icon)` : `var(--item-unchecked-icon)`)};
-  background-repeat: no-repeat;
+  cursor: pointer;
+`
+export const UncheckedIcon = styled(Unchecked)`
+  width: 20px;
+  margin-top: 10px;
   cursor: pointer;
 `
 export const Value = styled.input`

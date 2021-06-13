@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { arrayOf, string, func } from 'prop-types'
 
-import { Wrapper, CategoryFilter, SearchFilter, SearchBox } from './style'
+import { Wrapper, CategoryFilter, SearchFilter, SearchBox, MagnifyingGlassIcon } from './style'
 
 const Filters = ({ categories, onSelect, onSearch }) => {
   const [searchFilter, setSearchFilter] = useState('')
@@ -28,6 +28,8 @@ const Filters = ({ categories, onSelect, onSearch }) => {
             onSearch(event.target.value.toLowerCase())
           }}
         />
+
+        <MagnifyingGlassIcon />
       </SearchFilter>
     </Wrapper>
   )

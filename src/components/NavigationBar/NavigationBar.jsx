@@ -3,12 +3,11 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { userState, authVisibleState } from 'atoms'
 import { userLoggedInSelector } from 'selectors'
-import { EMPTY_IMAGE } from 'global-constants'
 import { THEME_LIGHT, THEME_DARK, LOG_IN } from './constants'
 import { If, CookiesMessage } from 'components'
-import { Wrapper, StyledNavLink, ThemeImage, UserImage, Auth } from './style'
+import { Wrapper, StyledNavLink, ThemeIcon, UserIcon, Auth } from './style'
 
-import logo from 'images/logo.svg'
+import Logo from 'images/logo.svg'
 
 const NavigationBar = () => {
   const user = useRecoilValue(userState)
@@ -27,7 +26,7 @@ const NavigationBar = () => {
   return (
     <>
       <Wrapper>
-        <img style={{ width: '34px', marginRight: '10px' }} src={logo} alt="logo" />
+        <Logo style={{ width: '34px', marginRight: '10px' }} />
 
         <div style={{ flexGrow: '1' }}>
           <StyledNavLink exact to="/">
@@ -42,11 +41,11 @@ const NavigationBar = () => {
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <ThemeImage src={EMPTY_IMAGE} alt="Theme" title="Change Theme" onClick={toggleTheme} />
+          <ThemeIcon onClick={toggleTheme} />
 
           {userLoggedIn ? (
             <Auth title={user.name} onClick={() => setAuthVisible(!authVisible)}>
-              <UserImage src={EMPTY_IMAGE} alt={user.name} />
+              <UserIcon />
             </Auth>
           ) : (
             <Auth

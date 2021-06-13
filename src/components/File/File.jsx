@@ -5,11 +5,7 @@ import useClickOutside from 'use-click-outside'
 import { saveFile } from 'util/base64'
 import { If } from 'components'
 import { MAX_FILESIZE_IN_MB } from './constants'
-import { Wrapper, Name, InfoWrap, Extension, FileSelect, Upload, Download, Delete } from './style'
-
-import uploadIcon from 'images/upload.svg'
-import downloadIcon from 'images/download.svg'
-import deleteIcon from 'images/delete.svg'
+import { Wrapper, Name, InfoWrap, Extension, Upload, UploadIcon, DownloadIcon, DeleteIcon } from './style'
 
 const File = ({
   newFile,
@@ -103,10 +99,7 @@ const File = ({
 
       <InfoWrap>
         {!newFile && deleteIsVisible ? (
-          <Delete
-            src={deleteIcon}
-            alt="Delete"
-            title="Delete"
+          <DeleteIcon
             onClick={() => {
               if (window.confirm(`Delete ${name}.${extension}?`)) deleteFile()
             }}
@@ -121,7 +114,7 @@ const File = ({
           ) : (
             <>
               <label style={{ height: '15px' }} htmlFor="file-input">
-                <FileSelect src={uploadIcon} alt="Select File" title="Select File" />
+                <UploadIcon />
               </label>
               <input style={{ display: 'none' }} id="file-input" type="file" onChange={loadFile} />
             </>
@@ -129,13 +122,7 @@ const File = ({
         </If>
 
         <If condition={!newFile}>
-          <Download
-            downloading={downloading}
-            alt="Download"
-            title="Download"
-            src={downloadIcon}
-            onClick={downloadFile}
-          />
+          <DownloadIcon downloading={downloading} onClick={downloadFile} />
         </If>
       </InfoWrap>
     </Wrapper>

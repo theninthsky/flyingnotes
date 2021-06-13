@@ -2,6 +2,8 @@ import styled from 'styled-components'
 
 import { VIEWPORT_4 } from 'media-queries'
 
+import MagnifyingGlass from 'images/magnifying-glass.svg'
+
 export const Wrapper = styled.div`
   width: 80vw;
   max-width: 400px;
@@ -30,6 +32,7 @@ export const CategoryFilter = styled.select`
   }
 `
 export const SearchFilter = styled.div`
+  position: relative;
   flex-grow: 1;
   display: flex;
   align-items: center;
@@ -45,9 +48,14 @@ export const SearchBox = styled.input`
   border: none;
   color: inherit;
   outline: none;
-  background: var(--magnifying-glass-icon) no-repeat 7.5px scroll transparent;
+  background-color: transparent;
 
   ::placeholder {
     color: var(--placeholder-color);
   }
+`
+export const MagnifyingGlassIcon = styled(MagnifyingGlass)`
+  position: absolute;
+  left: 7.5px;
+  width: 15px;
 `

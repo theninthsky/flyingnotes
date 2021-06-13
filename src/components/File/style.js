@@ -2,6 +2,10 @@ import styled from 'styled-components'
 
 import { VIEWPORT_4, NOT_MOBILE } from 'media-queries'
 
+import UploadImage from 'images/upload.svg'
+import Download from 'images/download.svg'
+import Delete from 'images/delete.svg'
+
 export const Wrapper = styled.form`
   display: flex;
   justify-content: space-between;
@@ -61,7 +65,7 @@ export const InfoWrap = styled.div`
     font-size: 16px;
   }
 `
-export const FileSelect = styled.img`
+export const UploadIcon = styled(UploadImage)`
   width: 15px;
   margin-right: 10px;
   cursor: pointer;
@@ -89,7 +93,7 @@ export const Upload = styled.input`
     opacity: 0.75;
   }
 `
-export const Download = styled.img`
+export const DownloadIcon = styled(Download)`
   width: 15px;
   margin-right: 10px;
   text-align: center;
@@ -112,7 +116,7 @@ export const Download = styled.img`
     }
   }
 `
-export const Delete = styled.img`
+export const DeleteIcon = styled(Delete)`
   width: 14px;
   margin-right: 15px;
   cursor: pointer;

@@ -12,6 +12,7 @@ module.exports = (_, { mode }) => {
   return {
     devServer: {
       contentBase: 'public',
+      historyApiFallback: true,
       port: 3000,
       open: true,
       stats: 'errors-warnings'
@@ -29,7 +30,11 @@ module.exports = (_, { mode }) => {
           loader: 'babel-loader'
         },
         {
-          test: /\.(png|svg|jpe?g|gif)$/i,
+          test: /\.svg$/,
+          use: ['@svgr/webpack']
+        },
+        {
+          test: /\.(png|jpe?g|gif)$/i,
           type: 'asset/resource',
           generator: {
             filename: 'images/[name].[hash][ext]'

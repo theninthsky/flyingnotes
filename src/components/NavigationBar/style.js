@@ -2,6 +2,9 @@ import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
 import { VIEWPORT_4, NOT_MOBILE } from 'media-queries'
 
+import Theme from 'images/theme.svg'
+import User from 'images/user-astronaut.svg'
+
 export const Wrapper = styled.nav`
   display: flex;
   padding: 10px 15px;
@@ -36,7 +39,7 @@ export const StyledNavLink = styled(NavLink)`
     }
   }
 `
-export const ThemeImage = styled.img`
+export const ThemeIcon = styled(Theme)`
   width: 24px;
   background-image: var(--theme-icon);
   background-repeat: no-repeat;
@@ -49,11 +52,9 @@ export const ThemeImage = styled.img`
     }
   }
 `
-export const UserImage = styled.img`
+export const UserIcon = styled(User)`
   align-self: center;
   width: 20px;
-  background-image: var(--user-icon);
-  background-repeat: no-repeat;
 `
 export const Auth = styled.button`
   display: flex;

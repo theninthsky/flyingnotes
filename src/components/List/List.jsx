@@ -5,7 +5,18 @@ import useClickOutside from 'use-click-outside'
 import { RTL_REGEX, EMPTY_IMAGE } from 'global-constants'
 import { TITLE, SAVE, DELETE_MESSAGE } from './constants'
 import { If, Options } from 'components'
-import { Wrapper, Pin, Title, Content, Checked, Value, ConfirmMessage, StyledDate, Save } from './style'
+import {
+  Wrapper,
+  PinIcon,
+  Title,
+  Content,
+  Value,
+  ConfirmMessage,
+  StyledDate,
+  Save,
+  CheckedIcon,
+  UncheckedIcon
+} from './style'
 
 const emptyItem = { value: '', checked: false }
 
@@ -151,7 +162,7 @@ const List = ({
       onSubmit={saveList}
     >
       <If condition={!newList}>
-        <Pin pinned={pinned} src={EMPTY_IMAGE} onClick={updatePin} />
+        <PinIcon pinned={pinned} onClick={updatePin} />
       </If>
 
       <If condition={title || newList || editMode}>
@@ -181,7 +192,11 @@ const List = ({
           .sort((a, b) => a.checked - b.checked)
           .map(({ value, checked }, ind) => (
             <div style={{ display: 'flex' }} key={ind}>
-              <Checked checked={checked} src={EMPTY_IMAGE} onClick={event => checkItem(event, ind)} />
+              {checked ? (
+                <CheckedIcon onClick={event => checkItem(event, ind)} />
+              ) : (
+                <UncheckedIcon onClick={event => checkItem(event, ind)} />
+              )}
 
               <Value
                 dir={RTL_REGEX.test(value) ? 'rtl' : 'ltr'}

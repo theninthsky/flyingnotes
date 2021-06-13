@@ -6,7 +6,6 @@ import { ws } from 'websocket-connection'
 import { authVisibleState, notesState, listsState, filesState } from 'atoms'
 import { userSelector } from 'selectors'
 import { changePasswordService, logoutService } from 'services'
-import { EMPTY_IMAGE } from 'global-constants'
 import { LOGOUT } from './constants'
 import { If, Backdrop } from 'components'
 import { Wrapper, UserLogo, Name, Input, Submit, ChangePassword } from './style'
@@ -78,7 +77,7 @@ const User = () => {
       <Backdrop onClick={resetAuthVisible} />
 
       <Wrapper>
-        <UserLogo src={EMPTY_IMAGE} alt="User" />
+        <UserLogo />
 
         <Name
           value={name}

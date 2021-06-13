@@ -1,11 +1,7 @@
 import { useState } from 'react'
 import { func } from 'prop-types'
 
-import { Wrapper, Confirm, Cancel, Delete } from './style'
-
-import deleteIcon from 'images/delete.svg'
-import confirmIcon from 'images/confirm.svg'
-import cancelIcon from 'images/cancel.svg'
+import { Wrapper, ConfirmIcon, CancelIcon, DeleteIcon } from './style'
 
 const Options = ({ onDelete, toggleConfirmMessage }) => {
   const [confirmIconsAreVisible, setConfirmIconsAreVisible] = useState(false)
@@ -19,11 +15,11 @@ const Options = ({ onDelete, toggleConfirmMessage }) => {
     <Wrapper>
       {confirmIconsAreVisible ? (
         <>
-          <Confirm src={confirmIcon} alt="Confirm" title="Confirm" onClick={onDelete} />
-          <Cancel src={cancelIcon} alt="Cancel" title="Cancel" onClick={() => confirmDeletion(false)} />
+          <ConfirmIcon onClick={onDelete} />
+          <CancelIcon onClick={() => confirmDeletion(false)} />
         </>
       ) : (
-        <Delete src={deleteIcon} alt="Delete" title="Delete" onClick={() => confirmDeletion(true)} />
+        <DeleteIcon onClick={() => confirmDeletion(true)} />
       )}
     </Wrapper>
   )
