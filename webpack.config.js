@@ -1,5 +1,7 @@
 const path = require('path')
 const { EnvironmentPlugin } = require('webpack')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const ESLintPlugin = require('eslint-webpack-plugin')
 const HtmlPlugin = require('html-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
@@ -28,6 +30,21 @@ module.exports = (_, { mode }) => {
           test: /\.(js|jsx)$/,
           exclude: /node_modules/,
           loader: 'babel-loader'
+        },
+        {
+          test: /\.(css|s[ac]ss)$/i,
+          use: [
+            MiniCssExtractPlugin.loader,
+            {
+              loader: 'css-loader',
+              options: {
+                modules: { localIdentName: '[name]_[local]-[hash:base64:5]' },
+                importLoaders: 2
+              }
+            },
+            'postcss-loader',
+            'sass-loader'
+          ]
         },
         {
           test: /\.svg$/,
@@ -64,7 +81,8 @@ module.exports = (_, { mode }) => {
             chunks: 'all'
           }
         }
-      }
+      },
+      minimizer: [new CssMinimizerPlugin()]
     },
     externals: {
       react: 'React',
@@ -78,6 +96,7 @@ module.exports = (_, { mode }) => {
         SERVER_URL: 'http://localhost:5000',
         WS_SERVER_URL: 'ws://localhost:5000'
       }),
+      new MiniCssExtractPlugin({ filename: '[name].[contenthash].css' }),
       new ESLintPlugin(),
       new HtmlPlugin({ template: 'public/index.html' }),
       new CopyPlugin({
