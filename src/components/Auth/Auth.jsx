@@ -7,7 +7,9 @@ import { registerService, loginService } from 'services'
 import { SIGN_UP, LOG_IN } from './constants'
 import { safari } from 'util/user-agent'
 import { If, Backdrop } from 'components'
-import { Wrapper, Title, Login, Divider, Signup, ErrorMessage, Input, Submit } from './style'
+import { Login, Signup } from './style'
+
+import style from './Auth.scss'
 
 const Auth = () => {
   const setUser = useSetRecoilState(userSelector)
@@ -97,26 +99,27 @@ const Auth = () => {
     <>
       <Backdrop onClick={resetAuthVisible} />
 
-      <Wrapper>
-        <Title>
+      <div className={style.wrapper}>
+        <div className={style.title}>
           <Login action={action} onClick={actionChangedHandler}>
             {LOG_IN}
           </Login>
 
-          <Divider />
+          <div className={style.divider} />
 
           <Signup action={action} onClick={actionChangedHandler}>
             {SIGN_UP}
           </Signup>
-        </Title>
+        </div>
 
         <form onSubmit={submitFormHandler}>
           <If condition={error}>
-            <ErrorMessage>{error}</ErrorMessage>
+            <p className={style.error}>{error}</p>
           </If>
 
           {action === SIGN_UP ? (
-            <Input
+            <input
+              className={style.field}
               type="text"
               value={name}
               placeholder="Name"
@@ -129,7 +132,8 @@ const Auth = () => {
             </p>
           )}
 
-          <Input
+          <input
+            className={style.field}
             type="email"
             value={email}
             placeholder="Email"
@@ -137,7 +141,8 @@ const Auth = () => {
             onChange={event => setEmail(event.target.value)}
           />
 
-          <Input
+          <input
+            className={style.field}
             type="password"
             value={password}
             placeholder="Password"
@@ -146,9 +151,9 @@ const Auth = () => {
             onChange={event => setPassword(event.target.value)}
           />
 
-          <Submit type="submit" value={action} disabled={loading} />
+          <input className={style.submit} type="submit" value={action} disabled={loading} />
         </form>
-      </Wrapper>
+      </div>
     </>
   )
 }

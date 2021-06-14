@@ -1,6 +1,4 @@
-import styled from 'styled-components'
-
-export const Wrapper = styled.div`
+.wrapper {
   z-index: 1;
   position: fixed;
   bottom: 25px;
@@ -31,4 +29,4 @@ export const Wrapper = styled.div`
       opacity: 1;
     }
   }
-`
+}

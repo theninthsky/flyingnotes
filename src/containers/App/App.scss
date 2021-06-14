@@ -34,7 +34,7 @@ svg {
 }
 
 a {
-  :visited {
+  &:visited {
     color: unset;
   }
 }

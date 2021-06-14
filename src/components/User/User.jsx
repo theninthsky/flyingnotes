@@ -8,7 +8,9 @@ import { userSelector } from 'selectors'
 import { changePasswordService, logoutService } from 'services'
 import { LOGOUT } from './constants'
 import { If, Backdrop } from 'components'
-import { Wrapper, UserLogo, Name, Input, Submit, ChangePassword } from './style'
+
+import style from './User.scss'
+import UserLogoIcon from 'images/user-astronaut.svg'
 
 const User = () => {
   const history = useHistory()
@@ -76,10 +78,11 @@ const User = () => {
     <>
       <Backdrop onClick={resetAuthVisible} />
 
-      <Wrapper>
-        <UserLogo />
+      <div className={style.wrapper}>
+        <UserLogoIcon className={style.userLogo} />
 
-        <Name
+        <input
+          className={style.name}
           value={name}
           onChange={event => setName(event.target.value)}
           onBlur={async () => {
@@ -94,7 +97,8 @@ const User = () => {
 
         {changePasswordMode ? (
           <form onSubmit={changePassword}>
-            <Input
+            <input
+              className={style.field}
               type="password"
               value={password}
               placeholder="Password"
@@ -103,7 +107,8 @@ const User = () => {
               onChange={event => setPassword(event.target.value)}
             />
 
-            <Input
+            <input
+              className={style.field}
               type="password"
               value={newPassword}
               placeholder="New Password"
@@ -111,16 +116,18 @@ const User = () => {
               onChange={event => setNewPassword(event.target.value)}
             />
 
-            <Submit type="submit" disabled={loading} />
+            <input className={style.submit} type="submit" disabled={loading} />
           </form>
         ) : (
           <>
-            <ChangePassword onClick={() => setChangePasswordMode(true)}>Change Password</ChangePassword>
+            <button className={style.changePassword} onClick={() => setChangePasswordMode(true)}>
+              Change Password
+            </button>
 
-            <Submit type="submit" value={LOGOUT} disabled={loading} onClick={logout} />
+            <input className={style.submit} type="submit" value={LOGOUT} disabled={loading} onClick={logout} />
           </>
         )}
-      </Wrapper>
+      </div>
     </>
   )
 }
