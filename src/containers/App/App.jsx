@@ -8,7 +8,8 @@ import { userLoggedInSelector } from 'selectors'
 import { UPDATE_MESSAGE } from './constants'
 import { Notes, Lists, Files } from 'containers'
 import { If, NavigationBar, Auth, User, UpdateAlert } from 'components'
-import { GlobalStyle, Heading } from './style'
+
+import style from './App.scss'
 
 document.documentElement.setAttribute('data-theme', localStorage.theme || 'dark')
 
@@ -37,8 +38,6 @@ const App = () => {
 
   return (
     <>
-      <GlobalStyle />
-
       <If condition={window.matchMedia('(display-mode: standalone)').matches && registrationWaiting}>
         <UpdateAlert onClick={replaceSW}>{UPDATE_MESSAGE}</UpdateAlert>
       </If>
@@ -52,7 +51,7 @@ const App = () => {
           <Helmet>
             <title>My Notes</title>
           </Helmet>
-          <Heading>Notes</Heading>
+          <h1 className={style.heading}>Notes</h1>
           <Notes />
         </Route>
 
@@ -60,7 +59,7 @@ const App = () => {
           <Helmet>
             <title>My Lists</title>
           </Helmet>
-          <Heading>Lists</Heading>
+          <h1 className={style.heading}>Lists</h1>
           <Lists />
         </Route>
 
@@ -68,7 +67,7 @@ const App = () => {
           <Helmet>
             <title>My Files</title>
           </Helmet>
-          <Heading>Files</Heading>
+          <h1 className={style.heading}>Files</h1>
           <Files />
         </Route>
 
