@@ -5,7 +5,8 @@ import { filesState } from 'atoms'
 import { useGetFiles } from 'hooks'
 import { toBase64, fromBase64, saveFile } from 'util/base64'
 import { File } from 'components'
-import { Wrapper } from './style'
+
+import style from './Files.scss'
 
 const Files = () => {
   const files = useGetFiles()
@@ -35,13 +36,13 @@ const Files = () => {
   }
 
   return (
-    <Wrapper>
+    <div className={style.wrapper}>
       <File newFile onUploadFile={uploadFile} />
 
       {files.map(file => (
         <File key={file._id} {...file} onDownloadFile={downloadFile} onDeleteFile={deleteFile} />
       ))}
-    </Wrapper>
+    </div>
   )
 }
 

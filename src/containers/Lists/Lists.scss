@@ -1,8 +1,6 @@
-import styled from 'styled-components'
+@import 'variables';
 
-import { VIEWPORT_4 } from 'media-queries'
-
-export const NotesWrap = styled.div`
+.wrapper {
   width: 95%;
   margin: 15px auto;
   display: flex;
@@ -10,7 +8,7 @@ export const NotesWrap = styled.div`
   justify-content: center;
   align-items: center;
 
-  @media ${VIEWPORT_4} {
+  @media ($viewport-4) {
     margin-top: 30px;
   }
-`
+}

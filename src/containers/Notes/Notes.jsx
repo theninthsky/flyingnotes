@@ -6,7 +6,8 @@ import { userLoggedInSelector, notesSelector, categoriesSelector } from 'selecto
 import { RENDER_BATCH } from './constants'
 import { useGetNotes } from 'hooks'
 import { Filters, Note, LazyRender } from 'components'
-import { NotesWrap } from './style'
+
+import style from './Notes.scss'
 
 const Notes = () => {
   const notes = useGetNotes()
@@ -76,7 +77,7 @@ const Notes = () => {
         }
       />
 
-      <NotesWrap>
+      <div className={style.wrapper}>
         <Note newNote onCreateNote={createNote} />
 
         {renderedNotes.map(({ _id, pinned, category, title, content, date }) => (
@@ -95,7 +96,7 @@ const Notes = () => {
         ))}
 
         <LazyRender batch={RENDER_BATCH} items={filteredNotes} setItems={setRenderedNotes} />
-      </NotesWrap>
+      </div>
     </>
   )
 }

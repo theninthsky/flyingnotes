@@ -6,7 +6,8 @@ import { userLoggedInSelector, listsSelector } from 'selectors'
 import { RENDER_BATCH } from './constants'
 import { useGetLists } from 'hooks'
 import { List, LazyRender } from 'components'
-import { ListsWrap } from './style'
+
+import style from './Lists.scss'
 
 const Lists = () => {
   const lists = useGetLists()
@@ -70,7 +71,7 @@ const Lists = () => {
   }
 
   return (
-    <ListsWrap>
+    <div className={style.wrapper}>
       <List newList items={[{ value: '', checked: false }]} onCreateList={createList} />
 
       {renderedLists.map(({ _id, pinned, title, items, date }) => (
@@ -89,7 +90,7 @@ const Lists = () => {
       ))}
 
       <LazyRender batch={RENDER_BATCH} items={lists} setItems={setRenderedLists} />
-    </ListsWrap>
+    </div>
   )
 }
 

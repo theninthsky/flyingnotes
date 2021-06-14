@@ -1,6 +1,4 @@
-import styled from 'styled-components'
-
-export const Wrapper = styled.div`
+.wrapper {
   margin: 25px auto;
   width: 95%;
   display: flex;
@@ -8,4 +6,4 @@ export const Wrapper = styled.div`
   flex-wrap: wrap;
   justify-content: space-around;
   align-items: center;
-`
+}
