@@ -7,7 +7,8 @@ import { userSelector, notesSelector, listsSelector } from 'selectors'
 import { registerService, loginService } from 'services'
 import { SIGN_UP, LOG_IN } from './constants'
 import { safari } from 'util/user-agent'
-import { If, Backdrop } from 'components'
+import If from 'components/If'
+import Backdrop from 'components/Backdrop'
 
 import style from './Auth.scss'
 

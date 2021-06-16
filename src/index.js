@@ -4,7 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
 import { ErrorBoundary } from 'react-error-boundary'
 
-import { App } from 'containers'
+import App from 'containers/App'
 import 'service-worker-registration'
 
 ReactDOM.render(

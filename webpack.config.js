@@ -82,7 +82,7 @@ module.exports = (_, { mode }) => {
           }
         }
       },
-      minimizer: [new CssMinimizerPlugin()]
+      minimizer: [`...`, new CssMinimizerPlugin()]
     },
     externals: {
       react: 'React',

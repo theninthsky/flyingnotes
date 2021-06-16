@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { Helmet } from 'react-helmet'
@@ -6,11 +6,18 @@ import { Helmet } from 'react-helmet'
 import { authVisibleState } from 'atoms'
 import { userLoggedInSelector } from 'selectors'
 import { UPDATE_MESSAGE } from './constants'
-import { Notes, Lists, Files } from 'containers'
-import { If, NavigationBar, Auth, User, UpdateAlert } from 'components'
+import Notes from 'containers/Notes'
+import If from 'components/If'
+import NavigationBar from 'components/NavigationBar'
+import Auth from 'components/Auth'
+import User from 'components/User'
+import UpdateAlert from 'components/UpdateAlert'
 
 import 'globals.scss'
 import style from './App.scss'
+
+const Lists = lazy(() => import(/* webpackPrefetch: true */ 'containers/Lists'))
+const Files = lazy(() => import(/* webpackPrefetch: true */ 'containers/Files'))
 
 document.documentElement.setAttribute('data-theme', localStorage.theme || 'dark')
 
@@ -61,7 +68,9 @@ const App = () => {
             <title>My Lists</title>
           </Helmet>
           <h1 className={style.heading}>Lists</h1>
-          <Lists />
+          <Suspense fallback={() => {}}>
+            <Lists />
+          </Suspense>
         </Route>
 
         <Route path="/files">
@@ -69,7 +78,9 @@ const App = () => {
             <title>My Files</title>
           </Helmet>
           <h1 className={style.heading}>Files</h1>
-          <Files />
+          <Suspense fallback={() => {}}>
+            <Files />
+          </Suspense>
         </Route>
 
         <Redirect to="/" />

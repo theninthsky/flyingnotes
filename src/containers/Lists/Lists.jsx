@@ -5,7 +5,8 @@ import { ws } from 'websocket-connection'
 import { userLoggedInSelector, listsSelector } from 'selectors'
 import { RENDER_BATCH } from './constants'
 import { useGetLists } from 'hooks'
-import { List, LazyRender } from 'components'
+import List from 'components/List'
+import LazyRender from 'components/LazyRender'
 
 import style from './Lists.scss'
 

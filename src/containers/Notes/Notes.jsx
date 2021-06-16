@@ -5,7 +5,9 @@ import { ws } from 'websocket-connection'
 import { userLoggedInSelector, notesSelector, categoriesSelector } from 'selectors'
 import { RENDER_BATCH } from './constants'
 import { useGetNotes } from 'hooks'
-import { Filters, Note, LazyRender } from 'components'
+import Filters from 'components/Filters'
+import Note from 'components/Note'
+import LazyRender from 'components/LazyRender'
 
 import style from './Notes.scss'
 

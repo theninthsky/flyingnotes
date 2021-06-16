@@ -5,7 +5,8 @@ import cx from 'clsx'
 
 import { RTL_REGEX } from 'global-constants'
 import { CATEGORY, TITLE, SAVE, DELETE_MESSAGE } from './constants'
-import { If, Options } from 'components'
+import If from 'components/If'
+import Options from 'components/Options'
 
 import style from './Note.scss'
 import PinIcon from 'images/pin.svg'
