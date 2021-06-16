@@ -5,7 +5,9 @@ import useClickOutside from 'use-click-outside'
 import { RTL_REGEX } from 'global-constants'
 import { CATEGORY, TITLE, SAVE, DELETE_MESSAGE } from './constants'
 import { If, Options } from 'components'
-import { Wrapper, PinIcon, Category, Title, Content, ConfirmMessage, StyledDate, Save } from './style'
+import { Wrapper, PinIcon, Save } from './style'
+
+import style from './Note.scss'
 
 const Note = ({
   newNote,
@@ -101,7 +103,8 @@ const Note = ({
       </If>
 
       <If condition={category || newNote || editMode}>
-        <Category
+        <input
+          className={style.category}
           value={category}
           dir="auto"
           placeholder={CATEGORY}
@@ -112,7 +115,8 @@ const Note = ({
       </If>
 
       <If condition={title || newNote || editMode}>
-        <Title
+        <input
+          className={style.title}
           value={title}
           dir="auto"
           placeholder={TITLE}
@@ -122,8 +126,9 @@ const Note = ({
         />
       </If>
 
-      <Content
-        height={`${(content.match(/\n/g) || []).length * 15 + 45}px`}
+      <textarea
+        className={style.content}
+        rows={(content.match(/\n/g) || []).length}
         dir={RTL_REGEX.test(content) ? 'rtl' : 'ltr'}
         value={content}
         aria-label="content"
@@ -137,12 +142,12 @@ const Note = ({
       </If>
 
       {confirmMessageIsVisible ? (
-        <ConfirmMessage>{DELETE_MESSAGE}</ConfirmMessage>
+        <div className={style.confirmMessage}>{DELETE_MESSAGE}</div>
       ) : noteChanged || newNote ? (
         <Save hidden={!noteChanged && !newNote} type="submit" value={SAVE} aria-label="save" />
       ) : (
         <If condition={!newNote}>
-          <StyledDate>{new Date(date).toLocaleString('en-GB').replace(',', '').slice(0, -3)}</StyledDate>
+          <div className={style.date}>{new Date(date).toLocaleString('en-GB').replace(',', '').slice(0, -3)}</div>
         </If>
       )}
     </Wrapper>

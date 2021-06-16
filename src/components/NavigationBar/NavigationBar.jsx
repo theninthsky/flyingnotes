@@ -1,13 +1,16 @@
 import { useState } from 'react'
+import { NavLink } from 'react-router-dom'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { userState, authVisibleState } from 'atoms'
 import { userLoggedInSelector } from 'selectors'
 import { THEME_LIGHT, THEME_DARK, LOG_IN } from './constants'
 import { If, CookiesMessage } from 'components'
-import { Wrapper, StyledNavLink, ThemeIcon, UserIcon, Auth } from './style'
 
+import style from './NavigationBar.scss'
 import Logo from 'images/logo.svg'
+import ThemeIcon from 'images/theme.svg'
+import UserIcon from 'images/user-astronaut.svg'
 
 const NavigationBar = () => {
   const user = useRecoilValue(userState)
@@ -25,30 +28,35 @@ const NavigationBar = () => {
 
   return (
     <>
-      <Wrapper>
-        <Logo style={{ width: '34px', marginRight: '10px' }} />
+      <nav className={style.wrapper}>
+        <Logo className={style.logo} />
 
         <div style={{ flexGrow: '1' }}>
-          <StyledNavLink exact to="/">
+          <NavLink className={style.navLink} exact to="/">
             Notes
-          </StyledNavLink>
+          </NavLink>
 
-          <StyledNavLink to="/lists">Lists</StyledNavLink>
+          <NavLink className={style.navLink} to="/lists">
+            Lists
+          </NavLink>
 
           <If condition={userLoggedIn}>
-            <StyledNavLink to="/files">Files</StyledNavLink>
+            <NavLink className={style.navLink} to="/files">
+              Files
+            </NavLink>
           </If>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <ThemeIcon onClick={toggleTheme} />
+          <ThemeIcon className={style.themeIcon} onClick={toggleTheme} />
 
           {userLoggedIn ? (
-            <Auth title={user.name} onClick={() => setAuthVisible(!authVisible)}>
-              <UserIcon />
-            </Auth>
+            <button className={style.auth} title={user.name} onClick={() => setAuthVisible(!authVisible)}>
+              <UserIcon className={style.userIcon} />
+            </button>
           ) : (
-            <Auth
+            <button
+              className={style.auth}
               title={LOG_IN}
               onClick={() => {
                 setAuthVisible(!authVisible)
@@ -56,10 +64,10 @@ const NavigationBar = () => {
               }}
             >
               {LOG_IN}
-            </Auth>
+            </button>
           )}
         </div>
-      </Wrapper>
+      </nav>
 
       <If condition={cookiesMessageIsVisible && !userLoggedIn}>
         <CookiesMessage onClick={() => setCookiesMessageIsVisible(false)} />

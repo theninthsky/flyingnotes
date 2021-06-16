@@ -1,10 +1,6 @@
-import styled from 'styled-components'
+@import 'variables';
 
-import { VIEWPORT_4 } from 'media-queries'
-
-import MagnifyingGlass from 'images/magnifying-glass.svg'
-
-export const Wrapper = styled.div`
+.wrapper {
   width: 80vw;
   max-width: 400px;
   margin: 25px auto 0;
@@ -12,11 +8,12 @@ export const Wrapper = styled.div`
   display: flex;
   justify-content: center;
 
-  @media ${VIEWPORT_4} {
+  @media ($viewport-4) {
     margin-top: 50px;
   }
-`
-export const CategoryFilter = styled.select`
+}
+
+.category {
   width: 75px;
   border-radius: 5px 0 0 5px;
   outline: none;
@@ -27,11 +24,12 @@ export const CategoryFilter = styled.select`
   color: inherit;
   background-color: var(--primary-color);
 
-  @media ${VIEWPORT_4} {
+  @media ($viewport-4) {
     width: 90px;
   }
-`
-export const SearchFilter = styled.div`
+}
+
+.search {
   position: relative;
   flex-grow: 1;
   display: flex;
@@ -39,9 +37,9 @@ export const SearchFilter = styled.div`
   border: 1px solid var(--secondary-color);
   border-radius: 0 5px 5px 0;
   background-color: var(--primary-color);
-`
+}
 
-export const SearchBox = styled.input`
+.searchBox {
   width: 100%;
   height: 50%;
   padding-left: 30px;
@@ -50,12 +48,13 @@ export const SearchBox = styled.input`
   outline: none;
   background-color: transparent;
 
-  ::placeholder {
+  &::placeholder {
     color: var(--placeholder-color);
   }
-`
-export const MagnifyingGlassIcon = styled(MagnifyingGlass)`
+}
+
+.magnifyingGlassIcon {
   position: absolute;
   left: 7.5px;
   width: 15px;
-`
+}

@@ -5,7 +5,11 @@ import useClickOutside from 'use-click-outside'
 import { saveFile } from 'util/base64'
 import { If } from 'components'
 import { MAX_FILESIZE_IN_MB } from './constants'
-import { Wrapper, Name, InfoWrap, Extension, Upload, UploadIcon, DownloadIcon, DeleteIcon } from './style'
+import { Wrapper, DownloadIcon } from './style'
+
+import style from './File.scss'
+import UploadIcon from 'images/upload.svg'
+import DeleteIcon from 'images/delete.svg'
 
 const File = ({
   newFile,
@@ -88,7 +92,8 @@ const File = ({
       onClick={() => setDeleteIsVisible(true)}
       onSubmit={uploadFile}
     >
-      <Name
+      <input
+        className={style.name}
         type="text"
         placeholder="Name"
         value={name}
@@ -97,24 +102,27 @@ const File = ({
         onChange={event => setName(event.target.value)}
       />
 
-      <InfoWrap>
+      <div className={style.infoWrap}>
         {!newFile && deleteIsVisible ? (
           <DeleteIcon
+            className={style.deleteIcon}
             onClick={() => {
               if (window.confirm(`Delete ${name}.${extension}?`)) deleteFile()
             }}
           />
         ) : (
-          <Extension title={extension}>{extension}</Extension>
+          <div className={style.extension} title={extension}>
+            {extension}
+          </div>
         )}
 
         <If condition={newFile}>
           {selectedFile ? (
-            <Upload type="submit" value="UPLOAD" />
+            <input className={style.upload} type="submit" value="UPLOAD" />
           ) : (
             <>
               <label style={{ height: '15px' }} htmlFor="file-input">
-                <UploadIcon />
+                <UploadIcon className={style.uploadIcon} />
               </label>
               <input style={{ display: 'none' }} id="file-input" type="file" onChange={loadFile} />
             </>
@@ -124,7 +132,7 @@ const File = ({
         <If condition={!newFile}>
           <DownloadIcon downloading={downloading} onClick={downloadFile} />
         </If>
-      </InfoWrap>
+      </div>
     </Wrapper>
   )
 }

@@ -9,6 +9,7 @@ import { UPDATE_MESSAGE } from './constants'
 import { Notes, Lists, Files } from 'containers'
 import { If, NavigationBar, Auth, User, UpdateAlert } from 'components'
 
+import 'globals.scss'
 import style from './App.scss'
 
 document.documentElement.setAttribute('data-theme', localStorage.theme || 'dark')

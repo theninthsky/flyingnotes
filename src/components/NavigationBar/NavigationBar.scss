@@ -1,11 +1,6 @@
-import styled from 'styled-components'
-import { NavLink } from 'react-router-dom'
-import { VIEWPORT_4, NOT_MOBILE } from 'media-queries'
+@import 'variables';
 
-import Theme from 'images/theme.svg'
-import User from 'images/user-astronaut.svg'
-
-export const Wrapper = styled.nav`
+.wrapper {
   display: flex;
   padding: 10px 15px;
   width: 100%;
@@ -13,11 +8,12 @@ export const Wrapper = styled.nav`
   box-sizing: border-box;
   align-items: center;
 
-  @media ${VIEWPORT_4} {
+  @media ($viewport-4) {
     padding: 12.5px 30px;
   }
-`
-export const StyledNavLink = styled(NavLink)`
+}
+
+.navLink {
   padding: 0 6px;
   box-sizing: border-box;
   color: var(--text-color);
@@ -33,30 +29,38 @@ export const StyledNavLink = styled(NavLink)`
     opacity: 1;
   }
 
-  @media ${NOT_MOBILE} {
-    :hover {
+  @media ($not-mobile) {
+    &:hover {
       opacity: 1;
     }
   }
-`
-export const ThemeIcon = styled(Theme)`
+}
+
+.logo {
+  width: 34px;
+  margin-right: 10px;
+}
+
+.themeIcon {
   width: 24px;
   background-image: var(--theme-icon);
   background-repeat: no-repeat;
   cursor: pointer;
   user-select: none;
 
-  @media ${NOT_MOBILE} {
-    :hover {
+  @media ($not-mobile) {
+    &:hover {
       opacity: 0.5;
     }
   }
-`
-export const UserIcon = styled(User)`
+}
+
+.userIcon {
   align-self: center;
   width: 20px;
-`
-export const Auth = styled.button`
+}
+
+.auth {
   display: flex;
   margin-left: 10px;
   padding: 0;
@@ -68,9 +72,9 @@ export const Auth = styled.button`
   cursor: pointer;
   user-select: none;
 
-  @media ${NOT_MOBILE} {
-    :hover {
+  @media ($not-mobile) {
+    &:hover {
       opacity: 0.5;
     }
   }
-`
+}

@@ -1,24 +1,26 @@
 import { useState } from 'react'
 import { arrayOf, string, func } from 'prop-types'
 
-import { Wrapper, CategoryFilter, SearchFilter, SearchBox, MagnifyingGlassIcon } from './style'
+import style from './Filters.scss'
+import MagnifyingGlassIcon from 'images/magnifying-glass.svg'
 
 const Filters = ({ categories, onSelect, onSearch }) => {
   const [searchFilter, setSearchFilter] = useState('')
 
   return (
-    <Wrapper>
-      <CategoryFilter title="Category" onChange={event => onSelect(event.target.value)}>
+    <div className={style.wrapper}>
+      <select className={style.category} title="Category" onChange={event => onSelect(event.target.value)}>
         <option defaultValue value="">
           ALL
         </option>
         {categories.map(category => (
           <option key={category}>{category}</option>
         ))}
-      </CategoryFilter>
+      </select>
 
-      <SearchFilter>
-        <SearchBox
+      <div className={style.search}>
+        <input
+          className={style.searchBox}
           type="search"
           value={searchFilter}
           placeholder="Search..."
@@ -29,9 +31,9 @@ const Filters = ({ categories, onSelect, onSearch }) => {
           }}
         />
 
-        <MagnifyingGlassIcon />
-      </SearchFilter>
-    </Wrapper>
+        <MagnifyingGlassIcon className={style.magnifyingGlassIcon} />
+      </div>
+    </div>
   )
 }
 

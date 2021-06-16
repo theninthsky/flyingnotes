@@ -1,1 +1,87 @@
 @import 'variables';
+
+.name {
+  flex-grow: 1;
+  margin: 0 10px;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  background-color: inherit;
+  color: inherit;
+  font-size: 18px;
+
+  &::placeholder {
+    color: var(--placeholder-color);
+  }
+}
+
+.infoWrap {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  max-width: 30%;
+  height: 100%;
+  font-size: 12px;
+
+  @media ($viewport-4) {
+    font-size: 16px;
+  }
+}
+
+.extension {
+  margin-right: 15px;
+  font-size: 12px;
+
+  @media ($viewport-4) {
+    font-size: 16px;
+  }
+}
+
+.upload {
+  height: 100%;
+  padding: 0 10px;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  outline: none;
+  font-family: inherit;
+  color: inherit;
+  background-color: var(--secondary-color);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.75;
+  }
+}
+
+.uploadIcon {
+  width: 15px;
+  margin-right: 10px;
+  cursor: pointer;
+
+  @media ($not-mobile) {
+    &:hover {
+      opacity: 0.5;
+    }
+  }
+}
+
+.deleteIcon {
+  width: 14px;
+  margin-right: 15px;
+  cursor: pointer;
+  animation: showDelete 0.25s;
+
+  @media ($not-mobile) {
+    &:hover {
+      opacity: 0.5;
+    }
+  }
+
+  @keyframes showDelete {
+    from {
+      opacity: 0;
+    }
+  }
+}

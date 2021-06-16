@@ -1,0 +1,44 @@
+@import 'variables';
+
+.wrapper {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 21px;
+  border-radius: 4px 4px 0 0;
+  background-color: transparent;
+  animation: showOptions 0.25s;
+
+  @keyframes showOptions {
+    from {
+      opacity: 0;
+    }
+  }
+}
+
+.confirmIcon,
+.cancelIcon,
+.deleteIcon {
+  position: absolute;
+  bottom: 6px;
+  height: 15px;
+  cursor: pointer;
+
+  @media ($not-mobile) {
+    &:hover {
+      opacity: 0.5;
+    }
+  }
+}
+
+.confirmIcon {
+  left: 10px;
+}
+
+.cancelIcon {
+  right: 10px;
+}
+
+.deleteIcon {
+  left: 12px;
+}

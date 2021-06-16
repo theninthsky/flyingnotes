@@ -2,21 +2,14 @@ import { useState, useEffect, useRef } from 'react'
 import { bool, string, func, arrayOf, shape } from 'prop-types'
 import useClickOutside from 'use-click-outside'
 
-import { RTL_REGEX, EMPTY_IMAGE } from 'global-constants'
+import { RTL_REGEX } from 'global-constants'
 import { TITLE, SAVE, DELETE_MESSAGE } from './constants'
 import { If, Options } from 'components'
-import {
-  Wrapper,
-  PinIcon,
-  Title,
-  Content,
-  Value,
-  ConfirmMessage,
-  StyledDate,
-  Save,
-  CheckedIcon,
-  UncheckedIcon
-} from './style'
+import { Wrapper, PinIcon, Value, Save } from './style'
+
+import style from './List.scss'
+import CheckedIcon from 'images/checked.svg'
+import UncheckedIcon from 'images/unchecked.svg'
 
 const emptyItem = { value: '', checked: false }
 
@@ -166,7 +159,8 @@ const List = ({
       </If>
 
       <If condition={title || newList || editMode}>
-        <Title
+        <input
+          className={style.title}
           value={title}
           dir="auto"
           placeholder={TITLE}
@@ -176,9 +170,8 @@ const List = ({
         />
       </If>
 
-      <Content
-        as="div"
-        clipped={pinned && !title}
+      <div
+        className={style.content}
         ref={contentRef}
         aria-label="content"
         onClick={() => {
@@ -193,9 +186,9 @@ const List = ({
           .map(({ value, checked }, ind) => (
             <div style={{ display: 'flex' }} key={ind}>
               {checked ? (
-                <CheckedIcon onClick={event => checkItem(event, ind)} />
+                <CheckedIcon className={style.checkIcon} onClick={event => checkItem(event, ind)} />
               ) : (
-                <UncheckedIcon onClick={event => checkItem(event, ind)} />
+                <UncheckedIcon className={style.checkIcon} onClick={event => checkItem(event, ind)} />
               )}
 
               <Value
@@ -217,19 +210,19 @@ const List = ({
               />
             </div>
           ))}
-      </Content>
+      </div>
 
       <If condition={optionsAreVisible}>
         <Options onDelete={deleteList} toggleConfirmMessage={mode => setConfirmMessageIsVisible(mode)} />
       </If>
 
       {confirmMessageIsVisible ? (
-        <ConfirmMessage>{DELETE_MESSAGE}</ConfirmMessage>
+        <div className={style.confirmMessage}>{DELETE_MESSAGE}</div>
       ) : newList || listChanged ? (
         <Save hidden={!listChanged && !newList} type="submit" value={SAVE} aria-label="save" />
       ) : (
         <If condition={!newList}>
-          <StyledDate>{new Date(date).toLocaleString('en-GB').replace(',', '').slice(0, -3)}</StyledDate>
+          <div className={style.date}>{new Date(date).toLocaleString('en-GB').replace(',', '').slice(0, -3)}</div>
         </If>
       )}
     </Wrapper>

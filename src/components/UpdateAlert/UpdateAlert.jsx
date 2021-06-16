@@ -1,9 +1,13 @@
 import { any, func } from 'prop-types'
 
-import { Wrapper } from './style'
+import style from './UpdateAlert.scss'
 
 const UpdateAlert = ({ children, onClick }) => {
-  return <Wrapper onClick={onClick}>{children}</Wrapper>
+  return (
+    <div className={style.alert} onClick={onClick}>
+      {children}
+    </div>
+  )
 }
 
 UpdateAlert.propTypes = {

@@ -2,9 +2,7 @@ import styled from 'styled-components'
 
 import { VIEWPORT_4, NOT_MOBILE } from 'media-queries'
 
-import UploadImage from 'images/upload.svg'
 import Download from 'images/download.svg'
-import Delete from 'images/delete.svg'
 
 export const Wrapper = styled.form`
   display: flex;
@@ -31,68 +29,6 @@ export const Wrapper = styled.form`
     margin: 20px;
   }
 `
-export const Name = styled.input`
-  flex-grow: 1;
-  margin: 0 10px;
-  border: none;
-  outline: none;
-  font-family: inherit;
-  background-color: inherit;
-  color: inherit;
-  font-size: 18px;
-
-  ::placeholder {
-    color: var(--placeholder-color);
-  }
-`
-export const Extension = styled.div`
-  margin-right: 15px;
-  font-size: 12px;
-
-  @media ${VIEWPORT_4} {
-    font-size: 16px;
-  }
-`
-export const InfoWrap = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  max-width: 30%;
-  height: 100%;
-  font-size: 12px;
-
-  @media ${VIEWPORT_4} {
-    font-size: 16px;
-  }
-`
-export const UploadIcon = styled(UploadImage)`
-  width: 15px;
-  margin-right: 10px;
-  cursor: pointer;
-
-  @media ${NOT_MOBILE} {
-    :hover {
-      opacity: 0.5;
-    }
-  }
-`
-export const Upload = styled.input`
-  height: 100%;
-  padding: 0 10px;
-  border: none;
-  border-radius: 0 4px 4px 0;
-  outline: none;
-  font-family: inherit;
-  color: inherit;
-  background-color: var(--secondary-color);
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-
-  :hover {
-    opacity: 0.75;
-  }
-`
 export const DownloadIcon = styled(Download)`
   width: 15px;
   margin-right: 10px;
@@ -113,24 +49,6 @@ export const DownloadIcon = styled(Download)`
     }
     to {
       opacity: 0.25;
-    }
-  }
-`
-export const DeleteIcon = styled(Delete)`
-  width: 14px;
-  margin-right: 15px;
-  cursor: pointer;
-  animation: showDelete 0.25s;
-
-  @media ${NOT_MOBILE} {
-    :hover {
-      opacity: 0.5;
-    }
-  }
-
-  @keyframes showDelete {
-    from {
-      opacity: 0;
     }
   }
 `
