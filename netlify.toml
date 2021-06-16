@@ -7,8 +7,8 @@
 [[headers]]
   for = "*.js"
   [headers.values]
-    Cache-Control = "immutable"
+    cache-control = "immutable"
 [[headers]]
   for = "*.css"
   [headers.values]
-    Cache-Control = "immutable"
+    cache-control = "immutable"
