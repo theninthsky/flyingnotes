@@ -7,8 +7,8 @@
 [[headers]]
   for = "*.js"
   [headers.values]
-    cache-control = "immutable"
+    cache-control = "max-age=30758400"
 [[headers]]
   for = "*.css"
   [headers.values]
-    cache-control = "immutable"
+    cache-control = "max-age=30758400"
