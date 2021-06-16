@@ -2,9 +2,10 @@ import { useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { createWebSocketConnection, ws } from 'websocket-connection'
-import { userLoggedInSelector, notesSelector } from 'selectors'
+import { userLoggedInSelector } from 'containers/App/selectors'
+import { notesSelector } from 'containers/Notes/selectors'
 
-export const useGetNotes = () => {
+const useGetNotes = () => {
   const userLoggedIn = useRecoilValue(userLoggedInSelector)
   const [notes, setNotes] = useRecoilState(notesSelector)
 
@@ -22,3 +23,5 @@ export const useGetNotes = () => {
 
   return notes
 }
+
+export default useGetNotes

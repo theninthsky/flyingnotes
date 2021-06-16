@@ -1,7 +1,7 @@
 import { selector } from 'recoil'
 
-import { listsState } from 'atoms'
-import { userLoggedInSelector } from 'selectors'
+import { listsState } from './atoms'
+import { userLoggedInSelector } from 'containers/App/selectors'
 
 export const listsSelector = selector({
   key: 'listsSelector',

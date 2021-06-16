@@ -3,9 +3,10 @@ import { useHistory } from 'react-router-dom'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { createWebSocketConnection, ws } from 'websocket-connection'
-import { userLoggedInSelector, filesSelector } from 'selectors'
+import { userLoggedInSelector } from 'containers/App/selectors'
+import { filesSelector } from 'containers/Files/selectors'
 
-export const useGetFiles = () => {
+const useGetFiles = () => {
   const history = useHistory()
 
   const userLoggedIn = useRecoilValue(userLoggedInSelector)
@@ -27,3 +28,5 @@ export const useGetFiles = () => {
 
   return files
 }
+
+export default useGetFiles

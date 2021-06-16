@@ -1,6 +1,6 @@
 import { selector } from 'recoil'
 
-import { userState } from 'atoms'
+import { userState } from './atoms'
 
 export const userSelector = selector({
   key: 'userSelector',

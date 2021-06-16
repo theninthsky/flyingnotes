@@ -2,9 +2,10 @@ import { useState } from 'react'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 
 import { ws } from 'websocket-connection'
-import { userLoggedInSelector, listsSelector } from 'selectors'
+import { userLoggedInSelector } from 'containers/App/selectors'
+import { listsSelector } from './selectors'
 import { RENDER_BATCH } from './constants'
-import { useGetLists } from 'hooks'
+import useGetLists from 'hooks/useGetLists'
 import List from 'components/List'
 import LazyRender from 'components/LazyRender'
 

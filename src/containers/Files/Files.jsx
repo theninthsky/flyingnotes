@@ -1,8 +1,8 @@
 import { useSetRecoilState } from 'recoil'
 
 import { ws } from 'websocket-connection'
-import { filesState } from 'atoms'
-import { useGetFiles } from 'hooks'
+import { filesState } from './atoms'
+import useGetFiles from 'hooks/useGetFiles'
 import { toBase64, fromBase64, saveFile } from 'util/base64'
 import File from 'components/File'
 

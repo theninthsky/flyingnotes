@@ -1,7 +1,7 @@
 import { selector } from 'recoil'
 
-import { notesState } from 'atoms'
-import { userLoggedInSelector } from 'selectors'
+import { notesState } from './atoms'
+import { userLoggedInSelector } from 'containers/App/selectors'
 
 export const notesSelector = selector({
   key: 'notesSelector',

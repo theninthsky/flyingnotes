@@ -2,9 +2,10 @@ import { useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { createWebSocketConnection, ws } from 'websocket-connection'
-import { userLoggedInSelector, listsSelector } from 'selectors'
+import { userLoggedInSelector } from 'containers/App/selectors'
+import { listsSelector } from 'containers/Lists/selectors'
 
-export const useGetLists = () => {
+const useGetLists = () => {
   const userLoggedIn = useRecoilValue(userLoggedInSelector)
   const [lists, setLists] = useRecoilState(listsSelector)
 
@@ -22,3 +23,5 @@ export const useGetLists = () => {
 
   return lists
 }
+
+export default useGetLists
