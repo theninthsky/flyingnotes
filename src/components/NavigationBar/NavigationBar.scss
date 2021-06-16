@@ -24,16 +24,16 @@
   font-weight: 600;
   opacity: 0.5;
 
-  &.active {
-    cursor: default;
-    opacity: 1;
-  }
-
   @media ($not-mobile) {
     &:hover {
       opacity: 1;
     }
   }
+}
+
+.active {
+  cursor: default;
+  opacity: 1;
 }
 
 .logo {

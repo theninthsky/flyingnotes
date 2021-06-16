@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useSetRecoilState, useResetRecoilState } from 'recoil'
+import cx from 'clsx'
 
 import { authVisibleState } from 'atoms'
 import { userSelector, notesSelector, listsSelector } from 'selectors'
@@ -7,7 +8,6 @@ import { registerService, loginService } from 'services'
 import { SIGN_UP, LOG_IN } from './constants'
 import { safari } from 'util/user-agent'
 import { If, Backdrop } from 'components'
-import { Login, Signup } from './style'
 
 import style from './Auth.scss'
 
@@ -101,15 +101,15 @@ const Auth = () => {
 
       <div className={style.wrapper}>
         <div className={style.title}>
-          <Login action={action} onClick={actionChangedHandler}>
+          <h2 className={cx(style.action, { [style.selected]: action === LOG_IN })} onClick={actionChangedHandler}>
             {LOG_IN}
-          </Login>
+          </h2>
 
           <div className={style.divider} />
 
-          <Signup action={action} onClick={actionChangedHandler}>
+          <h2 className={cx(style.action, { [style.selected]: action === SIGN_UP })} onClick={actionChangedHandler}>
             {SIGN_UP}
-          </Signup>
+          </h2>
         </div>
 
         <form onSubmit={submitFormHandler}>

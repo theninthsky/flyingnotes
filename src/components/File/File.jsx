@@ -1,14 +1,15 @@
 import { useState, useRef } from 'react'
 import { bool, string, func } from 'prop-types'
 import useClickOutside from 'use-click-outside'
+import cx from 'clsx'
 
 import { saveFile } from 'util/base64'
 import { If } from 'components'
 import { MAX_FILESIZE_IN_MB } from './constants'
-import { Wrapper, DownloadIcon } from './style'
 
 import style from './File.scss'
 import UploadIcon from 'images/upload.svg'
+import DownloadIcon from 'images/download.svg'
 import DeleteIcon from 'images/delete.svg'
 
 const File = ({
@@ -85,8 +86,8 @@ const File = ({
   }
 
   return (
-    <Wrapper
-      transparent={loading}
+    <form
+      className={cx(style.wrapper, { [style.disabled]: loading })}
       ref={fileRef}
       autoComplete="off"
       onClick={() => setDeleteIsVisible(true)}
@@ -130,10 +131,13 @@ const File = ({
         </If>
 
         <If condition={!newFile}>
-          <DownloadIcon downloading={downloading} onClick={downloadFile} />
+          <DownloadIcon
+            className={cx(style.downloadIcon, { [style.downloading]: downloading })}
+            onClick={downloadFile}
+          />
         </If>
       </div>
-    </Wrapper>
+    </form>
   )
 }
 

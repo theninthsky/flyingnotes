@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from 'react'
 import { bool, string, func, arrayOf, shape } from 'prop-types'
 import useClickOutside from 'use-click-outside'
+import cx from 'clsx'
 
 import { RTL_REGEX } from 'global-constants'
 import { TITLE, SAVE, DELETE_MESSAGE } from './constants'
 import { If, Options } from 'components'
-import { Wrapper, PinIcon, Value, Save } from './style'
 
 import style from './List.scss'
+import PinIcon from 'images/pin.svg'
 import CheckedIcon from 'images/checked.svg'
 import UncheckedIcon from 'images/unchecked.svg'
 
@@ -142,8 +143,8 @@ const List = ({
   const listChanged = title !== listTitle || originalItems !== currentItems
 
   return (
-    <Wrapper
-      faded={loading}
+    <form
+      className={cx(style.wrapper, { [style.disabled]: loading })}
       ref={listRef}
       autoComplete="off"
       onClick={() => {
@@ -155,7 +156,7 @@ const List = ({
       onSubmit={saveList}
     >
       <If condition={!newList}>
-        <PinIcon pinned={pinned} onClick={updatePin} />
+        <PinIcon className={cx(style.pinIcon, { [style.pinned]: pinned })} onClick={updatePin} />
       </If>
 
       <If condition={title || newList || editMode}>
@@ -191,10 +192,10 @@ const List = ({
                 <UncheckedIcon className={style.checkIcon} onClick={event => checkItem(event, ind)} />
               )}
 
-              <Value
+              <input
+                className={cx(style.value, { [style.disabled]: checked })}
                 dir={RTL_REGEX.test(value) ? 'rtl' : 'ltr'}
                 value={value}
-                disabled={checked}
                 required
                 onClick={() => setEditMode(true)}
                 onChange={event =>
@@ -219,13 +220,18 @@ const List = ({
       {confirmMessageIsVisible ? (
         <div className={style.confirmMessage}>{DELETE_MESSAGE}</div>
       ) : newList || listChanged ? (
-        <Save hidden={!listChanged && !newList} type="submit" value={SAVE} aria-label="save" />
+        <input
+          className={cx(style.save, { [style.hidden]: !listChanged && !newList })}
+          type="submit"
+          value={SAVE}
+          aria-label="save"
+        />
       ) : (
         <If condition={!newList}>
           <div className={style.date}>{new Date(date).toLocaleString('en-GB').replace(',', '').slice(0, -3)}</div>
         </If>
       )}
-    </Wrapper>
+    </form>
   )
 }
 

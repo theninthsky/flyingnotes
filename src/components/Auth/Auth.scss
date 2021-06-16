@@ -41,6 +41,21 @@
   border: 0.5px solid rgb(128, 128, 128);
 }
 
+.action {
+  font-size: 28px;
+  opacity: 0.4;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.selected {
+  opacity: 1;
+  cursor: default;
+}
+
 .error {
   margin-bottom: 10%;
   text-align: center;

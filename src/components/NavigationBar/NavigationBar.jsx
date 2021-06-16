@@ -32,16 +32,16 @@ const NavigationBar = () => {
         <Logo className={style.logo} />
 
         <div style={{ flexGrow: '1' }}>
-          <NavLink className={style.navLink} exact to="/">
+          <NavLink className={style.navLink} activeClassName={style.active} exact to="/">
             Notes
           </NavLink>
 
-          <NavLink className={style.navLink} to="/lists">
+          <NavLink className={style.navLink} activeClassName={style.active} to="/lists">
             Lists
           </NavLink>
 
           <If condition={userLoggedIn}>
-            <NavLink className={style.navLink} to="/files">
+            <NavLink className={style.navLink} activeClassName={style.active} to="/files">
               Files
             </NavLink>
           </If>

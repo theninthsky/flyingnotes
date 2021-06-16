@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from 'react'
 import { bool, string, func } from 'prop-types'
 import useClickOutside from 'use-click-outside'
+import cx from 'clsx'
 
 import { RTL_REGEX } from 'global-constants'
 import { CATEGORY, TITLE, SAVE, DELETE_MESSAGE } from './constants'
 import { If, Options } from 'components'
-import { Wrapper, PinIcon, Save } from './style'
 
 import style from './Note.scss'
+import PinIcon from 'images/pin.svg'
 
 const Note = ({
   newNote,
@@ -89,8 +90,8 @@ const Note = ({
   const noteChanged = category !== noteCategory || title !== noteTitle || content !== noteContent
 
   return (
-    <Wrapper
-      faded={loading}
+    <form
+      className={cx(style.wrapper, { [style.disabled]: loading })}
       ref={noteRef}
       autoComplete="off"
       onClick={() => {
@@ -99,7 +100,7 @@ const Note = ({
       onSubmit={saveNote}
     >
       <If condition={!newNote}>
-        <PinIcon pinned={pinned} onClick={updatePin} />
+        <PinIcon className={cx(style.pinIcon, { [style.pinned]: pinned })} onClick={updatePin} />
       </If>
 
       <If condition={category || newNote || editMode}>
@@ -144,13 +145,18 @@ const Note = ({
       {confirmMessageIsVisible ? (
         <div className={style.confirmMessage}>{DELETE_MESSAGE}</div>
       ) : noteChanged || newNote ? (
-        <Save hidden={!noteChanged && !newNote} type="submit" value={SAVE} aria-label="save" />
+        <input
+          className={cx(style.save, { [style.hidden]: !noteChanged && !newNote })}
+          type="submit"
+          value={SAVE}
+          aria-label="save"
+        />
       ) : (
         <If condition={!newNote}>
           <div className={style.date}>{new Date(date).toLocaleString('en-GB').replace(',', '').slice(0, -3)}</div>
         </If>
       )}
-    </Wrapper>
+    </form>
   )
 }
 

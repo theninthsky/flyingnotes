@@ -88,8 +88,7 @@ module.exports = (_, { mode }) => {
       react: 'React',
       'react-dom': 'ReactDOM',
       'react-router-dom': 'ReactRouterDOM',
-      recoil: 'Recoil',
-      'styled-components': 'styled'
+      recoil: 'Recoil'
     },
     plugins: [
       new EnvironmentPlugin({
