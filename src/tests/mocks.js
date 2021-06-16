@@ -1,3 +1,5 @@
+import React from 'react'
+
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: jest.fn().mockImplementation(query => ({
@@ -11,3 +13,7 @@ Object.defineProperty(window, 'matchMedia', {
     dispatchEvent: jest.fn()
   }))
 })
+
+const SvgrMock = React.forwardRef((props, ref) => <span ref={ref} {...props} />)
+
+export default SvgrMock

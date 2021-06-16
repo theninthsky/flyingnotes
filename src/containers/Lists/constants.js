@@ -1,4 +1,6 @@
-import { VIEWPORT_7, VIEWPORT_12, VIEWPORT_18 } from 'media-queries'
+const VIEWPORT_7 = '(min-width: 768px)'
+const VIEWPORT_12 = '(min-width: 1200px)'
+const VIEWPORT_18 = '(min-width: 1800px)'
 
 const getRenderBatch = () => {
   if (window.matchMedia(VIEWPORT_18).matches) return 30

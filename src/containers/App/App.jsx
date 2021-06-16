@@ -13,7 +13,6 @@ import Auth from 'components/Auth'
 import User from 'components/User'
 import UpdateAlert from 'components/UpdateAlert'
 
-import 'globals.scss'
 import style from './App.scss'
 
 const Lists = lazy(() => import(/* webpackPrefetch: true */ 'containers/Lists'))

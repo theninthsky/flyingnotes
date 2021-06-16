@@ -3,8 +3,7 @@ import { bool, string, func } from 'prop-types'
 import useClickOutside from 'use-click-outside'
 import cx from 'clsx'
 
-import { RTL_REGEX } from 'global-constants'
-import { CATEGORY, TITLE, SAVE, DELETE_MESSAGE } from './constants'
+import { CATEGORY, TITLE, SAVE, DELETE_MESSAGE, RTL_REGEX } from './constants'
 import If from 'components/If'
 import Options from 'components/Options'
 

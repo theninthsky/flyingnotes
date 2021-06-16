@@ -1,4 +1,4 @@
-import { render, screen } from 'setup-tests'
+import { render, screen } from 'tests/setup'
 import { MESSAGE } from './constants'
 import CookiesMessage from './CookiesMessage'
 

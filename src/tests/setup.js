@@ -3,7 +3,7 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
 import { render } from '@testing-library/react'
 
-import 'test-mocks'
+import './mocks'
 
 const AllTheProviders = ({ children }) => {
   return (
