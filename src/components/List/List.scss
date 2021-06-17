@@ -30,13 +30,6 @@
   height: 14px;
   color: var(--placeholder-color);
   cursor: pointer;
-  animation: showPin 0.25s;
-
-  @keyframes showPin {
-    from {
-      opacity: 0;
-    }
-  }
 }
 
 .pinned {

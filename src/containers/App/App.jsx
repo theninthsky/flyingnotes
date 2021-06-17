@@ -48,6 +48,9 @@ const App = () => {
     })
   }
 
+  const mobileTransitionProps = { key: location.key, timeout: 200, classNames: { ...style } }
+  const emptyTransitionProps = { timeout: 0, classNames: '' }
+
   return (
     <>
       <If condition={window.matchMedia('(display-mode: standalone)').matches && registrationWaiting}>
@@ -59,14 +62,10 @@ const App = () => {
       <If condition={authVisible}>{userLoggedIn ? <User /> : <Auth />}</If>
 
       <TransitionGroup>
-        <CSSTransition
-          key={mobile ? location.key : undefined}
-          timeout={mobile ? 200 : 0}
-          classNames={mobile ? { ...style } : {}}
-        >
+        <CSSTransition {...(mobile ? mobileTransitionProps : emptyTransitionProps)}>
           <Switch location={location}>
             <Route exact path="/">
-              <div className={style.page}>
+              <div>
                 <Helmet>
                   <title>My Notes</title>
                 </Helmet>
@@ -76,7 +75,7 @@ const App = () => {
             </Route>
 
             <Route path="/lists">
-              <div className={style.page}>
+              <div>
                 <Helmet>
                   <title>My Lists</title>
                 </Helmet>
@@ -88,7 +87,7 @@ const App = () => {
             </Route>
 
             <Route path="/files">
-              <div className={style.page}>
+              <div>
                 <Helmet>
                   <title>My Files</title>
                 </Helmet>

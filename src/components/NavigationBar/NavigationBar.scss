@@ -32,8 +32,8 @@
 }
 
 .active {
-  cursor: default;
   opacity: 1;
+  pointer-events: none;
 }
 
 .logo {
