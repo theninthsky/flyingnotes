@@ -41,4 +41,9 @@
 
 .page {
   position: absolute;
+  width: 100vw;
+
+  @media ($viewport-9) {
+    width: auto;
+  }
 }

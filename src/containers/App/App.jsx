@@ -27,9 +27,10 @@ document.documentElement.setAttribute('data-theme', localStorage.theme || 'dark'
 const App = () => {
   const userLoggedIn = useRecoilValue(userLoggedInSelector)
   const authVisible = useRecoilValue(authVisibleState)
-  const [locationHistory, setLocationHistory] = useState({})
 
   const [registrationWaiting, setRegistrationWaiting] = useState()
+  const [prevLocation, setPrevLocation] = useState()
+  const [currLocation, setCurrLocation] = useState()
 
   const location = useLocation()
   const { mobile } = useViewport({ mobile: '(max-width: 991px)' })
@@ -43,9 +44,8 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    if (!locationHistory.prev) return setLocationHistory({ prev: location.pathname, curr: location.pathname })
-
-    setLocationHistory(({ curr }) => ({ prev: curr, curr: location.pathname }))
+    setPrevLocation(currLocation)
+    setCurrLocation(location.pathname)
   }, [location])
 
   const replaceSW = () => {
@@ -57,8 +57,7 @@ const App = () => {
     })
   }
 
-  const { prev, curr } = locationHistory
-  const transitionDirection = routes.indexOf(curr) > routes.indexOf(prev) ? 'left' : 'right'
+  const transitionDirection = routes.indexOf(currLocation) > routes.indexOf(prevLocation) ? 'left' : 'right'
   const mobileTransitionProps = { key: location.key, timeout: 200, classNames: { ...style } }
   const emptyTransitionProps = { timeout: 0, classNames: '' }
 
