@@ -1,11 +1,13 @@
 import { useState, useEffect, lazy, Suspense } from 'react'
-import { Switch, Route, Redirect } from 'react-router-dom'
+import { Switch, Route, Redirect, useLocation } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
+import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { Helmet } from 'react-helmet'
 
 import { authVisibleState } from './atoms'
 import { userLoggedInSelector } from './selectors'
 import { UPDATE_MESSAGE } from './constants'
+import useViewport from 'hooks/useViewport'
 import Notes from 'containers/Notes'
 import If from 'components/If'
 import NavigationBar from 'components/NavigationBar'
@@ -25,6 +27,9 @@ const App = () => {
   const authVisible = useRecoilValue(authVisibleState)
 
   const [registrationWaiting, setRegistrationWaiting] = useState()
+
+  const location = useLocation()
+  const { mobile } = useViewport({ mobile: '(max-width: 991px)' })
 
   useEffect(() => {
     const handleRegistration = ({ detail: registration }) => setRegistrationWaiting(registration.waiting)
@@ -53,37 +58,51 @@ const App = () => {
 
       <If condition={authVisible}>{userLoggedIn ? <User /> : <Auth />}</If>
 
-      <Switch>
-        <Route exact path="/">
-          <Helmet>
-            <title>My Notes</title>
-          </Helmet>
-          <h1 className={style.heading}>Notes</h1>
-          <Notes />
-        </Route>
+      <TransitionGroup>
+        <CSSTransition
+          key={mobile ? location.key : undefined}
+          timeout={mobile ? 200 : 0}
+          classNames={mobile ? { ...style } : {}}
+        >
+          <Switch location={location}>
+            <Route exact path="/">
+              <div className={style.page}>
+                <Helmet>
+                  <title>My Notes</title>
+                </Helmet>
+                <h1 className={style.heading}>Notes</h1>
+                <Notes />
+              </div>
+            </Route>
 
-        <Route path="/lists">
-          <Helmet>
-            <title>My Lists</title>
-          </Helmet>
-          <h1 className={style.heading}>Lists</h1>
-          <Suspense fallback={() => {}}>
-            <Lists />
-          </Suspense>
-        </Route>
+            <Route path="/lists">
+              <div className={style.page}>
+                <Helmet>
+                  <title>My Lists</title>
+                </Helmet>
+                <h1 className={style.heading}>Lists</h1>
+                <Suspense fallback={() => {}}>
+                  <Lists />
+                </Suspense>
+              </div>
+            </Route>
 
-        <Route path="/files">
-          <Helmet>
-            <title>My Files</title>
-          </Helmet>
-          <h1 className={style.heading}>Files</h1>
-          <Suspense fallback={() => {}}>
-            <Files />
-          </Suspense>
-        </Route>
+            <Route path="/files">
+              <div className={style.page}>
+                <Helmet>
+                  <title>My Files</title>
+                </Helmet>
+                <h1 className={style.heading}>Files</h1>
+                <Suspense fallback={() => {}}>
+                  <Files />
+                </Suspense>
+              </div>
+            </Route>
 
-        <Redirect to="/" />
-      </Switch>
+            <Redirect to="/" />
+          </Switch>
+        </CSSTransition>
+      </TransitionGroup>
     </>
   )
 }

@@ -10,13 +10,6 @@
   border: 1px solid var(--secondary-color);
   border-radius: 4px;
   background-color: var(--primary-color);
-  animation: showNote 0.25s;
-
-  @keyframes showNote {
-    from {
-      opacity: 0;
-    }
-  }
 
   @media ($viewport-4) {
     width: 400px;

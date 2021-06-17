@@ -10,13 +10,6 @@
   border: 1px solid var(--secondary-color);
   border-radius: 4px;
   background-color: var(--primary-color);
-  animation: showFile 0.25s;
-
-  @keyframes showFile {
-    from {
-      opacity: 0;
-    }
-  }
 
   @media ($viewport-4) {
     width: 400px;
