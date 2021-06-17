@@ -130,9 +130,7 @@ const Auth = () => {
               onChange={event => setName(event.target.value)}
             />
           ) : (
-            <p style={{ marginBottom: '40px', textAlign: 'center' }}>
-              Login to have your notes and files saved on the cloud
-            </p>
+            <p className={style.description}>Login to have your notes and files saved on the cloud</p>
           )}
 
           <input

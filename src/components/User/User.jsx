@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useRecoilState, useSetRecoilState, useResetRecoilState } from 'recoil'
+import cx from 'clsx'
 
 import { ws } from 'websocket-connection'
 import { authVisibleState } from 'containers/App/atoms'
@@ -48,6 +49,8 @@ const User = () => {
     const res = await changePasswordService({ password, newPassword })
 
     if (res.ok) return resetAuthVisible()
+
+    const { error } = await res.json()
 
     setError(error)
     setLoading(false)
@@ -97,7 +100,7 @@ const User = () => {
         />
 
         <If condition={error}>
-          <p style={{ textAlign: 'center', color: 'red' }}>{error}</p>
+          <p className={cx('text-align-center', 'red')}>{error}</p>
         </If>
 
         {changePasswordMode ? (

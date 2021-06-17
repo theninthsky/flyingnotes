@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useRecoilState, useRecoilValue } from 'recoil'
+import cx from 'clsx'
 
 import { userState, authVisibleState } from 'containers/App/atoms'
 import { userLoggedInSelector } from 'containers/App/selectors'
@@ -32,7 +33,7 @@ const NavigationBar = () => {
       <nav className={style.wrapper}>
         <Logo className={style.logo} />
 
-        <div style={{ flexGrow: '1' }}>
+        <div className="flex-grow-1">
           <NavLink className={style.navLink} activeClassName={style.active} exact to="/">
             Notes
           </NavLink>
@@ -48,7 +49,7 @@ const NavigationBar = () => {
           </If>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div className={cx('d-flex', 'align-items-center')}>
           <ThemeIcon className={style.themeIcon} onClick={toggleTheme} />
 
           {userLoggedIn ? (

@@ -186,7 +186,7 @@ const List = ({
         {[...items]
           .sort((a, b) => a.checked - b.checked)
           .map(({ value, checked }, ind) => (
-            <div style={{ display: 'flex' }} key={ind}>
+            <div className="d-flex" key={ind}>
               {checked ? (
                 <CheckedIcon className={style.checkIcon} onClick={event => checkItem(event, ind)} />
               ) : (

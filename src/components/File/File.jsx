@@ -122,10 +122,10 @@ const File = ({
             <input className={style.upload} type="submit" value="UPLOAD" />
           ) : (
             <>
-              <label style={{ height: '15px' }} htmlFor="file-input">
+              <label className={style.uploadLabel} htmlFor="file-input">
                 <UploadIcon className={style.uploadIcon} />
               </label>
-              <input style={{ display: 'none' }} id="file-input" type="file" onChange={loadFile} />
+              <input className="d-none" id="file-input" type="file" onChange={loadFile} />
             </>
           )}
         </If>
