@@ -1,23 +1,44 @@
 @import 'styles/variables';
 
-.heading {
+.left {
+  .enter {
+    transform: translateX(100%);
+    transition: transform 0.2s;
+  }
+
+  .enterActive {
+    transform: translateX(0);
+  }
+
+  .exit {
+    transition: transform 0.2s;
+  }
+
+  .exitActive {
+    transform: translateX(-100%);
+  }
+}
+
+.right {
+  .enter {
+    transform: translateX(-100%);
+    transition: transform 0.2s;
+  }
+
+  .enterActive {
+    transform: translateX(0);
+  }
+
+  .exit {
+    transform: translateX(0);
+    transition: transform 0.2s;
+  }
+
+  .exitActive {
+    transform: translateX(100%);
+  }
+}
+
+.page {
   position: absolute;
-  left: -9999px;
-}
-
-.enter {
-  transform: translateX(100%);
-  transition: transform 0.2s;
-}
-
-.enterActive {
-  transform: translateX(0);
-}
-
-.exit {
-  transition: transform 0.2s;
-}
-
-.exitActive {
-  transform: translateX(-100%);
 }

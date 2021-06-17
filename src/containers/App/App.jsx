@@ -20,11 +20,14 @@ import style from './App.scss'
 const Lists = lazy(() => import(/* webpackPrefetch: true */ 'containers/Lists'))
 const Files = lazy(() => import(/* webpackPrefetch: true */ 'containers/Files'))
 
+const routes = ['/', '/lists', '/files']
+
 document.documentElement.setAttribute('data-theme', localStorage.theme || 'dark')
 
 const App = () => {
   const userLoggedIn = useRecoilValue(userLoggedInSelector)
   const authVisible = useRecoilValue(authVisibleState)
+  const [locationHistory, setLocationHistory] = useState({})
 
   const [registrationWaiting, setRegistrationWaiting] = useState()
 
@@ -39,6 +42,12 @@ const App = () => {
     return () => window.removeEventListener('serviceworkerupdate', handleRegistration)
   }, [])
 
+  useEffect(() => {
+    if (!locationHistory.prev) return setLocationHistory({ prev: location.pathname, curr: location.pathname })
+
+    setLocationHistory(({ curr }) => ({ prev: curr, curr: location.pathname }))
+  }, [location])
+
   const replaceSW = () => {
     if (!registrationWaiting) return
 
@@ -48,6 +57,8 @@ const App = () => {
     })
   }
 
+  const { prev, curr } = locationHistory
+  const transitionDirection = routes.indexOf(curr) > routes.indexOf(prev) ? 'left' : 'right'
   const mobileTransitionProps = { key: location.key, timeout: 200, classNames: { ...style } }
   const emptyTransitionProps = { timeout: 0, classNames: '' }
 
@@ -61,25 +72,25 @@ const App = () => {
 
       <If condition={authVisible}>{userLoggedIn ? <User /> : <Auth />}</If>
 
-      <TransitionGroup>
+      <TransitionGroup className={style[transitionDirection]}>
         <CSSTransition {...(mobile ? mobileTransitionProps : emptyTransitionProps)}>
           <Switch location={location}>
             <Route exact path="/">
-              <div>
+              <div className={style.page}>
                 <Helmet>
                   <title>My Notes</title>
                 </Helmet>
-                <h1 className={style.heading}>Notes</h1>
+
                 <Notes />
               </div>
             </Route>
 
             <Route path="/lists">
-              <div>
+              <div className={style.page}>
                 <Helmet>
                   <title>My Lists</title>
                 </Helmet>
-                <h1 className={style.heading}>Lists</h1>
+
                 <Suspense fallback={() => {}}>
                   <Lists />
                 </Suspense>
@@ -87,11 +98,11 @@ const App = () => {
             </Route>
 
             <Route path="/files">
-              <div>
+              <div className={style.page}>
                 <Helmet>
                   <title>My Files</title>
                 </Helmet>
-                <h1 className={style.heading}>Files</h1>
+
                 <Suspense fallback={() => {}}>
                   <Files />
                 </Suspense>
