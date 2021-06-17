@@ -6,23 +6,29 @@ import DeleteIcon from 'images/delete.svg'
 import ConfirmIcon from 'images/confirm.svg'
 import CancelIcon from 'images/cancel.svg'
 
-const Options = ({ onDelete, toggleConfirmMessage }) => {
-  const [confirmIconsAreVisible, setConfirmIconsAreVisible] = useState(false)
+const Options = ({ onDelete, setConfirmMessage }) => {
+  const [confirmIconsVisible, setConfirmIconsVisible] = useState(false)
 
   const confirmDeletion = bool => {
-    toggleConfirmMessage(bool)
-    setConfirmIconsAreVisible(bool)
+    setConfirmMessage(bool)
+    setConfirmIconsVisible(bool)
   }
 
   return (
     <div className={style.wrapper}>
-      {confirmIconsAreVisible ? (
+      {confirmIconsVisible ? (
         <>
           <ConfirmIcon className={style.confirmIcon} onClick={onDelete} />
           <CancelIcon className={style.cancelIcon} onClick={() => confirmDeletion(false)} />
         </>
       ) : (
-        <DeleteIcon className={style.deleteIcon} onClick={() => confirmDeletion(true)} />
+        <DeleteIcon
+          className={style.deleteIcon}
+          onClick={event => {
+            event.stopPropagation()
+            confirmDeletion(true)
+          }}
+        />
       )}
     </div>
   )
@@ -30,7 +36,7 @@ const Options = ({ onDelete, toggleConfirmMessage }) => {
 
 Options.propTypes = {
   onDelete: func,
-  toggleConfirmMessage: func
+  setConfirmMessage: func
 }
 
 export default Options

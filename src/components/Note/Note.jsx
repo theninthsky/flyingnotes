@@ -27,8 +27,8 @@ const Note = ({
   const [title, setTitle] = useState(noteTitle)
   const [content, setContent] = useState(noteContent)
   const [editMode, setEditMode] = useState(false)
-  const [optionsAreVisible, setOptionsAreVisible] = useState(false)
-  const [confirmMessageIsVisible, setConfirmMessageIsVisible] = useState(false)
+  const [optionsVisible, setOptionsVisible] = useState(false)
+  const [confirmMessageVisible, setConfirmMessageVisible] = useState(false)
   const [loading, setLoading] = useState(false)
 
   const noteRef = useRef()
@@ -40,7 +40,8 @@ const Note = ({
   }, [noteCategory, noteTitle, noteContent])
 
   useClickOutside(noteRef, () => {
-    setOptionsAreVisible(confirmMessageIsVisible)
+    setOptionsVisible(false)
+    setConfirmMessageVisible(false)
     setEditMode(false)
   })
 
@@ -70,7 +71,7 @@ const Note = ({
 
       await onUpdateNote(note)
       setEditMode(false)
-      setOptionsAreVisible(false)
+      setOptionsVisible(false)
     }
 
     setLoading(false)
@@ -95,7 +96,7 @@ const Note = ({
       ref={noteRef}
       autoComplete="off"
       onClick={() => {
-        if (!newNote) setOptionsAreVisible(true)
+        if (!newNote) setOptionsVisible(true)
       }}
       onSubmit={saveNote}
     >
@@ -138,11 +139,11 @@ const Note = ({
         onChange={event => setContent(event.target.value)}
       />
 
-      <If condition={optionsAreVisible}>
-        <Options onDelete={deleteNote} toggleConfirmMessage={mode => setConfirmMessageIsVisible(mode)} />
+      <If condition={optionsVisible}>
+        <Options onDelete={deleteNote} setConfirmMessage={setConfirmMessageVisible} />
       </If>
 
-      {confirmMessageIsVisible ? (
+      {confirmMessageVisible ? (
         <div className={style.confirmMessage}>{DELETE_MESSAGE}</div>
       ) : noteChanged || newNote ? (
         <input

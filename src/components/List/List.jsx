@@ -30,8 +30,8 @@ const List = ({
   const [title, setTitle] = useState(listTitle)
   const [items, setItems] = useState(listItems)
   const [editMode, setEditMode] = useState(false)
-  const [optionsAreVisible, setOptionsAreVisible] = useState(false)
-  const [confirmMessageIsVisible, setConfirmMessageIsVisible] = useState(false)
+  const [optionsVisible, setOptionsVisible] = useState(false)
+  const [confirmMessageVisible, setConfirmMessageVisible] = useState(false)
   const [loading, setLoading] = useState(false)
   const [checkingItem, setCheckingItem] = useState(false)
 
@@ -44,7 +44,8 @@ const List = ({
   }, [listTitle, listItems])
 
   useClickOutside(listRef, () => {
-    setOptionsAreVisible(confirmMessageIsVisible)
+    setOptionsVisible(false)
+    setConfirmMessageVisible(false)
     setEditMode(false)
   })
 
@@ -98,7 +99,7 @@ const List = ({
     }
 
     setEditMode(false)
-    setOptionsAreVisible(false)
+    setOptionsVisible(false)
     setLoading(false)
   }
 
@@ -148,7 +149,7 @@ const List = ({
       ref={listRef}
       autoComplete="off"
       onClick={() => {
-        if (!newList) setOptionsAreVisible(true)
+        if (!newList) setOptionsVisible(true)
       }}
       onKeyPress={event => {
         if (event.key === 'Enter') event.preventDefault()
@@ -213,11 +214,11 @@ const List = ({
           ))}
       </div>
 
-      <If condition={optionsAreVisible}>
-        <Options onDelete={deleteList} toggleConfirmMessage={mode => setConfirmMessageIsVisible(mode)} />
+      <If condition={optionsVisible}>
+        <Options onDelete={deleteList} setConfirmMessage={setConfirmMessageVisible} />
       </If>
 
-      {confirmMessageIsVisible ? (
+      {confirmMessageVisible ? (
         <div className={style.confirmMessage}>{DELETE_MESSAGE}</div>
       ) : newList || listChanged ? (
         <input
