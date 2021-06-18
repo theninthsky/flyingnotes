@@ -1,5 +1,15 @@
 @import 'styles/variables';
 
+.wrapper {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+
+  @media ($viewport-9) {
+    width: auto;
+  }
+}
+
 .left {
   .enter {
     transform: translateX(100%);
@@ -36,14 +46,5 @@
 
   .exitActive {
     transform: translateX(100%);
-  }
-}
-
-.page {
-  position: absolute;
-  width: 100vw;
-
-  @media ($viewport-9) {
-    width: auto;
   }
 }
