@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
-import { number, array, func } from 'prop-types'
+import { number, string, array, func } from 'prop-types'
 
-const LazyRender = ({ batch, items, setItems }) => {
+const LazyRender = ({ batch, items, setItems, rootMargin = '200px' }) => {
   const [renderLimit, setRenderLimit] = useState(0)
 
   const targetRef = useRef()
@@ -12,7 +12,7 @@ const LazyRender = ({ batch, items, setItems }) => {
         if (renderLimit >= items.length) return observer.unobserve(targetRef.current)
         if (isIntersecting) setRenderLimit(renderLimit + batch)
       },
-      { rootMargin: '200px' }
+      { rootMargin }
     )
 
     observer.observe(targetRef.current)
@@ -33,7 +33,8 @@ const LazyRender = ({ batch, items, setItems }) => {
 LazyRender.propTypes = {
   batch: number.isRequired,
   items: array.isRequired,
-  setItems: func.isRequired
+  setItems: func.isRequired,
+  rootMargin: string
 }
 
 export default LazyRender
