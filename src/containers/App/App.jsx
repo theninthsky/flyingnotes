@@ -43,7 +43,11 @@ const App = () => {
   const location = useLocation()
   const history = useHistory()
   const { mobile } = useViewport({ mobile: '(max-width: 991px)' })
-  const handlers = useSwipeable({ onSwipedLeft: () => changeRoute('right'), onSwipedRight: () => changeRoute('left') })
+  const handlers = useSwipeable({
+    onSwipedLeft: () => changeRoute('right'),
+    onSwipedRight: () => changeRoute('left'),
+    preventDefaultTouchmoveEvent: true
+  })
 
   useEffect(() => {
     const handleRegistration = ({ detail: registration }) => setRegistrationWaiting(registration.waiting)
@@ -72,7 +76,7 @@ const App = () => {
   const emptyTransitionProps = { timeout: 0, classNames: '' }
 
   return (
-    <div className={style.wrapper} {...handlers}>
+    <>
       <If condition={window.matchMedia('(display-mode: standalone)').matches && registrationWaiting}>
         <UpdateAlert onClick={replaceSW}>{UPDATE_MESSAGE}</UpdateAlert>
       </If>
@@ -85,7 +89,7 @@ const App = () => {
         <CSSTransition {...(mobile ? mobileTransitionProps : emptyTransitionProps)}>
           <Switch location={location}>
             <Route exact path="/">
-              <div>
+              <div className={style.page} {...handlers}>
                 <Helmet>
                   <title>My Notes</title>
                 </Helmet>
@@ -95,7 +99,7 @@ const App = () => {
             </Route>
 
             <Route path="/lists">
-              <div>
+              <div className={style.page} {...handlers}>
                 <Helmet>
                   <title>My Lists</title>
                 </Helmet>
@@ -107,7 +111,7 @@ const App = () => {
             </Route>
 
             <Route path="/files">
-              <div>
+              <div className={style.page} {...handlers}>
                 <Helmet>
                   <title>My Files</title>
                 </Helmet>
@@ -122,7 +126,7 @@ const App = () => {
           </Switch>
         </CSSTransition>
       </TransitionGroup>
-    </div>
+    </>
   )
 }
 
