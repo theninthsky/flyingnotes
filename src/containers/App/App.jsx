@@ -46,7 +46,8 @@ const App = () => {
   const handlers = useSwipeable({
     onSwipedLeft: () => changeRoute('right'),
     onSwipedRight: () => changeRoute('left'),
-    preventDefaultTouchmoveEvent: true
+    preventDefaultTouchmoveEvent: true,
+    delta: 20
   })
 
   useEffect(() => {
