@@ -10,6 +10,7 @@ import { userLoggedInSelector } from './selectors'
 import { UPDATE_MESSAGE } from './constants'
 import useViewport from 'hooks/useViewport'
 import Notes from 'containers/Notes'
+import Lists from 'containers/Lists'
 import If from 'components/If'
 import NavigationBar from 'components/NavigationBar'
 import Auth from 'components/Auth'
@@ -18,7 +19,6 @@ import UpdateAlert from 'components/UpdateAlert'
 
 import style from './App.scss'
 
-const Lists = lazy(() => import(/* webpackPrefetch: true */ 'containers/Lists'))
 const Files = lazy(() => import(/* webpackPrefetch: true */ 'containers/Files'))
 
 const routes = ['/', '/lists', '/files']
@@ -105,9 +105,7 @@ const App = () => {
                   <title>My Lists</title>
                 </Helmet>
 
-                <Suspense fallback={() => {}}>
-                  <Lists />
-                </Suspense>
+                <Lists />
               </div>
             </Route>
 
