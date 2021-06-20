@@ -6,7 +6,7 @@ import { userLoggedInSelector } from 'containers/App/selectors'
 import { listsSelector } from './selectors'
 import { RENDER_BATCH } from './constants'
 import useGetLists from 'hooks/useGetLists'
-import List from 'components/List'
+import Note from 'components/Note'
 import LazyRender from 'components/LazyRender'
 
 import style from './Lists.scss'
@@ -53,9 +53,9 @@ const Lists = () => {
   }
 
   const updateList = async list => {
-    const updatedList = userLoggedIn
-      ? (await ws.json({ type: 'updateList', updatedList: list })).updatedList
-      : { ...list, date: new Date().toISOString() }
+    const { updatedList } = userLoggedIn
+      ? await ws.json({ type: 'updateList', updatedList: list })
+      : { updatedList: { ...list, date: new Date().toISOString() } }
 
     if (!updatedList) return
 
@@ -74,10 +74,11 @@ const Lists = () => {
 
   return (
     <div className={style.wrapper}>
-      <List newList items={[{ value: '', checked: false }]} onCreateList={createList} />
+      <Note newNote list items={[{ value: '', checked: false }]} onCreate={createList} />
 
       {renderedLists.map(({ _id, pinned, title, items, date }) => (
-        <List
+        <Note
+          list
           key={_id}
           _id={_id}
           pinned={pinned}
@@ -86,8 +87,8 @@ const Lists = () => {
           date={date}
           onUpdatePin={updatePin}
           onCheckItem={checkItem}
-          onUpdateList={updateList}
-          onDeleteList={deleteList}
+          onUpdate={updateList}
+          onDelete={deleteList}
         />
       ))}
 

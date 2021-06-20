@@ -105,6 +105,22 @@
   }
 }
 
+.checkIcon {
+  width: 20px;
+  cursor: pointer;
+}
+
+.value {
+  display: block;
+  width: 85%;
+  margin: 10px;
+  border: none;
+  border-bottom: 1px solid var(--secondary-color);
+  outline: none;
+  color: inherit;
+  background-color: inherit;
+}
+
 .confirmMessage {
   margin-bottom: 5px;
   text-align: center;

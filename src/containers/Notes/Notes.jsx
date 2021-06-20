@@ -47,11 +47,11 @@ const Notes = () => {
   }
 
   const updateNote = async note => {
-    const updatedNote = userLoggedIn
-      ? (await ws.json({ type: 'updateNote', updatedNote: note })).updatedNote
-      : { ...note, date: new Date() }
+    const { updatedNote } = userLoggedIn
+      ? await ws.json({ type: 'updateNote', updatedNote: note })
+      : { updatedNote: { ...note, date: new Date().toString() } }
 
-    if (!updateNote) return
+    if (!updatedNote) return
 
     setNotes(notes.map(note => (note._id === updatedNote._id ? updatedNote : note)))
   }
@@ -81,7 +81,7 @@ const Notes = () => {
       />
 
       <div className={style.wrapper}>
-        <Note newNote onCreateNote={createNote} />
+        <Note newNote onCreate={createNote} />
 
         {renderedNotes.map(({ _id, pinned, category, title, content, date }) => (
           <Note
@@ -93,8 +93,8 @@ const Notes = () => {
             content={content}
             date={date}
             onUpdatePin={updatePin}
-            onUpdateNote={updateNote}
-            onDeleteNote={deleteNote}
+            onUpdate={updateNote}
+            onDelete={deleteNote}
           />
         ))}
 

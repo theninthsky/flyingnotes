@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { bool, string, func } from 'prop-types'
+import { bool, string, func, shape, arrayOf } from 'prop-types'
 import useClickOutside from 'use-click-outside'
 import cx from 'clsx'
 
@@ -9,35 +9,47 @@ import Options from 'components/Options'
 
 import style from './Note.scss'
 import PinIcon from 'images/pin.svg'
+import CheckedIcon from 'images/checked.svg'
+import UncheckedIcon from 'images/unchecked.svg'
+
+const emptyItem = { value: '', checked: false }
+const defaultItems = [emptyItem]
 
 const Note = ({
   newNote,
-  _id: noteID,
+  list,
+  _id,
   pinned = false,
-  category: noteCategory = '',
-  title: noteTitle = '',
-  content: noteContent = '',
+  category: propsCategory = '',
+  title: propsTitle = '',
+  content: propsContent = '',
+  items: propsItems = defaultItems,
   date,
-  onCreateNote,
+  onCreate,
   onUpdatePin,
-  onUpdateNote,
-  onDeleteNote
+  onUpdate,
+  onCheckItem,
+  onDelete
 }) => {
-  const [category, setCategory] = useState(noteCategory)
-  const [title, setTitle] = useState(noteTitle)
-  const [content, setContent] = useState(noteContent)
+  const [category, setCategory] = useState(propsCategory)
+  const [title, setTitle] = useState(propsTitle)
+  const [content, setContent] = useState(propsContent)
+  const [items, setItems] = useState(propsItems)
   const [editMode, setEditMode] = useState(false)
   const [optionsVisible, setOptionsVisible] = useState(false)
   const [confirmMessageVisible, setConfirmMessageVisible] = useState(false)
+  const [checkingItem, setCheckingItem] = useState(false)
   const [loading, setLoading] = useState(false)
 
   const noteRef = useRef()
+  const itemsRef = useRef()
 
   useEffect(() => {
-    setCategory(noteCategory)
-    setTitle(noteTitle)
-    setContent(noteContent)
-  }, [noteCategory, noteTitle, noteContent])
+    setCategory(propsCategory)
+    setTitle(propsTitle)
+    setContent(propsContent)
+    setItems(propsItems)
+  }, [propsCategory, propsTitle, propsContent, propsItems])
 
   useClickOutside(noteRef, () => {
     setOptionsVisible(false)
@@ -45,10 +57,60 @@ const Note = ({
     setEditMode(false)
   })
 
-  const resetNote = () => {
+  const reset = () => {
     setCategory('')
     setTitle('')
     setContent('')
+    setItems([emptyItem])
+  }
+
+  const handleEnterPress = (event, index) => {
+    if (event.key === 'Enter' && event.target.value) {
+      setItems(prevItems => [...prevItems.slice(0, index + 1), emptyItem, ...prevItems.slice(index + 1)])
+
+      const items = itemsRef.current.childNodes
+      const nextIndex = [...items].findIndex(item => item.childNodes[1] === event.target) + 1
+
+      setTimeout(() => items[nextIndex].childNodes[1].focus())
+    }
+  }
+
+  const handleBackspacePress = (event, index) => {
+    if ((event.key === 'Backspace' || event.key === 'Delete') && items.length > 1 && !items[index].value) {
+      event.preventDefault()
+
+      setItems(prevItems => prevItems.filter((_, ind) => ind !== index))
+
+      const items = itemsRef.current.childNodes
+      const prevIndex = [...items].findIndex(item => item.childNodes[1] === event.target) - 1
+
+      setTimeout(() => items[prevIndex > 0 ? prevIndex : 0].childNodes[1].focus())
+    }
+  }
+
+  const updatePin = async event => {
+    event.stopPropagation()
+
+    onUpdatePin(_id, pinned)
+  }
+
+  const checkItem = async (event, index) => {
+    event.stopPropagation()
+
+    const item = items[index]
+
+    if (!item.value || checkingItem) return
+
+    setCheckingItem(true)
+
+    const otherItems = items.filter((_, ind) => ind !== index)
+    const updatedItems = item.checked
+      ? [{ ...item, checked: false }, ...otherItems]
+      : [...otherItems, { ...item, checked: true }]
+
+    await onCheckItem(_id, index, item, updatedItems)
+    setItems(updatedItems)
+    setCheckingItem(false)
   }
 
   const saveNote = async event => {
@@ -56,39 +118,44 @@ const Note = ({
 
     const note = {
       pinned,
-      category: category.trim(),
+      category: list ? undefined : category.trim(),
       title: title.trim(),
-      content: content.trim()
+      content: content.trim(),
+      items: list ? items.map(item => ({ ...item, value: item.value.trim() })) : undefined
     }
 
     setLoading(true)
 
     if (newNote) {
-      await onCreateNote(note)
-      resetNote()
+      await onCreate(note)
+      reset()
     } else {
-      note._id = noteID
+      note._id = _id
 
-      await onUpdateNote(note)
-      setEditMode(false)
-      setOptionsVisible(false)
+      await onUpdate(note)
     }
 
+    setEditMode(false)
+    setOptionsVisible(false)
     setLoading(false)
-  }
-
-  const updatePin = async event => {
-    event.stopPropagation()
-
-    onUpdatePin(noteID, pinned)
   }
 
   const deleteNote = async () => {
     setLoading(true)
-    onDeleteNote(noteID)
+    onDelete(_id)
   }
 
-  const noteChanged = category !== noteCategory || title !== noteTitle || content !== noteContent
+  const originalItems = [...propsItems]
+    .sort((a, b) => a.value.localeCompare(b.value))
+    .map(({ value }) => value)
+    .toString()
+  const currentItems = [...items]
+    .sort((a, b) => a.value.localeCompare(b.value))
+    .map(({ value }) => value)
+    .toString()
+
+  const changed =
+    category !== propsCategory || title !== propsTitle || content !== propsContent || originalItems !== currentItems
 
   return (
     <form
@@ -98,13 +165,16 @@ const Note = ({
       onClick={() => {
         if (!newNote) setOptionsVisible(true)
       }}
+      onKeyPress={event => {
+        if (list && event.key === 'Enter') event.preventDefault()
+      }}
       onSubmit={saveNote}
     >
       <If condition={!newNote}>
         <PinIcon className={cx(style.pinIcon, { [style.pinned]: pinned })} onClick={updatePin} />
       </If>
 
-      <If condition={category || newNote || editMode}>
+      <If condition={!list && (newNote || category || editMode)}>
         <input
           className={style.category}
           value={category}
@@ -116,7 +186,7 @@ const Note = ({
         />
       </If>
 
-      <If condition={title || newNote || editMode}>
+      <If condition={newNote || title || editMode}>
         <input
           className={style.title}
           value={title}
@@ -128,16 +198,60 @@ const Note = ({
         />
       </If>
 
-      <textarea
-        className={style.content}
-        rows={(content.match(/\n/g) || []).length}
-        dir={RTL_REGEX.test(content) ? 'rtl' : 'ltr'}
-        value={content}
-        aria-label="content"
-        required
-        onClick={() => setEditMode(true)}
-        onChange={event => setContent(event.target.value)}
-      />
+      {list ? (
+        <div
+          className={style.content}
+          ref={itemsRef}
+          aria-label="content"
+          onClick={() => {
+            if (items.every(({ checked }) => checked)) {
+              setItems([emptyItem, ...items])
+              setTimeout(() => itemsRef.current.childNodes[0].childNodes[1].focus())
+            }
+          }}
+        >
+          {[...items]
+            .sort((a, b) => a.checked - b.checked)
+            .map(({ value, checked }, ind) => (
+              <div className="d-flex" key={ind}>
+                {checked ? (
+                  <CheckedIcon className={style.checkIcon} onClick={event => checkItem(event, ind)} />
+                ) : (
+                  <UncheckedIcon className={style.checkIcon} onClick={event => checkItem(event, ind)} />
+                )}
+
+                <input
+                  className={cx(style.value, { [style.disabled]: checked })}
+                  dir={RTL_REGEX.test(value) ? 'rtl' : 'ltr'}
+                  value={value}
+                  required
+                  onClick={() => setEditMode(true)}
+                  onChange={event =>
+                    setItems(prevItems =>
+                      prevItems.map((item, index) => (index === ind ? { ...item, value: event.target.value } : item))
+                    )
+                  }
+                  onKeyDown={event => handleBackspacePress(event, ind)}
+                  onKeyUp={event => handleEnterPress(event, ind)}
+                  onBlur={() => {
+                    if (!value && items.length > 1) setItems(prevItems => prevItems.filter((_, index) => index !== ind))
+                  }}
+                />
+              </div>
+            ))}
+        </div>
+      ) : (
+        <textarea
+          className={style.content}
+          rows={(content.match(/\n/g) || []).length}
+          dir={RTL_REGEX.test(content) ? 'rtl' : 'ltr'}
+          value={content}
+          aria-label="content"
+          required
+          onClick={() => setEditMode(true)}
+          onChange={event => setContent(event.target.value)}
+        />
+      )}
 
       <If condition={optionsVisible}>
         <Options onDelete={deleteNote} setConfirmMessage={setConfirmMessageVisible} />
@@ -145,9 +259,9 @@ const Note = ({
 
       {confirmMessageVisible ? (
         <div className={style.confirmMessage}>{DELETE_MESSAGE}</div>
-      ) : noteChanged || newNote ? (
+      ) : changed || newNote ? (
         <input
-          className={cx(style.save, { [style.hidden]: !noteChanged && !newNote })}
+          className={cx(style.save, { [style.hidden]: !changed && !newNote })}
           type="submit"
           value={SAVE}
           aria-label="save"
@@ -163,16 +277,19 @@ const Note = ({
 
 Note.propTypes = {
   newNote: bool,
+  list: bool,
   _id: string,
   pinned: bool,
   category: string,
   title: string,
   content: string,
+  items: arrayOf(shape({ checked: bool, value: string })),
   date: string,
-  onCreateNote: func,
+  onCreate: func,
   onUpdatePin: func,
-  onUpdateNote: func,
-  onDeleteNote: func
+  onUpdate: func,
+  onCheckItem: func,
+  onDelete: func
 }
 
 export default Note
