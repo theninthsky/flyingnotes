@@ -97,7 +97,11 @@ module.exports = (_, { mode }) => {
       }),
       new MiniCssExtractPlugin({ filename: '[name].[contenthash].css' }),
       new ESLintPlugin(),
-      new HtmlPlugin({ template: 'public/index.html' }),
+      new HtmlPlugin({
+        template: 'public/index.html',
+        react: `https://unpkg.com/react@17.0.2/umd/react.${production ? 'production.min' : 'development'}.js`,
+        reactDom: `https://unpkg.com/react-dom@17.0.2/umd/react-dom.${production ? 'production.min' : 'development'}.js`
+      }),
       new CopyPlugin({
         patterns: [
           {

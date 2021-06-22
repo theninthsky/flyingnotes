@@ -224,6 +224,7 @@ const Note = ({
                   dir={RTL_REGEX.test(value) ? 'rtl' : 'ltr'}
                   value={value}
                   required
+                  disabled={checked}
                   onChange={event =>
                     setItems(prevItems =>
                       prevItems.map((item, index) => (index === ind ? { ...item, value: event.target.value } : item))
