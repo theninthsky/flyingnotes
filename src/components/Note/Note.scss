@@ -75,6 +75,7 @@
   border: none;
   outline: none;
   resize: none;
+  overflow: auto;
   white-space: pre-line;
   font-family: inherit;
   font-size: 18px;
@@ -110,13 +111,14 @@
   cursor: pointer;
 }
 
-.value {
+.item {
   display: block;
   width: 85%;
   margin: 10px;
   border: none;
   border-bottom: 1px solid var(--secondary-color);
   outline: none;
+  line-height: 1;
   color: inherit;
   background-color: inherit;
 }

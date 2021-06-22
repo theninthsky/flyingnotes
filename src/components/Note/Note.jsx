@@ -164,6 +164,7 @@ const Note = ({
       autoComplete="off"
       onClick={() => {
         if (!newNote) setOptionsVisible(true)
+        setEditMode(true)
       }}
       onKeyPress={event => {
         if (list && event.key === 'Enter') event.preventDefault()
@@ -181,7 +182,6 @@ const Note = ({
           dir="auto"
           placeholder={CATEGORY}
           aria-label="category"
-          onClick={() => setEditMode(true)}
           onChange={event => setCategory(event.target.value.toUpperCase().slice(0, 24))}
         />
       </If>
@@ -193,7 +193,6 @@ const Note = ({
           dir="auto"
           placeholder={TITLE}
           aria-label="title"
-          onClick={() => setEditMode(true)}
           onChange={event => setTitle(event.target.value)}
         />
       </If>
@@ -221,11 +220,10 @@ const Note = ({
                 )}
 
                 <input
-                  className={cx(style.value, { [style.disabled]: checked })}
+                  className={cx(style.item, { [style.disabled]: checked })}
                   dir={RTL_REGEX.test(value) ? 'rtl' : 'ltr'}
                   value={value}
                   required
-                  onClick={() => setEditMode(true)}
                   onChange={event =>
                     setItems(prevItems =>
                       prevItems.map((item, index) => (index === ind ? { ...item, value: event.target.value } : item))
@@ -248,7 +246,6 @@ const Note = ({
           value={content}
           aria-label="content"
           required
-          onClick={() => setEditMode(true)}
           onChange={event => setContent(event.target.value)}
         />
       )}
