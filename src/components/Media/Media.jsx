@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react'
-import { string, element, arrayOf, oneOfType } from 'prop-types'
+import { bool, string, any, arrayOf, oneOfType } from 'prop-types'
 
-const Media = ({ query, children: component }) => {
+const Media = ({ query, invert, children }) => {
   const [matches, setMatches] = useState()
 
   useEffect(() => {
     const handleResize = () => {
       if (Array.isArray(query)) return setMatches(query.some(q => window.matchMedia(q).matches))
 
-      setMatches(window.matchMedia(query).matches)
+      const { matches } = window.matchMedia(query)
+
+      setMatches(invert ? !matches : matches)
     }
 
     handleResize()
@@ -18,12 +20,13 @@ const Media = ({ query, children: component }) => {
     return () => window.removeEventListener('resize', handleResize)
   }, [query])
 
-  return component && matches ? component : null
+  return children && matches ? children : null
 }
 
 Media.propTypes = {
   query: oneOfType([string, arrayOf(string)]).isRequired,
-  children: element.isRequired
+  invert: bool,
+  children: any.isRequired
 }
 
 export default Media

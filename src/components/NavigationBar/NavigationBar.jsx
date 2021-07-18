@@ -33,7 +33,7 @@ const NavigationBar = () => {
       <nav className={style.wrapper}>
         <Logo className={style.logo} />
 
-        <div className="flex-grow-1">
+        <div className="flex-1">
           <NavLink className={style.navLink} activeClassName={style.active} exact to="/">
             Notes
           </NavLink>

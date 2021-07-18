@@ -1,6 +1,6 @@
 import { any } from 'prop-types'
 
-const If = ({ condition, children: component }) => (condition ? component : null)
+const If = ({ condition, children }) => (condition ? children : null)
 
 If.propTypes = {
   condition: any,

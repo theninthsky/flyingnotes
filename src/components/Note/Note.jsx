@@ -242,7 +242,7 @@ const Note = ({
       ) : (
         <textarea
           className={style.content}
-          rows={(content.match(/\n/g) || []).length}
+          rows={Math.floor(content.length / 50)}
           dir={RTL_REGEX.test(content) ? 'rtl' : 'ltr'}
           value={content}
           aria-label="content"
