@@ -47,7 +47,7 @@ const App = () => {
     onSwipedLeft: () => changeRoute('right'),
     onSwipedRight: () => changeRoute('left'),
     preventDefaultTouchmoveEvent: true,
-    delta: 150
+    delta: 120
   })
 
   useEffect(() => {
@@ -115,7 +115,7 @@ const App = () => {
                   <title>My Files</title>
                 </Helmet>
 
-                <Suspense fallback={() => {}}>
+                <Suspense fallback={<></>}>
                   <Files />
                 </Suspense>
               </div>

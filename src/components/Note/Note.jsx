@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { bool, string, func, shape, arrayOf } from 'prop-types'
+import { bool, string, func, shape, arrayOf, oneOf } from 'prop-types'
 import useClickOutside from 'use-click-outside'
 import cx from 'clsx'
 
@@ -12,12 +12,13 @@ import PinIcon from 'images/pin.svg'
 import CheckedIcon from 'images/checked.svg'
 import UncheckedIcon from 'images/unchecked.svg'
 
+const [NOTE, LIST] = ['note', 'list']
 const emptyItem = { value: '', checked: false }
 const defaultItems = [emptyItem]
 
 const Note = ({
-  newNote,
-  list,
+  variant,
+  empty,
   _id,
   pinned = false,
   category: propsCategory = '',
@@ -118,15 +119,15 @@ const Note = ({
 
     const note = {
       pinned,
-      category: list ? undefined : category.trim(),
+      category: variant === NOTE ? category.trim() : undefined,
       title: title.trim(),
       content: content.trim(),
-      items: list ? items.map(item => ({ ...item, value: item.value.trim() })) : undefined
+      items: variant === LIST ? items.map(item => ({ ...item, value: item.value.trim() })) : undefined
     }
 
     setLoading(true)
 
-    if (newNote) {
+    if (empty) {
       await onCreate(note)
       reset()
     } else {
@@ -163,19 +164,19 @@ const Note = ({
       ref={noteRef}
       autoComplete="off"
       onClick={() => {
-        if (!newNote) setOptionsVisible(true)
+        if (!empty) setOptionsVisible(true)
         setEditMode(true)
       }}
       onKeyPress={event => {
-        if (list && event.key === 'Enter') event.preventDefault()
+        if (variant === LIST && event.key === 'Enter') event.preventDefault()
       }}
       onSubmit={saveNote}
     >
-      <If condition={!newNote}>
+      <If condition={!empty}>
         <PinIcon className={cx(style.pinIcon, { [style.pinned]: pinned })} onClick={updatePin} />
       </If>
 
-      <If condition={!list && (newNote || category || editMode)}>
+      <If condition={variant === NOTE && (empty || category || editMode)}>
         <input
           className={style.category}
           value={category}
@@ -186,7 +187,7 @@ const Note = ({
         />
       </If>
 
-      <If condition={newNote || title || editMode}>
+      <If condition={empty || title || editMode}>
         <input
           className={style.title}
           value={title}
@@ -197,7 +198,7 @@ const Note = ({
         />
       </If>
 
-      {list ? (
+      {variant === LIST ? (
         <div
           className={style.content}
           ref={itemsRef}
@@ -257,15 +258,15 @@ const Note = ({
 
       {confirmMessageVisible ? (
         <div className={style.confirmMessage}>{DELETE_MESSAGE}</div>
-      ) : changed || newNote ? (
+      ) : changed || empty ? (
         <input
-          className={cx(style.save, { [style.hidden]: !changed && !newNote })}
+          className={cx(style.save, { [style.hidden]: !changed && !empty })}
           type="submit"
           value={SAVE}
           aria-label="save"
         />
       ) : (
-        <If condition={!newNote}>
+        <If condition={!empty}>
           <div className={style.date}>{new Date(date).toLocaleString('en-GB').replace(',', '').slice(0, -3)}</div>
         </If>
       )}
@@ -274,8 +275,8 @@ const Note = ({
 }
 
 Note.propTypes = {
-  newNote: bool,
-  list: bool,
+  variant: oneOf([NOTE, LIST]).isRequired,
+  empty: bool,
   _id: string,
   pinned: bool,
   category: string,

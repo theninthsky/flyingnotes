@@ -81,11 +81,12 @@ const Notes = () => {
       />
 
       <div className={style.wrapper}>
-        <Note newNote onCreate={createNote} />
+        <Note variant="note" empty onCreate={createNote} />
 
         {renderedNotes.map(({ _id, pinned, category, title, content, date }) => (
           <Note
             key={_id}
+            variant="note"
             _id={_id}
             pinned={pinned}
             category={category}

@@ -74,12 +74,12 @@ const Lists = () => {
 
   return (
     <div className={style.wrapper}>
-      <Note newNote list items={[{ value: '', checked: false }]} onCreate={createList} />
+      <Note variant="list" empty list items={[{ value: '', checked: false }]} onCreate={createList} />
 
       {renderedLists.map(({ _id, pinned, title, items, date }) => (
         <Note
-          list
           key={_id}
+          variant="list"
           _id={_id}
           pinned={pinned}
           title={title}

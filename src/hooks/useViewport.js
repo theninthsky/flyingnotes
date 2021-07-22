@@ -29,7 +29,7 @@ const useViewport = viewportMap => {
     window.addEventListener('resize', handleResize)
 
     return () => window.removeEventListener('resize', handleResize)
-  }) // eslint-disable-line
+  })
 
   return viewports
 }
