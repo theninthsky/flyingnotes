@@ -7,9 +7,33 @@ const HtmlPlugin = require('html-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 const WorkboxPlugin = require('workbox-webpack-plugin')
 
+const cdn = {
+  react: {
+    development: {
+      url: 'https://unpkg.com/react@17.0.2/umd/react.development.js',
+      integrity: 'sha384-xQwCoNcK/7P3Lpv50IZSEbJdpqbToWEODAUyI/RECaRXmOE2apWt7htari8kvKa/'
+    },
+    production: {
+      url: 'https://unpkg.com/react@17.0.2/umd/react.production.min.js',
+      integrity: 'sha384-7Er69WnAl0+tY5MWEvnQzWHeDFjgHSnlQfDDeWUvv8qlRXtzaF/pNo18Q2aoZNiO'
+    }
+  },
+  reactDOM: {
+    development: {
+      url: 'https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js',
+      integrity: 'sha384-E9IgxDsnjKgh0777N3lXen7NwXeTsOpLLJhI01SW7idG046SRqJpsW2rJwsOYk0L'
+    },
+    production: {
+      url: 'https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js',
+      integrity: 'sha384-vj2XpC1SOa8PHrb0YlBqKN7CQzJYO72jz4CkDQ+ePL1pwOV4+dn05rPrbLGUuvCv'
+    }
+  }
+}
+
 module.exports = (_, { mode }) => {
   const development = mode === 'development'
   const production = mode === 'production'
+  const { react, reactDOM } = cdn
 
   return {
     devServer: {
@@ -99,8 +123,10 @@ module.exports = (_, { mode }) => {
       new ESLintPlugin(),
       new HtmlPlugin({
         template: 'public/index.html',
-        react: `https://unpkg.com/react@17.0.2/umd/react.${production ? 'production.min' : 'development'}.js`,
-        reactDom: `https://unpkg.com/react-dom@17.0.2/umd/react-dom.${production ? 'production.min' : 'development'}.js`
+        react: react[mode].url,
+        reactIntegrity: react[mode].integrity,
+        reactDOM: reactDOM[mode].url,
+        reactDOMIntegrity: reactDOM[mode].integrity
       }),
       new CopyPlugin({
         patterns: [
