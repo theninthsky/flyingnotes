@@ -6,13 +6,15 @@ import { authVisibleState } from 'containers/App/atoms'
 import { userSelector } from 'containers/App/selectors'
 import { notesSelector } from 'containers/Notes/selectors'
 import { listsSelector } from 'containers/Lists/selectors'
-import { registerService, loginService } from 'services'
-import { SIGN_UP, LOG_IN } from './constants'
+import { useFetch } from 'hooks'
+import { LOG_IN, SIGN_UP } from './constants'
 import { safari } from 'util/user-agent'
 import If from 'components/If'
 import Backdrop from 'components/Backdrop'
 
 import style from './Auth.scss'
+
+const { SERVER_URL } = process.env
 
 const Auth = () => {
   const setUser = useSetRecoilState(userSelector)
@@ -24,8 +26,11 @@ const Auth = () => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState()
+
+  const { loading, data, data: { err } = {}, trigger } = useFetch({
+    method: 'post',
+    suspense: true
+  })
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -33,59 +38,22 @@ const Auth = () => {
     return () => (document.body.style.overflow = 'visible')
   }, [])
 
-  const register = async credentials => {
-    setError()
-    setLoading(true)
+  useEffect(() => {
+    if (!data || err) return
 
-    const localNotes = localStorage.notes ? JSON.parse(localStorage.notes) : []
-    const localLists = localStorage.lists ? JSON.parse(localStorage.lists) : []
+    const { name, notes, lists, token } = data
 
-    const res = await registerService({
-      ...credentials,
-      notes: localNotes,
-      lists: localLists
-    })
-
-    const { name, notes, lists, token, err } = await res.json()
-
-    if (err) {
-      setError(err)
-      return setLoading(false)
-    }
-
-    localStorage.clear()
-
+    if (action === SIGN_UP) localStorage.clear()
     if (safari) localStorage.setItem('token', token)
 
     setUser({ name })
     setNotes(notes)
     setLists(lists)
     resetAuthVisible()
-  }
-
-  const login = async credentials => {
-    setError()
-    setLoading(true)
-
-    const res = await loginService({ ...credentials })
-
-    const { name, notes, lists, token, err } = await res.json()
-
-    if (err) {
-      setError(err)
-      return setLoading(false)
-    }
-
-    if (safari) localStorage.setItem('token', token)
-
-    setUser({ name })
-    setNotes(notes)
-    setLists(lists)
-    resetAuthVisible()
-  }
+  }, [data])
 
   const actionChangedHandler = event => {
-    setAction(event.target.innerHTML)
+    setAction(event.target.textContent)
     setName('')
     setPassword('')
   }
@@ -93,9 +61,17 @@ const Auth = () => {
   const submitFormHandler = event => {
     event.preventDefault()
 
-    action === SIGN_UP
-      ? register({ name: name.trim(), email, password })
-      : login({ name: name.trim(), email, password })
+    const url = action === LOG_IN ? `${SERVER_URL}/login` : `${SERVER_URL}/register`
+    const localNotes = localStorage.notes ? JSON.parse(localStorage.notes) : []
+    const localLists = localStorage.lists ? JSON.parse(localStorage.lists) : []
+    const payload = {
+      name: name.trim(),
+      email,
+      password,
+      ...(action === SIGN_UP ? { notes: localNotes, lists: localLists } : {})
+    }
+
+    trigger({ url, body: JSON.stringify(payload) })
   }
 
   return (
@@ -116,8 +92,8 @@ const Auth = () => {
         </div>
 
         <form onSubmit={submitFormHandler}>
-          <If condition={error}>
-            <p className={style.error}>{error}</p>
+          <If condition={err}>
+            <p className={style.error}>{err}</p>
           </If>
 
           {action === SIGN_UP ? (
