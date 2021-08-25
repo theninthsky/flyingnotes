@@ -27,7 +27,7 @@ const Auth = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const { loading, data, data: { err } = {}, trigger } = useFetch({
+  const { loading, error, data, trigger } = useFetch({
     method: 'post',
     suspense: true
   })
@@ -39,7 +39,7 @@ const Auth = () => {
   }, [])
 
   useEffect(() => {
-    if (!data || err) return
+    if (error || !data) return
 
     const { name, notes, lists, token } = data
 
@@ -50,7 +50,7 @@ const Auth = () => {
     setNotes(notes)
     setLists(lists)
     resetAuthVisible()
-  }, [data])
+  }, [error, data])
 
   const actionChangedHandler = event => {
     setAction(event.target.textContent)
@@ -92,8 +92,8 @@ const Auth = () => {
         </div>
 
         <form onSubmit={submitFormHandler}>
-          <If condition={err}>
-            <p className={style.error}>{err}</p>
+          <If condition={error}>
+            <p className={style.error}>{error}</p>
           </If>
 
           {action === SIGN_UP ? (

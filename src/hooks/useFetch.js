@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
+import { unstable_batchedUpdates as batch } from 'react-dom'
 
 const useFetch = options => {
-  const { url, suspense, ...fetchOptions } = options
+  const { initialUrl, suspense, ...initialFetchOptions } = options
 
   const [loading, setLoading] = useState(false)
+  const [status, setStatus] = useState()
   const [error, setError] = useState()
   const [data, setData] = useState()
 
@@ -11,23 +13,29 @@ const useFetch = options => {
     if (!suspense) fetchData()
   }, [suspense])
 
-  const fetchData = async (extendedOptions = {}) => {
+  const fetchData = async ({ url = initialUrl, ...fetchOptions } = options) => {
     setLoading(true)
+    setStatus()
+    setError()
+    setData()
 
-    const res = await fetch(extendedOptions.url || url, {
+    const res = await fetch(url, {
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
-      ...fetchOptions,
-      ...extendedOptions
+      ...initialFetchOptions,
+      ...fetchOptions
     })
     const data = await res.json()
 
-    setLoading(false)
-    if (!res.ok) setError(data.err)
-    setData(data)
+    batch(() => {
+      setLoading(false)
+      setStatus(res.status)
+      if (!res.ok) setError(data.err)
+      setData(data)
+    })
   }
 
-  return { loading, error, data, trigger: fetchData }
+  return { loading, status, error, data, trigger: fetchData }
 }
 
 export default useFetch
