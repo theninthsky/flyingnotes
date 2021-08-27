@@ -11,7 +11,7 @@ const useFetch = options => {
 
   useEffect(() => {
     if (!suspense) fetchData()
-  }, [suspense])
+  }, [suspense]) // eslint-disable-line
 
   const fetchData = async ({ url = initialUrl, ...fetchOptions } = options) => {
     setLoading(true)

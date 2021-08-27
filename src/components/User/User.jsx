@@ -3,13 +3,13 @@ import { useHistory } from 'react-router-dom'
 import { useRecoilState, useSetRecoilState, useResetRecoilState } from 'recoil'
 import cx from 'clsx'
 
-import { ws } from 'websocket-connection'
 import { authVisibleState } from 'containers/App/atoms'
 import { notesState } from 'containers/Notes/atoms'
 import { listsState } from 'containers/Lists/atoms'
 import { filesState } from 'containers/Files/atoms'
-
 import { userSelector } from 'containers/App/selectors'
+import { useFetch } from 'hooks'
+import { ws } from 'websocket-connection'
 import { changePasswordService, logoutService } from 'services'
 import { LOGOUT } from './constants'
 import If from 'components/If'
@@ -17,6 +17,8 @@ import Backdrop from 'components/Backdrop'
 
 import style from './User.scss'
 import UserLogoIcon from 'images/user-astronaut.svg'
+
+const { SERVER_URL } = process.env
 
 const User = () => {
   const history = useHistory()
@@ -31,8 +33,14 @@ const User = () => {
   const [password, setPassword] = useState('')
   const [changePasswordMode, setChangePasswordMode] = useState(false)
   const [newPassword, setNewPassword] = useState()
-  const [loading, setLoading] = useState(false)
+  // const [loading, setLoading] = useState(false)
   const [error, setError] = useState()
+
+  const { loading, status, trigger } = useFetch({
+    suspense: true,
+    url: `${SERVER_URL}/change-password`,
+    method: 'put'
+  })
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -40,20 +48,14 @@ const User = () => {
     return () => (document.body.style.overflow = 'visible')
   }, [])
 
+  useEffect(() => {
+    if (status === 200) resetAuthVisible()
+  }, [status])
+
   const changePassword = async event => {
     event.preventDefault()
 
-    setError()
-    setLoading(true)
-
-    const res = await changePasswordService({ password, newPassword })
-
-    if (res.ok) return resetAuthVisible()
-
-    const { error } = await res.json()
-
-    setError(error)
-    setLoading(false)
+    trigger({ body: JSON.stringify({ password, newPassword }) })
   }
 
   const logout = async () => {

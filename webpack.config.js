@@ -37,11 +37,11 @@ module.exports = (_, { mode }) => {
 
   return {
     devServer: {
-      contentBase: 'public',
       historyApiFallback: true,
       port: 3000,
       open: true,
-      stats: 'errors-warnings'
+      hot: true,
+      devMiddleware: { stats: 'errors-warnings' }
     },
     devtool: development ? 'source-map' : undefined,
     resolve: {
