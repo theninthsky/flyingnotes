@@ -59,7 +59,7 @@ const User = () => {
   }
 
   const logout = async () => {
-    setLoading(true)
+    // setLoading(true)
 
     try {
       await logoutService()
@@ -80,7 +80,7 @@ const User = () => {
       history.push('/')
     } catch (err) {
       setError('Failed to logout')
-      setLoading(false)
+      // setLoading(false)
     }
   }
 
