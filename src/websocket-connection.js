@@ -1,7 +1,6 @@
 import ReconnectingWebSocket from 'reconnecting-websocket'
 
-import { renewTokenService } from 'services'
-
+const { SERVER_URL } = process.env
 const { WS_SERVER_URL } = process.env
 
 export let ws
@@ -12,7 +11,10 @@ export const createWebSocketConnection = () => {
 
   return new Promise(async resolve => {
     try {
-      const res = await renewTokenService()
+      const res = await fetch(`${SERVER_URL}/renew-token`, {
+        credentials: 'include',
+        headers: { Authorization: `Bearer=${localStorage.token}` }
+      })
 
       if (res.status === 401) throw Error('UNAUTHORIZED')
 
