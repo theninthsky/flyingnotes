@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
 import { useRecoilState, useSetRecoilState, useResetRecoilState } from 'recoil'
 import cx from 'clsx'
 
@@ -8,9 +7,8 @@ import { notesState } from 'containers/Notes/atoms'
 import { listsState } from 'containers/Lists/atoms'
 import { filesState } from 'containers/Files/atoms'
 import { userSelector } from 'containers/App/selectors'
-import { useFetch } from 'hooks'
+import { useAxios } from 'hooks'
 import { ws } from 'websocket-connection'
-import { changePasswordService, logoutService } from 'services'
 import { LOGOUT } from './constants'
 import If from 'components/If'
 import Backdrop from 'components/Backdrop'
@@ -21,8 +19,6 @@ import UserLogoIcon from 'images/user-astronaut.svg'
 const { SERVER_URL } = process.env
 
 const User = () => {
-  const history = useHistory()
-
   const [user, setUser] = useRecoilState(userSelector)
   const resetAuthVisible = useResetRecoilState(authVisibleState)
   const setNotes = useSetRecoilState(notesState)
@@ -33,14 +29,24 @@ const User = () => {
   const [password, setPassword] = useState('')
   const [changePasswordMode, setChangePasswordMode] = useState(false)
   const [newPassword, setNewPassword] = useState()
-  // const [loading, setLoading] = useState(false)
-  const [error, setError] = useState()
 
-  const { loading, status, trigger } = useFetch({
+  const {
+    loading: changePasswordLoading,
+    status: changePasswordStatus,
+    error: changePasswordError,
+    activate: activateChangePassword
+  } = useAxios({
     suspense: true,
     url: `${SERVER_URL}/change-password`,
     method: 'put'
   })
+  const { loading: logoutLoading, status: logoutStatus, error: logoutError, activate: activateLogout } = useAxios({
+    suspense: true,
+    url: `${SERVER_URL}/logout`,
+    method: 'post'
+  })
+
+  const loading = changePasswordLoading || logoutLoading
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -49,39 +55,33 @@ const User = () => {
   }, [])
 
   useEffect(() => {
-    if (status === 200) resetAuthVisible()
-  }, [status])
+    if (changePasswordStatus === 200) resetAuthVisible()
+  }, [changePasswordStatus])
+
+  useEffect(() => {
+    if (logoutStatus !== 204) return
+
+    localStorage.removeItem('userNotes')
+    localStorage.removeItem('userLists')
+    localStorage.removeItem('token')
+
+    setNotes(JSON.parse(localStorage.notes || '[]'))
+    setLists(JSON.parse(localStorage.lists || '[]'))
+    resetFiles()
+
+    ws.close()
+    ws.destroy()
+
+    setTimeout(() => {
+      setUser({ name: null })
+      resetAuthVisible()
+    }, 0)
+  }, [logoutStatus])
 
   const changePassword = async event => {
     event.preventDefault()
 
-    trigger({ body: JSON.stringify({ password, newPassword }) })
-  }
-
-  const logout = async () => {
-    // setLoading(true)
-
-    try {
-      await logoutService()
-
-      localStorage.removeItem('userNotes')
-      localStorage.removeItem('userLists')
-      localStorage.removeItem('token')
-
-      setUser({ name: null })
-      setNotes(JSON.parse(localStorage.notes || '[]'))
-      setLists(JSON.parse(localStorage.lists || '[]'))
-      resetFiles()
-      resetAuthVisible()
-
-      ws.close()
-      ws.destroy()
-
-      history.push('/')
-    } catch (err) {
-      setError('Failed to logout')
-      // setLoading(false)
-    }
+    activateChangePassword({ data: { password, newPassword } })
   }
 
   return (
@@ -101,8 +101,8 @@ const User = () => {
           }}
         />
 
-        <If condition={error}>
-          <p className={cx('text-align-center', 'red')}>{error}</p>
+        <If condition={logoutError || changePasswordError}>
+          <p className={cx('text-align-center', 'red')}>{logoutError ? 'Failed to logout' : 'Incorrect password'}</p>
         </If>
 
         {changePasswordMode ? (
@@ -134,7 +134,7 @@ const User = () => {
               Change Password
             </button>
 
-            <input className={style.submit} type="submit" value={LOGOUT} disabled={loading} onClick={logout} />
+            <input className={style.submit} type="submit" value={LOGOUT} disabled={loading} onClick={activateLogout} />
           </>
         )}
       </div>

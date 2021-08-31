@@ -6,7 +6,7 @@ import { authVisibleState } from 'containers/App/atoms'
 import { userSelector } from 'containers/App/selectors'
 import { notesSelector } from 'containers/Notes/selectors'
 import { listsSelector } from 'containers/Lists/selectors'
-import { useFetch } from 'hooks'
+import { useAxios } from 'hooks'
 import { LOG_IN, SIGN_UP } from './constants'
 import { safari } from 'util/user-agent'
 import If from 'components/If'
@@ -27,9 +27,9 @@ const Auth = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const { loading, error, data, trigger } = useFetch({
-    method: 'post',
-    suspense: true
+  const { loading, error, data, activate } = useAxios({
+    suspense: true,
+    method: 'post'
   })
 
   useEffect(() => {
@@ -64,14 +64,14 @@ const Auth = () => {
     const url = action === LOG_IN ? `${SERVER_URL}/login` : `${SERVER_URL}/register`
     const localNotes = localStorage.notes ? JSON.parse(localStorage.notes) : []
     const localLists = localStorage.lists ? JSON.parse(localStorage.lists) : []
-    const payload = {
+    const data = {
       name: name.trim(),
       email,
       password,
       ...(action === SIGN_UP ? { notes: localNotes, lists: localLists } : {})
     }
 
-    trigger({ url, body: JSON.stringify(payload) })
+    activate({ url, data })
   }
 
   return (
