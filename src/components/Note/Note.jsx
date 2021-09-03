@@ -4,7 +4,7 @@ import useClickOutside from 'use-click-outside'
 import TextareaAutosize from 'react-textarea-autosize'
 import cx from 'clsx'
 
-import { CATEGORY, TITLE, SAVE, DELETE_MESSAGE, RTL_REGEX } from './constants'
+import { CATEGORY, TITLE, SAVE, DELETE_MESSAGE } from './constants'
 import If from 'components/If'
 import Options from 'components/Options'
 
@@ -37,7 +37,7 @@ const Note = ({
   const [title, setTitle] = useState(propsTitle)
   const [content, setContent] = useState(propsContent)
   const [items, setItems] = useState(propsItems)
-  const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(empty)
   const [editMode, setEditMode] = useState(false)
   const [optionsVisible, setOptionsVisible] = useState(false)
   const [confirmMessageVisible, setConfirmMessageVisible] = useState(false)
@@ -201,12 +201,15 @@ const Note = ({
       </If>
 
       <If condition={empty || title || editMode}>
-        <input
+        <TextareaAutosize
           className={style.title}
           value={title}
           dir="auto"
           placeholder={TITLE}
           aria-label="title"
+          onKeyPress={event => {
+            if (event.key === 'Enter') event.preventDefault()
+          }}
           onChange={event => setTitle(event.target.value)}
         />
       </If>
@@ -235,7 +238,7 @@ const Note = ({
 
                 <input
                   className={cx(style.item, { [style.disabled]: checked })}
-                  dir={RTL_REGEX.test(value) ? 'rtl' : 'ltr'}
+                  dir="auto"
                   value={value}
                   required
                   disabled={checked}
@@ -256,7 +259,7 @@ const Note = ({
       ) : (
         <TextareaAutosize
           className={cx(style.content)}
-          dir={RTL_REGEX.test(content) ? 'rtl' : 'ltr'}
+          dir="auto"
           value={content}
           maxRows={expanded ? undefined : 5}
           aria-label="content"
