@@ -75,7 +75,7 @@ const User = () => {
     setTimeout(() => {
       setUser({ name: null })
       resetAuthVisible()
-    }, 0)
+    })
   }, [logoutStatus])
 
   const changePassword = async event => {

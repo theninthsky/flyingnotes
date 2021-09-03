@@ -40,7 +40,7 @@ module.exports = (_, { mode }) => {
       historyApiFallback: true,
       port: 3000,
       open: true,
-      hot: true,
+      // hot: true,
       devMiddleware: { stats: 'errors-warnings' }
     },
     devtool: development ? 'source-map' : undefined,

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { bool, string, func, shape, arrayOf, oneOf } from 'prop-types'
 import useClickOutside from 'use-click-outside'
+import TextareaAutosize from 'react-textarea-autosize'
 import cx from 'clsx'
 
 import { CATEGORY, TITLE, SAVE, DELETE_MESSAGE, RTL_REGEX } from './constants'
@@ -36,6 +37,7 @@ const Note = ({
   const [title, setTitle] = useState(propsTitle)
   const [content, setContent] = useState(propsContent)
   const [items, setItems] = useState(propsItems)
+  const [expanded, setExpanded] = useState(false)
   const [editMode, setEditMode] = useState(false)
   const [optionsVisible, setOptionsVisible] = useState(false)
   const [confirmMessageVisible, setConfirmMessageVisible] = useState(false)
@@ -176,6 +178,10 @@ const Note = ({
         <PinIcon className={cx(style.pinIcon, { [style.pinned]: pinned })} onClick={updatePin} />
       </If>
 
+      <If condition={!expanded}>
+        <div className={style.cover} onClick={() => setExpanded(true)}></div>
+      </If>
+
       <If condition={variant === NOTE && (empty || category || editMode)}>
         <input
           className={style.category}
@@ -200,7 +206,7 @@ const Note = ({
 
       {variant === LIST ? (
         <div
-          className={style.content}
+          className={cx(style.content, style.listContent, { [style.listContentExpanded]: expanded })}
           ref={itemsRef}
           aria-label="content"
           onClick={() => {
@@ -241,11 +247,11 @@ const Note = ({
             ))}
         </div>
       ) : (
-        <textarea
-          className={style.content}
-          rows={Math.floor(content.length / 50)}
+        <TextareaAutosize
+          className={cx(style.content)}
           dir={RTL_REGEX.test(content) ? 'rtl' : 'ltr'}
           value={content}
+          maxRows={expanded ? undefined : 5}
           aria-label="content"
           required
           onChange={event => setContent(event.target.value)}
