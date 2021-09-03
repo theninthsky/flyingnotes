@@ -1,7 +1,8 @@
 import { useState, useEffect, lazy, Suspense } from 'react'
-import { Switch, Route, Redirect, useLocation } from 'react-router-dom'
+import { Switch, Route, Redirect, useLocation, useHistory } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
+import { useSwipeable } from 'react-swipeable'
 import { Helmet } from 'react-helmet'
 
 import { authVisibleState } from './atoms'
@@ -32,8 +33,15 @@ const App = () => {
   const [prevLocation, setPrevLocation] = useState()
   const [currLocation, setCurrLocation] = useState()
 
+  const history = useHistory()
   const location = useLocation()
   const { mobile } = useViewport({ mobile: '(max-width: 991px)' })
+  const handlers = useSwipeable({
+    onSwipedLeft: () => changeRoute('right'),
+    onSwipedRight: () => changeRoute('left'),
+    preventDefaultTouchmoveEvent: true,
+    delta: 120
+  })
 
   useEffect(() => {
     const handleRegistration = ({ detail: registration }) => setRegistrationWaiting(registration.waiting)
@@ -47,6 +55,13 @@ const App = () => {
     setPrevLocation(currLocation)
     setCurrLocation(location.pathname)
   }, [location])
+
+  const changeRoute = dir => {
+    const index = routes.indexOf(currLocation)
+
+    if (dir === 'left' && routes[index - 1]) history.push(routes[index - 1])
+    if (dir === 'right' && routes[index + 1]) history.push(routes[index + 1])
+  }
 
   const replaceSW = () => {
     if (!registrationWaiting) return
@@ -76,7 +91,7 @@ const App = () => {
         <CSSTransition {...transitionOptions}>
           <Switch location={location}>
             <Route exact path="/">
-              <div className={style.page}>
+              <div className={style.page} {...handlers}>
                 <Helmet>
                   <title>My Notes</title>
                 </Helmet>
@@ -86,7 +101,7 @@ const App = () => {
             </Route>
 
             <Route path="/lists">
-              <div className={style.page}>
+              <div className={style.page} {...handlers}>
                 <Helmet>
                   <title>My Lists</title>
                 </Helmet>
@@ -96,7 +111,7 @@ const App = () => {
             </Route>
 
             <Route path="/files">
-              <div className={style.page}>
+              <div className={style.page} {...handlers}>
                 <Helmet>
                   <title>My Files</title>
                 </Helmet>
