@@ -55,6 +55,7 @@ const Note = ({
   }, [propsCategory, propsTitle, propsContent, propsItems])
 
   useClickOutside(noteRef, () => {
+    setExpanded(false)
     setOptionsVisible(false)
     setConfirmMessageVisible(false)
     setEditMode(false)
@@ -179,7 +180,13 @@ const Note = ({
       </If>
 
       <If condition={!expanded}>
-        <div className={style.cover} onClick={() => setExpanded(true)}></div>
+        <div
+          className={style.cover}
+          onClick={event => {
+            event.stopPropagation()
+            setExpanded(true)
+          }}
+        ></div>
       </If>
 
       <If condition={variant === NOTE && (empty || category || editMode)}>
