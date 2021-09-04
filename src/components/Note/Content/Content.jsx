@@ -1,7 +1,9 @@
 import { useState, useRef } from 'react'
-import If from 'components/If'
+import useClickOutside from 'use-click-outside'
 import TextareaAutosize from 'react-textarea-autosize'
 import cx from 'clsx'
+
+import If from 'components/If'
 
 import style from './Content.scss'
 import CheckedIcon from 'images/checked.svg'
@@ -11,12 +13,15 @@ const LIST = 'list'
 const MAX_INITIAL_ROWS = 6
 const emptyItem = { value: '', checked: false }
 
-const Content = ({ variant, empty, changed, content, items, setContent, setItems, onCheckItem }) => {
+const Content = ({ id, variant, empty, content, items, setContent, setItems, onCheckItem }) => {
   const [rowsHeight, setRowsHeight] = useState(0)
   const [expanded, setExpanded] = useState(false)
   const [checkingItem, setCheckingItem] = useState(false)
 
+  const contentRef = useRef()
   const itemsRef = useRef()
+
+  useClickOutside(contentRef, () => setExpanded(false))
 
   const handleEnterPress = (event, index) => {
     if (event.key === 'Enter' && event.target.value) {
@@ -56,16 +61,16 @@ const Content = ({ variant, empty, changed, content, items, setContent, setItems
       ? [{ ...item, checked: false }, ...otherItems]
       : [...otherItems, { ...item, checked: true }]
 
-    await onCheckItem(_id, index, item, updatedItems)
+    await onCheckItem(id, index, item, updatedItems)
     setItems(updatedItems)
     setCheckingItem(false)
   }
 
   const hasHiddenContent = variant === LIST ? items.length > 4 : rowsHeight === MAX_INITIAL_ROWS * 20
-  const expandable = !expanded && !empty && !changed && hasHiddenContent
+  const expandable = !expanded && !empty && hasHiddenContent
 
   return (
-    <div className={style.wrapper}>
+    <div className={style.wrapper} ref={contentRef} onClick={() => setExpanded(true)}>
       <If condition={expandable}>
         <div
           className={style.cover}

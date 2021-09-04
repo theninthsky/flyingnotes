@@ -158,9 +158,9 @@ const Note = ({
       </If>
 
       <Content
+        id={_id}
         variant={variant}
         empty={empty}
-        changed={content !== propsContent}
         content={content}
         items={items}
         setContent={setContent}
