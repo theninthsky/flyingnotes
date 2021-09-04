@@ -6,12 +6,11 @@ import cx from 'clsx'
 
 import { CATEGORY, TITLE, SAVE, DELETE_MESSAGE } from './constants'
 import If from 'components/If'
+import Content from './Content'
 import Options from 'components/Options'
 
 import style from './Note.scss'
 import PinIcon from 'images/pin.svg'
-import CheckedIcon from 'images/checked.svg'
-import UncheckedIcon from 'images/unchecked.svg'
 
 const [NOTE, LIST] = ['note', 'list']
 const emptyItem = { value: '', checked: false }
@@ -37,15 +36,12 @@ const Note = ({
   const [title, setTitle] = useState(propsTitle)
   const [content, setContent] = useState(propsContent)
   const [items, setItems] = useState(propsItems)
-  const [expanded, setExpanded] = useState(empty)
   const [editMode, setEditMode] = useState(false)
   const [optionsVisible, setOptionsVisible] = useState(false)
   const [confirmMessageVisible, setConfirmMessageVisible] = useState(false)
-  const [checkingItem, setCheckingItem] = useState(false)
   const [loading, setLoading] = useState(false)
 
   const noteRef = useRef()
-  const itemsRef = useRef()
 
   useEffect(() => {
     setCategory(propsCategory)
@@ -55,7 +51,7 @@ const Note = ({
   }, [propsCategory, propsTitle, propsContent, propsItems])
 
   useClickOutside(noteRef, () => {
-    setExpanded(false)
+    // setExpanded(false)
     setOptionsVisible(false)
     setConfirmMessageVisible(false)
     setEditMode(false)
@@ -68,53 +64,10 @@ const Note = ({
     setItems([emptyItem])
   }
 
-  const handleEnterPress = (event, index) => {
-    if (event.key === 'Enter' && event.target.value) {
-      setItems(prevItems => [...prevItems.slice(0, index + 1), emptyItem, ...prevItems.slice(index + 1)])
-
-      const items = itemsRef.current.childNodes
-      const nextIndex = [...items].findIndex(item => item.childNodes[1] === event.target) + 1
-
-      setTimeout(() => items[nextIndex].childNodes[1].focus())
-    }
-  }
-
-  const handleBackspacePress = (event, index) => {
-    if ((event.key === 'Backspace' || event.key === 'Delete') && items.length > 1 && !items[index].value) {
-      event.preventDefault()
-
-      setItems(prevItems => prevItems.filter((_, ind) => ind !== index))
-
-      const items = itemsRef.current.childNodes
-      const prevIndex = [...items].findIndex(item => item.childNodes[1] === event.target) - 1
-
-      setTimeout(() => items[prevIndex > 0 ? prevIndex : 0].childNodes[1].focus())
-    }
-  }
-
   const updatePin = async event => {
     event.stopPropagation()
 
     onUpdatePin(_id, pinned)
-  }
-
-  const checkItem = async (event, index) => {
-    event.stopPropagation()
-
-    const item = items[index]
-
-    if (!item.value || checkingItem) return
-
-    setCheckingItem(true)
-
-    const otherItems = items.filter((_, ind) => ind !== index)
-    const updatedItems = item.checked
-      ? [{ ...item, checked: false }, ...otherItems]
-      : [...otherItems, { ...item, checked: true }]
-
-    await onCheckItem(_id, index, item, updatedItems)
-    setItems(updatedItems)
-    setCheckingItem(false)
   }
 
   const saveNote = async event => {
@@ -179,16 +132,6 @@ const Note = ({
         <PinIcon className={cx(style.pinIcon, { [style.pinned]: pinned })} onClick={updatePin} />
       </If>
 
-      <If condition={!expanded}>
-        <div
-          className={style.cover}
-          onClick={event => {
-            event.stopPropagation()
-            setExpanded(true)
-          }}
-        ></div>
-      </If>
-
       <If condition={variant === NOTE && (empty || category || editMode)}>
         <input
           className={style.category}
@@ -214,59 +157,16 @@ const Note = ({
         />
       </If>
 
-      {variant === LIST ? (
-        <div
-          className={cx(style.content, style.listContent, { [style.listContentExpanded]: expanded })}
-          ref={itemsRef}
-          aria-label="content"
-          onClick={() => {
-            if (items.every(({ checked }) => checked)) {
-              setItems([emptyItem, ...items])
-              setTimeout(() => itemsRef.current.childNodes[0].childNodes[1].focus())
-            }
-          }}
-        >
-          {[...items]
-            .sort((a, b) => a.checked - b.checked)
-            .map(({ value, checked }, ind) => (
-              <div className="d-flex" key={ind}>
-                {checked ? (
-                  <CheckedIcon className={style.checkIcon} onClick={event => checkItem(event, ind)} />
-                ) : (
-                  <UncheckedIcon className={style.checkIcon} onClick={event => checkItem(event, ind)} />
-                )}
-
-                <input
-                  className={cx(style.item, { [style.disabled]: checked })}
-                  dir="auto"
-                  value={value}
-                  required
-                  disabled={checked}
-                  onChange={event =>
-                    setItems(prevItems =>
-                      prevItems.map((item, index) => (index === ind ? { ...item, value: event.target.value } : item))
-                    )
-                  }
-                  onKeyDown={event => handleBackspacePress(event, ind)}
-                  onKeyUp={event => handleEnterPress(event, ind)}
-                  onBlur={() => {
-                    if (!value && items.length > 1) setItems(prevItems => prevItems.filter((_, index) => index !== ind))
-                  }}
-                />
-              </div>
-            ))}
-        </div>
-      ) : (
-        <TextareaAutosize
-          className={cx(style.content)}
-          dir="auto"
-          value={content}
-          maxRows={expanded ? undefined : 5}
-          aria-label="content"
-          required
-          onChange={event => setContent(event.target.value)}
-        />
-      )}
+      <Content
+        variant={variant}
+        empty={empty}
+        changed={content !== propsContent}
+        content={content}
+        items={items}
+        setContent={setContent}
+        setItems={setItems}
+        onCheckItem={onCheckItem}
+      />
 
       <If condition={optionsVisible}>
         <Options onDelete={deleteNote} setConfirmMessage={setConfirmMessageVisible} />

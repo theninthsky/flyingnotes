@@ -40,7 +40,7 @@ const App = () => {
     onSwipedLeft: () => changeRoute('right'),
     onSwipedRight: () => changeRoute('left'),
     preventDefaultTouchmoveEvent: true,
-    delta: 120
+    delta: 60
   })
 
   useEffect(() => {

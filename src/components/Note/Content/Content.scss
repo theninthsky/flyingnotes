@@ -1,0 +1,62 @@
+@import 'styles/variables';
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 -50px 25px -10px var(--primary-color) inset;
+  cursor: pointer;
+}
+
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.content {
+  display: block;
+  margin: 6px 25px 10px;
+  border: none;
+  outline: none;
+  resize: none;
+  white-space: pre-line;
+  overflow: hidden;
+  font-family: inherit;
+  font-size: 18px;
+  color: inherit;
+  background-color: inherit;
+  transition: height 0.2s, max-height 1s;
+}
+
+.listContent {
+  max-height: 190px;
+}
+
+.listContentExpanded {
+  max-height: 1999px;
+}
+
+.checkIcon {
+  width: 20px;
+  cursor: pointer;
+}
+
+.item {
+  display: block;
+  width: 85%;
+  margin: 10px;
+  border: none;
+  border-bottom: 1px solid var(--secondary-color);
+  outline: none;
+  line-height: 1;
+  color: inherit;
+  background-color: inherit;
+}
