@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { number, string, array, func } from 'prop-types'
 
-const LazyRender = ({ batch, items, setItems, rootMargin = '200px' }) => {
+const LazyRender = ({ batch, items, setItems, rootMargin = '100%' }) => {
   const [renderLimit, setRenderLimit] = useState(0)
 
   const targetRef = useRef()

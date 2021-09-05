@@ -161,6 +161,7 @@ const Note = ({
         id={_id}
         variant={variant}
         empty={empty}
+        changed={changed}
         content={content}
         items={items}
         setContent={setContent}

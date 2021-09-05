@@ -13,7 +13,7 @@ const LIST = 'list'
 const MAX_INITIAL_ROWS = 6
 const emptyItem = { value: '', checked: false }
 
-const Content = ({ id, variant, empty, content, items, setContent, setItems, onCheckItem }) => {
+const Content = ({ id, variant, empty, changed, content, items, setContent, setItems, onCheckItem }) => {
   const [rowsHeight, setRowsHeight] = useState(0)
   const [expanded, setExpanded] = useState(false)
   const [checkingItem, setCheckingItem] = useState(false)
@@ -21,7 +21,9 @@ const Content = ({ id, variant, empty, content, items, setContent, setItems, onC
   const contentRef = useRef()
   const itemsRef = useRef()
 
-  useClickOutside(contentRef, () => setExpanded(false))
+  useClickOutside(contentRef, () => {
+    if (!changed) setExpanded(false)
+  })
 
   const handleEnterPress = (event, index) => {
     if (event.key === 'Enter' && event.target.value) {
