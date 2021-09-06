@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react'
 import { bool, string, func } from 'prop-types'
 import useClickOutside from 'use-click-outside'
-import { If } from '@theninthsky/react'
+import { If } from '@theninthsky/react-essentials'
 import cx from 'clsx'
 
 import { saveFile } from 'util/base64'

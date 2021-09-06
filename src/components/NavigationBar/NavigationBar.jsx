@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { If } from '@theninthsky/react'
+import { If } from '@theninthsky/react-essentials'
 import cx from 'clsx'
 
 import { userState, authVisibleState } from 'containers/App/atoms'

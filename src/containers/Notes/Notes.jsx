@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
-import { LazyRender } from '@theninthsky/react'
+import { LazyRender } from '@theninthsky/react-essentials'
 
 import { ws } from 'websocket-connection'
 import { userLoggedInSelector } from 'containers/App/selectors'

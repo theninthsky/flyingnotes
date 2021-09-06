@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { bool, string, func, shape, arrayOf, oneOf } from 'prop-types'
 import useClickOutside from 'use-click-outside'
 import TextareaAutosize from 'react-textarea-autosize'
-import { If } from '@theninthsky/react'
+import { If } from '@theninthsky/react-essentials'
 import cx from 'clsx'
 
 import { CATEGORY, TITLE, SAVE, DELETE_MESSAGE } from './constants'
