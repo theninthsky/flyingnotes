@@ -2,10 +2,10 @@ import { useState, useEffect, useRef } from 'react'
 import { bool, string, func, shape, arrayOf, oneOf } from 'prop-types'
 import useClickOutside from 'use-click-outside'
 import TextareaAutosize from 'react-textarea-autosize'
+import { If } from '@theninthsky/react'
 import cx from 'clsx'
 
 import { CATEGORY, TITLE, SAVE, DELETE_MESSAGE } from './constants'
-import If from 'components/If'
 import Content from './Content'
 import Options from 'components/Options'
 
@@ -51,7 +51,6 @@ const Note = ({
   }, [propsCategory, propsTitle, propsContent, propsItems])
 
   useClickOutside(noteRef, () => {
-    // setExpanded(false)
     setOptionsVisible(false)
     setConfirmMessageVisible(false)
     setEditMode(false)

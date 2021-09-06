@@ -1,5 +1,6 @@
-import { useState, useRef } from 'react'
+import {  useRef } from 'react'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { LazyRender } from '@theninthsky/react'
 
 import { ws } from 'websocket-connection'
 import { userLoggedInSelector } from 'containers/App/selectors'
@@ -7,7 +8,6 @@ import { listsSelector } from './selectors'
 import { RENDER_BATCH } from './constants'
 import useGetLists from 'hooks/useGetLists'
 import Note from 'components/Note'
-import LazyRender from 'components/LazyRender'
 
 import style from './Lists.scss'
 

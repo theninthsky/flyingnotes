@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useRecoilState, useRecoilValue } from 'recoil'
+import { If } from '@theninthsky/react'
 import cx from 'clsx'
 
 import { userState, authVisibleState } from 'containers/App/atoms'
 import { userLoggedInSelector } from 'containers/App/selectors'
 import { THEME_LIGHT, THEME_DARK, LOG_IN } from './constants'
-import If from 'components/If'
 import CookiesMessage from 'components/CookiesMessage'
 
 import style from './NavigationBar.scss'

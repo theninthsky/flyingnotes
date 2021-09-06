@@ -1,11 +1,11 @@
 import { useState, useRef } from 'react'
 import { bool, string, func } from 'prop-types'
 import useClickOutside from 'use-click-outside'
+import { If } from '@theninthsky/react'
 import cx from 'clsx'
 
 import { saveFile } from 'util/base64'
 import { MAX_FILESIZE_IN_MB } from './constants'
-import If from 'components/If'
 
 import style from './File.scss'
 import UploadIcon from 'images/upload.svg'

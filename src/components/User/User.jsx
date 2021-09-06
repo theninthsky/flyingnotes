@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useRecoilState, useSetRecoilState, useResetRecoilState } from 'recoil'
+import { If, useAxios } from '@theninthsky/react'
 import cx from 'clsx'
 
 import { authVisibleState } from 'containers/App/atoms'
@@ -7,10 +8,8 @@ import { notesState } from 'containers/Notes/atoms'
 import { listsState } from 'containers/Lists/atoms'
 import { filesState } from 'containers/Files/atoms'
 import { userSelector } from 'containers/App/selectors'
-import { useAxios } from 'hooks'
 import { ws } from 'websocket-connection'
 import { LOGOUT } from './constants'
-import If from 'components/If'
 import Backdrop from 'components/Backdrop'
 
 import style from './User.scss'

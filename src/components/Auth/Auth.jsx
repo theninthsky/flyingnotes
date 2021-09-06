@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react'
 import { useSetRecoilState, useResetRecoilState } from 'recoil'
+import { If, useAxios } from '@theninthsky/react'
 import cx from 'clsx'
 
 import { authVisibleState } from 'containers/App/atoms'
 import { userSelector } from 'containers/App/selectors'
 import { notesSelector } from 'containers/Notes/selectors'
 import { listsSelector } from 'containers/Lists/selectors'
-import { useAxios } from 'hooks'
 import { LOG_IN, SIGN_UP } from './constants'
 import { safari } from 'util/user-agent'
-import If from 'components/If'
 import Backdrop from 'components/Backdrop'
 
 import style from './Auth.scss'
