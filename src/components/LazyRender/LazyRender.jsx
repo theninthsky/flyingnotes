@@ -1,40 +1,36 @@
-import { useState, useEffect, useRef } from 'react'
-import { number, string, array, func } from 'prop-types'
+import { useState, useEffect } from 'react'
+import { number, string, array, func, shape, instanceOf, oneOfType } from 'prop-types'
 
-const LazyRender = ({ batch, items, setItems, rootMargin = '100%' }) => {
-  const [renderLimit, setRenderLimit] = useState(0)
+const LazyRender = ({ items, batch, targetRef, rootMargin = '100%', children }) => {
+  const [renderLimit, setRenderLimit] = useState(batch)
+  const [renderedItems, setRenderedItems] = useState([])
 
-  const targetRef = useRef()
+  useEffect(() => {
+    setRenderedItems(items.slice(0, renderLimit).map(children))
+  }, [items, renderLimit])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([{ isIntersecting }]) => {
-        if (renderLimit >= items.length) return observer.unobserve(targetRef.current)
-        if (isIntersecting) setRenderLimit(renderLimit + batch)
+        if (isIntersecting && renderLimit < items.length) setRenderLimit(Math.min(renderLimit + batch, items.length))
       },
       { rootMargin }
     )
 
     observer.observe(targetRef.current)
 
-    setItems(items.slice(0, renderLimit))
-
     return () => observer.disconnect()
-  }, [items, batch, renderLimit, setItems])
+  }, [items, batch, renderLimit])
 
-  useEffect(() => {
-    setItems(items.slice(0, batch))
-    setRenderLimit(batch)
-  }, [items]) // eslint-disable-line
-
-  return <div ref={targetRef}></div>
+  return renderedItems
 }
 
 LazyRender.propTypes = {
-  batch: number.isRequired,
   items: array.isRequired,
-  setItems: func.isRequired,
-  rootMargin: string
+  batch: number.isRequired,
+  targetRef: oneOfType([func, shape({ current: instanceOf(Element) })]),
+  rootMargin: string,
+  children: func.isRequired
 }
 
 export default LazyRender

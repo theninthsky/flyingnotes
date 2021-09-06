@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 
 import { ws } from 'websocket-connection'
@@ -20,7 +20,8 @@ const Notes = () => {
   const categories = useRecoilValue(categoriesSelector)
 
   const [filteredNotes, setFilteredNotes] = useState(notes)
-  const [renderedNotes, setRenderedNotes] = useState(filteredNotes.slice(0, RENDER_BATCH))
+
+  const targetRef = useRef()
 
   useEffect(() => {
     setFilteredNotes(notes)
@@ -83,23 +84,25 @@ const Notes = () => {
       <div className={style.wrapper}>
         <Note variant="note" empty onCreate={createNote} />
 
-        {renderedNotes.map(({ _id, pinned, category, title, content, date }) => (
-          <Note
-            key={_id}
-            variant="note"
-            _id={_id}
-            pinned={pinned}
-            category={category}
-            title={title}
-            content={content}
-            date={date}
-            onUpdatePin={updatePin}
-            onUpdate={updateNote}
-            onDelete={deleteNote}
-          />
-        ))}
+        <LazyRender items={filteredNotes} batch={RENDER_BATCH} targetRef={targetRef}>
+          {({ _id, pinned, category, title, content, date }) => (
+            <Note
+              key={_id}
+              variant="note"
+              _id={_id}
+              pinned={pinned}
+              category={category}
+              title={title}
+              content={content}
+              date={date}
+              onUpdatePin={updatePin}
+              onUpdate={updateNote}
+              onDelete={deleteNote}
+            />
+          )}
+        </LazyRender>
 
-        <LazyRender batch={RENDER_BATCH} items={filteredNotes} setItems={setRenderedNotes} />
+        <div ref={targetRef}></div>
       </div>
     </>
   )

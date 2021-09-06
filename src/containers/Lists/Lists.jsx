@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 
 import { ws } from 'websocket-connection'
@@ -17,7 +17,7 @@ const Lists = () => {
   const userLoggedIn = useRecoilValue(userLoggedInSelector)
   const setLists = useSetRecoilState(listsSelector)
 
-  const [renderedLists, setRenderedLists] = useState(lists.slice(0, RENDER_BATCH))
+  const targetRef = useRef()
 
   const createList = async list => {
     const savedList = userLoggedIn
@@ -76,23 +76,25 @@ const Lists = () => {
     <div className={style.wrapper}>
       <Note variant="list" empty list items={[{ value: '', checked: false }]} onCreate={createList} />
 
-      {renderedLists.map(({ _id, pinned, title, items, date }) => (
-        <Note
-          key={_id}
-          variant="list"
-          _id={_id}
-          pinned={pinned}
-          title={title}
-          items={items}
-          date={date}
-          onUpdatePin={updatePin}
-          onCheckItem={checkItem}
-          onUpdate={updateList}
-          onDelete={deleteList}
-        />
-      ))}
+      <LazyRender items={lists} batch={RENDER_BATCH} targetRef={targetRef}>
+        {({ _id, pinned, title, items, date }) => (
+          <Note
+            key={_id}
+            variant="list"
+            _id={_id}
+            pinned={pinned}
+            title={title}
+            items={items}
+            date={date}
+            onUpdatePin={updatePin}
+            onCheckItem={checkItem}
+            onUpdate={updateList}
+            onDelete={deleteList}
+          />
+        )}
+      </LazyRender>
 
-      <LazyRender batch={RENDER_BATCH} items={lists} setItems={setRenderedLists} />
+      <div ref={targetRef}></div>
     </div>
   )
 }
