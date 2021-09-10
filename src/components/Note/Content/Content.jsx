@@ -129,9 +129,10 @@ const Content = ({ id, variant, empty, changed, content, items, setContent, setI
           className={style.content}
           dir="auto"
           value={content}
-          maxRows={expanded ? undefined : MAX_INITIAL_ROWS}
           aria-label="content"
           required
+          maxRows={expanded ? undefined : MAX_INITIAL_ROWS}
+          cacheMeasurements
           onChange={event => setContent(event.target.value)}
           onHeightChange={setRowsHeight}
         />
