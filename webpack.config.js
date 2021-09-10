@@ -40,11 +40,12 @@ module.exports = (_, { mode }) => {
       historyApiFallback: true,
       port: 3000,
       open: true,
+      hot: false,
       devMiddleware: { stats: 'errors-warnings' }
     },
     devtool: development ? 'source-map' : undefined,
     resolve: {
-      modules: ['src', 'node_modules'],
+      modules: [path.resolve(__dirname, 'src'), 'node_modules'],
       extensions: ['*', '.js', '.jsx']
     },
     module: {
