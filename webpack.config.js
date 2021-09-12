@@ -41,7 +41,7 @@ const cdn = {
 module.exports = (_, { mode }) => {
   const development = mode === 'development'
   const production = mode === 'production'
-  const { react, reactDOM, reactRouterDOM, recoil, pwaCompat } = cdn
+  const { react, reactDOM, reactRouterDOM, pwaCompat } = cdn
 
   return {
     devServer: {
