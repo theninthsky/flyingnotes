@@ -1,10 +1,18 @@
-.alert {
+@import 'styles/variables';
+
+.wrapper {
   z-index: 2;
-  position: sticky;
-  top: 0;
-  width: 100%;
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  width: 275px;
   max-height: 48px;
-  padding: 15px 0;
+  margin: 0 auto;
+  padding: 15px;
+  border-radius: 4px;
   overflow: hidden;
   text-align: center;
   color: #f0f6fc;
@@ -12,14 +20,35 @@
   user-select: none;
   animation: showUpdateAlert 0.5s linear;
 
-  &:hover {
-    color: #787878;
-  }
-
   @keyframes showUpdateAlert {
     from {
-      max-height: 0;
-      padding: 0;
+      opacity: 0;
     }
+  }
+
+  @media ($viewport-7) {
+    left: unset;
+    right: 20px;
+  }
+}
+
+.updateDownloaded {
+  width: 22px;
+}
+
+.desc {
+  margin: 0;
+  margin-left: 10px;
+}
+
+.refresh {
+  margin-left: 10px;
+  border: none;
+  color: dodgerblue;
+  background-color: transparent;
+  cursor: pointer;
+
+  &:hover {
+    color: lightblue;
   }
 }

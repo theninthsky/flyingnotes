@@ -1,11 +1,18 @@
 import { any, func } from 'prop-types'
 
 import style from './UpdateAlert.scss'
+import UpdateDownloadedIcon from 'images/update-downloaded.svg'
 
-const UpdateAlert = ({ children, onClick }) => {
+const UpdateAlert = ({ onClick }) => {
   return (
-    <div className={style.alert} onClick={onClick}>
-      {children}
+    <div className={style.wrapper}>
+      <UpdateDownloadedIcon className={style.updateDownloaded} />
+
+      <p className={style.desc}>An update is available.</p>
+
+      <button className={style.refresh} onClick={onClick}>
+        REFRESH
+      </button>
     </div>
   )
 }

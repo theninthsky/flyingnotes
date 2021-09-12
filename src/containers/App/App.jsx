@@ -8,7 +8,6 @@ import { If, useViewport } from '@theninthsky/react-essentials'
 
 import { authVisibleState } from './atoms'
 import { userLoggedInSelector } from './selectors'
-import { UPDATE_MESSAGE } from './constants'
 import Notes from 'containers/Notes'
 import Lists from 'containers/Lists'
 import NavigationBar from 'components/NavigationBar'
@@ -79,7 +78,7 @@ const App = () => {
   return (
     <>
       <If condition={window.matchMedia('(display-mode: standalone)').matches && registrationWaiting}>
-        <UpdateAlert onClick={replaceSW}>{UPDATE_MESSAGE}</UpdateAlert>
+        <UpdateAlert onClick={replaceSW} />
       </If>
 
       <NavigationBar />
