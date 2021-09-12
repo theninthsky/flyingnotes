@@ -15,10 +15,9 @@
 
     <div id="root"></div>
 
-    <script src="<%= htmlWebpackPlugin.options.react %>" integrity="<%= htmlWebpackPlugin.options.reactIntegrity %>" crossorigin="anonymous"></script>
-    <script src="<%= htmlWebpackPlugin.options.reactDOM %>" integrity="<%= htmlWebpackPlugin.options.reactDOMIntegrity %>" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/react-router-dom@5.3.0/umd/react-router-dom.min.js" integrity="sha384-VmS7yrSB7tSR+cbeXvcJNJ0nE48GZti0Bl3Y/i/Us/AZSfxogYrnopHE7vfB2T/w" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/recoil@0.4.1/umd/recoil.min.js" integrity="sha384-3JpDHE5RiSZmSuj2m8oXe/rV6UPWo+4Iwx7dqoEYjzEI5We9QRfKuYABJab4h2lK" crossorigin="anonymous"></script>
-    <script async src="https://unpkg.com/pwacompat@2.0.17/pwacompat.min.js" integrity="sha384-Rli908ex+eSk6Xo0v7OWhTha8ooKKFI2XDTQMLlU3yp5VrrY3+K6DmULV2FWtYbM" crossorigin="anonymous"></script>
+    <script src="<%= htmlWebpackPlugin.options.react.url %>" integrity="<%= htmlWebpackPlugin.options.react.integrity %>" crossorigin="anonymous"></script>
+    <script src="<%= htmlWebpackPlugin.options.reactDOM.url %>" integrity="<%= htmlWebpackPlugin.options.reactDOM.integrity %>" crossorigin="anonymous"></script>
+    <script src="<%= htmlWebpackPlugin.options.reactRouterDOM.url %>" integrity="<%= htmlWebpackPlugin.options.reactRouterDOM.integrity %>" crossorigin="anonymous"></script>
+    <script async src="<%= htmlWebpackPlugin.options.pwaCompat.url %>" integrity="<%= htmlWebpackPlugin.options.pwaCompat.integrity %>" crossorigin="anonymous"></script>
   </body>
 </html>

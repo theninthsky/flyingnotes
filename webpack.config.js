@@ -27,13 +27,21 @@ const cdn = {
       url: 'https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js',
       integrity: 'sha384-vj2XpC1SOa8PHrb0YlBqKN7CQzJYO72jz4CkDQ+ePL1pwOV4+dn05rPrbLGUuvCv'
     }
+  },
+  reactRouterDOM: {
+    url: 'https://unpkg.com/react-router-dom@5.3.0/umd/react-router-dom.min.js',
+    integrity: 'sha384-VmS7yrSB7tSR+cbeXvcJNJ0nE48GZti0Bl3Y/i/Us/AZSfxogYrnopHE7vfB2T/w'
+  },
+  pwaCompat: {
+    url: 'https://unpkg.com/pwacompat@2.0.17/pwacompat.min.js',
+    integrity: 'sha384-Rli908ex+eSk6Xo0v7OWhTha8ooKKFI2XDTQMLlU3yp5VrrY3+K6DmULV2FWtYbM'
   }
 }
 
 module.exports = (_, { mode }) => {
   const development = mode === 'development'
   const production = mode === 'production'
-  const { react, reactDOM } = cdn
+  const { react, reactDOM, reactRouterDOM, recoil, pwaCompat } = cdn
 
   return {
     devServer: {
@@ -111,8 +119,7 @@ module.exports = (_, { mode }) => {
     externals: {
       react: 'React',
       'react-dom': 'ReactDOM',
-      'react-router-dom': 'ReactRouterDOM',
-      recoil: 'Recoil'
+      'react-router-dom': 'ReactRouterDOM'
     },
     plugins: [
       new EnvironmentPlugin({
@@ -123,10 +130,10 @@ module.exports = (_, { mode }) => {
       new ESLintPlugin(),
       new HtmlPlugin({
         template: 'public/index.html',
-        react: react[mode].url,
-        reactIntegrity: react[mode].integrity,
-        reactDOM: reactDOM[mode].url,
-        reactDOMIntegrity: reactDOM[mode].integrity
+        react: react[mode],
+        reactDOM: reactDOM[mode],
+        reactRouterDOM,
+        pwaCompat
       }),
       new CopyPlugin({
         patterns: [
