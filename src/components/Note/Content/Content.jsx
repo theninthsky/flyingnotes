@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react'
 import useClickOutside from 'use-click-outside'
 import TextareaAutosize from 'react-textarea-autosize'
-import { If } from '@theninthsky/react-essentials'
+import { If } from 'frontend-essentials'
 import cx from 'clsx'
 
 import style from './Content.scss'

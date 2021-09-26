@@ -4,7 +4,7 @@ import { useRecoilValue } from 'recoil'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { useSwipeable } from 'react-swipeable'
 import { Helmet } from 'react-helmet'
-import { If, useViewport } from '@theninthsky/react-essentials'
+import { If, useViewport } from 'frontend-essentials'
 
 import { authVisibleState } from './atoms'
 import { userLoggedInSelector } from './selectors'

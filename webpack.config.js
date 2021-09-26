@@ -48,7 +48,6 @@ module.exports = (_, { mode }) => {
       historyApiFallback: true,
       port: 3000,
       open: true,
-      hot: false,
       devMiddleware: { stats: 'errors-warnings' }
     },
     devtool: development ? 'source-map' : undefined,

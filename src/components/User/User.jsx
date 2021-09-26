@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useRecoilState, useSetRecoilState, useResetRecoilState } from 'recoil'
-import { If, useAxios } from '@theninthsky/react-essentials'
+import { If, useAxios } from 'frontend-essentials'
 import cx from 'clsx'
 
 import { authVisibleState } from 'containers/App/atoms'
@@ -39,7 +39,12 @@ const User = () => {
     url: `${SERVER_URL}/change-password`,
     method: 'put'
   })
-  const { loading: logoutLoading, status: logoutStatus, error: logoutError, activate: activateLogout } = useAxios({
+  const {
+    loading: logoutLoading,
+    status: logoutStatus,
+    error: logoutError,
+    activate: activateLogout
+  } = useAxios({
     suspense: true,
     url: `${SERVER_URL}/logout`,
     method: 'post'

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useSetRecoilState, useResetRecoilState } from 'recoil'
-import { If, useAxios } from '@theninthsky/react-essentials'
+import { If, useAxios } from 'frontend-essentials'
 import cx from 'clsx'
 
 import { authVisibleState } from 'containers/App/atoms'
