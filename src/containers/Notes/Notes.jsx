@@ -1,11 +1,9 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
-import { LazyRender } from 'frontend-essentials'
 
 import { ws } from 'websocket-connection'
 import { userLoggedInSelector } from 'containers/App/selectors'
 import { notesSelector, categoriesSelector } from './selectors'
-import { RENDER_BATCH } from './constants'
 import useGetNotes from 'hooks/useGetNotes'
 import Filters from 'components/Filters'
 import Note from 'components/Note'
@@ -20,8 +18,6 @@ const Notes = () => {
   const categories = useRecoilValue(categoriesSelector)
 
   const [filteredNotes, setFilteredNotes] = useState(notes)
-
-  const targetRef = useRef()
 
   useEffect(() => {
     setFilteredNotes(notes)
@@ -84,25 +80,21 @@ const Notes = () => {
       <div className={style.wrapper}>
         <Note variant="note" empty onCreate={createNote} />
 
-        <LazyRender items={filteredNotes} batch={RENDER_BATCH} targetRef={targetRef}>
-          {({ _id, pinned, category, title, content, date }) => (
-            <Note
-              key={_id}
-              variant="note"
-              _id={_id}
-              pinned={pinned}
-              category={category}
-              title={title}
-              content={content}
-              date={date}
-              onUpdatePin={updatePin}
-              onUpdate={updateNote}
-              onDelete={deleteNote}
-            />
-          )}
-        </LazyRender>
-
-        <div ref={targetRef}></div>
+        {filteredNotes.map(({ _id, pinned, category, title, content, date }) => (
+          <Note
+            key={_id}
+            variant="note"
+            _id={_id}
+            pinned={pinned}
+            category={category}
+            title={title}
+            content={content}
+            date={date}
+            onUpdatePin={updatePin}
+            onUpdate={updateNote}
+            onDelete={deleteNote}
+          />
+        ))}
       </div>
     </>
   )

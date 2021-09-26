@@ -44,6 +44,10 @@ select {
 }
 
 :global {
+  .invisible {
+    visibility: hidden;
+  }
+
   .d-none {
     display: none;
   }
