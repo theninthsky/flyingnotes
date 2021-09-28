@@ -42,7 +42,7 @@ const Note = ({
   const [confirmMessageVisible, setConfirmMessageVisible] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const [inViewRef, intersected] = useInView({ rootMargin: '100px', triggerOnce: true })
+  const [inViewRef, intersected] = useInView({ rootMargin: '150px', triggerOnce: true })
   const ref = useRef()
 
   useEffect(() => {

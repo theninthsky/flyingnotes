@@ -34,6 +34,7 @@
   color: inherit;
   background-color: inherit;
   transition: height 0.2s, max-height 1s;
+  will-change: height;
 }
 
 .listContent {
