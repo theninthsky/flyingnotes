@@ -6,6 +6,7 @@ import { ErrorBoundary } from 'react-error-boundary'
 
 import App from 'containers/App'
 import 'service-worker-registration'
+import 'normalize.css'
 import 'styles/_globals.scss'
 
 ReactDOM.render(
