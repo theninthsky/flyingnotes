@@ -26,30 +26,23 @@ const Auth = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const { loading, error, data, activate } = useAxios({
-    suspense: true,
-    method: 'post'
-  })
+  const {
+    loading: loadingLogin,
+    error: errorLogin,
+    activate: activateLogin
+  } = useAxios({ suspense: true, url: `${SERVER_URL}/login`, method: 'post' })
+
+  const {
+    loading: loadingSignup,
+    error: errorSignup,
+    activate: activateSignup
+  } = useAxios({ suspense: true, url: `${SERVER_URL}/register`, method: 'post' })
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
 
     return () => (document.body.style.overflow = 'visible')
   }, [])
-
-  useEffect(() => {
-    if (error || !data) return
-
-    const { name, notes, lists, token } = data
-
-    if (action === SIGN_UP) localStorage.clear()
-    if (safari) localStorage.setItem('token', token)
-
-    setUser({ name })
-    setNotes(notes)
-    setLists(lists)
-    resetAuthVisible()
-  }, [error, data])
 
   const actionChangedHandler = event => {
     setAction(event.target.textContent)
@@ -60,18 +53,37 @@ const Auth = () => {
   const submitFormHandler = event => {
     event.preventDefault()
 
-    const url = action === LOG_IN ? `${SERVER_URL}/login` : `${SERVER_URL}/register`
     const localNotes = localStorage.notes ? JSON.parse(localStorage.notes) : []
     const localLists = localStorage.lists ? JSON.parse(localStorage.lists) : []
-    const data = {
+    const payload = {
       name: name.trim(),
       email,
       password,
       ...(action === SIGN_UP ? { notes: localNotes, lists: localLists } : {})
     }
 
-    activate({ url, data })
+    if (action === LOG_IN) {
+      return activateLogin({ data: payload }, ({ data: { name, notes, lists } }) => {
+        setUser({ name })
+        setNotes(notes)
+        setLists(lists)
+        resetAuthVisible()
+      })
+    }
+
+    activateSignup({ data: payload }, ({ data: { name, notes, lists, token } }) => {
+      localStorage.clear()
+      if (safari) localStorage.setItem('token', token)
+
+      setUser({ name })
+      setNotes(notes)
+      setLists(lists)
+      resetAuthVisible()
+    })
   }
+
+  const loading = loadingLogin || loadingSignup
+  const error = errorLogin || errorSignup
 
   return (
     <>
@@ -92,7 +104,7 @@ const Auth = () => {
 
         <form onSubmit={submitFormHandler}>
           <If condition={error}>
-            <p className={style.error}>{error}</p>
+            <p className={style.error}>{error?.response.data.err}</p>
           </If>
 
           {action === SIGN_UP ? (

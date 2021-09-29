@@ -30,27 +30,16 @@ const User = () => {
   const [newPassword, setNewPassword] = useState()
 
   const {
-    loading: changePasswordLoading,
-    status: changePasswordStatus,
-    error: changePasswordError,
+    loading: loadingChangePassword,
+    error: errorChangePassword,
     activate: activateChangePassword
-  } = useAxios({
-    suspense: true,
-    url: `${SERVER_URL}/change-password`,
-    method: 'put'
-  })
-  const {
-    loading: logoutLoading,
-    status: logoutStatus,
-    error: logoutError,
-    activate: activateLogout
-  } = useAxios({
-    suspense: true,
-    url: `${SERVER_URL}/logout`,
-    method: 'post'
-  })
+  } = useAxios({ suspense: true, url: `${SERVER_URL}/change-password`, method: 'put' })
 
-  const loading = changePasswordLoading || logoutLoading
+  const {
+    loading: loadingLogout,
+    error: errorLogout,
+    activate: activateLogout
+  } = useAxios({ suspense: true, url: `${SERVER_URL}/logout`, method: 'post' })
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -58,35 +47,33 @@ const User = () => {
     return () => (document.body.style.overflow = 'visible')
   }, [])
 
-  useEffect(() => {
-    if (changePasswordStatus === 200) resetAuthVisible()
-  }, [changePasswordStatus])
-
-  useEffect(() => {
-    if (logoutStatus !== 204) return
-
-    localStorage.removeItem('userNotes')
-    localStorage.removeItem('userLists')
-    localStorage.removeItem('token')
-
-    setNotes(JSON.parse(localStorage.notes || '[]'))
-    setLists(JSON.parse(localStorage.lists || '[]'))
-    resetFiles()
-
-    ws.close()
-    ws.destroy()
-
-    setTimeout(() => {
-      setUser({ name: null })
-      resetAuthVisible()
-    })
-  }, [logoutStatus])
-
-  const changePassword = async event => {
+  const onChangePassword = async event => {
     event.preventDefault()
 
-    activateChangePassword({ data: { password, newPassword } })
+    activateChangePassword({ data: { password, newPassword } }, resetAuthVisible)
   }
+
+  const onLogout = () => {
+    activateLogout({}, () => {
+      localStorage.removeItem('userNotes')
+      localStorage.removeItem('userLists')
+      localStorage.removeItem('token')
+
+      setNotes(JSON.parse(localStorage.notes || '[]'))
+      setLists(JSON.parse(localStorage.lists || '[]'))
+      resetFiles()
+
+      ws.close()
+      ws.destroy()
+
+      setTimeout(() => {
+        setUser({ name: null })
+        resetAuthVisible()
+      })
+    })
+  }
+
+  const loading = loadingChangePassword || loadingLogout
 
   return (
     <>
@@ -105,12 +92,12 @@ const User = () => {
           }}
         />
 
-        <If condition={logoutError || changePasswordError}>
-          <p className={cx('text-align-center', 'red')}>{logoutError ? 'Failed to logout' : 'Incorrect password'}</p>
+        <If condition={errorLogout || errorChangePassword}>
+          <p className={cx('text-align-center', 'red')}>{errorLogout ? 'Failed to logout' : 'Incorrect password'}</p>
         </If>
 
         {changePasswordMode ? (
-          <form onSubmit={changePassword}>
+          <form onSubmit={onChangePassword}>
             <input
               className={style.field}
               type="password"
@@ -138,7 +125,7 @@ const User = () => {
               Change Password
             </button>
 
-            <input className={style.submit} type="submit" value={LOGOUT} disabled={loading} onClick={activateLogout} />
+            <input className={style.submit} type="submit" value={LOGOUT} disabled={loading} onClick={onLogout} />
           </>
         )}
       </div>
