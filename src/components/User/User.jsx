@@ -50,26 +50,28 @@ const User = () => {
   const onChangePassword = async event => {
     event.preventDefault()
 
-    activateChangePassword({ data: { password, newPassword } }, resetAuthVisible)
+    activateChangePassword({ data: { password, newPassword }, onSuccess: resetAuthVisible })
   }
 
   const onLogout = () => {
-    activateLogout({}, () => {
-      localStorage.removeItem('userNotes')
-      localStorage.removeItem('userLists')
-      localStorage.removeItem('token')
+    activateLogout({
+      onSuccess: () => {
+        localStorage.removeItem('userNotes')
+        localStorage.removeItem('userLists')
+        localStorage.removeItem('token')
 
-      setNotes(JSON.parse(localStorage.notes || '[]'))
-      setLists(JSON.parse(localStorage.lists || '[]'))
-      resetFiles()
+        setNotes(JSON.parse(localStorage.notes || '[]'))
+        setLists(JSON.parse(localStorage.lists || '[]'))
+        resetFiles()
 
-      ws.close()
-      ws.destroy()
+        ws.close()
+        ws.destroy()
 
-      setTimeout(() => {
-        setUser({ name: null })
-        resetAuthVisible()
-      })
+        setTimeout(() => {
+          setUser({ name: null })
+          resetAuthVisible()
+        })
+      }
     })
   }
 

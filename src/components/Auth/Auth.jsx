@@ -63,22 +63,28 @@ const Auth = () => {
     }
 
     if (action === LOG_IN) {
-      return activateLogin({ data: payload }, ({ data: { name, notes, lists } }) => {
+      return activateLogin({
+        data: payload,
+        onSuccess: ({ data: { name, notes, lists } }) => {
+          setUser({ name })
+          setNotes(notes)
+          setLists(lists)
+          resetAuthVisible()
+        }
+      })
+    }
+
+    activateSignup({
+      data: payload,
+      onSuccess: ({ data: { name, notes, lists, token } }) => {
+        localStorage.clear()
+        if (safari) localStorage.setItem('token', token)
+
         setUser({ name })
         setNotes(notes)
         setLists(lists)
         resetAuthVisible()
-      })
-    }
-
-    activateSignup({ data: payload }, ({ data: { name, notes, lists, token } }) => {
-      localStorage.clear()
-      if (safari) localStorage.setItem('token', token)
-
-      setUser({ name })
-      setNotes(notes)
-      setLists(lists)
-      resetAuthVisible()
+      }
     })
   }
 
