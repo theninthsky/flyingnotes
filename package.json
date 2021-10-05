@@ -10,7 +10,7 @@
   "dependencies": {
     "@babel/runtime": "^7.15.4",
     "clsx": "^1.1.1",
-    "frontend-essentials": "^1.1.0",
+    "frontend-essentials": "^1.2.0",
     "normalize.css": "^8.0.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
@@ -23,7 +23,6 @@
     "react-textarea-autosize": "^8.3.3",
     "react-transition-group": "^4.4.2",
     "recoil": "^0.4.1",
-    "reconnecting-websocket": "^4.4.0",
     "use-click-outside": "^2.0.0",
     "workbox-core": "^6.3.0",
     "workbox-precaching": "^6.3.0"
@@ -54,7 +53,7 @@
     "sass": "^1.42.1",
     "sass-loader": "^12.1.0",
     "serve": "^12.0.1",
-    "webpack": "^5.55.1",
+    "webpack": "^5.56.0",
     "webpack-cli": "^4.8.0",
     "webpack-dev-server": "^4.3.0",
     "workbox-webpack-plugin": "^6.3.0"

@@ -29,14 +29,14 @@ const Auth = () => {
   const {
     loading: loadingLogin,
     error: errorLogin,
-    activate: activateLogin
-  } = useAxios({ suspense: true, url: `${SERVER_URL}/login`, method: 'post' })
+    activate: login
+  } = useAxios({ manual: true, url: `${SERVER_URL}/login`, method: 'post' })
 
   const {
     loading: loadingSignup,
     error: errorSignup,
-    activate: activateSignup
-  } = useAxios({ suspense: true, url: `${SERVER_URL}/register`, method: 'post' })
+    activate: signUp
+  } = useAxios({ manual: true, url: `${SERVER_URL}/register`, method: 'post' })
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -63,7 +63,7 @@ const Auth = () => {
     }
 
     if (action === LOG_IN) {
-      return activateLogin({
+      return login({
         data: payload,
         onSuccess: ({ data: { name, notes, lists } }) => {
           setUser({ name })
@@ -74,7 +74,7 @@ const Auth = () => {
       })
     }
 
-    activateSignup({
+    signUp({
       data: payload,
       onSuccess: ({ data: { name, notes, lists, token } }) => {
         localStorage.clear()

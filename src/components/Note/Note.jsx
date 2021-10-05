@@ -65,7 +65,7 @@ const Note = ({
     setItems([emptyItem])
   }
 
-  const updatePin = async event => {
+  const updatePin = event => {
     event.stopPropagation()
 
     onUpdatePin(_id, pinned)
@@ -96,11 +96,6 @@ const Note = ({
     setEditMode(false)
     setOptionsVisible(false)
     setLoading(false)
-  }
-
-  const deleteNote = async () => {
-    setLoading(true)
-    onDelete(_id)
   }
 
   const setRefs = useCallback(
@@ -180,7 +175,7 @@ const Note = ({
         />
 
         <If condition={optionsVisible}>
-          <Options onDelete={deleteNote} setConfirmMessage={setConfirmMessageVisible} />
+          <Options onDelete={() => onDelete(_id)} setConfirmMessage={setConfirmMessageVisible} />
         </If>
 
         {confirmMessageVisible ? (

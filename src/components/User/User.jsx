@@ -8,7 +8,6 @@ import { notesState } from 'containers/Notes/atoms'
 import { listsState } from 'containers/Lists/atoms'
 import { filesState } from 'containers/Files/atoms'
 import { userSelector } from 'containers/App/selectors'
-import { ws } from 'websocket-connection'
 import { LOGOUT } from './constants'
 import Backdrop from 'components/Backdrop'
 
@@ -32,14 +31,16 @@ const User = () => {
   const {
     loading: loadingChangePassword,
     error: errorChangePassword,
-    activate: activateChangePassword
-  } = useAxios({ suspense: true, url: `${SERVER_URL}/change-password`, method: 'put' })
+    activate: changePassword
+  } = useAxios({ manual: true, url: `${SERVER_URL}/change-password`, method: 'put' })
+
+  const { activate: updateUser } = useAxios({ manual: true, url: `${SERVER_URL}/user`, method: 'put' })
 
   const {
     loading: loadingLogout,
     error: errorLogout,
-    activate: activateLogout
-  } = useAxios({ suspense: true, url: `${SERVER_URL}/logout`, method: 'post' })
+    activate: logout
+  } = useAxios({ manual: true, url: `${SERVER_URL}/logout`, method: 'post' })
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -50,11 +51,11 @@ const User = () => {
   const onChangePassword = async event => {
     event.preventDefault()
 
-    activateChangePassword({ data: { password, newPassword }, onSuccess: resetAuthVisible })
+    changePassword({ data: { password, newPassword }, onSuccess: resetAuthVisible })
   }
 
   const onLogout = () => {
-    activateLogout({
+    logout({
       onSuccess: () => {
         localStorage.removeItem('userNotes')
         localStorage.removeItem('userLists')
@@ -63,9 +64,6 @@ const User = () => {
         setNotes(JSON.parse(localStorage.notes || '[]'))
         setLists(JSON.parse(localStorage.lists || '[]'))
         resetFiles()
-
-        ws.close()
-        ws.destroy()
 
         setTimeout(() => {
           setUser({ name: null })
@@ -88,8 +86,8 @@ const User = () => {
           className={style.name}
           value={name}
           onChange={event => setName(event.target.value)}
-          onBlur={async () => {
-            await ws.json({ type: 'updateUser', newName: name })
+          onBlur={() => {
+            updateUser({ data: { name } })
             setUser({ name })
           }}
         />

@@ -1,64 +1,86 @@
 import { useState, useEffect } from 'react'
-import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { useAxios } from 'frontend-essentials'
 
-import { ws } from 'websocket-connection'
 import { userLoggedInSelector } from 'containers/App/selectors'
 import { notesSelector, categoriesSelector } from './selectors'
-import useGetNotes from 'hooks/useGetNotes'
 import Filters from 'components/Filters'
 import Note from 'components/Note'
 
 import style from './Notes.scss'
 
-const Notes = () => {
-  const notes = useGetNotes()
+const { SERVER_URL } = process.env
 
+const Notes = () => {
   const userLoggedIn = useRecoilValue(userLoggedInSelector)
-  const setNotes = useSetRecoilState(notesSelector)
+  const [notes, setNotes] = useRecoilState(notesSelector)
   const categories = useRecoilValue(categoriesSelector)
 
   const [filteredNotes, setFilteredNotes] = useState(notes)
+
+  const { activate: getNotes } = useAxios({
+    url: `${SERVER_URL}/notes`,
+    method: 'get',
+    manual: true,
+    onSuccess: ({ data }) => setNotes(data)
+  })
+  const { activate: createNote } = useAxios({
+    url: `${SERVER_URL}/notes`,
+    method: 'post',
+    manual: true,
+    onSuccess: ({ data }) => setNotes(notes => [...notes, data])
+  })
+  const { activate: updatePin } = useAxios({
+    url: `${SERVER_URL}/note`,
+    method: 'patch',
+    manual: true,
+    onError: () => setNotes(notes)
+  })
+  const { activate: updateNote } = useAxios({
+    url: `${SERVER_URL}/note`,
+    method: 'put',
+    manual: true,
+    onSuccess: ({ data }) => setNotes(notes.map(note => (note._id === data._id ? data : note)))
+  })
+  const { activate: deleteNote } = useAxios({
+    url: `${SERVER_URL}/note`,
+    method: 'delete',
+    manual: true,
+    onError: () => setNotes(notes)
+  })
+
+  useEffect(() => {
+    if (userLoggedIn) getNotes()
+  }, [userLoggedIn])
 
   useEffect(() => {
     setFilteredNotes(notes)
   }, [notes])
 
-  const createNote = async note => {
-    const savedNote = userLoggedIn
-      ? (await ws.json({ type: 'createNote', newNote: note })).newNote
-      : { ...note, _id: Date.now().toString(), date: new Date().toISOString() }
+  const onCreateNote = note => {
+    if (userLoggedIn) return createNote({ data: note })
 
-    if (!savedNote) return
+    const localNote = { ...note, _id: Date.now().toString(), date: new Date().toISOString() }
 
-    setNotes([...notes, savedNote])
+    setNotes([...notes, localNote])
   }
 
-  const updatePin = async (noteID, pinned) => {
-    if (userLoggedIn) {
-      const { status } = await ws.json({ type: 'updateNotePin', noteID, pinned: !pinned })
-
-      if (status !== 'SUCCESS') return
-    }
+  const onUpdatePin = (noteID, pinned) => {
+    if (userLoggedIn) updatePin({ data: { noteID, pinned: !pinned } })
 
     setNotes(notes.map(note => (note._id === noteID ? { ...note, pinned: !pinned } : note)))
   }
 
-  const updateNote = async note => {
-    const { updatedNote } = userLoggedIn
-      ? await ws.json({ type: 'updateNote', updatedNote: note })
-      : { updatedNote: { ...note, date: new Date().toString() } }
+  const onUpdateNote = note => {
+    if (userLoggedIn) return updateNote({ data: note })
 
-    if (!updatedNote) return
+    const updatedLocalNote = { ...note, date: new Date().toString() }
 
-    setNotes(notes.map(note => (note._id === updatedNote._id ? updatedNote : note)))
+    setNotes(notes.map(note => (note._id === updatedLocalNote._id ? updatedLocalNote : note)))
   }
 
-  const deleteNote = async noteID => {
-    if (userLoggedIn) {
-      const { status } = await ws.json({ type: 'deleteNote', noteID })
-
-      if (status !== 'SUCCESS') return
-    }
+  const onDeleteNote = noteID => {
+    if (userLoggedIn) deleteNote({ data: { noteID } })
 
     setNotes(notes.filter(({ _id }) => _id !== noteID))
   }
@@ -78,7 +100,7 @@ const Notes = () => {
       />
 
       <div className={style.wrapper}>
-        <Note variant="note" empty onCreate={createNote} />
+        <Note variant="note" empty onCreate={onCreateNote} />
 
         {filteredNotes.map(({ _id, pinned, category, title, content, date }) => (
           <Note
@@ -90,9 +112,9 @@ const Notes = () => {
             title={title}
             content={content}
             date={date}
-            onUpdatePin={updatePin}
-            onUpdate={updateNote}
-            onDelete={deleteNote}
+            onUpdatePin={onUpdatePin}
+            onUpdate={onUpdateNote}
+            onDelete={onDeleteNote}
           />
         ))}
       </div>

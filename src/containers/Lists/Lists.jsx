@@ -1,75 +1,97 @@
-import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { useEffect } from 'react'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { useAxios } from 'frontend-essentials'
 
-import { ws } from 'websocket-connection'
 import { userLoggedInSelector } from 'containers/App/selectors'
 import { listsSelector } from './selectors'
-import useGetLists from 'hooks/useGetLists'
 import Note from 'components/Note'
 
 import style from './Lists.scss'
 
+const { SERVER_URL } = process.env
+
 const Lists = () => {
-  const lists = useGetLists()
-
   const userLoggedIn = useRecoilValue(userLoggedInSelector)
-  const setLists = useSetRecoilState(listsSelector)
+  const [lists, setLists] = useRecoilState(listsSelector)
 
-  const createList = async list => {
-    const savedList = userLoggedIn
-      ? (await ws.json({ type: 'createList', newList: list })).newList
-      : { ...list, _id: Date.now().toString(), date: new Date().toISOString() }
+  const { activate: getLists } = useAxios({
+    url: `${SERVER_URL}/lists`,
+    method: 'get',
+    manual: true,
+    onSuccess: ({ data }) => setLists(data)
+  })
+  const { activate: createList } = useAxios({
+    url: `${SERVER_URL}/lists`,
+    method: 'post',
+    manual: true,
+    onSuccess: ({ data }) => setLists(lists => [...lists, data])
+  })
+  const { activate: updatePin } = useAxios({
+    url: `${SERVER_URL}/list`,
+    method: 'patch',
+    manual: true,
+    onError: () => setLists(lists)
+  })
+  const { activate: checkItem } = useAxios({
+    url: `${SERVER_URL}/check-item`,
+    method: 'patch',
+    manual: true,
+    onError: () => setLists(lists)
+  })
+  const { activate: updateList } = useAxios({
+    url: `${SERVER_URL}/list`,
+    method: 'put',
+    manual: true,
+    onError: ({ data }) => setLists(lists.map(list => (list._id === data._id ? data : list)))
+  })
+  const { activate: deleteList } = useAxios({
+    url: `${SERVER_URL}/list`,
+    method: 'delete',
+    manual: true,
+    onError: () => setLists(lists)
+  })
 
-    if (!savedList) return
+  useEffect(() => {
+    if (userLoggedIn) getLists()
+  }, [userLoggedIn])
 
-    setLists([...lists, savedList])
+  const onCreateList = list => {
+    if (userLoggedIn) return createList({ data: list })
+
+    const localList = { ...list, _id: Date.now().toString(), date: new Date().toISOString() }
+
+    setLists([...lists, localList])
   }
 
-  const updatePin = async (listID, pinned) => {
-    if (userLoggedIn) {
-      const { status } = await ws.json({ type: 'updateListPin', listID, pinned: !pinned })
-
-      if (status !== 'SUCCESS') return
-    }
+  const onUpdatePin = (listID, pinned) => {
+    if (userLoggedIn) updatePin({ data: { listID, pinned: !pinned } })
 
     setLists(lists.map(list => (list._id === listID ? { ...list, pinned: !pinned } : list)))
   }
 
-  const checkItem = async (listID, index, item, updatedItems) => {
-    if (userLoggedIn) {
-      const { status } = await ws.json({ type: 'checkItem', listID, index, item })
+  const onCheckItem = (listID, index, item, updatedItems) => {
+    if (userLoggedIn) checkItem({ data: { listID, index, item } })
 
-      if (status !== 'SUCCESS') return
-    }
-
-    localStorage.setItem(
-      userLoggedIn ? 'userLists' : 'lists',
-      JSON.stringify(lists.map(list => (list._id === listID ? { ...list, items: updatedItems } : list)))
-    )
+    setLists(lists.map(list => (list._id === listID ? { ...list, items: updatedItems } : list)))
   }
 
-  const updateList = async list => {
-    const { updatedList } = userLoggedIn
-      ? await ws.json({ type: 'updateList', updatedList: list })
-      : { updatedList: { ...list, date: new Date().toISOString() } }
+  const onUpdateList = list => {
+    if (userLoggedIn) return updateList({ data: list })
 
-    if (!updatedList) return
+    const updatedLocalList = { ...list, date: new Date().toISOString() }
 
-    setLists(lists.map(list => (list._id === updatedList._id ? updatedList : list)))
+    setLists(lists.map(list => (list._id === updatedLocalList._id ? updatedLocalList : list)))
   }
 
-  const deleteList = async listID => {
-    if (userLoggedIn) {
-      const { status } = await ws.json({ type: 'deleteList', listID })
-
-      if (status !== 'SUCCESS') return
-    }
+  const onDeleteList = listID => {
+    if (userLoggedIn) deleteList({ data: { listID } })
 
     setLists(lists.filter(({ _id }) => _id !== listID))
   }
 
   return (
     <div className={style.wrapper}>
-      <Note variant="list" empty list items={[{ value: '', checked: false }]} onCreate={createList} />
+      <Note variant="list" empty list items={[{ value: '', checked: false }]} onCreate={onCreateList} />
 
       {lists.map(({ _id, pinned, title, items, date }) => (
         <Note
@@ -80,10 +102,10 @@ const Lists = () => {
           title={title}
           items={items}
           date={date}
-          onUpdatePin={updatePin}
-          onCheckItem={checkItem}
-          onUpdate={updateList}
-          onDelete={deleteList}
+          onUpdatePin={onUpdatePin}
+          onCheckItem={onCheckItem}
+          onUpdate={onUpdateList}
+          onDelete={onDeleteList}
         />
       ))}
     </div>

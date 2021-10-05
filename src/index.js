@@ -3,11 +3,14 @@ import ReactDOM from 'react-dom'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
 import { ErrorBoundary } from 'react-error-boundary'
+import { axios } from 'frontend-essentials'
 
 import App from 'containers/App'
 import 'service-worker-registration'
 import 'normalize.css'
 import 'styles/_globals.scss'
+
+axios.defaults.withCredentials = true
 
 ReactDOM.render(
   <RecoilRoot>
