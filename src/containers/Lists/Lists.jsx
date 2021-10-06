@@ -8,44 +8,42 @@ import Note from 'components/Note'
 
 import style from './Lists.scss'
 
-const { SERVER_URL } = process.env
-
 const Lists = () => {
   const userLoggedIn = useRecoilValue(userLoggedInSelector)
   const [lists, setLists] = useRecoilState(listsSelector)
 
   const { activate: getLists } = useAxios({
-    url: `${SERVER_URL}/lists`,
+    url: '/lists',
     method: 'get',
     manual: true,
     onSuccess: ({ data }) => setLists(data)
   })
   const { activate: createList } = useAxios({
-    url: `${SERVER_URL}/lists`,
+    url: '/lists',
     method: 'post',
     manual: true,
     onSuccess: ({ data }) => setLists(lists => [...lists, data])
   })
   const { activate: updatePin } = useAxios({
-    url: `${SERVER_URL}/list`,
+    url: '/list',
     method: 'patch',
     manual: true,
     onError: () => setLists(lists)
   })
   const { activate: checkItem } = useAxios({
-    url: `${SERVER_URL}/check-item`,
+    url: '/check-item',
     method: 'patch',
     manual: true,
     onError: () => setLists(lists)
   })
   const { activate: updateList } = useAxios({
-    url: `${SERVER_URL}/list`,
+    url: '/list',
     method: 'put',
     manual: true,
     onError: ({ data }) => setLists(lists.map(list => (list._id === data._id ? data : list)))
   })
   const { activate: deleteList } = useAxios({
-    url: `${SERVER_URL}/list`,
+    url: '/list',
     method: 'delete',
     manual: true,
     onError: () => setLists(lists)

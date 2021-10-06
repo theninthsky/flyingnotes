@@ -1,10 +1,10 @@
 import { useState, useRef } from 'react'
 import { bool, string, func } from 'prop-types'
 import useClickOutside from 'use-click-outside'
-import { If } from 'frontend-essentials'
+import { useAxios, If } from 'frontend-essentials'
 import cx from 'clsx'
 
-import { saveFile } from 'util/base64'
+import { toBase64, fromBase64, saveFile } from 'util/base64'
 import { MAX_FILESIZE_IN_MB } from './constants'
 
 import style from './File.scss'
@@ -12,26 +12,31 @@ import UploadIcon from 'images/upload.svg'
 import DownloadIcon from 'images/download.svg'
 import DeleteIcon from 'images/delete.svg'
 
-const File = ({
-  newFile,
-  _id: fileID,
-  name: fileName = '',
-  extension: fileExtension = '',
-  onUploadFile,
-  onDownloadFile,
-  onDeleteFile
-}) => {
+const File = ({ newFile, _id: fileID, name: fileName = '', extension: fileExtension = '', addFile, onDeleteFile }) => {
   const [name, setName] = useState(fileName)
   const [extension, setExtension] = useState(fileExtension)
   const [selectedFile, setSelectedFile] = useState()
   const [attachment, setAttachment] = useState()
-  const [loading, setLoading] = useState(false)
-  const [downloading, setDownloading] = useState(false)
   const [deleteIsVisible, setDeleteIsVisible] = useState(false)
 
   const fileRef = useRef()
 
   useClickOutside(fileRef, () => setDeleteIsVisible(false))
+
+  const { loading: loadingUpload, activate: uploadFile } = useAxios({
+    url: '/files',
+    method: 'post',
+    manual: true,
+    onSuccess: ({ data }) => {
+      addFile(data)
+      resetFile()
+    }
+  })
+  const { loading: loadingDownload, activate: downloadFile } = useAxios({
+    url: '/download',
+    method: 'post',
+    manual: true
+  })
 
   const resetFile = () => {
     setName('')
@@ -58,40 +63,37 @@ const File = ({
     }
   }
 
-  const uploadFile = async event => {
+  const onUploadFile = async event => {
     event.preventDefault()
 
     if (!name) return alert('File name is required')
 
-    setLoading(true)
-    await onUploadFile(selectedFile, name, extension)
-    resetFile()
-    setLoading(false)
+    const base64 = await toBase64(selectedFile)
+
+    uploadFile({ data: { name, extension, base64 } })
   }
 
-  const downloadFile = async () => {
+  const onDownloadFile = async () => {
     if (attachment) return saveFile(name, extension, attachment)
 
-    setDownloading(true)
+    downloadFile({
+      data: { fileID },
+      onSuccess: async ({ data: { base64 } }) => {
+        const fileAttachment = await fromBase64(name, base64)
 
-    const fileAttachment = await onDownloadFile(fileID, name, extension)
-
-    setAttachment(fileAttachment)
-    setDownloading(false)
-  }
-
-  const deleteFile = async () => {
-    setLoading(true)
-    onDeleteFile(fileID)
+        setAttachment(fileAttachment)
+        saveFile(name, extension, fileAttachment)
+      }
+    })
   }
 
   return (
     <form
-      className={cx(style.wrapper, { [style.disabled]: loading })}
+      className={cx(style.wrapper, { [style.disabled]: loadingUpload })}
       ref={fileRef}
       autoComplete="off"
       onClick={() => setDeleteIsVisible(true)}
-      onSubmit={uploadFile}
+      onSubmit={onUploadFile}
     >
       <input
         className={style.name}
@@ -108,7 +110,7 @@ const File = ({
           <DeleteIcon
             className={style.deleteIcon}
             onClick={() => {
-              if (window.confirm(`Delete ${name}.${extension}?`)) deleteFile()
+              if (window.confirm(`Delete ${name}.${extension}?`)) onDeleteFile(fileID)
             }}
           />
         ) : (
@@ -132,8 +134,8 @@ const File = ({
 
         <If condition={!newFile}>
           <DownloadIcon
-            className={cx(style.downloadIcon, { [style.downloading]: downloading })}
-            onClick={downloadFile}
+            className={cx(style.downloadIcon, { [style.downloading]: loadingDownload })}
+            onClick={onDownloadFile}
           />
         </If>
       </div>

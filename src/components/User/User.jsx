@@ -14,8 +14,6 @@ import Backdrop from 'components/Backdrop'
 import style from './User.scss'
 import UserLogoIcon from 'images/user-astronaut.svg'
 
-const { SERVER_URL } = process.env
-
 const User = () => {
   const [user, setUser] = useRecoilState(userSelector)
   const resetAuthVisible = useResetRecoilState(authVisibleState)
@@ -32,15 +30,15 @@ const User = () => {
     loading: loadingChangePassword,
     error: errorChangePassword,
     activate: changePassword
-  } = useAxios({ manual: true, url: `${SERVER_URL}/change-password`, method: 'put' })
+  } = useAxios({ url: '/change-password', method: 'put', manual: true })
 
-  const { activate: updateUser } = useAxios({ manual: true, url: `${SERVER_URL}/user`, method: 'put' })
+  const { activate: updateUser } = useAxios({ url: '/user', method: 'put', manual: true })
 
   const {
     loading: loadingLogout,
     error: errorLogout,
     activate: logout
-  } = useAxios({ manual: true, url: `${SERVER_URL}/logout`, method: 'post' })
+  } = useAxios({ url: '/logout', method: 'post', manual: true })
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'

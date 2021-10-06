@@ -9,8 +9,6 @@ import Note from 'components/Note'
 
 import style from './Notes.scss'
 
-const { SERVER_URL } = process.env
-
 const Notes = () => {
   const userLoggedIn = useRecoilValue(userLoggedInSelector)
   const [notes, setNotes] = useRecoilState(notesSelector)
@@ -19,31 +17,31 @@ const Notes = () => {
   const [filteredNotes, setFilteredNotes] = useState(notes)
 
   const { activate: getNotes } = useAxios({
-    url: `${SERVER_URL}/notes`,
+    url: '/notes',
     method: 'get',
     manual: true,
     onSuccess: ({ data }) => setNotes(data)
   })
   const { activate: createNote } = useAxios({
-    url: `${SERVER_URL}/notes`,
+    url: '/notes',
     method: 'post',
     manual: true,
     onSuccess: ({ data }) => setNotes(notes => [...notes, data])
   })
   const { activate: updatePin } = useAxios({
-    url: `${SERVER_URL}/note`,
+    url: '/note',
     method: 'patch',
     manual: true,
     onError: () => setNotes(notes)
   })
   const { activate: updateNote } = useAxios({
-    url: `${SERVER_URL}/note`,
+    url: '/note',
     method: 'put',
     manual: true,
     onSuccess: ({ data }) => setNotes(notes.map(note => (note._id === data._id ? data : note)))
   })
   const { activate: deleteNote } = useAxios({
-    url: `${SERVER_URL}/note`,
+    url: '/note',
     method: 'delete',
     manual: true,
     onError: () => setNotes(notes)

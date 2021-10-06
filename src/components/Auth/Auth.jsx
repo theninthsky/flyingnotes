@@ -13,8 +13,6 @@ import Backdrop from 'components/Backdrop'
 
 import style from './Auth.scss'
 
-const { SERVER_URL } = process.env
-
 const Auth = () => {
   const setUser = useSetRecoilState(userSelector)
   const resetAuthVisible = useResetRecoilState(authVisibleState)
@@ -30,13 +28,13 @@ const Auth = () => {
     loading: loadingLogin,
     error: errorLogin,
     activate: login
-  } = useAxios({ manual: true, url: `${SERVER_URL}/login`, method: 'post' })
+  } = useAxios({ url: '/login', method: 'post', manual: true })
 
   const {
     loading: loadingSignup,
     error: errorSignup,
     activate: signUp
-  } = useAxios({ manual: true, url: `${SERVER_URL}/register`, method: 'post' })
+  } = useAxios({ url: '/register', method: 'post', manual: true })
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
