@@ -74,7 +74,7 @@ module.exports = (_, { mode }) => {
         cacheGroups: {
           vendor: {
             test: /[\\/]node_modules[\\/]/,
-            name: module => module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1]
+            name: module => (module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/) || [])[1]
           }
         }
       },
