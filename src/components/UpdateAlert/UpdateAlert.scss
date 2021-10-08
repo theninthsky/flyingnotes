@@ -1,14 +1,15 @@
 @import 'styles/variables';
 
 .wrapper {
-  z-index: 2;
+  z-index: 3;
   position: fixed;
   bottom: 20px;
   left: 0;
   right: 0;
   display: flex;
   justify-content: center;
-  width: 275px;
+  align-items: center;
+  width: 285px;
   max-height: 48px;
   margin: 0 auto;
   padding: 15px;

@@ -70,6 +70,7 @@ module.exports = (_, { mode }) => {
       runtimeChunk: 'single',
       splitChunks: {
         chunks: 'all',
+        minSize: 10000,
         cacheGroups: {
           vendor: {
             test: /[\\/]node_modules[\\/]/,
@@ -80,10 +81,7 @@ module.exports = (_, { mode }) => {
       minimizer: ['...', new CssMinimizerPlugin()]
     },
     plugins: [
-      new EnvironmentPlugin({
-        SERVER_URL: 'http://localhost:5000',
-        WS_SERVER_URL: 'ws://localhost:5000'
-      }),
+      new EnvironmentPlugin({ SERVER_URL: 'http://localhost:5000' }),
       new MiniCssExtractPlugin({ filename: '[name].[contenthash].css' }),
       new ESLintPlugin(),
       new HtmlPlugin({ template: 'public/index.html' }),
