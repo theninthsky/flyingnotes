@@ -4,6 +4,7 @@ import useClickOutside from 'use-click-outside'
 import { useInView } from 'react-intersection-observer'
 import TextareaAutosize from 'react-textarea-autosize'
 import { If } from 'frontend-essentials'
+import isEqual from 'lodash/isEqual'
 import cx from 'clsx'
 
 import { CATEGORY, TITLE, SAVE, DELETE_MESSAGE } from './constants'
@@ -71,7 +72,7 @@ const Note = ({
     onUpdatePin(_id, pinned)
   }
 
-  const saveNote = async event => {
+  const saveNote = event => {
     event.preventDefault()
 
     const note = {
@@ -85,12 +86,12 @@ const Note = ({
     setLoading(true)
 
     if (empty) {
-      await onCreate(note)
+      onCreate(note)
       reset()
     } else {
       note._id = _id
 
-      await onUpdate(note)
+      onUpdate(note)
     }
 
     setEditMode(false)
@@ -106,17 +107,8 @@ const Note = ({
     [inViewRef]
   )
 
-  const originalItems = [...propsItems]
-    .sort((a, b) => a.value.localeCompare(b.value))
-    .map(({ value }) => value)
-    .toString()
-  const currentItems = [...items]
-    .sort((a, b) => a.value.localeCompare(b.value))
-    .map(({ value }) => value)
-    .toString()
-
   const changed =
-    category !== propsCategory || title !== propsTitle || content !== propsContent || originalItems !== currentItems
+    category !== propsCategory || title !== propsTitle || content !== propsContent || !isEqual(items, propsItems)
 
   return (
     <form

@@ -40,7 +40,7 @@ const Lists = () => {
     url: '/list',
     method: 'put',
     manual: true,
-    onError: ({ data }) => setLists(lists.map(list => (list._id === data._id ? data : list)))
+    onSuccess: ({ data }) => setLists(lists.map(list => (list._id === data._id ? data : list)))
   })
   const { activate: deleteList } = useAxios({
     url: '/list',
