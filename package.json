@@ -10,7 +10,7 @@
   "dependencies": {
     "@babel/runtime": "^7.15.4",
     "clsx": "^1.1.1",
-    "frontend-essentials": "^1.2.1",
+    "frontend-essentials": "^1.2.2",
     "normalize.css": "^8.0.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
