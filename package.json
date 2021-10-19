@@ -1,6 +1,9 @@
 {
   "name": "flyingnotes-client",
   "version": "1.0.0",
+  "engines": {
+    "node": "14.18.1"
+  },
   "scripts": {
     "start": "webpack serve --mode development",
     "serve": "serve build -p 3000",
