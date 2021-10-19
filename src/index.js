@@ -10,9 +10,7 @@ import 'service-worker-registration'
 import 'normalize.css'
 import 'styles/_globals.scss'
 
-const { SERVER_URL } = process.env
-
-axios.defaults.baseURL = SERVER_URL
+axios.defaults.baseURL = process.env.SERVER_URL
 axios.defaults.withCredentials = true
 
 ReactDOM.render(
