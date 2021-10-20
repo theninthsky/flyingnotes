@@ -11,5 +11,3 @@
 ## Environment Variables
 
 `SERVER_URL` (default: http://localhost:5000)
-
-`WS_SERVER_URL` (default: ws://localhost:5000)

@@ -40,12 +40,6 @@ const Notes = () => {
     manual: true,
     onSuccess: ({ data }) => setNotes(notes.map(note => (note._id === data._id ? data : note)))
   })
-  const { activate: deleteNote } = useAxios({
-    url: '/note',
-    method: 'delete',
-    manual: true,
-    onError: () => setNotes(notes)
-  })
 
   useEffect(() => {
     if (userLoggedIn) getNotes()
@@ -77,12 +71,6 @@ const Notes = () => {
     setNotes(notes.map(note => (note._id === updatedLocalNote._id ? updatedLocalNote : note)))
   }
 
-  const onDeleteNote = noteID => {
-    if (userLoggedIn) deleteNote({ data: { noteID } })
-
-    setNotes(notes.filter(({ _id }) => _id !== noteID))
-  }
-
   return (
     <>
       <Filters
@@ -90,9 +78,13 @@ const Notes = () => {
         onSelect={categoryFilter =>
           setFilteredNotes(notes.filter(({ category }) => (!categoryFilter ? true : category === categoryFilter)))
         }
-        onSearch={searchFilter =>
+        onSearch={(categoryFilter, searchTerm) =>
           setFilteredNotes(
-            notes.filter(({ title, content }) => `${title} ${content}`.toLowerCase().includes(searchFilter))
+            notes.filter(
+              ({ category, title, content }) =>
+                (!categoryFilter ? true : category === categoryFilter) &&
+                `${title} ${content}`.toLowerCase().includes(searchTerm.toLowerCase())
+            )
           )
         }
       />
@@ -112,7 +104,7 @@ const Notes = () => {
             date={date}
             onUpdatePin={onUpdatePin}
             onUpdate={onUpdateNote}
-            onDelete={onDeleteNote}
+            onDelete={noteID => setNotes(notes.filter(({ _id }) => _id !== noteID))}
           />
         ))}
       </div>

@@ -5,11 +5,20 @@ import style from './Filters.scss'
 import MagnifyingGlassIcon from 'images/magnifying-glass.svg'
 
 const Filters = ({ categories, onSelect, onSearch }) => {
-  const [searchFilter, setSearchFilter] = useState('')
+  const [category, setCategory] = useState()
+  const [searchTerm, setSearchTerm] = useState('')
 
   return (
     <div className={style.wrapper}>
-      <select className={style.category} title="Category" onChange={event => onSelect(event.target.value)}>
+      <select
+        className={style.category}
+        title="Category"
+        value={category}
+        onChange={event => {
+          setCategory(event.target.value)
+          onSelect(event.target.value)
+        }}
+      >
         <option defaultValue value="">
           ALL
         </option>
@@ -22,12 +31,12 @@ const Filters = ({ categories, onSelect, onSearch }) => {
         <input
           className={style.searchBox}
           type="search"
-          value={searchFilter}
+          value={searchTerm}
           placeholder="Search..."
           aria-label="search"
           onChange={event => {
-            setSearchFilter(event.target.value)
-            onSearch(event.target.value.toLowerCase())
+            setSearchTerm(event.target.value)
+            onSearch(category, event.target.value)
           }}
         />
 

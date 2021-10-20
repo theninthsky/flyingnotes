@@ -1,13 +1,15 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { useRecoilValue } from 'recoil'
 import { bool, string, func, shape, arrayOf, oneOf } from 'prop-types'
 import useClickOutside from 'use-click-outside'
 import { useInView } from 'react-intersection-observer'
 import TextareaAutosize from 'react-textarea-autosize'
-import { If } from 'frontend-essentials'
+import { If, useAxios } from 'frontend-essentials'
 import isEqual from 'lodash/isEqual'
 import cx from 'clsx'
 
 import { CATEGORY, TITLE, SAVE, DELETE_MESSAGE } from './constants'
+import { userLoggedInSelector } from 'containers/App/selectors'
 import Content from './Content'
 import Options from 'components/Options'
 
@@ -34,6 +36,8 @@ const Note = ({
   onCheckItem,
   onDelete
 }) => {
+  const userLoggedIn = useRecoilValue(userLoggedInSelector)
+
   const [category, setCategory] = useState(propsCategory)
   const [title, setTitle] = useState(propsTitle)
   const [content, setContent] = useState(propsContent)
@@ -42,9 +46,18 @@ const Note = ({
   const [optionsVisible, setOptionsVisible] = useState(false)
   const [confirmMessageVisible, setConfirmMessageVisible] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [deleted, setDeleted] = useState(false)
 
   const [inViewRef, intersected] = useInView({ rootMargin: '150px', triggerOnce: true })
   const ref = useRef()
+
+  const { activate: deleteNote } = useAxios({
+    method: 'delete',
+    data: { [variant === NOTE ? 'noteID' : 'listID']: _id },
+    manual: true,
+    onSuccess: () => onDelete(_id),
+    onError: () => setDeleted(false)
+  })
 
   useEffect(() => {
     setCategory(propsCategory)
@@ -70,6 +83,14 @@ const Note = ({
     event.stopPropagation()
 
     onUpdatePin(_id, pinned)
+  }
+
+  const onDeleteNote = () => {
+    setDeleted(true)
+
+    if (userLoggedIn) return deleteNote({ url: variant === NOTE ? '/note' : 'list' })
+
+    onDelete(_id)
   }
 
   const saveNote = event => {
@@ -109,6 +130,8 @@ const Note = ({
 
   const changed =
     category !== propsCategory || title !== propsTitle || content !== propsContent || !isEqual(items, propsItems)
+
+  if (deleted) return null
 
   return (
     <form
@@ -167,7 +190,7 @@ const Note = ({
         />
 
         <If condition={optionsVisible}>
-          <Options onDelete={() => onDelete(_id)} setConfirmMessage={setConfirmMessageVisible} />
+          <Options setConfirmMessage={setConfirmMessageVisible} onDelete={onDeleteNote} />
         </If>
 
         {confirmMessageVisible ? (
