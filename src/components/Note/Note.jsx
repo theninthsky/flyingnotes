@@ -1,8 +1,7 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRecoilValue } from 'recoil'
 import { bool, string, func, shape, arrayOf, oneOf } from 'prop-types'
 import useClickOutside from 'use-click-outside'
-import { useInView } from 'react-intersection-observer'
 import TextareaAutosize from 'react-textarea-autosize'
 import { If, useAxios } from 'frontend-essentials'
 import isEqual from 'lodash/isEqual'
@@ -48,7 +47,6 @@ const Note = ({
   const [loading, setLoading] = useState(false)
   const [deleted, setDeleted] = useState(false)
 
-  const [inViewRef, intersected] = useInView({ rootMargin: '150px', triggerOnce: true })
   const ref = useRef()
 
   const { activate: deleteNote } = useAxios({
@@ -120,14 +118,6 @@ const Note = ({
     setLoading(false)
   }
 
-  const setRefs = useCallback(
-    node => {
-      ref.current = node
-      inViewRef(node)
-    },
-    [inViewRef]
-  )
-
   const changed =
     category !== propsCategory || title !== propsTitle || content !== propsContent || !isEqual(items, propsItems)
 
@@ -135,8 +125,8 @@ const Note = ({
 
   return (
     <form
-      className={cx(style.wrapper, { [style.hidden]: !intersected, [style.disabled]: loading })}
-      ref={setRefs}
+      className={cx(style.wrapper, { [style.disabled]: loading })}
+      ref={ref}
       autoComplete="off"
       onClick={() => {
         if (!empty) setOptionsVisible(true)
@@ -147,67 +137,65 @@ const Note = ({
       }}
       onSubmit={saveNote}
     >
-      <If condition={intersected}>
-        <If condition={!empty}>
-          <PinIcon className={cx(style.pinIcon, { [style.pinned]: pinned })} onClick={updatePin} />
-        </If>
-
-        <If condition={variant === NOTE && (empty || category || editMode)}>
-          <input
-            className={style.category}
-            value={category}
-            dir="auto"
-            placeholder={CATEGORY}
-            aria-label="category"
-            onChange={event => setCategory(event.target.value.toUpperCase().slice(0, 24))}
-          />
-        </If>
-
-        <If condition={empty || title || editMode}>
-          <TextareaAutosize
-            className={style.title}
-            value={title}
-            dir="auto"
-            placeholder={TITLE}
-            aria-label="title"
-            onKeyPress={event => {
-              if (event.key === 'Enter') event.preventDefault()
-            }}
-            onChange={event => setTitle(event.target.value)}
-          />
-        </If>
-
-        <Content
-          id={_id}
-          variant={variant}
-          empty={empty}
-          content={content}
-          items={items}
-          keepExpanded={changed || editMode}
-          setContent={setContent}
-          setItems={setItems}
-          onCheckItem={onCheckItem}
-        />
-
-        <If condition={optionsVisible}>
-          <Options setConfirmMessage={setConfirmMessageVisible} onDelete={onDeleteNote} />
-        </If>
-
-        {confirmMessageVisible ? (
-          <div className={style.confirmMessage}>{DELETE_MESSAGE}</div>
-        ) : changed || empty ? (
-          <input
-            className={cx(style.save, { hidden: !changed && !empty })}
-            type="submit"
-            value={SAVE}
-            aria-label="save"
-          />
-        ) : (
-          <If condition={!empty}>
-            <div className={style.date}>{new Date(date).toLocaleString('en-GB').replace(',', '').slice(0, -3)}</div>
-          </If>
-        )}
+      <If condition={!empty}>
+        <PinIcon className={cx(style.pinIcon, { [style.pinned]: pinned })} onClick={updatePin} />
       </If>
+
+      <If condition={variant === NOTE && (empty || category || editMode)}>
+        <input
+          className={style.category}
+          value={category}
+          dir="auto"
+          placeholder={CATEGORY}
+          aria-label="category"
+          onChange={event => setCategory(event.target.value.toUpperCase().slice(0, 24))}
+        />
+      </If>
+
+      <If condition={empty || title || editMode}>
+        <TextareaAutosize
+          className={style.title}
+          value={title}
+          dir="auto"
+          placeholder={TITLE}
+          aria-label="title"
+          onKeyPress={event => {
+            if (event.key === 'Enter') event.preventDefault()
+          }}
+          onChange={event => setTitle(event.target.value)}
+        />
+      </If>
+
+      <Content
+        id={_id}
+        variant={variant}
+        empty={empty}
+        content={content}
+        items={items}
+        keepExpanded={changed || editMode}
+        setContent={setContent}
+        setItems={setItems}
+        onCheckItem={onCheckItem}
+      />
+
+      <If condition={optionsVisible}>
+        <Options setConfirmMessage={setConfirmMessageVisible} onDelete={onDeleteNote} />
+      </If>
+
+      {confirmMessageVisible ? (
+        <div className={style.confirmMessage}>{DELETE_MESSAGE}</div>
+      ) : changed || empty ? (
+        <input
+          className={cx(style.save, { hidden: !changed && !empty })}
+          type="submit"
+          value={SAVE}
+          aria-label="save"
+        />
+      ) : (
+        <If condition={!empty}>
+          <div className={style.date}>{new Date(date).toLocaleString('en-GB').replace(',', '').slice(0, -3)}</div>
+        </If>
+      )}
     </form>
   )
 }

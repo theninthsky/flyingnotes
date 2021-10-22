@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { useAxios } from 'frontend-essentials'
+import { LazyRender, useAxios, useViewport } from 'frontend-essentials'
 
 import { userLoggedInSelector } from 'containers/App/selectors'
 import { notesSelector, categoriesSelector } from './selectors'
@@ -15,6 +15,8 @@ const Notes = () => {
   const categories = useRecoilValue(categoriesSelector)
 
   const [filteredNotes, setFilteredNotes] = useState(notes)
+
+  const { viewport12 } = useViewport({ viewport12: '(min-width: 1200px)' })
 
   const { activate: getNotes } = useAxios({
     url: '/notes',
@@ -92,21 +94,23 @@ const Notes = () => {
       <div className={style.wrapper}>
         <Note variant="note" empty onCreate={onCreateNote} />
 
-        {filteredNotes.map(({ _id, pinned, category, title, content, date }) => (
-          <Note
-            key={_id}
-            variant="note"
-            _id={_id}
-            pinned={pinned}
-            category={category}
-            title={title}
-            content={content}
-            date={date}
-            onUpdatePin={onUpdatePin}
-            onUpdate={onUpdateNote}
-            onDelete={noteID => setNotes(notes.filter(({ _id }) => _id !== noteID))}
-          />
-        ))}
+        <LazyRender items={filteredNotes} batch={viewport12 ? 20 : 8} rootMargin="100%">
+          {({ _id, pinned, category, title, content, date }) => (
+            <Note
+              key={_id}
+              variant="note"
+              _id={_id}
+              pinned={pinned}
+              category={category}
+              title={title}
+              content={content}
+              date={date}
+              onUpdatePin={onUpdatePin}
+              onUpdate={onUpdateNote}
+              onDelete={noteID => setNotes(notes.filter(({ _id }) => _id !== noteID))}
+            />
+          )}
+        </LazyRender>
       </div>
     </>
   )

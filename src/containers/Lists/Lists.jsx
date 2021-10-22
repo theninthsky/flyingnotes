@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { useAxios } from 'frontend-essentials'
+import { LazyRender, useAxios, useViewport } from 'frontend-essentials'
 
 import { userLoggedInSelector } from 'containers/App/selectors'
 import { listsSelector } from './selectors'
@@ -11,6 +11,8 @@ import style from './Lists.scss'
 const Lists = () => {
   const userLoggedIn = useRecoilValue(userLoggedInSelector)
   const [lists, setLists] = useRecoilState(listsSelector)
+
+  const { viewport12 } = useViewport({ viewport12: '(min-width: 1200px)' })
 
   const { activate: getLists } = useAxios({
     url: '/lists',
@@ -91,21 +93,23 @@ const Lists = () => {
     <div className={style.wrapper}>
       <Note variant="list" empty list items={[{ value: '', checked: false }]} onCreate={onCreateList} />
 
-      {lists.map(({ _id, pinned, title, items, date }) => (
-        <Note
-          key={_id}
-          variant="list"
-          _id={_id}
-          pinned={pinned}
-          title={title}
-          items={items}
-          date={date}
-          onUpdatePin={onUpdatePin}
-          onCheckItem={onCheckItem}
-          onUpdate={onUpdateList}
-          onDelete={onDeleteList}
-        />
-      ))}
+      <LazyRender items={lists} batch={viewport12 ? 20 : 8} rootMargin="100%">
+        {({ _id, pinned, title, items, date }) => (
+          <Note
+            key={_id}
+            variant="list"
+            _id={_id}
+            pinned={pinned}
+            title={title}
+            items={items}
+            date={date}
+            onUpdatePin={onUpdatePin}
+            onCheckItem={onCheckItem}
+            onUpdate={onUpdateList}
+            onDelete={onDeleteList}
+          />
+        )}
+      </LazyRender>
     </div>
   )
 }

@@ -8,6 +8,7 @@ module.exports = {
   plugins: ['react'],
   rules: {
     'react/react-in-jsx-scope': 'off',
+    'react/display-name': 'off',
     'no-async-promise-executor': 'off',
     'no-unused-vars': 'warn'
   },
