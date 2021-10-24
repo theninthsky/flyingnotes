@@ -1,14 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
-import { useRecoilValue } from 'recoil'
 import { bool, string, func, shape, arrayOf, oneOf } from 'prop-types'
 import useClickOutside from 'use-click-outside'
 import TextareaAutosize from 'react-textarea-autosize'
-import { If, useAxios } from 'frontend-essentials'
+import { If } from 'frontend-essentials'
 import isEqual from 'lodash/isEqual'
 import cx from 'clsx'
 
 import { CATEGORY, TITLE, SAVE, DELETE_MESSAGE } from './constants'
-import { userLoggedInSelector } from 'containers/App/selectors'
 import Content from './Content'
 import Options from 'components/Options'
 
@@ -35,8 +33,6 @@ const Note = ({
   onCheckItem,
   onDelete
 }) => {
-  const userLoggedIn = useRecoilValue(userLoggedInSelector)
-
   const [category, setCategory] = useState(propsCategory)
   const [title, setTitle] = useState(propsTitle)
   const [content, setContent] = useState(propsContent)
@@ -45,17 +41,8 @@ const Note = ({
   const [optionsVisible, setOptionsVisible] = useState(false)
   const [confirmMessageVisible, setConfirmMessageVisible] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [deleted, setDeleted] = useState(false)
 
   const ref = useRef()
-
-  const { activate: deleteNote } = useAxios({
-    method: 'delete',
-    data: { [variant === NOTE ? 'noteID' : 'listID']: _id },
-    manual: true,
-    onSuccess: () => onDelete(_id),
-    onError: () => setDeleted(false)
-  })
 
   useEffect(() => {
     setCategory(propsCategory)
@@ -77,21 +64,7 @@ const Note = ({
     setItems([emptyItem])
   }
 
-  const updatePin = event => {
-    event.stopPropagation()
-
-    onUpdatePin(_id, pinned)
-  }
-
-  const onDeleteNote = () => {
-    setDeleted(true)
-
-    if (userLoggedIn) return deleteNote({ url: variant === NOTE ? '/note' : 'list' })
-
-    onDelete(_id)
-  }
-
-  const saveNote = event => {
+  const onSave = event => {
     event.preventDefault()
 
     const note = {
@@ -121,8 +94,6 @@ const Note = ({
   const changed =
     category !== propsCategory || title !== propsTitle || content !== propsContent || !isEqual(items, propsItems)
 
-  if (deleted) return null
-
   return (
     <form
       className={cx(style.wrapper, { [style.disabled]: loading })}
@@ -135,10 +106,16 @@ const Note = ({
       onKeyPress={event => {
         if (variant === LIST && event.key === 'Enter') event.preventDefault()
       }}
-      onSubmit={saveNote}
+      onSubmit={onSave}
     >
       <If condition={!empty}>
-        <PinIcon className={cx(style.pinIcon, { [style.pinned]: pinned })} onClick={updatePin} />
+        <PinIcon
+          className={cx(style.pinIcon, { [style.pinned]: pinned })}
+          onClick={event => {
+            event.stopPropagation()
+            onUpdatePin(_id, pinned)
+          }}
+        />
       </If>
 
       <If condition={variant === NOTE && (empty || category || editMode)}>
@@ -179,7 +156,7 @@ const Note = ({
       />
 
       <If condition={optionsVisible}>
-        <Options setConfirmMessage={setConfirmMessageVisible} onDelete={onDeleteNote} />
+        <Options setConfirmMessage={setConfirmMessageVisible} onDelete={() => onDelete(_id)} />
       </If>
 
       {confirmMessageVisible ? (

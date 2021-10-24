@@ -42,6 +42,12 @@ const Notes = () => {
     manual: true,
     onSuccess: ({ data }) => setNotes(notes.map(note => (note._id === data._id ? data : note)))
   })
+  const { activate: deleteNote } = useAxios({
+    url: '/note',
+    method: 'delete',
+    manual: true,
+    onError: () => setNotes(notes)
+  })
 
   useEffect(() => {
     if (userLoggedIn) getNotes()
@@ -71,6 +77,12 @@ const Notes = () => {
     const updatedLocalNote = { ...note, date: new Date().toString() }
 
     setNotes(notes.map(note => (note._id === updatedLocalNote._id ? updatedLocalNote : note)))
+  }
+
+  const onDeleteNote = noteID => {
+    if (userLoggedIn) deleteNote({ data: { noteID } })
+
+    setNotes(notes.filter(({ _id }) => _id !== noteID))
   }
 
   return (
@@ -107,7 +119,7 @@ const Notes = () => {
               date={date}
               onUpdatePin={onUpdatePin}
               onUpdate={onUpdateNote}
-              onDelete={noteID => setNotes(notes.filter(({ _id }) => _id !== noteID))}
+              onDelete={onDeleteNote}
             />
           )}
         </LazyRender>
