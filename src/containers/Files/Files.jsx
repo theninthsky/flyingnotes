@@ -4,14 +4,14 @@ import { useHistory } from 'react-router-dom'
 import { useAxios } from 'frontend-essentials'
 
 import { userLoggedInSelector } from 'containers/App/selectors'
-import { filesState } from './atoms'
+import { filesSelector } from './selectors'
 import File from 'components/File'
 
 import style from './Files.scss'
 
 const Files = () => {
   const userLoggedIn = useRecoilValue(userLoggedInSelector)
-  const [files, setFiles] = useRecoilState(filesState)
+  const [files, setFiles] = useRecoilState(filesSelector)
 
   const history = useHistory()
 
