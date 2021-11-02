@@ -13,7 +13,7 @@ import Options from 'components/Options'
 import style from './Note.scss'
 import PinIcon from 'images/pin.svg'
 
-const [NOTE, LIST] = ['note', 'list']
+export const [TYPE_NOTE, TYPE_LIST] = ['note', 'list']
 const emptyItem = { value: '', checked: false }
 const defaultItems = [emptyItem]
 
@@ -27,6 +27,7 @@ const Note = ({
   content: propsContent = '',
   items: propsItems = defaultItems,
   date,
+  loading,
   onCreate,
   onUpdatePin,
   onUpdate,
@@ -40,7 +41,6 @@ const Note = ({
   const [editMode, setEditMode] = useState(false)
   const [optionsVisible, setOptionsVisible] = useState(false)
   const [confirmMessageVisible, setConfirmMessageVisible] = useState(false)
-  const [loading, setLoading] = useState(false)
 
   const ref = useRef()
 
@@ -69,13 +69,11 @@ const Note = ({
 
     const note = {
       pinned,
-      category: variant === NOTE ? category.trim() : undefined,
+      category: variant === TYPE_NOTE ? category.trim() : undefined,
       title: title.trim(),
       content: content.trim(),
-      items: variant === LIST ? items.map(item => ({ ...item, value: item.value.trim() })) : undefined
+      items: variant === TYPE_LIST ? items.map(item => ({ ...item, value: item.value.trim() })) : undefined
     }
-
-    setLoading(true)
 
     if (empty) {
       onCreate(note)
@@ -88,7 +86,6 @@ const Note = ({
 
     setEditMode(false)
     setOptionsVisible(false)
-    setLoading(false)
   }
 
   const changed =
@@ -104,7 +101,7 @@ const Note = ({
         setEditMode(true)
       }}
       onKeyPress={event => {
-        if (variant === LIST && event.key === 'Enter') event.preventDefault()
+        if (variant === TYPE_LIST && event.key === 'Enter') event.preventDefault()
       }}
       onSubmit={onSave}
     >
@@ -118,7 +115,7 @@ const Note = ({
         />
       </If>
 
-      <If condition={variant === NOTE && (empty || category || editMode)}>
+      <If condition={variant === TYPE_NOTE && (empty || category || editMode)}>
         <input
           className={style.category}
           value={category}
@@ -178,7 +175,7 @@ const Note = ({
 }
 
 Note.propTypes = {
-  variant: oneOf([NOTE, LIST]).isRequired,
+  variant: oneOf([TYPE_NOTE, TYPE_LIST]).isRequired,
   empty: bool,
   _id: string,
   pinned: bool,
@@ -187,6 +184,7 @@ Note.propTypes = {
   content: string,
   items: arrayOf(shape({ checked: bool, value: string })),
   date: string,
+  loading: bool,
   onCreate: func,
   onUpdatePin: func,
   onUpdate: func,

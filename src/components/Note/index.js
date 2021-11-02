@@ -1,1 +1,1 @@
-export { default } from './Note'
+export { default, TYPE_NOTE, TYPE_LIST } from './Note'

@@ -5,7 +5,7 @@ import { LazyRender, useAxios, useViewport } from 'frontend-essentials'
 import { userLoggedInSelector } from 'containers/App/selectors'
 import { notesSelector, categoriesSelector } from './selectors'
 import Filters from 'components/Filters'
-import Note from 'components/Note'
+import Note, { TYPE_NOTE } from 'components/Note'
 
 import style from './Notes.scss'
 
@@ -15,6 +15,7 @@ const Notes = () => {
   const categories = useRecoilValue(categoriesSelector)
 
   const [filteredNotes, setFilteredNotes] = useState(notes)
+  const [loadingNoteID, setLoadingNoteID] = useState()
 
   const { viewport12 } = useViewport({ viewport12: '(min-width: 1200px)' })
 
@@ -24,30 +25,23 @@ const Notes = () => {
     manual: true,
     onSuccess: ({ data }) => setNotes(data)
   })
-  const { activate: createNote } = useAxios({
+  const { loading: creatingNote, activate: createNote } = useAxios({
     url: '/notes',
     method: 'post',
     manual: true,
     onSuccess: ({ data }) => setNotes(notes => [...notes, data])
   })
-  const { activate: updatePin } = useAxios({
-    url: '/note',
-    method: 'patch',
-    manual: true,
-    onError: () => setNotes(notes)
-  })
+  const { activate: updatePin } = useAxios({ url: '/note', method: 'patch', manual: true })
   const { activate: updateNote } = useAxios({
     url: '/note',
     method: 'put',
     manual: true,
-    onSuccess: ({ data }) => setNotes(notes.map(note => (note._id === data._id ? data : note)))
+    onSuccess: ({ data }) => {
+      setLoadingNoteID()
+      setNotes(notes.map(note => (note._id === data._id ? data : note)))
+    }
   })
-  const { activate: deleteNote } = useAxios({
-    url: '/note',
-    method: 'delete',
-    manual: true,
-    onError: () => setNotes(notes)
-  })
+  const { activate: deleteNote } = useAxios({ url: '/note', method: 'delete', manual: true })
 
   useEffect(() => {
     if (userLoggedIn) getNotes()
@@ -66,13 +60,19 @@ const Notes = () => {
   }
 
   const onUpdatePin = (noteID, pinned) => {
-    if (userLoggedIn) updatePin({ data: { noteID, pinned: !pinned } })
+    if (!userLoggedIn) return setNotes(notes.map(note => (note._id === noteID ? { ...note, pinned: !pinned } : note)))
 
-    setNotes(notes.map(note => (note._id === noteID ? { ...note, pinned: !pinned } : note)))
+    updatePin({
+      data: { noteID, pinned: !pinned },
+      onSuccess: () => setNotes(notes.map(note => (note._id === noteID ? { ...note, pinned: !pinned } : note)))
+    })
   }
 
   const onUpdateNote = note => {
-    if (userLoggedIn) return updateNote({ data: note })
+    if (userLoggedIn) {
+      setLoadingNoteID(note._id)
+      return updateNote({ data: note })
+    }
 
     const updatedLocalNote = { ...note, date: new Date().toString() }
 
@@ -80,9 +80,16 @@ const Notes = () => {
   }
 
   const onDeleteNote = noteID => {
-    if (userLoggedIn) deleteNote({ data: { noteID } })
+    if (!userLoggedIn) return setNotes(notes.filter(({ _id }) => _id !== loadingNoteID))
 
-    setNotes(notes.filter(({ _id }) => _id !== noteID))
+    setLoadingNoteID(noteID)
+    deleteNote({
+      data: { noteID },
+      onSuccess: () => {
+        setNotes(notes.filter(({ _id }) => _id !== noteID))
+        setLoadingNoteID()
+      }
+    })
   }
 
   return (
@@ -104,19 +111,20 @@ const Notes = () => {
       />
 
       <div className={style.wrapper}>
-        <Note variant="note" empty onCreate={onCreateNote} />
+        <Note variant={TYPE_NOTE} empty loading={creatingNote} onCreate={onCreateNote} />
 
         <LazyRender items={filteredNotes} batch={viewport12 ? 20 : 8} rootMargin="100%">
           {({ _id, pinned, category, title, content, date }) => (
             <Note
               key={_id}
-              variant="note"
+              variant={TYPE_NOTE}
               _id={_id}
               pinned={pinned}
               category={category}
               title={title}
               content={content}
               date={date}
+              loading={_id === loadingNoteID}
               onUpdatePin={onUpdatePin}
               onUpdate={onUpdateNote}
               onDelete={onDeleteNote}

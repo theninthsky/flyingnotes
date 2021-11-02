@@ -1,16 +1,18 @@
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { LazyRender, useAxios, useViewport } from 'frontend-essentials'
 
 import { userLoggedInSelector } from 'containers/App/selectors'
 import { listsSelector } from './selectors'
-import Note from 'components/Note'
+import Note, { TYPE_LIST } from 'components/Note'
 
 import style from './Lists.scss'
 
 const Lists = () => {
   const userLoggedIn = useRecoilValue(userLoggedInSelector)
   const [lists, setLists] = useRecoilState(listsSelector)
+
+  const [loadingListID, setLoadingListID] = useState()
 
   const { viewport12 } = useViewport({ viewport12: '(min-width: 1200px)' })
 
@@ -20,36 +22,24 @@ const Lists = () => {
     manual: true,
     onSuccess: ({ data }) => setLists(data)
   })
-  const { activate: createList } = useAxios({
+  const { loading: creatingList, activate: createList } = useAxios({
     url: '/lists',
     method: 'post',
     manual: true,
     onSuccess: ({ data }) => setLists(lists => [...lists, data])
   })
-  const { activate: updatePin } = useAxios({
-    url: '/list',
-    method: 'patch',
-    manual: true,
-    onError: () => setLists(lists)
-  })
-  const { activate: checkItem } = useAxios({
-    url: '/check-item',
-    method: 'patch',
-    manual: true,
-    onError: () => setLists(lists)
-  })
+  const { activate: updatePin } = useAxios({ url: '/list', method: 'patch', manual: true })
+  const { activate: checkItem } = useAxios({ url: '/check-item', method: 'patch', manual: true })
   const { activate: updateList } = useAxios({
     url: '/list',
     method: 'put',
     manual: true,
-    onSuccess: ({ data }) => setLists(lists.map(list => (list._id === data._id ? data : list)))
+    onSuccess: ({ data }) => {
+      setLoadingListID()
+      setLists(lists.map(list => (list._id === data._id ? data : list)))
+    }
   })
-  const { activate: deleteList } = useAxios({
-    url: '/list',
-    method: 'delete',
-    manual: true,
-    onError: () => setLists(lists)
-  })
+  const { activate: deleteList } = useAxios({ url: '/list', method: 'delete', manual: true })
 
   useEffect(() => {
     if (userLoggedIn) getLists()
@@ -64,19 +54,30 @@ const Lists = () => {
   }
 
   const onUpdatePin = (listID, pinned) => {
-    if (userLoggedIn) updatePin({ data: { listID, pinned: !pinned } })
+    if (!userLoggedIn) return setLists(lists.map(list => (list._id === listID ? { ...list, pinned: !pinned } : list)))
 
-    setLists(lists.map(list => (list._id === listID ? { ...list, pinned: !pinned } : list)))
+    updatePin({
+      data: { listID, pinned: !pinned },
+      onSuccess: () => setLists(lists.map(list => (list._id === listID ? { ...list, pinned: !pinned } : list)))
+    })
   }
 
   const onCheckItem = (listID, index, item, updatedItems) => {
-    if (userLoggedIn) checkItem({ data: { listID, index, item } })
+    if (!userLoggedIn) {
+      return setLists(lists.map(list => (list._id === listID ? { ...list, items: updatedItems } : list)))
+    }
 
-    setLists(lists.map(list => (list._id === listID ? { ...list, items: updatedItems } : list)))
+    checkItem({
+      data: { listID, index, item },
+      onSuccess: () => setLists(lists.map(list => (list._id === listID ? { ...list, items: updatedItems } : list)))
+    })
   }
 
   const onUpdateList = list => {
-    if (userLoggedIn) return updateList({ data: list })
+    if (userLoggedIn) {
+      setLoadingListID(list._id)
+      return updateList({ data: list })
+    }
 
     const updatedLocalList = { ...list, date: new Date().toISOString() }
 
@@ -84,25 +85,40 @@ const Lists = () => {
   }
 
   const onDeleteList = listID => {
-    if (userLoggedIn) deleteList({ data: { listID } })
+    if (!userLoggedIn) return setLists(lists.filter(({ _id }) => _id !== listID))
 
-    setLists(lists.filter(({ _id }) => _id !== listID))
+    setLoadingListID(listID)
+    deleteList({
+      data: { listID },
+      onSuccess: () => {
+        setLoadingListID()
+        setLists(lists.filter(({ _id }) => _id !== listID))
+      }
+    })
   }
 
   return (
     <div className={style.wrapper}>
-      <Note variant="list" empty list items={[{ value: '', checked: false }]} onCreate={onCreateList} />
+      <Note
+        variant={TYPE_LIST}
+        empty
+        list
+        items={[{ value: '', checked: false }]}
+        loading={creatingList}
+        onCreate={onCreateList}
+      />
 
       <LazyRender items={lists} batch={viewport12 ? 20 : 8} rootMargin="100%">
         {({ _id, pinned, title, items, date }) => (
           <Note
             key={_id}
-            variant="list"
+            variant={TYPE_LIST}
             _id={_id}
             pinned={pinned}
             title={title}
             items={items}
             date={date}
+            loading={_id === loadingListID}
             onUpdatePin={onUpdatePin}
             onCheckItem={onCheckItem}
             onUpdate={onUpdateList}
