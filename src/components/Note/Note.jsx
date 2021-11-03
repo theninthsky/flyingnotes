@@ -45,6 +45,8 @@ const Note = ({
   const ref = useRef()
 
   useEffect(() => {
+    if (empty) return
+
     setCategory(propsCategory)
     setTitle(propsTitle)
     setContent(propsContent)
@@ -75,15 +77,11 @@ const Note = ({
       items: variant === TYPE_LIST ? items.map(item => ({ ...item, value: item.value.trim() })) : undefined
     }
 
-    if (empty) {
-      onCreate(note)
-      reset()
-    } else {
-      note._id = _id
+    if (empty) return onCreate(note, reset)
 
-      onUpdate(note)
-    }
+    note._id = _id
 
+    onUpdate(note)
     setEditMode(false)
     setOptionsVisible(false)
   }
@@ -159,12 +157,7 @@ const Note = ({
       {confirmMessageVisible ? (
         <div className={style.confirmMessage}>{DELETE_MESSAGE}</div>
       ) : changed || empty ? (
-        <input
-          className={cx(style.save, { hidden: !changed && !empty })}
-          type="submit"
-          value={SAVE}
-          aria-label="save"
-        />
+        <input className={style.save} type="submit" value={SAVE} aria-label="save" />
       ) : (
         <If condition={!empty}>
           <div className={style.date}>{new Date(date).toLocaleString('en-GB').replace(',', '').slice(0, -3)}</div>

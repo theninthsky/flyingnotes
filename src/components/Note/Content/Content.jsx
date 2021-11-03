@@ -28,10 +28,11 @@ const Content = ({ id, variant, empty, content, items, keepExpanded, setContent,
     if (event.key === 'Enter' && event.target.value) {
       setItems(prevItems => [...prevItems.slice(0, index + 1), emptyItem, ...prevItems.slice(index + 1)])
 
+      const childNodeIndex = empty ? 0 : 1
       const items = itemsRef.current.childNodes
-      const nextIndex = [...items].findIndex(item => item.childNodes[1] === event.target) + 1
+      const nextIndex = [...items].findIndex(item => item.childNodes[childNodeIndex] === event.target) + 1
 
-      setTimeout(() => items[nextIndex].childNodes[1].focus())
+      setTimeout(() => items[nextIndex].childNodes[childNodeIndex].focus())
     }
   }
 
@@ -98,11 +99,13 @@ const Content = ({ id, variant, empty, content, items, keepExpanded, setContent,
             .sort((a, b) => a.checked - b.checked)
             .map(({ value, checked }, ind) => (
               <div className="d-flex" key={ind}>
-                {checked ? (
-                  <CheckedIcon className={style.checkIcon} onClick={event => checkItem(event, ind)} />
-                ) : (
-                  <UncheckedIcon className={style.checkIcon} onClick={event => checkItem(event, ind)} />
-                )}
+                <If condition={!empty}>
+                  {checked ? (
+                    <CheckedIcon className={style.checkIcon} onClick={event => checkItem(event, ind)} />
+                  ) : (
+                    <UncheckedIcon className={style.checkIcon} onClick={event => checkItem(event, ind)} />
+                  )}
+                </If>
 
                 <input
                   className={cx(style.item, { [style.disabled]: checked })}

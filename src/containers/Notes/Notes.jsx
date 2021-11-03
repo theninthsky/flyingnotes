@@ -25,12 +25,7 @@ const Notes = () => {
     manual: true,
     onSuccess: ({ data }) => setNotes(data)
   })
-  const { loading: creatingNote, activate: createNote } = useAxios({
-    url: '/notes',
-    method: 'post',
-    manual: true,
-    onSuccess: ({ data }) => setNotes(notes => [...notes, data])
-  })
+  const { loading: creatingNote, activate: createNote } = useAxios({ url: '/notes', method: 'post', manual: true })
   const { activate: updatePin } = useAxios({ url: '/note', method: 'patch', manual: true })
   const { activate: updateNote } = useAxios({
     url: '/note',
@@ -51,8 +46,16 @@ const Notes = () => {
     setFilteredNotes(notes)
   }, [notes])
 
-  const onCreateNote = note => {
-    if (userLoggedIn) return createNote({ data: note })
+  const onCreateNote = (note, reset) => {
+    if (userLoggedIn) {
+      return createNote({
+        data: note,
+        onSuccess: ({ data }) => {
+          setNotes(notes => [...notes, data])
+          reset()
+        }
+      })
+    }
 
     const localNote = { ...note, _id: Date.now().toString(), date: new Date().toISOString() }
 
@@ -80,7 +83,7 @@ const Notes = () => {
   }
 
   const onDeleteNote = noteID => {
-    if (!userLoggedIn) return setNotes(notes.filter(({ _id }) => _id !== loadingNoteID))
+    if (!userLoggedIn) return setNotes(notes.filter(({ _id }) => _id !== noteID))
 
     setLoadingNoteID(noteID)
     deleteNote({

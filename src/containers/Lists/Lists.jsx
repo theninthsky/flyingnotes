@@ -22,12 +22,7 @@ const Lists = () => {
     manual: true,
     onSuccess: ({ data }) => setLists(data)
   })
-  const { loading: creatingList, activate: createList } = useAxios({
-    url: '/lists',
-    method: 'post',
-    manual: true,
-    onSuccess: ({ data }) => setLists(lists => [...lists, data])
-  })
+  const { loading: creatingList, activate: createList } = useAxios({ url: '/lists', method: 'post', manual: true })
   const { activate: updatePin } = useAxios({ url: '/list', method: 'patch', manual: true })
   const { activate: checkItem } = useAxios({ url: '/check-item', method: 'patch', manual: true })
   const { activate: updateList } = useAxios({
@@ -45,8 +40,16 @@ const Lists = () => {
     if (userLoggedIn) getLists()
   }, [userLoggedIn])
 
-  const onCreateList = list => {
-    if (userLoggedIn) return createList({ data: list })
+  const onCreateList = (list, reset) => {
+    if (userLoggedIn) {
+      return createList({
+        data: list,
+        onSuccess: ({ data }) => {
+          setLists(lists => [...lists, data])
+          reset()
+        }
+      })
+    }
 
     const localList = { ...list, _id: Date.now().toString(), date: new Date().toISOString() }
 

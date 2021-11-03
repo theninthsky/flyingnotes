@@ -16,11 +16,6 @@
   }
 }
 
-.hidden {
-  height: 100px;
-  visibility: hidden;
-}
-
 .disabled {
   opacity: 0.5;
   pointer-events: none;
@@ -97,7 +92,6 @@
   border: none;
   border-radius: 4px 4px 0 0;
   box-sizing: border-box;
-  outline: none;
   font-family: inherit;
   text-align: center;
   color: inherit;
