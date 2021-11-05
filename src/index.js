@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { BrowserRouter as Router } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
 import { ErrorBoundary } from 'react-error-boundary'
 import { axios } from 'frontend-essentials'
@@ -15,14 +15,14 @@ axios.defaults.withCredentials = true
 
 ReactDOM.render(
   <RecoilRoot>
-    <Router>
+    <BrowserRouter>
       <ErrorBoundary
         fallback={<div>An error occured, please reload the app.</div>}
         onError={() => localStorage.clear()}
       >
         <App />
       </ErrorBoundary>
-    </Router>
+    </BrowserRouter>
   </RecoilRoot>,
   document.getElementById('root')
 )

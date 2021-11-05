@@ -34,16 +34,16 @@ const NavigationBar = () => {
         <Logo className={style.logo} />
 
         <div className="flex-1">
-          <NavLink className={style.navLink} activeClassName={style.active} exact to="/">
+          <NavLink className={({ isActive }) => cx(style.navLink, { [style.active]: isActive })} to="/">
             Notes
           </NavLink>
 
-          <NavLink className={style.navLink} activeClassName={style.active} to="/lists">
+          <NavLink className={({ isActive }) => cx(style.navLink, { [style.active]: isActive })} to="/lists">
             Lists
           </NavLink>
 
           <If condition={userLoggedIn}>
-            <NavLink className={style.navLink} activeClassName={style.active} to="/files">
+            <NavLink className={({ isActive }) => cx(style.navLink, { [style.active]: isActive })} to="/files">
               Files
             </NavLink>
           </If>

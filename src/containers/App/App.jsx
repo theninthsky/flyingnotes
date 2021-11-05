@@ -1,5 +1,5 @@
 import { useState, useEffect, lazy, Suspense } from 'react'
-import { Switch, Route, Redirect, useLocation, useHistory } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { useSwipeable } from 'react-swipeable'
@@ -31,7 +31,7 @@ const App = () => {
   const [prevLocation, setPrevLocation] = useState()
   const [currLocation, setCurrLocation] = useState()
 
-  const history = useHistory()
+  const navigate = useNavigate()
   const location = useLocation()
   const { mobile } = useViewport({ mobile: '(max-width: 991px)' })
   const handlers = useSwipeable({
@@ -57,8 +57,8 @@ const App = () => {
   const changeRoute = dir => {
     const index = routes.indexOf(currLocation)
 
-    if (dir === 'left' && routes[index - 1]) history.push(routes[index - 1])
-    if (dir === 'right' && routes[index + 1]) history.push(routes[index + 1])
+    if (dir === 'left' && routes[index - 1]) navigate(routes[index - 1])
+    if (dir === 'right' && routes[index + 1]) navigate(routes[index + 1])
   }
 
   const replaceSW = () => {
@@ -87,41 +87,50 @@ const App = () => {
 
       <TransitionGroup className={style[transitionDirection]}>
         <CSSTransition {...transitionOptions}>
-          <Switch location={location}>
-            <Route exact path="/">
-              <div className={style.page} {...handlers}>
-                <Helmet>
-                  <title>My Notes</title>
-                </Helmet>
+          <Routes location={location}>
+            <Route
+              path="/"
+              element={
+                <div className={style.page} {...handlers}>
+                  <Helmet>
+                    <title>My Notes</title>
+                  </Helmet>
 
-                <Notes />
-              </div>
-            </Route>
+                  <Notes />
+                </div>
+              }
+            />
 
-            <Route path="/lists">
-              <div className={style.page} {...handlers}>
-                <Helmet>
-                  <title>My Lists</title>
-                </Helmet>
+            <Route
+              path="/lists"
+              element={
+                <div className={style.page} {...handlers}>
+                  <Helmet>
+                    <title>My Lists</title>
+                  </Helmet>
 
-                <Lists />
-              </div>
-            </Route>
+                  <Lists />
+                </div>
+              }
+            />
 
-            <Route path="/files">
-              <div className={style.page} {...handlers}>
-                <Helmet>
-                  <title>My Files</title>
-                </Helmet>
+            <Route
+              path="/files"
+              element={
+                <div className={style.page} {...handlers}>
+                  <Helmet>
+                    <title>My Files</title>
+                  </Helmet>
 
-                <Suspense fallback={<></>}>
-                  <Files />
-                </Suspense>
-              </div>
-            </Route>
+                  <Suspense fallback={<></>}>
+                    <Files />
+                  </Suspense>
+                </div>
+              }
+            />
 
-            <Redirect to="/" />
-          </Switch>
+            <Route path="/*" element={<Navigate replace to="/" />} />
+          </Routes>
         </CSSTransition>
       </TransitionGroup>
     </>

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useAxios } from 'frontend-essentials'
 
 import { userLoggedInSelector } from 'containers/App/selectors'
@@ -13,7 +13,7 @@ const Files = () => {
   const userLoggedIn = useRecoilValue(userLoggedInSelector)
   const [files, setFiles] = useRecoilState(filesSelector)
 
-  const history = useHistory()
+  const navigate = useNavigate()
 
   useAxios({
     url: '/files',
@@ -28,8 +28,8 @@ const Files = () => {
   })
 
   useEffect(() => {
-    if (!userLoggedIn) history.replace('/')
-  }, [history, userLoggedIn])
+    if (!userLoggedIn) navigate('/', { replace: true })
+  }, [userLoggedIn, navigate])
 
   const onDeleteFile = fileID => {
     deleteFile({ data: { fileID } })
