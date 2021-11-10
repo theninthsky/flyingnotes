@@ -1,17 +1,21 @@
 import { useState, useEffect } from 'react'
 import { useSetRecoilState, useResetRecoilState } from 'recoil'
-import { If, useAxios } from 'frontend-essentials'
+import { getAuth } from 'firebase/auth'
+import { useSignInWithEmailAndPassword, useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth'
+import { If } from 'frontend-essentials'
 import cx from 'clsx'
 
 import { authVisibleState } from 'containers/App/atoms'
 import { userSelector } from 'containers/App/selectors'
 import { notesSelector } from 'containers/Notes/selectors'
 import { listsSelector } from 'containers/Lists/selectors'
+import firebaseApp from 'firebase-app'
 import { LOG_IN, SIGN_UP } from './constants'
-import { safari } from 'util/user-agent'
 import Backdrop from 'components/Backdrop'
 
 import style from './Auth.scss'
+
+const auth = getAuth(firebaseApp)
 
 const Auth = () => {
   const setUser = useSetRecoilState(userSelector)
@@ -24,23 +28,21 @@ const Auth = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const {
-    loading: loadingLogin,
-    error: errorLogin,
-    activate: login
-  } = useAxios({ url: '/login', method: 'post', manual: true })
+  const [signIn, signedInUser, signingIn] = useSignInWithEmailAndPassword(auth)
+  const [register, registeredUser, registering] = useCreateUserWithEmailAndPassword(auth)
 
-  const {
-    loading: loadingSignup,
-    error: errorSignup,
-    activate: signUp
-  } = useAxios({ url: '/register', method: 'post', manual: true })
+  const user = signedInUser || registeredUser
+  const loading = signingIn || registering
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
 
     return () => (document.body.style.overflow = 'visible')
   }, [])
+
+  useEffect(() => {
+    if (user) resetAuthVisible()
+  }, [user])
 
   const actionChangedHandler = event => {
     setAction(event.target.textContent)
@@ -60,34 +62,34 @@ const Auth = () => {
       ...(action === SIGN_UP ? { notes: localNotes, lists: localLists } : {})
     }
 
-    if (action === LOG_IN) {
-      return login({
-        data: payload,
-        onSuccess: ({ data: { name, notes, lists } }) => {
-          setUser({ name })
-          setNotes(notes)
-          setLists(lists)
-          resetAuthVisible()
-        }
-      })
-    }
+    // if (action === LOG_IN) {
+    //   return login({
+    //     data: payload,
+    //     onSuccess: ({ data: { name, notes, lists } }) => {
+    //       setUser({ name })
+    //       setNotes(notes)
+    //       setLists(lists)
+    //       resetAuthVisible()
+    //     }
+    //   })
+    // }
 
-    signUp({
-      data: payload,
-      onSuccess: ({ data: { name, notes, lists, token } }) => {
-        localStorage.clear()
-        if (safari) localStorage.setItem('token', token)
+    // register({
+    //   data: payload,
+    //   onSuccess: ({ data: { name, notes, lists, token } }) => {
+    //     localStorage.clear()
 
-        setUser({ name })
-        setNotes(notes)
-        setLists(lists)
-        resetAuthVisible()
-      }
-    })
+    //     setUser({ name })
+    //     setNotes(notes)
+    //     setLists(lists)
+    //     resetAuthVisible()
+    //   }
+    // })
+
+    action === LOG_IN ? signIn(email, password) : register(email, password)
   }
 
-  const loading = loadingLogin || loadingSignup
-  const error = errorLogin || errorSignup
+  const error = undefined
 
   return (
     <>
