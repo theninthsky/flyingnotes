@@ -1,15 +1,14 @@
 import { useState, useEffect, lazy, Suspense } from 'react'
 import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
-import { useRecoilValue } from 'recoil'
-import { getAuth } from 'firebase/auth'
-import { useAuthState } from 'react-firebase-hooks/auth'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { onAuthStateChanged } from 'firebase/auth'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { useSwipeable } from 'react-swipeable'
 import { Helmet } from 'react-helmet'
 import { If, useViewport } from 'frontend-essentials'
 
-import firebaseApp from 'firebase-app'
-import { authVisibleState } from './atoms'
+import { auth } from 'firebase-app'
+import { userState, authVisibleState } from './atoms'
 import Notes from 'containers/Notes'
 import Lists from 'containers/Lists'
 import NavigationBar from 'components/NavigationBar'
@@ -22,18 +21,17 @@ import style from './App.scss'
 const Files = lazy(() => import(/* webpackPrefetch: true */ 'containers/Files'))
 
 const routes = ['/', '/lists', '/files']
-const auth = getAuth(firebaseApp)
 
 document.documentElement.setAttribute('data-theme', localStorage.theme || 'dark')
 
 const App = () => {
+  const [user, setUser] = useRecoilState(userState)
   const authVisible = useRecoilValue(authVisibleState)
 
   const [registrationWaiting, setRegistrationWaiting] = useState()
   const [prevLocation, setPrevLocation] = useState()
   const [currLocation, setCurrLocation] = useState()
 
-  const [user] = useAuthState(auth)
   const navigate = useNavigate()
   const location = useLocation()
   const { mobile } = useViewport({ mobile: '(max-width: 991px)' })
@@ -50,6 +48,10 @@ const App = () => {
     window.addEventListener('serviceworkerupdate', handleRegistration)
 
     return () => window.removeEventListener('serviceworkerupdate', handleRegistration)
+  }, [])
+
+  useEffect(() => {
+    onAuthStateChanged(auth, User => setUser(User))
   }, [])
 
   useEffect(() => {

@@ -1,38 +1,28 @@
 import { useState, useEffect } from 'react'
 import { useSetRecoilState, useResetRecoilState } from 'recoil'
-import { getAuth } from 'firebase/auth'
-import { useSignInWithEmailAndPassword, useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth'
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
 import { If } from 'frontend-essentials'
 import cx from 'clsx'
 
+import { auth } from 'firebase-app'
 import { authVisibleState } from 'containers/App/atoms'
-import { userSelector } from 'containers/App/selectors'
 import { notesSelector } from 'containers/Notes/selectors'
 import { listsSelector } from 'containers/Lists/selectors'
-import firebaseApp from 'firebase-app'
 import { LOG_IN, SIGN_UP } from './constants'
 import Backdrop from 'components/Backdrop'
 
 import style from './Auth.scss'
 
-const auth = getAuth(firebaseApp)
-
 const Auth = () => {
-  const setUser = useSetRecoilState(userSelector)
   const resetAuthVisible = useResetRecoilState(authVisibleState)
   const setNotes = useSetRecoilState(notesSelector)
   const setLists = useSetRecoilState(listsSelector)
 
   const [action, setAction] = useState(LOG_IN)
-  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const [signIn, signedInUser, signingIn] = useSignInWithEmailAndPassword(auth)
-  const [register, registeredUser, registering] = useCreateUserWithEmailAndPassword(auth)
-
-  const user = signedInUser || registeredUser
-  const loading = signingIn || registering
+  const loading = false
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -40,27 +30,16 @@ const Auth = () => {
     return () => (document.body.style.overflow = 'visible')
   }, [])
 
-  useEffect(() => {
-    if (user) resetAuthVisible()
-  }, [user])
-
   const actionChangedHandler = event => {
     setAction(event.target.textContent)
-    setName('')
     setPassword('')
   }
 
-  const submitFormHandler = event => {
+  const submitFormHandler = async event => {
     event.preventDefault()
 
     const localNotes = localStorage.notes ? JSON.parse(localStorage.notes) : []
     const localLists = localStorage.lists ? JSON.parse(localStorage.lists) : []
-    const payload = {
-      name: name.trim(),
-      email,
-      password,
-      ...(action === SIGN_UP ? { notes: localNotes, lists: localLists } : {})
-    }
 
     // if (action === LOG_IN) {
     //   return login({
@@ -86,7 +65,11 @@ const Auth = () => {
     //   }
     // })
 
-    action === LOG_IN ? signIn(email, password) : register(email, password)
+    action === LOG_IN
+      ? await signInWithEmailAndPassword(auth, email, password)
+      : await createUserWithEmailAndPassword(auth, email, password)
+
+    resetAuthVisible()
   }
 
   const error = undefined
@@ -113,18 +96,9 @@ const Auth = () => {
             <p className={style.error}>{error?.response.data.err}</p>
           </If>
 
-          {action === SIGN_UP ? (
-            <input
-              className={style.field}
-              type="text"
-              value={name}
-              placeholder="Name"
-              required
-              onChange={event => setName(event.target.value)}
-            />
-          ) : (
+          <If condition={action === SIGN_UP}>
             <p className={style.description}>Login to have your notes and files saved on the cloud</p>
-          )}
+          </If>
 
           <input
             className={style.field}

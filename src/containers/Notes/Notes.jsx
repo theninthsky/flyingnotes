@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
+import { collection, getDocs } from 'firebase/firestore'
 import { LazyRender, useAxios, useViewport } from 'frontend-essentials'
 
+import { db } from 'firebase-app'
 import { userLoggedInSelector } from 'containers/App/selectors'
 import { notesSelector, categoriesSelector } from './selectors'
 import Filters from 'components/Filters'
 import Note, { TYPE_NOTE } from 'components/Note'
 
 import style from './Notes.scss'
+
+// getDocs(collection(db, 'users')).then(snapshot => snapshot.docs.map(doc => console.log(doc.data())))
 
 const Notes = () => {
   const userLoggedIn = useRecoilValue(userLoggedInSelector)
