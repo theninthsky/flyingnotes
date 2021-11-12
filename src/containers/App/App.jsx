@@ -6,6 +6,7 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { useSwipeable } from 'react-swipeable'
 import { Helmet } from 'react-helmet'
 import { If, useViewport } from 'frontend-essentials'
+import cloneDeep from 'lodash/cloneDeep'
 
 import { auth } from 'firebase-app'
 import { userState, authVisibleState } from './atoms'
@@ -46,12 +47,9 @@ const App = () => {
     const handleRegistration = ({ detail: registration }) => setRegistrationWaiting(registration.waiting)
 
     window.addEventListener('serviceworkerupdate', handleRegistration)
+    onAuthStateChanged(auth, User => setUser(cloneDeep(User)))
 
     return () => window.removeEventListener('serviceworkerupdate', handleRegistration)
-  }, [])
-
-  useEffect(() => {
-    onAuthStateChanged(auth, User => setUser(User))
   }, [])
 
   useEffect(() => {

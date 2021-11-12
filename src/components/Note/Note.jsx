@@ -4,6 +4,7 @@ import useClickOutside from 'use-click-outside'
 import TextareaAutosize from 'react-textarea-autosize'
 import { If } from 'frontend-essentials'
 import isEqual from 'lodash/isEqual'
+import pickBy from 'lodash/pickBy'
 import cx from 'clsx'
 
 import { CATEGORY, TITLE, SAVE, DELETE_MESSAGE } from './constants'
@@ -69,13 +70,13 @@ const Note = ({
   const onSave = event => {
     event.preventDefault()
 
-    const note = {
+    const note = pickBy({
       pinned,
       category: variant === TYPE_NOTE ? category.trim() : undefined,
       title: title.trim(),
       content: content.trim(),
       items: variant === TYPE_LIST ? items.map(item => ({ ...item, value: item.value.trim() })) : undefined
-    }
+    })
 
     if (empty) return onCreate(note, reset)
 

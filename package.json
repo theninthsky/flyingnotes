@@ -17,6 +17,7 @@
     "clsx": "^1.1.1",
     "firebase": "^9.4.0",
     "frontend-essentials": "^1.5.2",
+    "lodash": "^4.17.21",
     "normalize.css": "^8.0.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
