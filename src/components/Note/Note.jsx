@@ -21,16 +21,14 @@ const defaultItems = [emptyItem]
 const Note = ({
   variant,
   empty,
-  _id,
+  id,
   pinned = false,
   category: propsCategory = '',
   title: propsTitle = '',
   content: propsContent = '',
   items: propsItems = defaultItems,
   date,
-  loading,
   onCreate,
-  onUpdatePin,
   onUpdate,
   onCheckItem,
   onDelete
@@ -75,12 +73,13 @@ const Note = ({
       category: variant === TYPE_NOTE ? category.trim() : undefined,
       title: title.trim(),
       content: content.trim(),
-      items: variant === TYPE_LIST ? items.map(item => ({ ...item, value: item.value.trim() })) : undefined
+      items: variant === TYPE_LIST ? items.map(item => ({ ...item, value: item.value.trim() })) : undefined,
+      date: new Date().toISOString()
     })
 
     if (empty) return onCreate(note, reset)
 
-    note._id = _id
+    note.id = id
 
     onUpdate(note)
     setEditMode(false)
@@ -92,7 +91,7 @@ const Note = ({
 
   return (
     <form
-      className={cx(style.wrapper, { [style.disabled]: loading })}
+      className={style.wrapper}
       ref={ref}
       autoComplete="off"
       onClick={() => {
@@ -109,7 +108,7 @@ const Note = ({
           className={cx(style.pinIcon, { [style.pinned]: pinned })}
           onClick={event => {
             event.stopPropagation()
-            onUpdatePin(_id, pinned)
+            onUpdate({ pinned: !pinned })
           }}
         />
       </If>
@@ -140,7 +139,7 @@ const Note = ({
       </If>
 
       <Content
-        id={_id}
+        id={id}
         variant={variant}
         empty={empty}
         content={content}
@@ -152,7 +151,7 @@ const Note = ({
       />
 
       <If condition={optionsVisible}>
-        <Options setConfirmMessage={setConfirmMessageVisible} onDelete={() => onDelete(_id)} />
+        <Options setConfirmMessage={setConfirmMessageVisible} onDelete={() => onDelete(id)} />
       </If>
 
       {confirmMessageVisible ? (
@@ -171,16 +170,14 @@ const Note = ({
 Note.propTypes = {
   variant: oneOf([TYPE_NOTE, TYPE_LIST]).isRequired,
   empty: bool,
-  _id: string,
+  id: string,
   pinned: bool,
   category: string,
   title: string,
   content: string,
   items: arrayOf(shape({ checked: bool, value: string })),
   date: string,
-  loading: bool,
   onCreate: func,
-  onUpdatePin: func,
   onUpdate: func,
   onCheckItem: func,
   onDelete: func
