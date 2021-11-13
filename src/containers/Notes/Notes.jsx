@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from 'react'
 import { useRecoilValue } from 'recoil'
-import { collection, addDoc, updateDoc, deleteDoc, onSnapshot } from 'firebase/firestore'
+import { collection, query, orderBy, addDoc, updateDoc, deleteDoc, onSnapshot } from 'firebase/firestore'
 import { LazyRender, useViewport } from 'frontend-essentials'
 
 import { db } from 'firebase-app'
@@ -26,9 +26,12 @@ const Notes = () => {
   useEffect(() => {
     if (!collectionRef) return setNotes([])
 
-    const unsubscribe = onSnapshot(collectionRef, snapshot => {
-      setNotes(snapshot.docs.map(doc => ({ documentRef: doc.ref, id: doc.id, ...doc.data() })))
-    })
+    const unsubscribe = onSnapshot(
+      query(collectionRef, orderBy('pinned', 'desc'), orderBy('date', 'desc')),
+      snapshot => {
+        setNotes(snapshot.docs.map(doc => ({ documentRef: doc.ref, id: doc.id, ...doc.data() })))
+      }
+    )
 
     return unsubscribe
   }, [collectionRef])
@@ -39,7 +42,7 @@ const Notes = () => {
 
   const onCreateNote = async (note, reset) => {
     if (collectionRef) {
-      await addDoc(collectionRef, note)
+      addDoc(collectionRef, note)
       return reset()
     }
 

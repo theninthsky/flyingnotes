@@ -22,7 +22,7 @@ const Note = ({
   variant,
   empty,
   id,
-  pinned = false,
+  pinned,
   category: propsCategory = '',
   title: propsTitle = '',
   content: propsContent = '',
@@ -68,18 +68,19 @@ const Note = ({
   const onSave = event => {
     event.preventDefault()
 
-    const note = pickBy({
-      pinned,
-      category: variant === TYPE_NOTE ? category.trim() : undefined,
-      title: title.trim(),
-      content: content.trim(),
-      items: variant === TYPE_LIST ? items.map(item => ({ ...item, value: item.value.trim() })) : undefined,
-      date: new Date().toISOString()
-    })
+    const note = pickBy(
+      {
+        pinned: empty ? false : pinned,
+        category: variant === TYPE_NOTE ? category.trim() : undefined,
+        title: title.trim(),
+        content: content.trim(),
+        items: variant === TYPE_LIST ? items.map(item => ({ ...item, value: item.value.trim() })) : undefined,
+        date: new Date().toISOString()
+      },
+      value => !['', undefined, null].includes(value)
+    )
 
     if (empty) return onCreate(note, reset)
-
-    note.id = id
 
     onUpdate(note)
     setEditMode(false)
