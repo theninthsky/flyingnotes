@@ -4,7 +4,7 @@ import useClickOutside from 'use-click-outside'
 import { useAxios, If } from 'frontend-essentials'
 import cx from 'clsx'
 
-import { toBase64, fromBase64, saveFile } from 'util/base64'
+import { fromBase64, saveFile } from 'util/base64'
 import { MAX_FILESIZE_IN_MB } from './constants'
 
 import style from './File.scss'
@@ -12,7 +12,15 @@ import UploadIcon from 'images/upload.svg'
 import DownloadIcon from 'images/download.svg'
 import DeleteIcon from 'images/delete.svg'
 
-const File = ({ newFile, _id: fileID, name: fileName = '', extension: fileExtension = '', addFile, onDeleteFile }) => {
+const File = ({
+  newFile,
+  id: fileID,
+  name: fileName = '',
+  extension: fileExtension = '',
+  onUploadFile,
+  onDownloadFile,
+  onDeleteFile
+}) => {
   const [name, setName] = useState(fileName)
   const [extension, setExtension] = useState(fileExtension)
   const [selectedFile, setSelectedFile] = useState()
@@ -23,26 +31,14 @@ const File = ({ newFile, _id: fileID, name: fileName = '', extension: fileExtens
 
   useClickOutside(fileRef, () => setDeleteIsVisible(false))
 
-  const { loading: loadingUpload, activate: uploadFile } = useAxios({
-    url: '/files',
-    method: 'post',
-    manual: true,
-    onSuccess: ({ data }) => {
-      addFile(data)
-      resetFile()
-    }
-  })
-  const { loading: loadingDownload, activate: downloadFile } = useAxios({
-    url: '/download',
-    method: 'post',
-    manual: true
-  })
-
-  const resetFile = () => {
+  const reset = () => {
     setName('')
     setExtension('')
     setSelectedFile(null)
   }
+
+  const loadingUpload = false
+  const loadingDownload = false
 
   const loadFile = event => {
     const [file] = event.target.files
@@ -58,33 +54,32 @@ const File = ({ newFile, _id: fileID, name: fileName = '', extension: fileExtens
       setSelectedFile(file)
     } else {
       alert(`File size exceeds ${MAX_FILESIZE_IN_MB}MB`)
-      resetFile()
+      reset()
       document.querySelector('#file-input').value = ''
     }
   }
 
-  const onUploadFile = async event => {
+  const uploadFile = event => {
     event.preventDefault()
 
     if (!name) return alert('File name is required')
 
-    const base64 = await toBase64(selectedFile)
-
-    uploadFile({ data: { name, extension, base64 } })
+    onUploadFile(selectedFile, reset)
   }
 
-  const onDownloadFile = async () => {
+  const downloadFile = () => {
     if (attachment) return saveFile(name, extension, attachment)
 
-    downloadFile({
-      data: { fileID },
-      onSuccess: async ({ data: { base64 } }) => {
-        const fileAttachment = await fromBase64(name, base64)
+    // downloadFile({
+    //   data: { fileID },
+    //   onSuccess: async ({ data: { base64 } }) => {
+    //     const fileAttachment = await fromBase64(name, base64)
 
-        setAttachment(fileAttachment)
-        saveFile(name, extension, fileAttachment)
-      }
-    })
+    //     setAttachment(fileAttachment)
+    //     saveFile(name, extension, fileAttachment)
+    //   }
+    // })
+    onDownloadFile()
   }
 
   return (
@@ -93,13 +88,14 @@ const File = ({ newFile, _id: fileID, name: fileName = '', extension: fileExtens
       ref={fileRef}
       autoComplete="off"
       onClick={() => setDeleteIsVisible(true)}
-      onSubmit={onUploadFile}
+      onSubmit={uploadFile}
     >
       <input
         className={style.name}
         type="text"
         placeholder="Name"
         value={name}
+        title={name}
         disabled={!newFile}
         aria-label="name"
         onChange={event => setName(event.target.value)}
@@ -110,7 +106,7 @@ const File = ({ newFile, _id: fileID, name: fileName = '', extension: fileExtens
           <DeleteIcon
             className={style.deleteIcon}
             onClick={() => {
-              if (window.confirm(`Delete ${name}.${extension}?`)) onDeleteFile(fileID)
+              if (window.confirm(`Delete ${name}.${extension}?`)) onDeleteFile()
             }}
           />
         ) : (
@@ -135,7 +131,7 @@ const File = ({ newFile, _id: fileID, name: fileName = '', extension: fileExtens
         <If condition={!newFile}>
           <DownloadIcon
             className={cx(style.downloadIcon, { [style.downloading]: loadingDownload })}
-            onClick={onDownloadFile}
+            onClick={downloadFile}
           />
         </If>
       </div>
@@ -145,7 +141,7 @@ const File = ({ newFile, _id: fileID, name: fileName = '', extension: fileExtens
 
 File.propTypes = {
   newFile: bool,
-  _id: string,
+  id: string,
   name: string,
   extension: string,
   onUploadFile: func,
