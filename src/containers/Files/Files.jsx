@@ -2,13 +2,22 @@ import { useState, useEffect } from 'react'
 import { useRecoilValue } from 'recoil'
 import { ref, listAll, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'
 import { useNavigate } from 'react-router-dom'
-import { useAxios } from 'frontend-essentials'
 
 import { storage } from 'firebase-app'
 import { userState } from 'containers/App/atoms'
 import File from 'components/File'
 
 import style from './Files.scss'
+
+const saveFile = (blob, name) => {
+  const link = document.createElement('a')
+
+  link.href = URL.createObjectURL(blob)
+  link.download = name
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+}
 
 const Files = () => {
   const user = useRecoilValue(userState)
@@ -17,13 +26,6 @@ const Files = () => {
   const [files, setFiles] = useState([])
 
   const navigate = useNavigate()
-
-  const { activate: deleteFile } = useAxios({
-    url: '/file',
-    method: 'delete',
-    manual: true,
-    onError: () => setFiles(files)
-  })
 
   useEffect(() => {
     if (!user) navigate('/', { replace: true })
@@ -49,7 +51,7 @@ const Files = () => {
     )
   }
 
-  const onUploadFile = async (file, reset) => {
+  const onUpload = async (file, reset) => {
     const storageRef = ref(storage, `${user.uid}/${file.name}`)
 
     await uploadBytes(storageRef, file)
@@ -57,28 +59,30 @@ const Files = () => {
     reset()
   }
 
-  const onDownloadFile = async itemRef => {
+  const onDownload = async (itemRef, name, extension) => {
     const url = await getDownloadURL(itemRef)
-    fetch(url)
+    const res = await fetch(url)
+    const blob = await res.blob()
+
+    saveFile(blob, `${name}.${extension}`)
   }
 
-  const onDeleteFile = async itemRef => {
+  const onDelete = async itemRef => {
     await deleteObject(itemRef)
     getFiles()
   }
 
   return (
     <div className={style.wrapper}>
-      <File newFile onUploadFile={onUploadFile} />
+      <File newFile onUpload={onUpload} />
 
       {files.map(({ itemRef, id, name, extension }) => (
         <File
           key={id}
-          id={id}
           name={name}
           extension={extension}
-          onDownloadFile={() => onDownloadFile(itemRef)}
-          onDeleteFile={() => onDeleteFile(itemRef)}
+          onDownload={() => onDownload(itemRef, name, extension)}
+          onDelete={() => onDelete(itemRef)}
         />
       ))}
     </div>

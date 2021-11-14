@@ -12,7 +12,7 @@ const LIST = 'list'
 const MAX_INITIAL_ROWS = 6
 const emptyItem = { value: '', checked: false }
 
-const Content = ({ id, variant, empty, content, items, keepExpanded, setContent, setItems, onCheckItem }) => {
+const Content = ({ variant, empty, content, items, keepExpanded, setContent, setItems, onCheckItem }) => {
   const [rowsHeight, setRowsHeight] = useState(0)
   const [expanded, setExpanded] = useState(false)
 

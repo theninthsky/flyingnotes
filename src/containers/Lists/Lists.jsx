@@ -58,7 +58,6 @@ const Lists = () => {
           <Note
             key={id}
             variant={TYPE_LIST}
-            _id={id}
             pinned={pinned}
             title={title}
             items={items}

@@ -90,7 +90,6 @@ const Notes = () => {
             <Note
               key={id}
               variant={TYPE_NOTE}
-              id={id}
               pinned={pinned}
               category={category}
               title={title}

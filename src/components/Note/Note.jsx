@@ -21,7 +21,6 @@ const defaultItems = [emptyItem]
 const Note = ({
   variant,
   empty,
-  id,
   pinned,
   category: propsCategory = '',
   title: propsTitle = '',
@@ -139,7 +138,6 @@ const Note = ({
       </If>
 
       <Content
-        id={id}
         variant={variant}
         empty={empty}
         content={content}
@@ -151,7 +149,7 @@ const Note = ({
       />
 
       <If condition={optionsVisible}>
-        <Options setConfirmMessage={setConfirmMessageVisible} onDelete={() => onDelete(id)} />
+        <Options setConfirmMessage={setConfirmMessageVisible} onDelete={onDelete} />
       </If>
 
       {confirmMessageVisible ? (
@@ -170,7 +168,6 @@ const Note = ({
 Note.propTypes = {
   variant: oneOf([TYPE_NOTE, TYPE_LIST]).isRequired,
   empty: bool,
-  id: string,
   pinned: bool,
   category: string,
   title: string,
