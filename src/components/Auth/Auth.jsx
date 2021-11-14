@@ -1,40 +1,24 @@
 import { useState, useEffect } from 'react'
-import { useSetRecoilState, useResetRecoilState } from 'recoil'
-import { If, useAxios } from 'frontend-essentials'
+import { useResetRecoilState } from 'recoil'
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
+import { If } from 'frontend-essentials'
 import cx from 'clsx'
 
+import { auth } from 'firebase-app'
 import { authVisibleState } from 'containers/App/atoms'
-import { userSelector } from 'containers/App/selectors'
-import { notesSelector } from 'containers/Notes/selectors'
-import { listsSelector } from 'containers/Lists/selectors'
 import { LOG_IN, SIGN_UP } from './constants'
-import { safari } from 'util/user-agent'
 import Backdrop from 'components/Backdrop'
 
 import style from './Auth.scss'
 
 const Auth = () => {
-  const setUser = useSetRecoilState(userSelector)
   const resetAuthVisible = useResetRecoilState(authVisibleState)
-  const setNotes = useSetRecoilState(notesSelector)
-  const setLists = useSetRecoilState(listsSelector)
 
   const [action, setAction] = useState(LOG_IN)
-  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const {
-    loading: loadingLogin,
-    error: errorLogin,
-    activate: login
-  } = useAxios({ url: '/login', method: 'post', manual: true })
-
-  const {
-    loading: loadingSignup,
-    error: errorSignup,
-    activate: signUp
-  } = useAxios({ url: '/register', method: 'post', manual: true })
+  const loading = false
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -44,50 +28,20 @@ const Auth = () => {
 
   const actionChangedHandler = event => {
     setAction(event.target.textContent)
-    setName('')
     setPassword('')
   }
 
-  const submitFormHandler = event => {
+  const submitFormHandler = async event => {
     event.preventDefault()
 
-    const localNotes = localStorage.notes ? JSON.parse(localStorage.notes) : []
-    const localLists = localStorage.lists ? JSON.parse(localStorage.lists) : []
-    const payload = {
-      name: name.trim(),
-      email,
-      password,
-      ...(action === SIGN_UP ? { notes: localNotes, lists: localLists } : {})
-    }
+    action === LOG_IN
+      ? await signInWithEmailAndPassword(auth, email, password)
+      : await createUserWithEmailAndPassword(auth, email, password)
 
-    if (action === LOG_IN) {
-      return login({
-        data: payload,
-        onSuccess: ({ data: { name, notes, lists } }) => {
-          setUser({ name })
-          setNotes(notes)
-          setLists(lists)
-          resetAuthVisible()
-        }
-      })
-    }
-
-    signUp({
-      data: payload,
-      onSuccess: ({ data: { name, notes, lists, token } }) => {
-        localStorage.clear()
-        if (safari) localStorage.setItem('token', token)
-
-        setUser({ name })
-        setNotes(notes)
-        setLists(lists)
-        resetAuthVisible()
-      }
-    })
+    resetAuthVisible()
   }
 
-  const loading = loadingLogin || loadingSignup
-  const error = errorLogin || errorSignup
+  const error = undefined
 
   return (
     <>
@@ -111,18 +65,9 @@ const Auth = () => {
             <p className={style.error}>{error?.response.data.err}</p>
           </If>
 
-          {action === SIGN_UP ? (
-            <input
-              className={style.field}
-              type="text"
-              value={name}
-              placeholder="Name"
-              required
-              onChange={event => setName(event.target.value)}
-            />
-          ) : (
+          <If condition={action === SIGN_UP}>
             <p className={style.description}>Login to have your notes and files saved on the cloud</p>
-          )}
+          </If>
 
           <input
             className={style.field}

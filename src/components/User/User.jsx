@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react'
-import { useRecoilState, useSetRecoilState, useResetRecoilState } from 'recoil'
+import { useRecoilValue, useResetRecoilState } from 'recoil'
+import { signOut } from 'firebase/auth'
 import { If, useAxios } from 'frontend-essentials'
 import cx from 'clsx'
 
+import { auth } from 'firebase-app'
 import { authVisibleState } from 'containers/App/atoms'
-import { notesState } from 'containers/Notes/atoms'
-import { listsState } from 'containers/Lists/atoms'
-import { filesState } from 'containers/Files/atoms'
-import { userSelector } from 'containers/App/selectors'
+import { userState } from 'containers/App/atoms'
 import { LOGOUT } from './constants'
 import Backdrop from 'components/Backdrop'
 
@@ -15,13 +14,9 @@ import style from './User.scss'
 import UserLogoIcon from 'images/user-astronaut.svg'
 
 const User = () => {
-  const [user, setUser] = useRecoilState(userSelector)
+  const user = useRecoilValue(userState)
   const resetAuthVisible = useResetRecoilState(authVisibleState)
-  const setNotes = useSetRecoilState(notesState)
-  const setLists = useSetRecoilState(listsState)
-  const resetFiles = useResetRecoilState(filesState)
 
-  const [name, setName] = useState(user.name)
   const [password, setPassword] = useState('')
   const [changePasswordMode, setChangePasswordMode] = useState(false)
   const [newPassword, setNewPassword] = useState()
@@ -32,13 +27,7 @@ const User = () => {
     activate: changePassword
   } = useAxios({ url: '/change-password', method: 'put', manual: true })
 
-  const { activate: updateUser } = useAxios({ url: '/user', method: 'put', manual: true })
-
-  const {
-    loading: loadingLogout,
-    error: errorLogout,
-    activate: logout
-  } = useAxios({ url: '/logout', method: 'post', manual: true })
+  const { loading: loadingLogout, error: errorLogout } = useAxios({ url: '/logout', method: 'post', manual: true })
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -52,23 +41,9 @@ const User = () => {
     changePassword({ data: { password, newPassword }, onSuccess: resetAuthVisible })
   }
 
-  const onLogout = () => {
-    logout({
-      onSuccess: () => {
-        localStorage.removeItem('userNotes')
-        localStorage.removeItem('userLists')
-        localStorage.removeItem('token')
-
-        setNotes(JSON.parse(localStorage.notes || '[]'))
-        setLists(JSON.parse(localStorage.lists || '[]'))
-        resetFiles()
-
-        setTimeout(() => {
-          setUser({ name: null })
-          resetAuthVisible()
-        })
-      }
-    })
+  const onLogout = async () => {
+    await signOut(auth)
+    resetAuthVisible()
   }
 
   const loading = loadingChangePassword || loadingLogout
@@ -80,15 +55,7 @@ const User = () => {
       <div className={style.wrapper}>
         <UserLogoIcon className={style.userLogo} />
 
-        <input
-          className={style.name}
-          value={name}
-          onChange={event => setName(event.target.value)}
-          onBlur={() => {
-            updateUser({ data: { name } })
-            setUser({ name })
-          }}
-        />
+        <div className={style.name}>{user.email}</div>
 
         <If condition={errorLogout || errorChangePassword}>
           <p className={cx('text-align-center', 'red')}>{errorLogout ? 'Failed to logout' : 'Incorrect password'}</p>

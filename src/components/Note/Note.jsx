@@ -4,6 +4,7 @@ import useClickOutside from 'use-click-outside'
 import TextareaAutosize from 'react-textarea-autosize'
 import { If } from 'frontend-essentials'
 import isEqual from 'lodash/isEqual'
+import pickBy from 'lodash/pickBy'
 import cx from 'clsx'
 
 import { CATEGORY, TITLE, SAVE, DELETE_MESSAGE } from './constants'
@@ -20,18 +21,14 @@ const defaultItems = [emptyItem]
 const Note = ({
   variant,
   empty,
-  _id,
-  pinned = false,
+  pinned,
   category: propsCategory = '',
   title: propsTitle = '',
   content: propsContent = '',
   items: propsItems = defaultItems,
   date,
-  loading,
   onCreate,
-  onUpdatePin,
   onUpdate,
-  onCheckItem,
   onDelete
 }) => {
   const [category, setCategory] = useState(propsCategory)
@@ -69,17 +66,19 @@ const Note = ({
   const onSave = event => {
     event.preventDefault()
 
-    const note = {
-      pinned,
-      category: variant === TYPE_NOTE ? category.trim() : undefined,
-      title: title.trim(),
-      content: content.trim(),
-      items: variant === TYPE_LIST ? items.map(item => ({ ...item, value: item.value.trim() })) : undefined
-    }
+    const note = pickBy(
+      {
+        pinned: empty ? false : pinned,
+        category: variant === TYPE_NOTE ? category.trim() : undefined,
+        title: title.trim(),
+        content: content.trim(),
+        items: variant === TYPE_LIST ? items.map(item => ({ ...item, value: item.value.trim() })) : undefined,
+        date: new Date().toISOString()
+      },
+      value => !['', undefined, null].includes(value)
+    )
 
     if (empty) return onCreate(note, reset)
-
-    note._id = _id
 
     onUpdate(note)
     setEditMode(false)
@@ -91,7 +90,7 @@ const Note = ({
 
   return (
     <form
-      className={cx(style.wrapper, { [style.disabled]: loading })}
+      className={style.wrapper}
       ref={ref}
       autoComplete="off"
       onClick={() => {
@@ -108,7 +107,7 @@ const Note = ({
           className={cx(style.pinIcon, { [style.pinned]: pinned })}
           onClick={event => {
             event.stopPropagation()
-            onUpdatePin(_id, pinned)
+            onUpdate({ pinned: !pinned })
           }}
         />
       </If>
@@ -139,7 +138,6 @@ const Note = ({
       </If>
 
       <Content
-        id={_id}
         variant={variant}
         empty={empty}
         content={content}
@@ -147,11 +145,11 @@ const Note = ({
         keepExpanded={changed || editMode}
         setContent={setContent}
         setItems={setItems}
-        onCheckItem={onCheckItem}
+        onCheckItem={items => onUpdate({ items })}
       />
 
       <If condition={optionsVisible}>
-        <Options setConfirmMessage={setConfirmMessageVisible} onDelete={() => onDelete(_id)} />
+        <Options setConfirmMessage={setConfirmMessageVisible} onDelete={onDelete} />
       </If>
 
       {confirmMessageVisible ? (
@@ -170,18 +168,14 @@ const Note = ({
 Note.propTypes = {
   variant: oneOf([TYPE_NOTE, TYPE_LIST]).isRequired,
   empty: bool,
-  _id: string,
   pinned: bool,
   category: string,
   title: string,
   content: string,
   items: arrayOf(shape({ checked: bool, value: string })),
   date: string,
-  loading: bool,
   onCreate: func,
-  onUpdatePin: func,
   onUpdate: func,
-  onCheckItem: func,
   onDelete: func
 }
 

@@ -26,7 +26,7 @@ module.exports = (_, { mode }) => {
     module: {
       rules: [
         {
-          test: /\.(js|jsx)$/,
+          test: /\.(jsx?)$/,
           exclude: /node_modules/,
           loader: 'babel-loader'
         },
@@ -55,7 +55,7 @@ module.exports = (_, { mode }) => {
           generator: { filename: 'images/[name].[hash][ext]' }
         },
         {
-          test: /\.(woff|woff2|eot|ttf|otf)$/i,
+          test: /\.(woff2?|eot|ttf|otf)$/i,
           type: 'asset/resource',
           generator: { filename: 'fonts/[name].[hash][ext]' }
         }
@@ -81,7 +81,14 @@ module.exports = (_, { mode }) => {
       minimizer: ['...', new CssMinimizerPlugin()]
     },
     plugins: [
-      new EnvironmentPlugin({ SERVER_URL: 'http://localhost:5000' }),
+      new EnvironmentPlugin({
+        API_KEY: 'AIzaSyBc_oiYsyrpRBS8WaUmRTuE4LDhOcXXYL4',
+        AUTH_DOMAIN: 'flying-notes-firebase.firebaseapp.com',
+        PROJECT_ID: 'flying-notes-firebase',
+        STORAGE_BUCKET: 'flying-notes-firebase.appspot.com',
+        MESSAGING_SENDER_ID: '454554899321',
+        APP_ID: '1:454554899321:web:06103d14c2f3f6c3d315a8'
+      }),
       new MiniCssExtractPlugin({ filename: '[name].[contenthash].css' }),
       new ESLintPlugin(),
       new HtmlPlugin({ template: 'public/index.html' }),

@@ -1,13 +1,15 @@
 import { useState, useEffect, lazy, Suspense } from 'react'
 import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
-import { useRecoilValue } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { onAuthStateChanged } from 'firebase/auth'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { useSwipeable } from 'react-swipeable'
 import { Helmet } from 'react-helmet'
 import { If, useViewport } from 'frontend-essentials'
+import cloneDeep from 'lodash/cloneDeep'
 
-import { authVisibleState } from './atoms'
-import { userLoggedInSelector } from './selectors'
+import { auth } from 'firebase-app'
+import { userState, authVisibleState } from './atoms'
 import Notes from 'containers/Notes'
 import Lists from 'containers/Lists'
 import NavigationBar from 'components/NavigationBar'
@@ -24,7 +26,7 @@ const routes = ['/', '/lists', '/files']
 document.documentElement.setAttribute('data-theme', localStorage.theme || 'dark')
 
 const App = () => {
-  const userLoggedIn = useRecoilValue(userLoggedInSelector)
+  const [user, setUser] = useRecoilState(userState)
   const authVisible = useRecoilValue(authVisibleState)
 
   const [registrationWaiting, setRegistrationWaiting] = useState()
@@ -45,6 +47,7 @@ const App = () => {
     const handleRegistration = ({ detail: registration }) => setRegistrationWaiting(registration.waiting)
 
     window.addEventListener('serviceworkerupdate', handleRegistration)
+    onAuthStateChanged(auth, user => setUser(cloneDeep(user)))
 
     return () => window.removeEventListener('serviceworkerupdate', handleRegistration)
   }, [])
@@ -83,7 +86,7 @@ const App = () => {
 
       <NavigationBar />
 
-      <If condition={authVisible}>{userLoggedIn ? <User /> : <Auth />}</If>
+      <If condition={authVisible}>{user ? <User /> : <Auth />}</If>
 
       <TransitionGroup className={style[transitionDirection]}>
         <CSSTransition {...transitionOptions}>
