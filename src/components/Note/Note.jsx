@@ -30,7 +30,6 @@ const Note = ({
   date,
   onCreate,
   onUpdate,
-  onCheckItem,
   onDelete
 }) => {
   const [category, setCategory] = useState(propsCategory)
@@ -148,7 +147,7 @@ const Note = ({
         keepExpanded={changed || editMode}
         setContent={setContent}
         setItems={setItems}
-        onCheckItem={onCheckItem}
+        onCheckItem={items => onUpdate({ items })}
       />
 
       <If condition={optionsVisible}>
@@ -180,7 +179,6 @@ Note.propTypes = {
   date: string,
   onCreate: func,
   onUpdate: func,
-  onCheckItem: func,
   onDelete: func
 }
 

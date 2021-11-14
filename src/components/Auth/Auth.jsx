@@ -1,13 +1,11 @@
 import { useState, useEffect } from 'react'
-import { useSetRecoilState, useResetRecoilState } from 'recoil'
+import { useResetRecoilState } from 'recoil'
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
 import { If } from 'frontend-essentials'
 import cx from 'clsx'
 
 import { auth } from 'firebase-app'
 import { authVisibleState } from 'containers/App/atoms'
-import { notesSelector } from 'containers/Notes/selectors'
-import { listsSelector } from 'containers/Lists/selectors'
 import { LOG_IN, SIGN_UP } from './constants'
 import Backdrop from 'components/Backdrop'
 
@@ -15,8 +13,6 @@ import style from './Auth.scss'
 
 const Auth = () => {
   const resetAuthVisible = useResetRecoilState(authVisibleState)
-  const setNotes = useSetRecoilState(notesSelector)
-  const setLists = useSetRecoilState(listsSelector)
 
   const [action, setAction] = useState(LOG_IN)
   const [email, setEmail] = useState('')
@@ -37,33 +33,6 @@ const Auth = () => {
 
   const submitFormHandler = async event => {
     event.preventDefault()
-
-    const localNotes = localStorage.notes ? JSON.parse(localStorage.notes) : []
-    const localLists = localStorage.lists ? JSON.parse(localStorage.lists) : []
-
-    // if (action === LOG_IN) {
-    //   return login({
-    //     data: payload,
-    //     onSuccess: ({ data: { name, notes, lists } }) => {
-    //       setUser({ name })
-    //       setNotes(notes)
-    //       setLists(lists)
-    //       resetAuthVisible()
-    //     }
-    //   })
-    // }
-
-    // register({
-    //   data: payload,
-    //   onSuccess: ({ data: { name, notes, lists, token } }) => {
-    //     localStorage.clear()
-
-    //     setUser({ name })
-    //     setNotes(notes)
-    //     setLists(lists)
-    //     resetAuthVisible()
-    //   }
-    // })
 
     action === LOG_IN
       ? await signInWithEmailAndPassword(auth, email, password)

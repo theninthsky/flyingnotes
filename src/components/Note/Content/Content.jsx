@@ -15,7 +15,6 @@ const emptyItem = { value: '', checked: false }
 const Content = ({ id, variant, empty, content, items, keepExpanded, setContent, setItems, onCheckItem }) => {
   const [rowsHeight, setRowsHeight] = useState(0)
   const [expanded, setExpanded] = useState(false)
-  const [checkingItem, setCheckingItem] = useState(false)
 
   const contentRef = useRef()
   const itemsRef = useRef()
@@ -49,23 +48,19 @@ const Content = ({ id, variant, empty, content, items, keepExpanded, setContent,
     }
   }
 
-  const checkItem = async (event, index) => {
+  const checkItem = (event, index) => {
     event.stopPropagation()
 
     const item = items[index]
 
-    if (!item.value || checkingItem) return
-
-    setCheckingItem(true)
+    if (!item.value) return
 
     const otherItems = items.filter((_, ind) => ind !== index)
     const updatedItems = item.checked
       ? [{ ...item, checked: false }, ...otherItems]
       : [...otherItems, { ...item, checked: true }]
 
-    await onCheckItem(id, index, item, updatedItems)
-    setItems(updatedItems)
-    setCheckingItem(false)
+    onCheckItem(updatedItems)
   }
 
   const hasHiddenContent = variant === LIST ? items.length > 4 : rowsHeight === MAX_INITIAL_ROWS * 20

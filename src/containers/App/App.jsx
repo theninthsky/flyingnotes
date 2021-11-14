@@ -47,7 +47,7 @@ const App = () => {
     const handleRegistration = ({ detail: registration }) => setRegistrationWaiting(registration.waiting)
 
     window.addEventListener('serviceworkerupdate', handleRegistration)
-    onAuthStateChanged(auth, User => setUser(cloneDeep(User)))
+    onAuthStateChanged(auth, user => setUser(cloneDeep(user)))
 
     return () => window.removeEventListener('serviceworkerupdate', handleRegistration)
   }, [])

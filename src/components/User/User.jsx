@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useRecoilValue, useSetRecoilState, useResetRecoilState } from 'recoil'
+import { useRecoilValue, useResetRecoilState } from 'recoil'
 import { signOut } from 'firebase/auth'
 import { If, useAxios } from 'frontend-essentials'
 import cx from 'clsx'
@@ -7,9 +7,6 @@ import cx from 'clsx'
 import { auth } from 'firebase-app'
 import { authVisibleState } from 'containers/App/atoms'
 import { userState } from 'containers/App/atoms'
-import { notesState } from 'containers/Notes/atoms'
-import { listsState } from 'containers/Lists/atoms'
-import { filesState } from 'containers/Files/atoms'
 import { LOGOUT } from './constants'
 import Backdrop from 'components/Backdrop'
 
@@ -19,9 +16,6 @@ import UserLogoIcon from 'images/user-astronaut.svg'
 const User = () => {
   const user = useRecoilValue(userState)
   const resetAuthVisible = useResetRecoilState(authVisibleState)
-  const setNotes = useSetRecoilState(notesState)
-  const setLists = useSetRecoilState(listsState)
-  const resetFiles = useResetRecoilState(filesState)
 
   const [password, setPassword] = useState('')
   const [changePasswordMode, setChangePasswordMode] = useState(false)
@@ -33,13 +27,7 @@ const User = () => {
     activate: changePassword
   } = useAxios({ url: '/change-password', method: 'put', manual: true })
 
-  const { activate: updateUser } = useAxios({ url: '/user', method: 'put', manual: true })
-
-  const {
-    loading: loadingLogout,
-    error: errorLogout,
-    activate: logout
-  } = useAxios({ url: '/logout', method: 'post', manual: true })
+  const { loading: loadingLogout, error: errorLogout } = useAxios({ url: '/logout', method: 'post', manual: true })
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -54,23 +42,6 @@ const User = () => {
   }
 
   const onLogout = async () => {
-    // logout({
-    //   onSuccess: () => {
-    //     localStorage.removeItem('userNotes')
-    //     localStorage.removeItem('userLists')
-    //     localStorage.removeItem('token')
-
-    //     setNotes(JSON.parse(localStorage.notes || '[]'))
-    //     setLists(JSON.parse(localStorage.lists || '[]'))
-    //     resetFiles()
-
-    //     setTimeout(() => {
-    //       setUser({ name: null })
-    //       resetAuthVisible()
-    //     })
-    //   }
-    // })
-
     await signOut(auth)
     resetAuthVisible()
   }

@@ -41,28 +41,18 @@ const Notes = () => {
   }, [notes])
 
   const onCreateNote = async (note, reset) => {
-    if (collectionRef) {
-      addDoc(collectionRef, note)
-      return reset()
-    }
+    if (!collectionRef) return
 
-    const localNote = { ...note, _id: Date.now().toString() }
-
-    setNotes([...notes, localNote])
+    addDoc(collectionRef, note)
+    reset()
   }
 
   const onUpdateNote = (note, documentRef) => {
-    if (documentRef) return updateDoc(documentRef, note)
-
-    const updatedLocalNote = { ...note, date: new Date().toString() }
-
-    setNotes(notes.map(note => (note._id === updatedLocalNote._id ? updatedLocalNote : note)))
+    if (documentRef) updateDoc(documentRef, note)
   }
 
   const onDeleteNote = documentRef => {
-    if (!collectionRef) return setNotes(notes.filter(({ _id }) => _id !== noteID))
-
-    deleteDoc(documentRef)
+    if (collectionRef) deleteDoc(documentRef)
   }
 
   const categories = useMemo(
