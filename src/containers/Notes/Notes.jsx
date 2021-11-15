@@ -16,7 +16,7 @@ const Notes = ({ collectionRef, notes }) => {
     setFilteredNotes(notes)
   }, [notes])
 
-  const onCreateNote = async (note, reset) => {
+  const onCreateNote = (note, reset) => {
     addDoc(collectionRef, note)
     reset()
   }

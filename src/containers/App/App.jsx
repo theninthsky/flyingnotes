@@ -25,7 +25,7 @@ const routes = ['/', '/lists', '/files']
 document.documentElement.setAttribute('data-theme', localStorage.theme || 'dark')
 
 const App = () => {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(JSON.parse(localStorage.user || null))
   const [registrationWaiting, setRegistrationWaiting] = useState()
   const [prevLocation, setPrevLocation] = useState()
   const [currLocation, setCurrLocation] = useState()
@@ -33,9 +33,10 @@ const App = () => {
   const [notesCollectionRef, setNotesCollectionRef] = useState()
   const [listsCollectionRef, setListsCollectionRef] = useState()
   const [filesListRef, setFilesListRef] = useState()
-  const [notes, setNotes] = useState([])
-  const [lists, setLists] = useState([])
-  const [files, setFiles] = useState([])
+  const [notes, setNotes] = useState(JSON.parse(localStorage.notes || '[]'))
+  const [lists, setLists] = useState(JSON.parse(localStorage.lists || '[]'))
+  const [files, setFiles] = useState(JSON.parse(localStorage.files || '[]'))
+  const [cleanupUser, setCleanupUser] = useState(() => {})
 
   const navigate = useNavigate()
   const location = useLocation()
@@ -50,50 +51,55 @@ const App = () => {
   useEffect(() => {
     const handleRegistration = ({ detail: registration }) => setRegistrationWaiting(registration.waiting)
 
-    onAuthStateChanged(auth, setUser)
+    onAuthStateChanged(auth, user => {
+      setUser(user)
+      localStorage.setItem('user', JSON.stringify(user))
+    })
     window.addEventListener('serviceworkerupdate', handleRegistration)
 
     return () => window.removeEventListener('serviceworkerupdate', handleRegistration)
   }, [])
 
   useEffect(() => {
-    if (!user) return
+    const { uid } = user || {}
 
-    const { uid } = user
-
-    setNotesCollectionRef(collection(db, `users/${uid}/notes`))
-    setListsCollectionRef(collection(db, `users/${uid}/lists`))
-    setFilesListRef(ref(storage, uid))
+    setNotesCollectionRef(uid ? collection(db, `users/${uid}/notes`) : undefined)
+    setListsCollectionRef(uid ? collection(db, `users/${uid}/lists`) : undefined)
+    setFilesListRef(uid ? ref(storage, uid) : undefined)
   }, [user])
 
   useEffect(() => {
-    if (!notesCollectionRef || !listsCollectionRef) {
-      setNotes([])
-      return setLists([])
-    }
+    if (!notesCollectionRef || !listsCollectionRef) return
 
     const unsubscribeNotes = onSnapshot(
       query(notesCollectionRef, orderBy('pinned', 'desc'), orderBy('date', 'desc')),
       snapshot => {
-        setNotes(snapshot.docs.map(doc => ({ documentRef: doc.ref, id: doc.id, ...doc.data() })))
+        const notes = snapshot.docs.map(doc => ({ documentRef: doc.ref, id: doc.id, ...doc.data() }))
+
+        setNotes(notes)
+        localStorage.setItem('notes', JSON.stringify(notes))
       }
     )
 
     const unsubscribeLists = onSnapshot(
       query(listsCollectionRef, orderBy('pinned', 'desc'), orderBy('date', 'desc')),
       snapshot => {
-        setLists(snapshot.docs.map(doc => ({ documentRef: doc.ref, id: doc.id, ...doc.data() })))
+        const lists = snapshot.docs.map(doc => ({ documentRef: doc.ref, id: doc.id, ...doc.data() }))
+
+        setLists(lists)
+        localStorage.setItem('lists', JSON.stringify(lists))
       }
     )
 
-    return () => {
+    setCleanupUser(() => () => {
       unsubscribeNotes()
       unsubscribeLists()
-    }
+      localStorage.clear()
+    })
   }, [notesCollectionRef, listsCollectionRef])
 
   useEffect(() => {
-    filesListRef ? getFiles() : setFiles([])
+    if (filesListRef) getFiles()
   }, [filesListRef])
 
   useEffect(() => {
@@ -103,14 +109,14 @@ const App = () => {
 
   const getFiles = async () => {
     const { items } = await listAll(filesListRef)
+    const files = items.map(item => {
+      const [name, extension] = item.name.split('.')
 
-    setFiles(
-      items.map(item => {
-        const [name, extension] = item.name.split('.')
+      return { itemRef: item, id: item.name, name, extension }
+    })
 
-        return { itemRef: item, id: item.name, name, extension }
-      })
-    )
+    setFiles(files)
+    localStorage.setItem('files', JSON.stringify(files))
   }
 
   const changeRoute = dir => {
@@ -134,6 +140,8 @@ const App = () => {
     ? { key: location.key, timeout: 200, classNames: { ...style } }
     : { timeout: 0, classNames: '' }
 
+  if (!user) return <Auth onClose={() => setAuthVisible(false)} />
+
   return (
     <>
       <If condition={window.matchMedia('(display-mode: standalone)').matches && registrationWaiting}>
@@ -143,11 +151,7 @@ const App = () => {
       <NavigationBar user={user} authVisible={authVisible} setAuthVisible={setAuthVisible} />
 
       <If condition={authVisible}>
-        {user ? (
-          <User user={user} onClose={() => setAuthVisible(false)} />
-        ) : (
-          <Auth onClose={() => setAuthVisible(false)} />
-        )}
+        <User user={user} cleanupUser={cleanupUser} onClose={() => setAuthVisible(false)} />
       </If>
 
       <TransitionGroup className={style[transitionDirection]}>

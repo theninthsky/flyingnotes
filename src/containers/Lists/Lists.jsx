@@ -8,7 +8,7 @@ import style from './Lists.scss'
 const Lists = ({ collectionRef, lists }) => {
   const { viewport12 } = useViewport({ viewport12: '(min-width: 1200px)' })
 
-  const onCreateList = async (list, reset) => {
+  const onCreateList = (list, reset) => {
     addDoc(collectionRef, list)
     reset()
   }

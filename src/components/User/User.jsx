@@ -4,13 +4,14 @@ import { If, useAxios } from 'frontend-essentials'
 import cx from 'clsx'
 
 import { auth } from 'firebase-app'
-import { LOGOUT } from './constants'
 import Backdrop from 'components/Backdrop'
 
 import style from './User.scss'
 import UserLogoIcon from 'images/user-astronaut.svg'
 
-const User = ({ user, onClose }) => {
+export const LOGOUT = 'Logout'
+
+const User = ({ user, cleanupUser, onClose }) => {
   const [password, setPassword] = useState('')
   const [changePasswordMode, setChangePasswordMode] = useState(false)
   const [newPassword, setNewPassword] = useState()
@@ -36,6 +37,7 @@ const User = ({ user, onClose }) => {
   }
 
   const onLogout = async () => {
+    cleanupUser()
     await signOut(auth)
     onClose()
   }
