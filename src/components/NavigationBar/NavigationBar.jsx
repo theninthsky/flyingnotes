@@ -1,11 +1,8 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { useRecoilState, useRecoilValue } from 'recoil'
 import { If } from 'frontend-essentials'
 import cx from 'clsx'
 
-import { userState, authVisibleState } from 'containers/App/atoms'
-import { userLoggedInSelector } from 'containers/App/selectors'
 import { THEME_LIGHT, THEME_DARK, LOG_IN } from './constants'
 import CookiesMessage from 'components/CookiesMessage'
 
@@ -14,11 +11,7 @@ import Logo from 'images/logo.svg'
 import ThemeIcon from 'images/theme.svg'
 import UserIcon from 'images/user-astronaut.svg'
 
-const NavigationBar = () => {
-  const user = useRecoilValue(userState)
-  const userLoggedIn = useRecoilValue(userLoggedInSelector)
-  const [authVisible, setAuthVisible] = useRecoilState(authVisibleState)
-
+const NavigationBar = ({ user, authVisible, setAuthVisible }) => {
   const [cookiesMessageIsVisible, setCookiesMessageIsVisible] = useState(true)
 
   const toggleTheme = () => {
@@ -42,7 +35,7 @@ const NavigationBar = () => {
             Lists
           </NavLink>
 
-          <If condition={userLoggedIn}>
+          <If condition={user}>
             <NavLink className={({ isActive }) => cx(style.navLink, { [style.active]: isActive })} to="/files">
               Files
             </NavLink>
@@ -52,7 +45,7 @@ const NavigationBar = () => {
         <div className={cx('d-flex', 'align-items-center')}>
           <ThemeIcon className={style.themeIcon} onClick={toggleTheme} />
 
-          {userLoggedIn ? (
+          {user ? (
             <button className={style.auth} title={user.name} onClick={() => setAuthVisible(!authVisible)}>
               <UserIcon className={style.userIcon} />
             </button>
@@ -71,7 +64,7 @@ const NavigationBar = () => {
         </div>
       </nav>
 
-      <If condition={cookiesMessageIsVisible && !userLoggedIn}>
+      <If condition={cookiesMessageIsVisible && !user}>
         <CookiesMessage onClick={() => setCookiesMessageIsVisible(false)} />
       </If>
     </>

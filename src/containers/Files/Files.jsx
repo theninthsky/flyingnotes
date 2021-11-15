@@ -1,10 +1,6 @@
-import { useState, useEffect } from 'react'
-import { useRecoilValue } from 'recoil'
-import { ref, listAll, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'
-import { useNavigate } from 'react-router-dom'
+import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'
 
 import { storage } from 'firebase-app'
-import { userState } from 'containers/App/atoms'
 import File from 'components/File'
 
 import style from './Files.scss'
@@ -19,38 +15,7 @@ const saveFile = (blob, name) => {
   document.body.removeChild(link)
 }
 
-const Files = () => {
-  const user = useRecoilValue(userState)
-
-  const [listRef, setListRef] = useState()
-  const [files, setFiles] = useState([])
-
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    if (!user) navigate('/', { replace: true })
-  }, [user, navigate])
-
-  useEffect(() => {
-    setListRef(user ? ref(storage, user.uid) : undefined)
-  }, [user])
-
-  useEffect(() => {
-    listRef ? getFiles() : setFiles([])
-  }, [listRef])
-
-  const getFiles = async () => {
-    const { items } = await listAll(listRef)
-
-    setFiles(
-      items.map(item => {
-        const [name, extension] = item.name.split('.')
-
-        return { itemRef: item, id: item.name, name, extension }
-      })
-    )
-  }
-
+const Files = ({ user, files, getFiles }) => {
   const onUpload = async (file, reset) => {
     const storageRef = ref(storage, `${user.uid}/${file.name}`)
 

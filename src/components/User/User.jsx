@@ -1,22 +1,16 @@
 import { useState, useEffect } from 'react'
-import { useRecoilValue, useResetRecoilState } from 'recoil'
 import { signOut } from 'firebase/auth'
 import { If, useAxios } from 'frontend-essentials'
 import cx from 'clsx'
 
 import { auth } from 'firebase-app'
-import { authVisibleState } from 'containers/App/atoms'
-import { userState } from 'containers/App/atoms'
 import { LOGOUT } from './constants'
 import Backdrop from 'components/Backdrop'
 
 import style from './User.scss'
 import UserLogoIcon from 'images/user-astronaut.svg'
 
-const User = () => {
-  const user = useRecoilValue(userState)
-  const resetAuthVisible = useResetRecoilState(authVisibleState)
-
+const User = ({ user, onClose }) => {
   const [password, setPassword] = useState('')
   const [changePasswordMode, setChangePasswordMode] = useState(false)
   const [newPassword, setNewPassword] = useState()
@@ -38,19 +32,19 @@ const User = () => {
   const onChangePassword = async event => {
     event.preventDefault()
 
-    changePassword({ data: { password, newPassword }, onSuccess: resetAuthVisible })
+    changePassword({ data: { password, newPassword }, onSuccess: onClose })
   }
 
   const onLogout = async () => {
     await signOut(auth)
-    resetAuthVisible()
+    onClose()
   }
 
   const loading = loadingChangePassword || loadingLogout
 
   return (
     <>
-      <Backdrop onClick={resetAuthVisible} />
+      <Backdrop onClick={onClose} />
 
       <div className={style.wrapper}>
         <UserLogoIcon className={style.userLogo} />

@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
-import { RecoilRoot } from 'recoil'
 import { signOut } from 'firebase/auth'
 import { ErrorBoundary } from 'react-error-boundary'
 
@@ -12,12 +11,10 @@ import 'normalize.css'
 import 'styles/_globals.scss'
 
 ReactDOM.render(
-  <RecoilRoot>
-    <BrowserRouter>
-      <ErrorBoundary fallback={<div>An error occured, please reload the app.</div>} onError={() => signOut(auth)}>
-        <App />
-      </ErrorBoundary>
-    </BrowserRouter>
-  </RecoilRoot>,
+  <BrowserRouter>
+    <ErrorBoundary fallback={<div>An error occured, please reload the app.</div>} onError={() => signOut(auth)}>
+      <App />
+    </ErrorBoundary>
+  </BrowserRouter>,
   document.getElementById('root')
 )

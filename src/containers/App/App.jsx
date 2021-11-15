@@ -1,15 +1,14 @@
 import { useState, useEffect, lazy, Suspense } from 'react'
 import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
-import { useRecoilState, useRecoilValue } from 'recoil'
 import { onAuthStateChanged } from 'firebase/auth'
+import { collection, query, orderBy, onSnapshot } from 'firebase/firestore'
+import { ref, listAll } from 'firebase/storage'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { useSwipeable } from 'react-swipeable'
 import { Helmet } from 'react-helmet'
 import { If, useViewport } from 'frontend-essentials'
-import cloneDeep from 'lodash/cloneDeep'
 
-import { auth } from 'firebase-app'
-import { userState, authVisibleState } from './atoms'
+import { auth, db, storage } from 'firebase-app'
 import Notes from 'containers/Notes'
 import Lists from 'containers/Lists'
 import NavigationBar from 'components/NavigationBar'
@@ -26,12 +25,17 @@ const routes = ['/', '/lists', '/files']
 document.documentElement.setAttribute('data-theme', localStorage.theme || 'dark')
 
 const App = () => {
-  const [user, setUser] = useRecoilState(userState)
-  const authVisible = useRecoilValue(authVisibleState)
-
+  const [user, setUser] = useState(null)
   const [registrationWaiting, setRegistrationWaiting] = useState()
   const [prevLocation, setPrevLocation] = useState()
   const [currLocation, setCurrLocation] = useState()
+  const [authVisible, setAuthVisible] = useState(false)
+  const [notesCollectionRef, setNotesCollectionRef] = useState()
+  const [listsCollectionRef, setListsCollectionRef] = useState()
+  const [filesListRef, setFilesListRef] = useState()
+  const [notes, setNotes] = useState([])
+  const [lists, setLists] = useState([])
+  const [files, setFiles] = useState([])
 
   const navigate = useNavigate()
   const location = useLocation()
@@ -46,16 +50,68 @@ const App = () => {
   useEffect(() => {
     const handleRegistration = ({ detail: registration }) => setRegistrationWaiting(registration.waiting)
 
+    onAuthStateChanged(auth, setUser)
     window.addEventListener('serviceworkerupdate', handleRegistration)
-    onAuthStateChanged(auth, user => setUser(cloneDeep(user)))
 
     return () => window.removeEventListener('serviceworkerupdate', handleRegistration)
   }, [])
 
   useEffect(() => {
+    if (!user) return
+
+    const { uid } = user
+
+    setNotesCollectionRef(collection(db, `users/${uid}/notes`))
+    setListsCollectionRef(collection(db, `users/${uid}/lists`))
+    setFilesListRef(ref(storage, uid))
+  }, [user])
+
+  useEffect(() => {
+    if (!notesCollectionRef || !listsCollectionRef) {
+      setNotes([])
+      return setLists([])
+    }
+
+    const unsubscribeNotes = onSnapshot(
+      query(notesCollectionRef, orderBy('pinned', 'desc'), orderBy('date', 'desc')),
+      snapshot => {
+        setNotes(snapshot.docs.map(doc => ({ documentRef: doc.ref, id: doc.id, ...doc.data() })))
+      }
+    )
+
+    const unsubscribeLists = onSnapshot(
+      query(listsCollectionRef, orderBy('pinned', 'desc'), orderBy('date', 'desc')),
+      snapshot => {
+        setLists(snapshot.docs.map(doc => ({ documentRef: doc.ref, id: doc.id, ...doc.data() })))
+      }
+    )
+
+    return () => {
+      unsubscribeNotes()
+      unsubscribeLists()
+    }
+  }, [notesCollectionRef, listsCollectionRef])
+
+  useEffect(() => {
+    filesListRef ? getFiles() : setFiles([])
+  }, [filesListRef])
+
+  useEffect(() => {
     setPrevLocation(currLocation)
     setCurrLocation(location.pathname)
   }, [location])
+
+  const getFiles = async () => {
+    const { items } = await listAll(filesListRef)
+
+    setFiles(
+      items.map(item => {
+        const [name, extension] = item.name.split('.')
+
+        return { itemRef: item, id: item.name, name, extension }
+      })
+    )
+  }
 
   const changeRoute = dir => {
     const index = routes.indexOf(currLocation)
@@ -84,9 +140,15 @@ const App = () => {
         <UpdateAlert onClick={replaceSW} />
       </If>
 
-      <NavigationBar />
+      <NavigationBar user={user} authVisible={authVisible} setAuthVisible={setAuthVisible} />
 
-      <If condition={authVisible}>{user ? <User /> : <Auth />}</If>
+      <If condition={authVisible}>
+        {user ? (
+          <User user={user} onClose={() => setAuthVisible(false)} />
+        ) : (
+          <Auth onClose={() => setAuthVisible(false)} />
+        )}
+      </If>
 
       <TransitionGroup className={style[transitionDirection]}>
         <CSSTransition {...transitionOptions}>
@@ -99,7 +161,7 @@ const App = () => {
                     <title>My Notes</title>
                   </Helmet>
 
-                  <Notes />
+                  <Notes collectionRef={notesCollectionRef} notes={notes} />
                 </div>
               }
             />
@@ -112,7 +174,7 @@ const App = () => {
                     <title>My Lists</title>
                   </Helmet>
 
-                  <Lists />
+                  <Lists collectionRef={listsCollectionRef} lists={lists} />
                 </div>
               }
             />
@@ -126,7 +188,7 @@ const App = () => {
                   </Helmet>
 
                   <Suspense fallback={<></>}>
-                    <Files />
+                    <Files user={user} files={files} getFiles={getFiles} />
                   </Suspense>
                 </div>
               }

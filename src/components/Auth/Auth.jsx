@@ -1,19 +1,15 @@
 import { useState, useEffect } from 'react'
-import { useResetRecoilState } from 'recoil'
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
 import { If } from 'frontend-essentials'
 import cx from 'clsx'
 
 import { auth } from 'firebase-app'
-import { authVisibleState } from 'containers/App/atoms'
 import { LOG_IN, SIGN_UP } from './constants'
 import Backdrop from 'components/Backdrop'
 
 import style from './Auth.scss'
 
-const Auth = () => {
-  const resetAuthVisible = useResetRecoilState(authVisibleState)
-
+const Auth = ({ onClose }) => {
   const [action, setAction] = useState(LOG_IN)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -38,14 +34,14 @@ const Auth = () => {
       ? await signInWithEmailAndPassword(auth, email, password)
       : await createUserWithEmailAndPassword(auth, email, password)
 
-    resetAuthVisible()
+    onClose()
   }
 
   const error = undefined
 
   return (
     <>
-      <Backdrop onClick={resetAuthVisible} />
+      <Backdrop onClick={onClose} />
 
       <div className={style.wrapper}>
         <div className={style.title}>
