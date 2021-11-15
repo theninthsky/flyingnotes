@@ -9,7 +9,7 @@ import Backdrop from 'components/Backdrop'
 import style from './User.scss'
 import UserLogoIcon from 'images/user-astronaut.svg'
 
-export const LOGOUT = 'Logout'
+const LOGOUT = 'Logout'
 
 const User = ({ user, cleanupUser, onClose }) => {
   const [password, setPassword] = useState('')

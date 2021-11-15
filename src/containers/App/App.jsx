@@ -140,7 +140,7 @@ const App = () => {
     ? { key: location.key, timeout: 200, classNames: { ...style } }
     : { timeout: 0, classNames: '' }
 
-  if (!user) return <Auth onClose={() => setAuthVisible(false)} />
+  if (!user) return <Auth />
 
   return (
     <>

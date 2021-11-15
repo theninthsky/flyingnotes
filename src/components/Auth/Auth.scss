@@ -10,7 +10,8 @@
   height: 440px;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
+  align-items: center;
   padding: 0 25px;
   border: 1px solid var(--secondary-color);
   border-radius: 4px;
@@ -29,76 +30,22 @@
   }
 }
 
-.title {
+.signIn {
   display: flex;
-  justify-content: space-evenly;
-  text-align: center;
-}
-
-.divider {
-  margin-top: 5%;
-  height: 50px;
-  border: 0.5px solid rgb(128, 128, 128);
-}
-
-.action {
-  font-size: 28px;
-  opacity: 0.4;
-  cursor: pointer;
-
-  &:hover {
-    opacity: 1;
-  }
-}
-
-.selected {
-  opacity: 1;
-  cursor: default;
-}
-
-.error {
-  margin-bottom: 10%;
-  text-align: center;
-  color: red;
-}
-
-.field,
-.submit {
-  display: block;
-  margin: 1vh auto;
-  padding: 4px;
-  border: none;
-  border-bottom: 1px solid lightgray;
-  outline: none;
-  color: var(--text-color);
-  background-color: var(--primary-color);
-
-  &::placeholder {
-    color: var(--placeholder-color);
-  }
-}
-
-.description {
-  margin-bottom: 40px;
-  text-align: center;
-}
-
-.submit {
-  margin-top: 30px;
-  padding: 6px 8px;
-  border: 1px solid var(--text-color);
+  align-items: center;
+  width: fit-content;
+  padding: 0;
+  border: 1px solid white;
   border-radius: 4px;
-  color: inherit;
-  background-color: var(--secondary-color);
-  outline: none;
-  cursor: pointer;
+  color: white;
+  background-color: transparent;
 
   &:hover {
     opacity: 0.75;
+    cursor: pointer;
   }
+}
 
-  &:disabled {
-    opacity: 0.5;
-    cursor: default;
-  }
+.signInText {
+  margin: 0 10px;
 }
