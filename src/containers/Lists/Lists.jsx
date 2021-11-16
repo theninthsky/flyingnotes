@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { addDoc, updateDoc, deleteDoc } from 'firebase/firestore'
 import { LazyRender, useViewport } from 'frontend-essentials'
 
@@ -35,4 +36,4 @@ const Lists = ({ collectionRef, lists }) => {
   )
 }
 
-export default Lists
+export default memo(Lists)

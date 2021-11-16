@@ -29,8 +29,8 @@
     "react-textarea-autosize": "^8.3.3",
     "react-transition-group": "^4.4.2",
     "use-click-outside": "^2.0.0",
-    "workbox-core": "^6.3.0",
-    "workbox-precaching": "^6.3.0"
+    "workbox-core": "^6.4.1",
+    "workbox-precaching": "^6.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",
@@ -54,14 +54,14 @@
     "mini-css-extract-plugin": "^2.4.4",
     "postcss": "^8.3.11",
     "postcss-loader": "^6.2.0",
-    "postcss-preset-env": "^6.7.0",
+    "postcss-preset-env": "^7.0.0",
     "sass": "^1.43.4",
     "sass-loader": "^12.3.0",
     "serve": "^13.0.2",
     "style-loader": "^3.3.1",
-    "webpack": "^5.64.0",
+    "webpack": "^5.64.1",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.5.0",
-    "workbox-webpack-plugin": "^6.3.0"
+    "workbox-webpack-plugin": "^6.4.1"
   }
 }

@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, memo } from 'react'
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'
 
 import { storage } from 'firebase-app'
@@ -59,4 +59,4 @@ const Files = ({ user, files, getFiles }) => {
   )
 }
 
-export default Files
+export default memo(Files)

@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, memo } from 'react'
 import { addDoc, updateDoc, deleteDoc } from 'firebase/firestore'
 import { LazyRender, useViewport } from 'frontend-essentials'
 
@@ -71,4 +71,4 @@ const Notes = ({ collectionRef, notes }) => {
   )
 }
 
-export default Notes
+export default memo(Notes)
