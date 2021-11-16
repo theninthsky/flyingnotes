@@ -27,7 +27,7 @@ const Lists = ({ collectionRef, lists }) => {
             items={items}
             date={date}
             onUpdate={list => updateDoc(documentRef, list)}
-            onDelete={deleteDoc}
+            onDelete={() => deleteDoc(documentRef)}
           />
         )}
       </LazyRender>

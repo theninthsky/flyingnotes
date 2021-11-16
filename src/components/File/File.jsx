@@ -9,13 +9,15 @@ import UploadIcon from 'images/upload.svg'
 import DownloadIcon from 'images/download.svg'
 import DeleteIcon from 'images/delete.svg'
 
-const MAX_FILESIZE_IN_MB = 50
+const MAX_FILESIZE_IN_MB = 100
 
 const File = ({ newFile, name: fileName = '', extension: fileExtension = '', onUpload, onDownload, onDelete }) => {
   const [name, setName] = useState(fileName)
   const [extension, setExtension] = useState(fileExtension)
   const [selectedFile, setSelectedFile] = useState()
   const [deleteIsVisible, setDeleteIsVisible] = useState(false)
+  const [uploading, setUploading] = useState(false)
+  const [downloading, setDownloading] = useState(false)
 
   const fileRef = useRef()
 
@@ -26,9 +28,6 @@ const File = ({ newFile, name: fileName = '', extension: fileExtension = '', onU
     setExtension('')
     setSelectedFile(null)
   }
-
-  const loadingUpload = false
-  const loadingDownload = false
 
   const loadFile = event => {
     const [file] = event.target.files
@@ -49,17 +48,25 @@ const File = ({ newFile, name: fileName = '', extension: fileExtension = '', onU
     }
   }
 
-  const uploadFile = event => {
+  const uploadFile = async event => {
     event.preventDefault()
 
     if (!name) return alert('File name is required')
 
-    onUpload(selectedFile, reset)
+    setUploading(true)
+    await onUpload(selectedFile, reset)
+    setUploading(false)
+  }
+
+  const downloadFile = async () => {
+    setDownloading(true)
+    await onDownload()
+    setDownloading(false)
   }
 
   return (
     <form
-      className={cx(style.wrapper, { [style.disabled]: loadingUpload })}
+      className={cx(style.wrapper, { [style.disabled]: uploading })}
       ref={fileRef}
       autoComplete="off"
       onClick={() => setDeleteIsVisible(true)}
@@ -105,8 +112,8 @@ const File = ({ newFile, name: fileName = '', extension: fileExtension = '', onU
 
         <If condition={!newFile}>
           <DownloadIcon
-            className={cx(style.downloadIcon, { [style.downloading]: loadingDownload })}
-            onClick={onDownload}
+            className={cx(style.downloadIcon, { [style.downloading]: downloading })}
+            onClick={downloadFile}
           />
         </If>
       </div>

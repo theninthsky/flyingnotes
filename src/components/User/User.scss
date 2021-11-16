@@ -7,7 +7,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 90vw;
-  height: 380px;
+  height: 300px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -36,7 +36,7 @@
   width: 60px;
 }
 
-.name {
+.email {
   align-self: center;
   padding: 4px 0;
   outline: none;
@@ -52,39 +52,9 @@
   }
 }
 
-.changePassword {
-  display: block;
-  margin: 0 auto;
-  border: none;
-  color: inherit;
-  font-size: 14px;
-  background-color: transparent;
-  cursor: pointer;
-
-  &:hover {
-    opacity: 0.75;
-  }
-}
-
-.field,
-.submit {
-  display: block;
-  margin: 1vh auto;
-  padding: 4px;
-  border: none;
-  border-bottom: 1px solid lightgray;
-  outline: none;
-  color: var(--text-color);
-  background-color: var(--primary-color);
-
-  &::placeholder {
-    color: var(--placeholder-color);
-  }
-}
-
-.submit {
-  margin-top: 30px;
-  padding: 6px 8px;
+.logout {
+  margin: 30px auto 0;
+  padding: 6px 20px;
   border: 1px solid var(--text-color);
   border-radius: 4px;
   color: inherit;
@@ -94,10 +64,5 @@
 
   &:hover {
     opacity: 0.75;
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: default;
   }
 }

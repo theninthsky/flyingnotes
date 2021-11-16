@@ -62,7 +62,7 @@ const Notes = ({ collectionRef, notes }) => {
               content={content}
               date={date}
               onUpdate={note => updateDoc(documentRef, note)}
-              onDelete={deleteDoc}
+              onDelete={() => deleteDoc(documentRef)}
             />
           )}
         </LazyRender>

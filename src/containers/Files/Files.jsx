@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'
 
 import { storage } from 'firebase-app'
@@ -16,6 +17,10 @@ const saveFile = (blob, name) => {
 }
 
 const Files = ({ user, files, getFiles }) => {
+  useEffect(() => {
+    getFiles()
+  }, [])
+
   const onUpload = async (file, reset) => {
     const storageRef = ref(storage, `${user.uid}/${file.name}`)
 
