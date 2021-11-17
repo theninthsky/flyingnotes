@@ -78,7 +78,14 @@ module.exports = (_, { mode }) => {
           }
         }
       },
-      minimizer: ['...', new CssMinimizerPlugin()]
+      minimizer: [
+        '...',
+        new CssMinimizerPlugin({
+          minimizerOptions: {
+            preset: ['default', { discardComments: { removeAll: true } }]
+          }
+        })
+      ]
     },
     plugins: [
       new EnvironmentPlugin({

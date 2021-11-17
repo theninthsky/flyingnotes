@@ -1,16 +1,11 @@
 import React from 'react'
-import { BrowserRouter as Router } from 'react-router-dom'
-import { RecoilRoot } from 'recoil'
+import { BrowserRouter } from 'react-router-dom'
 import { render } from '@testing-library/react'
 
 import './mocks'
 
 const AllTheProviders = ({ children }) => {
-  return (
-    <RecoilRoot>
-      <Router>{children}</Router>
-    </RecoilRoot>
-  )
+  return <BrowserRouter>{children}</BrowserRouter>
 }
 
 const customRender = (ui, options) => render(ui, { wrapper: AllTheProviders, ...options })

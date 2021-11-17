@@ -22,7 +22,7 @@ const Files = lazy(() => import(/* webpackPrefetch: true */ 'containers/Files'))
 
 const routes = ['/', '/lists', '/files']
 
-document.documentElement.setAttribute('data-theme', localStorage.theme || 'dark')
+document.documentElement.setAttribute('data-theme', localStorage.theme || 'light')
 
 const App = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.user || null))

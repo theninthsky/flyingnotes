@@ -1,22 +1,12 @@
 @import 'styles/variables';
 
 .wrapper {
-  z-index: 3;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90vw;
-  height: 440px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0 25px;
-  border: 1px solid var(--secondary-color);
-  border-radius: 4px;
+  padding: 0 50px;
   box-sizing: border-box;
-  background-color: var(--primary-color);
   animation: showAuth 0.25s;
 
   @keyframes showAuth {
@@ -27,25 +17,68 @@
 
   @media ($viewport-4) {
     width: 420px;
+    margin: 25vh auto 0;
+    border: 1px solid var(--secondary-color);
+    border-radius: 4px;
   }
 }
 
-.signIn {
-  display: flex;
-  align-items: center;
-  width: fit-content;
-  padding: 0;
-  border: 1px solid white;
-  border-radius: 4px;
-  color: white;
-  background-color: transparent;
+.title {
+  margin-top: 40px;
+  font-weight: 300;
+  color: var(--text-color);
+}
+
+.googleSignIn {
+  width: 200px;
+  margin-top: 25px;
+  cursor: pointer;
 
   &:hover {
     opacity: 0.75;
-    cursor: pointer;
   }
 }
 
-.signInText {
-  margin: 0 10px;
+.delimiter {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  opacity: 0.5;
+}
+
+.divider {
+  width: 100px;
+  height: 1px;
+  background-color: var(--text-color);
+}
+
+.or {
+  margin: 0 18px;
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.input {
+  margin: 2.5px 0;
+  padding: 5px;
+}
+
+.submit {
+  margin: 20px 0;
+  padding: 7.5px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: #0095f6;
+  color: white;
+
+  &:hover {
+    opacity: 0.5;
+  }
 }

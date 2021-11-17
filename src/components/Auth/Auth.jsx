@@ -1,36 +1,72 @@
-import { useEffect } from 'react'
-import { signInWithPopup, signInWithRedirect, GoogleAuthProvider } from 'firebase/auth'
+import { useState, useEffect } from 'react'
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signInWithRedirect,
+  GoogleAuthProvider
+} from 'firebase/auth'
 import { useViewport } from 'frontend-essentials'
 
 import { auth } from 'firebase-app'
 import isMobileBrowser from './is-mobile-browser'
-import Backdrop from 'components/Backdrop'
 
 import style from './Auth.scss'
-import GoogleIcon from 'images/google.svg'
+import googleSignInImage from 'images/google-sign-in.png'
 
 const provider = new GoogleAuthProvider()
 const mobileBrowser = isMobileBrowser()
 
 const Auth = () => {
+  const [email, setEmail] = useState()
+  const [password, setPassword] = useState()
+
+  const { viewport12 } = useViewport({ viewport12: '(min-width: 1200px)' })
+
   useEffect(() => {
     document.body.style.overflow = 'hidden'
 
     return () => (document.body.style.overflow = 'visible')
   }, [])
 
+  const onSubmit = async event => {
+    event.preventDefault()
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password)
+    } catch {
+      await createUserWithEmailAndPassword(auth, email, password)
+    }
+  }
+
   return (
     <>
-      <Backdrop />
-
       <div className={style.wrapper}>
-        <button
-          className={style.signIn}
+        <h1 className={style.title}>Flying Notes</h1>
+
+        <img
+          className={style.googleSignIn}
+          src={googleSignInImage}
           onClick={() => (mobileBrowser ? signInWithRedirect(auth, provider) : signInWithPopup(auth, provider))}
-        >
-          <GoogleIcon />
-          <span className={style.signInText}>Sign in with Google</span>
-        </button>
+        />
+
+        <div className={style.delimiter}>
+          <div className={style.divider}></div>
+          <div className={style.or}>OR</div>
+          <div className={style.divider}></div>
+        </div>
+
+        <form className={style.inputs} onSubmit={onSubmit}>
+          <input className={style.input} type="email" value={email} onChange={event => setEmail(event.target.value)} />
+          <input
+            className={style.input}
+            type="password"
+            value={password}
+            onChange={event => setPassword(event.target.value)}
+          />
+
+          <input className={style.submit} type="submit" value="Log In" />
+        </form>
       </div>
     </>
   )
