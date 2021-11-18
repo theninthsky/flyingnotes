@@ -24,7 +24,7 @@
 }
 
 .title {
-  margin-top: 80px;
+  margin-top: 60px;
   font-weight: normal;
   color: var(--text-color);
 }
@@ -73,8 +73,11 @@
   height: 20px;
   margin: 0;
   color: red;
-  text-transform: capitalize;
   font-size: 14px;
+
+  &::first-letter {
+    text-transform: capitalize;
+  }
 }
 
 .resetPassword {
@@ -95,6 +98,7 @@
 
   &:disabled {
     opacity: 0.5;
+    cursor: default;
   }
 
   @media ($not-mobile) {

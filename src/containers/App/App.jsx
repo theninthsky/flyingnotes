@@ -94,6 +94,9 @@ const App = () => {
     setCleanupUser(() => () => {
       unsubscribeNotes()
       unsubscribeLists()
+      setNotes([])
+      setLists([])
+      setFiles([])
       localStorage.clear()
     })
   }, [notesCollectionRef, listsCollectionRef])

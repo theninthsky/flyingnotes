@@ -7,7 +7,6 @@ import {
   signInWithRedirect,
   GoogleAuthProvider
 } from 'firebase/auth'
-import { useViewport } from 'frontend-essentials'
 
 import { auth } from 'firebase-app'
 import isMobileBrowser from './is-mobile-browser'
@@ -19,18 +18,20 @@ const provider = new GoogleAuthProvider()
 const mobileBrowser = isMobileBrowser()
 
 const Auth = () => {
-  const [email, setEmail] = useState()
-  const [password, setPassword] = useState()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState()
-
-  const { viewport12 } = useViewport({ viewport12: '(min-width: 1200px)' })
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
 
     return () => (document.body.style.overflow = 'visible')
   }, [])
+
+  useEffect(() => {
+    setError()
+  }, [email, password])
 
   const onSubmit = async event => {
     event.preventDefault()
@@ -41,17 +42,25 @@ const Auth = () => {
       await signInWithEmailAndPassword(auth, email, password)
     } catch ({ message }) {
       const err = message.split('/')[1].slice(0, -2)
-      if (err === 'user-not-found') await createUserWithEmailAndPassword(auth, email, password)
-      else setError(err.replace(/-/g, ' '))
+
+      if (err === 'user-not-found') {
+        if (confirm('No such user exists, would you like to register?')) {
+          await createUserWithEmailAndPassword(auth, email, password)
+        }
+      } else setError(err.replace(/-/g, ' '))
     }
 
     setLoading(false)
   }
 
   const onResetPassword = () => {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return setError('Please fill out a valid email address')
+
     sendPasswordResetEmail(auth, email)
     alert('Check your inbox for the password reset link')
   }
+
+  const credentialsVaild = password.length > 7 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 
   return (
     <>
@@ -75,6 +84,7 @@ const Auth = () => {
             className={style.input}
             type="email"
             value={email}
+            placeholder="Email"
             required
             onChange={event => setEmail(event.target.value)}
           />
@@ -82,6 +92,7 @@ const Auth = () => {
             className={style.input}
             type="password"
             value={password}
+            placeholder="Password"
             minLength="8"
             required
             onChange={event => setPassword(event.target.value)}
@@ -93,7 +104,7 @@ const Auth = () => {
             Reset password
           </a>
 
-          <input className={style.submit} type="submit" value="Log In" disabled={loading} />
+          <input className={style.submit} type="submit" value="Sign In" disabled={!credentialsVaild || loading} />
         </form>
       </div>
     </>
