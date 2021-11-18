@@ -22,11 +22,7 @@ const Notes = ({ collectionRef, notes }) => {
   }
 
   const categories = useMemo(
-    () =>
-      [...new Set(notes)]
-        .map(({ category }) => category)
-        .filter(Boolean)
-        .sort((a, b) => a.localeCompare(b)),
+    () => [...new Set(notes.map(({ category }) => category))].filter(Boolean).sort((a, b) => a.localeCompare(b)),
     [notes]
   )
 
