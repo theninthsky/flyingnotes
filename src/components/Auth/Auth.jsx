@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  sendPasswordResetEmail,
   signInWithPopup,
   signInWithRedirect,
   GoogleAuthProvider
@@ -20,6 +21,8 @@ const mobileBrowser = isMobileBrowser()
 const Auth = () => {
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState()
 
   const { viewport12 } = useViewport({ viewport12: '(min-width: 1200px)' })
 
@@ -31,12 +34,23 @@ const Auth = () => {
 
   const onSubmit = async event => {
     event.preventDefault()
+    setLoading(true)
+    setError()
 
     try {
       await signInWithEmailAndPassword(auth, email, password)
-    } catch {
-      await createUserWithEmailAndPassword(auth, email, password)
+    } catch ({ message }) {
+      const err = message.split('/')[1].slice(0, -2)
+      if (err === 'user-not-found') await createUserWithEmailAndPassword(auth, email, password)
+      else setError(err.replace(/-/g, ' '))
     }
+
+    setLoading(false)
+  }
+
+  const onResetPassword = () => {
+    sendPasswordResetEmail(auth, email)
+    alert('Check your inbox for the password reset link')
   }
 
   return (
@@ -57,15 +71,29 @@ const Auth = () => {
         </div>
 
         <form className={style.inputs} onSubmit={onSubmit}>
-          <input className={style.input} type="email" value={email} onChange={event => setEmail(event.target.value)} />
+          <input
+            className={style.input}
+            type="email"
+            value={email}
+            required
+            onChange={event => setEmail(event.target.value)}
+          />
           <input
             className={style.input}
             type="password"
             value={password}
+            minLength="8"
+            required
             onChange={event => setPassword(event.target.value)}
           />
 
-          <input className={style.submit} type="submit" value="Log In" />
+          <p className={style.error}>{error}</p>
+
+          <a className={style.resetPassword} onClick={onResetPassword}>
+            Reset password
+          </a>
+
+          <input className={style.submit} type="submit" value="Log In" disabled={loading} />
         </form>
       </div>
     </>

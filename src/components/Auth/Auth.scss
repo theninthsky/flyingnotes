@@ -24,8 +24,8 @@
 }
 
 .title {
-  margin-top: 40px;
-  font-weight: 300;
+  margin-top: 80px;
+  font-weight: normal;
   color: var(--text-color);
 }
 
@@ -61,11 +61,25 @@
   flex-direction: column;
   width: 100%;
   margin-top: 20px;
+  border-radius: 4px;
 }
 
 .input {
   margin: 2.5px 0;
   padding: 5px;
+}
+
+.error {
+  height: 20px;
+  margin: 0;
+  color: red;
+  text-transform: capitalize;
+  font-size: 14px;
+}
+
+.resetPassword {
+  align-self: end;
+  color: #0095f6;
 }
 
 .submit {
@@ -77,8 +91,15 @@
   font-weight: 500;
   background-color: #0095f6;
   color: white;
+  cursor: pointer;
 
-  &:hover {
+  &:disabled {
     opacity: 0.5;
+  }
+
+  @media ($not-mobile) {
+    &:hover {
+      opacity: 0.5;
+    }
   }
 }

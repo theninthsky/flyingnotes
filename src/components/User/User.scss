@@ -54,12 +54,13 @@
 
 .logout {
   margin: 30px auto 0;
-  padding: 6px 20px;
-  border: 1px solid var(--text-color);
+  padding: 7.5px;
+  border: none;
   border-radius: 4px;
-  color: inherit;
-  background-color: var(--secondary-color);
-  outline: none;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: #0095f6;
+  color: white;
   cursor: pointer;
 
   &:hover {
