@@ -9,14 +9,15 @@ import { Helmet } from 'react-helmet'
 import { If, useViewport } from 'frontend-essentials'
 
 import { auth, db, storage } from 'firebase-app'
-import Notes from 'containers/Notes'
-import Lists from 'containers/Lists'
+
 import NavigationBar from 'components/NavigationBar'
 import Auth from 'components/Auth'
 import UpdateAlert from 'components/UpdateAlert'
 
 import style from './App.scss'
 
+const Notes = lazy(() => import(/* webpackPrefetch: true */ 'containers/Notes'))
+const Lists = lazy(() => import(/* webpackPrefetch: true */ 'containers/Lists'))
 const Files = lazy(() => import(/* webpackPrefetch: true */ 'containers/Files'))
 
 const routes = ['/', '/lists', '/files']
@@ -164,7 +165,9 @@ const App = () => {
                     <title>My Notes</title>
                   </Helmet>
 
-                  <Notes collectionRef={notesCollectionRef} notes={notes} />
+                  <Suspense fallback={<></>}>
+                    <Notes collectionRef={notesCollectionRef} notes={notes} />
+                  </Suspense>
                 </div>
               }
             />
@@ -177,7 +180,9 @@ const App = () => {
                     <title>My Lists</title>
                   </Helmet>
 
-                  <Lists collectionRef={listsCollectionRef} lists={lists} />
+                  <Suspense fallback={<></>}>
+                    <Lists collectionRef={listsCollectionRef} lists={lists} />
+                  </Suspense>
                 </div>
               }
             />
