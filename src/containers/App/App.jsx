@@ -13,7 +13,6 @@ import Notes from 'containers/Notes'
 import Lists from 'containers/Lists'
 import NavigationBar from 'components/NavigationBar'
 import Auth from 'components/Auth'
-import User from 'components/User'
 import UpdateAlert from 'components/UpdateAlert'
 
 import style from './App.scss'
@@ -29,7 +28,6 @@ const App = () => {
   const [registrationWaiting, setRegistrationWaiting] = useState()
   const [prevLocation, setPrevLocation] = useState()
   const [currLocation, setCurrLocation] = useState()
-  const [authVisible, setAuthVisible] = useState(false)
   const [notesCollectionRef, setNotesCollectionRef] = useState()
   const [listsCollectionRef, setListsCollectionRef] = useState()
   const [filesListRef, setFilesListRef] = useState()
@@ -97,7 +95,9 @@ const App = () => {
       setNotes([])
       setLists([])
       setFiles([])
-      localStorage.clear()
+      localStorage.removeItem('notes')
+      localStorage.removeItem('lists')
+      localStorage.removeItem('files')
     })
   }, [notesCollectionRef, listsCollectionRef])
 
@@ -151,11 +151,7 @@ const App = () => {
         <UpdateAlert onClick={replaceSW} />
       </If>
 
-      <NavigationBar user={user} authVisible={authVisible} setAuthVisible={setAuthVisible} />
-
-      <If condition={authVisible}>
-        <User user={user} cleanupUser={cleanupUser} onClose={() => setAuthVisible(false)} />
-      </If>
+      <NavigationBar user={user} onLogout={cleanupUser} />
 
       <TransitionGroup className={style[transitionDirection]}>
         <CSSTransition {...transitionOptions}>

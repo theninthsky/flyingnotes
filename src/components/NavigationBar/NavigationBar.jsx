@@ -1,20 +1,16 @@
+import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
+import { If } from 'frontend-essentials'
 import cx from 'clsx'
 
-import { THEME_LIGHT, THEME_DARK, LOG_IN } from './constants'
+import Tooltip from './Tooltip'
 
 import style from './NavigationBar.scss'
 import Logo from 'images/logo.svg'
-import ThemeIcon from 'images/theme.svg'
 import UserIcon from 'images/user-astronaut.svg'
 
-const NavigationBar = ({ user, authVisible, setAuthVisible }) => {
-  const toggleTheme = () => {
-    const newTheme = document.documentElement.getAttribute('data-theme') === THEME_DARK ? THEME_LIGHT : THEME_DARK
-
-    document.documentElement.setAttribute('data-theme', newTheme)
-    localStorage.setItem('theme', newTheme)
-  }
+const NavigationBar = ({ user, onLogout }) => {
+  const [tooltipOpen, setTooltipOpen] = useState(false)
 
   return (
     <>
@@ -35,18 +31,14 @@ const NavigationBar = ({ user, authVisible, setAuthVisible }) => {
           </NavLink>
         </div>
 
-        <div className={cx('d-flex', 'align-items-center')}>
-          <ThemeIcon className={style.themeIcon} onClick={toggleTheme} />
+        <If condition={tooltipOpen}>
+          <Tooltip email={user.email} onLogout={onLogout} onClose={() => setTooltipOpen(false)} />
+        </If>
 
-          {user ? (
-            <button className={style.auth} title={user.name} onClick={() => setAuthVisible(!authVisible)}>
-              <UserIcon className={style.userIcon} />
-            </button>
-          ) : (
-            <button className={style.auth} title={LOG_IN} onClick={() => setAuthVisible(!authVisible)}>
-              {LOG_IN}
-            </button>
-          )}
+        <div className={cx('d-flex', 'align-items-center')}>
+          <button className={style.user} title={user.name} onClick={() => setTooltipOpen(true)}>
+            <UserIcon className={style.userIcon} />
+          </button>
         </div>
       </nav>
     </>

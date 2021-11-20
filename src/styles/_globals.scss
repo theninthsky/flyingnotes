@@ -68,6 +68,10 @@ select {
     text-align: center;
   }
 
+  .pointer-events-none {
+    pointer-events: none;
+  }
+
   .red {
     color: red;
   }

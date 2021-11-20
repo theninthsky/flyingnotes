@@ -2,6 +2,7 @@
 
 .wrapper {
   display: flex;
+  position: relative;
   padding: 10px 15px;
   width: 100%;
   border-bottom: 2.5px solid var(--secondary-color);
@@ -41,26 +42,7 @@
   margin-right: 10px;
 }
 
-.themeIcon {
-  width: 24px;
-  background-image: var(--theme-icon);
-  background-repeat: no-repeat;
-  cursor: pointer;
-  user-select: none;
-
-  @media ($not-mobile) {
-    &:hover {
-      opacity: 0.5;
-    }
-  }
-}
-
-.userIcon {
-  align-self: center;
-  width: 20px;
-}
-
-.auth {
+.user {
   display: flex;
   margin-left: 10px;
   padding: 0;
@@ -77,4 +59,9 @@
       opacity: 0.5;
     }
   }
+}
+
+.userIcon {
+  align-self: center;
+  width: 20px;
 }

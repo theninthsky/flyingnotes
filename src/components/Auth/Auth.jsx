@@ -46,11 +46,14 @@ const Auth = () => {
       if (err === 'user-not-found') {
         if (confirm('No such user exists, would you like to register?')) {
           await createUserWithEmailAndPassword(auth, email, password)
+        } else {
+          setLoading(false)
         }
-      } else setError(err.replace(/-/g, ' '))
+      } else {
+        setError(err.replace(/-/g, ' '))
+        setLoading(false)
+      }
     }
-
-    setLoading(false)
   }
 
   const onResetPassword = () => {

@@ -1,0 +1,45 @@
+@import 'styles/variables';
+
+.wrapper {
+  z-index: 1;
+  position: absolute;
+  right: 15px;
+  top: 50px;
+  border: 1px solid var(--placeholder-color);
+  border-radius: 4px;
+  background-color: var(--primary-color);
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  padding: 7.5px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--secondary-color);
+  }
+}
+
+.theme {
+  margin-left: 5px;
+  padding: 2.5px 5px;
+  border: 1px solid var(--text-color);
+  border-radius: 4px;
+  font-size: 14px;
+  color: var(--text-color);
+  background-color: transparent;
+  cursor: pointer;
+
+  &::first-letter {
+    text-transform: capitalize;
+  }
+
+  &:hover {
+    background-color: var(--secondary-color);
+  }
+}
