@@ -11,7 +11,7 @@ import DeleteIcon from 'images/delete.svg'
 
 const MAX_FILESIZE_IN_MB = 100
 
-const File = ({ newFile, name: fileName = '', extension: fileExtension = '', onUpload, onDownload, onDelete }) => {
+const File = ({ newFile, name: fileName, extension: fileExtension = '', onUpload, onDownload, onDelete }) => {
   const [name, setName] = useState(fileName)
   const [extension, setExtension] = useState(fileExtension)
   const [selectedFile, setSelectedFile] = useState()
@@ -51,8 +51,6 @@ const File = ({ newFile, name: fileName = '', extension: fileExtension = '', onU
   const uploadFile = async event => {
     event.preventDefault()
 
-    if (!name) return alert('File name is required')
-
     setUploading(true)
     await onUpload(selectedFile, reset)
     setUploading(false)
@@ -75,12 +73,11 @@ const File = ({ newFile, name: fileName = '', extension: fileExtension = '', onU
       <input
         className={style.name}
         type="text"
-        placeholder="Name"
         value={name}
         title={name}
-        disabled={!newFile}
+        placeholder="Upload file"
         aria-label="name"
-        onChange={event => setName(event.target.value)}
+        disabled
       />
 
       <div className={style.infoWrap}>

@@ -12,7 +12,7 @@ const ITEMS = [
 const DATE = new Date().toISOString()
 
 test('Note', () => {
-  render(<Note category={CATEGORY} title={TITLE} content={CONTENT} date={DATE} />)
+  render(<Note variant="note" category={CATEGORY} title={TITLE} content={CONTENT} date={DATE} />)
 
   expect(screen.getByDisplayValue(CATEGORY))
   expect(screen.getByDisplayValue(TITLE))
@@ -21,7 +21,7 @@ test('Note', () => {
 })
 
 test('List', () => {
-  render(<Note list title={TITLE} items={ITEMS} date={DATE} />)
+  render(<Note variant="list" title={TITLE} items={ITEMS} date={DATE} />)
 
   expect(screen.getByDisplayValue(TITLE))
   expect(screen.getByText(new Date(DATE).toLocaleString('en-GB').replace(',', '').slice(0, -3)))
