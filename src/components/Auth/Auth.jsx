@@ -8,7 +8,6 @@ import {
   GoogleAuthProvider
 } from 'firebase/auth'
 
-import { auth } from 'firebase-app'
 import isMobileBrowser from './is-mobile-browser'
 
 import style from './Auth.scss'
@@ -17,7 +16,7 @@ import googleSignInImage from 'images/google-sign-in.png'
 const provider = new GoogleAuthProvider()
 const mobileBrowser = isMobileBrowser()
 
-const Auth = () => {
+const Auth = ({ auth }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)

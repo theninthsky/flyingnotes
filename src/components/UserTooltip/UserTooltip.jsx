@@ -3,13 +3,11 @@ import { signOut } from 'firebase/auth'
 import useClickOutside from 'use-click-outside'
 import cx from 'clsx'
 
-import { auth } from 'firebase-app'
-
-import style from './Tooltip.scss'
+import style from './UserTooltip.scss'
 
 const [THEME_LIGHT, THEME_DARK] = ['light', 'dark']
 
-const Tooltip = ({ email, onLogout, onClose }) => {
+const Tooltip = ({ email, auth, onLogout, onClose }) => {
   const [theme, setTheme] = useState(localStorage.theme || THEME_LIGHT)
 
   const ref = useRef()

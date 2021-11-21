@@ -1,0 +1,11 @@
+@import 'styles/variables';
+
+.page {
+  position: absolute;
+  width: 100%;
+  min-height: calc(100vh - 60px);
+
+  @media ($viewport-9) {
+    min-height: auto;
+  }
+}

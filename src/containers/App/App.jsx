@@ -1,25 +1,26 @@
 import { useState, useEffect, lazy, Suspense } from 'react'
-import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
-import { onAuthStateChanged } from 'firebase/auth'
-import { collection, query, orderBy, onSnapshot } from 'firebase/firestore'
-import { ref, listAll } from 'firebase/storage'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
-import { useSwipeable } from 'react-swipeable'
-import { Helmet } from 'react-helmet'
 import { If, useViewport } from 'frontend-essentials'
 
-import { auth, db, storage } from 'firebase-app'
-
+import app from 'firebase-app'
 import NavigationBar from 'components/NavigationBar'
 import Auth from 'components/Auth'
 import UpdateAlert from 'components/UpdateAlert'
+import UserTooltip from 'components/UserTooltip'
 
 import style from './App.scss'
 
-const Notes = lazy(() => import(/* webpackPrefetch: true */ 'containers/Notes'))
-const Lists = lazy(() => import(/* webpackPrefetch: true */ 'containers/Lists'))
-const Files = lazy(() => import(/* webpackPrefetch: true */ 'containers/Files'))
+const Main = lazy(() =>
+  import(
+    /* webpackChunkName: 'main-container' */
+    /* webpackPrefetch: true */
+    'containers/Main'
+  )
+)
 
+const auth = getAuth(app)
 const routes = ['/', '/lists', '/files']
 
 document.documentElement.setAttribute('data-theme', localStorage.theme || 'light')
@@ -29,23 +30,11 @@ const App = () => {
   const [registrationWaiting, setRegistrationWaiting] = useState()
   const [prevLocation, setPrevLocation] = useState()
   const [currLocation, setCurrLocation] = useState()
-  const [notesCollectionRef, setNotesCollectionRef] = useState()
-  const [listsCollectionRef, setListsCollectionRef] = useState()
-  const [filesListRef, setFilesListRef] = useState()
-  const [notes, setNotes] = useState(JSON.parse(localStorage.notes || '[]'))
-  const [lists, setLists] = useState(JSON.parse(localStorage.lists || '[]'))
-  const [files, setFiles] = useState(JSON.parse(localStorage.files || '[]'))
-  const [cleanupUser, setCleanupUser] = useState(() => {})
+  const [onLogout, setOnLogout] = useState(() => {})
 
   const navigate = useNavigate()
   const location = useLocation()
   const { mobile } = useViewport({ mobile: '(max-width: 991px)' })
-  const handlers = useSwipeable({
-    onSwipedLeft: () => changeRoute('right'),
-    onSwipedRight: () => changeRoute('left'),
-    preventDefaultTouchmoveEvent: true,
-    delta: 100
-  })
 
   useEffect(() => {
     const handleRegistration = ({ detail: registration }) => setRegistrationWaiting(registration.waiting)
@@ -60,68 +49,9 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    const { uid } = user || {}
-
-    setNotesCollectionRef(uid ? collection(db, `users/${uid}/notes`) : undefined)
-    setListsCollectionRef(uid ? collection(db, `users/${uid}/lists`) : undefined)
-    setFilesListRef(uid ? ref(storage, uid) : undefined)
-  }, [user])
-
-  useEffect(() => {
-    if (!notesCollectionRef || !listsCollectionRef) return
-
-    const unsubscribeNotes = onSnapshot(
-      query(notesCollectionRef, orderBy('pinned', 'desc'), orderBy('date', 'desc')),
-      snapshot => {
-        const notes = snapshot.docs.map(doc => ({ documentRef: doc.ref, id: doc.id, ...doc.data() }))
-
-        setNotes(notes)
-        localStorage.setItem('notes', JSON.stringify(notes))
-      }
-    )
-
-    const unsubscribeLists = onSnapshot(
-      query(listsCollectionRef, orderBy('pinned', 'desc'), orderBy('date', 'desc')),
-      snapshot => {
-        const lists = snapshot.docs.map(doc => ({ documentRef: doc.ref, id: doc.id, ...doc.data() }))
-
-        setLists(lists)
-        localStorage.setItem('lists', JSON.stringify(lists))
-      }
-    )
-
-    setCleanupUser(() => () => {
-      unsubscribeNotes()
-      unsubscribeLists()
-      setNotes([])
-      setLists([])
-      setFiles([])
-      localStorage.removeItem('notes')
-      localStorage.removeItem('lists')
-      localStorage.removeItem('files')
-    })
-  }, [notesCollectionRef, listsCollectionRef])
-
-  useEffect(() => {
-    if (filesListRef) getFiles()
-  }, [filesListRef])
-
-  useEffect(() => {
     setPrevLocation(currLocation)
     setCurrLocation(location.pathname)
   }, [location])
-
-  const getFiles = async () => {
-    const { items } = await listAll(filesListRef)
-    const files = items.map(item => {
-      const [name, extension] = item.name.split('.')
-
-      return { itemRef: item, id: item.name, name, extension }
-    })
-
-    setFiles(files)
-    localStorage.setItem('files', JSON.stringify(files))
-  }
 
   const changeRoute = dir => {
     const index = routes.indexOf(currLocation)
@@ -131,8 +61,6 @@ const App = () => {
   }
 
   const replaceSW = () => {
-    if (!registrationWaiting) return
-
     registrationWaiting.postMessage({ type: 'SKIP_WAITING' })
     registrationWaiting.addEventListener('statechange', event => {
       if (event.target.state === 'activated') window.location.reload()
@@ -144,7 +72,7 @@ const App = () => {
     ? { key: location.key, timeout: 200, classNames: { ...style } }
     : { timeout: 0, classNames: '' }
 
-  if (!user) return <Auth />
+  if (!user) return <Auth auth={auth} />
 
   return (
     <>
@@ -152,58 +80,15 @@ const App = () => {
         <UpdateAlert onClick={replaceSW} />
       </If>
 
-      <NavigationBar user={user} onLogout={cleanupUser} />
+      <NavigationBar>
+        <UserTooltip email={user.email} auth={auth} onLogout={onLogout} />
+      </NavigationBar>
 
       <TransitionGroup className={style[transitionDirection]}>
         <CSSTransition {...transitionOptions}>
-          <Routes location={location}>
-            <Route
-              path="/"
-              element={
-                <div className={style.page} {...handlers}>
-                  <Helmet>
-                    <title>My Notes</title>
-                  </Helmet>
-
-                  <Suspense fallback={<></>}>
-                    <Notes collectionRef={notesCollectionRef} notes={notes} />
-                  </Suspense>
-                </div>
-              }
-            />
-
-            <Route
-              path="/lists"
-              element={
-                <div className={style.page} {...handlers}>
-                  <Helmet>
-                    <title>My Lists</title>
-                  </Helmet>
-
-                  <Suspense fallback={<></>}>
-                    <Lists collectionRef={listsCollectionRef} lists={lists} />
-                  </Suspense>
-                </div>
-              }
-            />
-
-            <Route
-              path="/files"
-              element={
-                <div className={style.page} {...handlers}>
-                  <Helmet>
-                    <title>My Files</title>
-                  </Helmet>
-
-                  <Suspense fallback={<></>}>
-                    <Files user={user} files={files} getFiles={getFiles} />
-                  </Suspense>
-                </div>
-              }
-            />
-
-            <Route path="/*" element={<Navigate replace to="/" />} />
-          </Routes>
+          <Suspense fallback={<></>}>
+            <Main user={user} setOnLogout={setOnLogout} onChangeRoute={changeRoute} />
+          </Suspense>
         </CSSTransition>
       </TransitionGroup>
     </>

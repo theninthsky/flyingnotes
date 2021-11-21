@@ -1,7 +1,6 @@
 import { useEffect, memo } from 'react'
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'
 
-import { storage } from 'firebase-app'
 import File from 'components/File'
 
 import style from './Files.scss'
@@ -16,7 +15,7 @@ const saveFile = (blob, name) => {
   document.body.removeChild(link)
 }
 
-const Files = ({ user, files, getFiles }) => {
+const Files = ({ user, storage, files, getFiles }) => {
   useEffect(() => {
     getFiles()
   }, [])

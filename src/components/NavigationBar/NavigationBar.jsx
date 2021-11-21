@@ -1,15 +1,13 @@
-import { useState } from 'react'
+import { useState, cloneElement } from 'react'
 import { NavLink } from 'react-router-dom'
 import { If } from 'frontend-essentials'
 import cx from 'clsx'
-
-import Tooltip from './Tooltip'
 
 import style from './NavigationBar.scss'
 import Logo from 'images/logo.svg'
 import UserIcon from 'images/user-astronaut.svg'
 
-const NavigationBar = ({ user, onLogout }) => {
+const NavigationBar = ({ children }) => {
   const [tooltipOpen, setTooltipOpen] = useState(false)
 
   return (
@@ -31,12 +29,10 @@ const NavigationBar = ({ user, onLogout }) => {
           </NavLink>
         </div>
 
-        <If condition={tooltipOpen}>
-          <Tooltip email={user.email} onLogout={onLogout} onClose={() => setTooltipOpen(false)} />
-        </If>
+        <If condition={tooltipOpen}>{cloneElement(children, { onClose: () => setTooltipOpen(false) })}</If>
 
         <div className={cx('d-flex', 'align-items-center')}>
-          <button className={style.user} title={user.name} onClick={() => setTooltipOpen(true)}>
+          <button className={style.user} onClick={() => setTooltipOpen(true)}>
             <UserIcon className={style.userIcon} />
           </button>
         </div>
