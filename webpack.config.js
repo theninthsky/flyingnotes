@@ -88,14 +88,14 @@ module.exports = (_, { mode }) => {
       ]
     },
     plugins: [
-      new EnvironmentPlugin({
-        API_KEY: 'AIzaSyBc_oiYsyrpRBS8WaUmRTuE4LDhOcXXYL4',
-        AUTH_DOMAIN: 'flying-notes-firebase.firebaseapp.com',
-        PROJECT_ID: 'flying-notes-firebase',
-        STORAGE_BUCKET: 'flying-notes-firebase.appspot.com',
-        MESSAGING_SENDER_ID: '454554899321',
-        APP_ID: '1:454554899321:web:06103d14c2f3f6c3d315a8'
-      }),
+      new EnvironmentPlugin([
+        'API_KEY',
+        'AUTH_DOMAIN',
+        'PROJECT_ID',
+        'STORAGE_BUCKET',
+        'MESSAGING_SENDER_ID',
+        'APP_ID'
+      ]),
       new MiniCssExtractPlugin({ filename: '[name].[contenthash].css' }),
       new ESLintPlugin(),
       new HtmlPlugin({ template: 'public/index.html' }),
