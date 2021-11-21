@@ -15,16 +15,11 @@ const Tooltip = ({ email, auth, onLogout, onClose }) => {
   useClickOutside(ref, onClose)
 
   const toggleTheme = () => {
-    const newTheme = document.documentElement.getAttribute('data-theme') === THEME_DARK ? THEME_LIGHT : THEME_DARK
+    const newTheme = document.documentElement.getAttribute('data-theme') === THEME_LIGHT ? THEME_DARK : THEME_LIGHT
 
     setTheme(newTheme)
     document.documentElement.setAttribute('data-theme', newTheme)
     localStorage.setItem('theme', newTheme)
-  }
-
-  const logout = async () => {
-    await signOut(auth)
-    onLogout()
   }
 
   return (
@@ -34,7 +29,13 @@ const Tooltip = ({ email, auth, onLogout, onClose }) => {
         <li className={style.item} onClick={toggleTheme}>
           Theme<button className={style.theme}>{theme}</button>
         </li>
-        <li className={style.item} onClick={logout}>
+        <li
+          className={style.item}
+          onClick={() => {
+            onLogout()
+            signOut(auth)
+          }}
+        >
           Sign out
         </li>
       </ul>
