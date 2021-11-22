@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy, Suspense } from 'react'
+import { useState, useRef, useEffect, lazy, Suspense } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
@@ -30,8 +30,8 @@ const App = () => {
   const [registrationWaiting, setRegistrationWaiting] = useState()
   const [prevLocation, setPrevLocation] = useState()
   const [currLocation, setCurrLocation] = useState()
-  const [onLogout, setOnLogout] = useState(() => {})
 
+  const onLogoutRef = useRef(() => {})
   const navigate = useNavigate()
   const location = useLocation()
   const { mobile } = useViewport({ mobile: '(max-width: 991px)' })
@@ -41,7 +41,7 @@ const App = () => {
 
     onAuthStateChanged(auth, user => {
       setUser(user)
-      localStorage.setItem('user', JSON.stringify(user))
+      user ? localStorage.setItem('user', JSON.stringify(user)) : localStorage.removeItem('user')
     })
     window.addEventListener('serviceworkerupdate', handleRegistration)
 
@@ -81,13 +81,13 @@ const App = () => {
       </If>
 
       <NavigationBar>
-        <UserTooltip email={user.email} auth={auth} onLogout={onLogout} />
+        <UserTooltip email={user.email} auth={auth} onLogoutRef={onLogoutRef} />
       </NavigationBar>
 
       <TransitionGroup className={style[transitionDirection]}>
         <CSSTransition {...transitionOptions}>
           <Suspense fallback={<></>}>
-            <Main user={user} setOnLogout={setOnLogout} onChangeRoute={changeRoute} />
+            <Main user={user} onLogoutRef={onLogoutRef} onChangeRoute={changeRoute} />
           </Suspense>
         </CSSTransition>
       </TransitionGroup>

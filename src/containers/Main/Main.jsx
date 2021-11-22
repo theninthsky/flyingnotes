@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy, Suspense } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { getFirestore, collection, query, orderBy, onSnapshot } from 'firebase/firestore'
 import { getStorage, ref, listAll } from 'firebase/storage'
@@ -7,34 +7,22 @@ import { Helmet } from 'react-helmet'
 
 import app from 'firebase-app'
 import Notes from 'containers/Notes'
+import Lists from 'containers/Lists'
+import Files from 'containers/Files'
 
 import style from './Main.scss'
-
-const Lists = lazy(() =>
-  import(
-    /* webpackChunkName: 'lists' */
-    /* webpackPrefetch: true */
-    'containers/Lists'
-  )
-)
-const Files = lazy(() =>
-  import(
-    /* webpackChunkName: 'files' */
-    /* webpackPrefetch: true */
-    'containers/Files'
-  )
-)
 
 const db = getFirestore(app)
 const storage = getStorage(app)
 
-const Main = ({ user, setOnLogout, onChangeRoute }) => {
-  const [notesCollectionRef, setNotesCollectionRef] = useState()
-  const [listsCollectionRef, setListsCollectionRef] = useState()
-  const [filesListRef, setFilesListRef] = useState()
+const Main = ({ user, onLogoutRef, onChangeRoute }) => {
   const [notes, setNotes] = useState(JSON.parse(localStorage.notes || '[]'))
   const [lists, setLists] = useState(JSON.parse(localStorage.lists || '[]'))
   const [files, setFiles] = useState(JSON.parse(localStorage.files || '[]'))
+
+  const notesCollectionRef = useRef()
+  const listsCollectionRef = useRef()
+  const filesListRef = useRef()
 
   const handlers = useSwipeable({
     onSwipedLeft: () => onChangeRoute('right'),
@@ -48,16 +36,16 @@ const Main = ({ user, setOnLogout, onChangeRoute }) => {
 
     const { uid } = user
 
-    setNotesCollectionRef(uid ? collection(db, `users/${uid}/notes`) : undefined)
-    setListsCollectionRef(uid ? collection(db, `users/${uid}/lists`) : undefined)
-    setFilesListRef(uid ? ref(storage, uid) : undefined)
+    notesCollectionRef.current = uid ? collection(db, `users/${uid}/notes`) : undefined
+    listsCollectionRef.current = uid ? collection(db, `users/${uid}/lists`) : undefined
+    filesListRef.current = uid ? ref(storage, uid) : undefined
   }, [user])
 
   useEffect(() => {
-    if (!notesCollectionRef || !listsCollectionRef) return
+    if (!notesCollectionRef.current || !listsCollectionRef.current) return
 
     const unsubscribeNotes = onSnapshot(
-      query(notesCollectionRef, orderBy('pinned', 'desc'), orderBy('date', 'desc')),
+      query(notesCollectionRef.current, orderBy('pinned', 'desc'), orderBy('date', 'desc')),
       snapshot => {
         const notes = snapshot.docs.map(doc => ({ documentRef: doc.ref, id: doc.id, ...doc.data() }))
 
@@ -67,7 +55,7 @@ const Main = ({ user, setOnLogout, onChangeRoute }) => {
     )
 
     const unsubscribeLists = onSnapshot(
-      query(listsCollectionRef, orderBy('pinned', 'desc'), orderBy('date', 'desc')),
+      query(listsCollectionRef.current, orderBy('pinned', 'desc'), orderBy('date', 'desc')),
       snapshot => {
         const lists = snapshot.docs.map(doc => ({ documentRef: doc.ref, id: doc.id, ...doc.data() }))
 
@@ -76,7 +64,7 @@ const Main = ({ user, setOnLogout, onChangeRoute }) => {
       }
     )
 
-    setOnLogout(() => () => {
+    onLogoutRef.current = () => {
       unsubscribeNotes()
       unsubscribeLists()
       setNotes([])
@@ -85,11 +73,11 @@ const Main = ({ user, setOnLogout, onChangeRoute }) => {
       localStorage.removeItem('notes')
       localStorage.removeItem('lists')
       localStorage.removeItem('files')
-    })
-  }, [notesCollectionRef, listsCollectionRef])
+    }
+  }, [notesCollectionRef.current, listsCollectionRef.current])
 
   const getFiles = async () => {
-    const { items } = await listAll(filesListRef)
+    const { items } = await listAll(filesListRef.current)
     const files = items.map(item => {
       const [name, extension] = item.name.split('.')
 
@@ -99,10 +87,6 @@ const Main = ({ user, setOnLogout, onChangeRoute }) => {
     setFiles(files)
     localStorage.setItem('files', JSON.stringify(files))
   }
-
-  useEffect(() => {
-    if (filesListRef) getFiles()
-  }, [filesListRef])
 
   return (
     <Routes>
@@ -114,7 +98,7 @@ const Main = ({ user, setOnLogout, onChangeRoute }) => {
               <title>My Notes</title>
             </Helmet>
 
-            <Notes collectionRef={notesCollectionRef} notes={notes} />
+            <Notes collectionRef={notesCollectionRef.current} notes={notes} />
           </div>
         }
       />
@@ -127,9 +111,7 @@ const Main = ({ user, setOnLogout, onChangeRoute }) => {
               <title>My Lists</title>
             </Helmet>
 
-            <Suspense fallback={<></>}>
-              <Lists collectionRef={listsCollectionRef} lists={lists} />
-            </Suspense>
+            <Lists collectionRef={listsCollectionRef.current} lists={lists} />
           </div>
         }
       />
@@ -142,9 +124,13 @@ const Main = ({ user, setOnLogout, onChangeRoute }) => {
               <title>My Files</title>
             </Helmet>
 
-            <Suspense fallback={<></>}>
-              <Files user={user} storage={storage} files={files} getFiles={getFiles} />
-            </Suspense>
+            <Files
+              user={user}
+              storage={storage}
+              filesListRef={filesListRef.current}
+              files={files}
+              getFiles={getFiles}
+            />
           </div>
         }
       />

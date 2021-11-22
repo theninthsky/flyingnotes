@@ -15,10 +15,10 @@ const saveFile = (blob, name) => {
   document.body.removeChild(link)
 }
 
-const Files = ({ user, storage, files, getFiles }) => {
+const Files = ({ user, storage, filesListRef, files, getFiles }) => {
   useEffect(() => {
-    getFiles()
-  }, [])
+    if (filesListRef) getFiles()
+  }, [filesListRef])
 
   const onUpload = async (file, reset) => {
     const storageRef = ref(storage, `${user.uid}/${file.name}`)

@@ -7,7 +7,7 @@ import style from './UserTooltip.scss'
 
 const [THEME_LIGHT, THEME_DARK] = ['light', 'dark']
 
-const Tooltip = ({ email, auth, onLogout, onClose }) => {
+const Tooltip = ({ email, auth, onLogoutRef, onClose }) => {
   const [theme, setTheme] = useState(localStorage.theme || THEME_LIGHT)
 
   const ref = useRef()
@@ -32,7 +32,7 @@ const Tooltip = ({ email, auth, onLogout, onClose }) => {
         <li
           className={style.item}
           onClick={() => {
-            onLogout()
+            onLogoutRef.current()
             signOut(auth)
           }}
         >
