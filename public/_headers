@@ -6,7 +6,7 @@ https://flyingnotes.pages.dev/*
     X-XSS-Protection: 1; mode=block
 
 /*.js
-    Cache-Control: max-age=30758400
+    Cache-Control: max-age=31536000
 
 /*.css
-    Cache-Control: max-age=30758400
+    Cache-Control: max-age=31536000

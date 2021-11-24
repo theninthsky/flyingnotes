@@ -32,17 +32,11 @@ const Main = ({ user, onLogoutRef, onChangeRoute }) => {
   })
 
   useEffect(() => {
-    if (!user) return
-
     const { uid } = user
 
-    notesCollectionRef.current = uid ? collection(db, `users/${uid}/notes`) : undefined
-    listsCollectionRef.current = uid ? collection(db, `users/${uid}/lists`) : undefined
-    filesListRef.current = uid ? ref(storage, uid) : undefined
-  }, [user])
-
-  useEffect(() => {
-    if (!notesCollectionRef.current || !listsCollectionRef.current) return
+    notesCollectionRef.current = collection(db, `users/${uid}/notes`)
+    listsCollectionRef.current = collection(db, `users/${uid}/lists`)
+    filesListRef.current = ref(storage, uid)
 
     const unsubscribeNotes = onSnapshot(
       query(notesCollectionRef.current, orderBy('pinned', 'desc'), orderBy('date', 'desc')),
@@ -67,14 +61,11 @@ const Main = ({ user, onLogoutRef, onChangeRoute }) => {
     onLogoutRef.current = () => {
       unsubscribeNotes()
       unsubscribeLists()
-      setNotes([])
-      setLists([])
-      setFiles([])
       localStorage.removeItem('notes')
       localStorage.removeItem('lists')
       localStorage.removeItem('files')
     }
-  }, [notesCollectionRef.current, listsCollectionRef.current])
+  }, [])
 
   const getFiles = async () => {
     const { items } = await listAll(filesListRef.current)
