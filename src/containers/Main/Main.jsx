@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { getFirestore, collection, query, orderBy, onSnapshot } from 'firebase/firestore'
 import { getStorage, ref, listAll } from 'firebase/storage'
-import { useSwipeable } from 'react-swipeable'
 import { Helmet } from 'react-helmet'
 
 import app from 'firebase-app'
@@ -15,7 +14,7 @@ import style from './Main.scss'
 const db = getFirestore(app)
 const storage = getStorage(app)
 
-const Main = ({ user, onLogoutRef, onChangeRoute }) => {
+const Main = ({ user, onLogoutRef }) => {
   const [notes, setNotes] = useState(JSON.parse(localStorage.notes || '[]'))
   const [lists, setLists] = useState(JSON.parse(localStorage.lists || '[]'))
   const [files, setFiles] = useState(JSON.parse(localStorage.files || '[]'))
@@ -23,13 +22,6 @@ const Main = ({ user, onLogoutRef, onChangeRoute }) => {
   const notesCollectionRef = useRef()
   const listsCollectionRef = useRef()
   const filesListRef = useRef()
-
-  const handlers = useSwipeable({
-    onSwipedLeft: () => onChangeRoute('right'),
-    onSwipedRight: () => onChangeRoute('left'),
-    preventDefaultTouchmoveEvent: true,
-    delta: 100
-  })
 
   useEffect(() => {
     const { uid } = user
@@ -84,7 +76,7 @@ const Main = ({ user, onLogoutRef, onChangeRoute }) => {
       <Route
         path="/"
         element={
-          <div className={style.page} {...handlers}>
+          <div className={style.page}>
             <Helmet>
               <title>My Notes</title>
             </Helmet>
@@ -97,7 +89,7 @@ const Main = ({ user, onLogoutRef, onChangeRoute }) => {
       <Route
         path="/lists"
         element={
-          <div className={style.page} {...handlers}>
+          <div className={style.page}>
             <Helmet>
               <title>My Lists</title>
             </Helmet>
@@ -110,7 +102,7 @@ const Main = ({ user, onLogoutRef, onChangeRoute }) => {
       <Route
         path="/files"
         element={
-          <div className={style.page} {...handlers}>
+          <div className={style.page}>
             <Helmet>
               <title>My Files</title>
             </Helmet>
