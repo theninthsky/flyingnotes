@@ -8,13 +8,7 @@ import Auth from 'components/Auth'
 import UpdateAlert from 'components/UpdateAlert'
 import UserTooltip from 'components/UserTooltip'
 
-const Main = lazy(() =>
-  import(
-    /* webpackChunkName: 'main-container' */
-    /* webpackPrefetch: true */
-    'containers/Main'
-  )
-)
+const Main = lazy(() => import('containers/Main'))
 
 const auth = getAuth(app)
 
