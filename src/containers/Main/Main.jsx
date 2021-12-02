@@ -15,9 +15,9 @@ const db = getFirestore(app)
 const storage = getStorage(app)
 
 const Main = ({ user, onLogoutRef }) => {
-  const [notes, setNotes] = useState(JSON.parse(localStorage.notes || '[]'))
-  const [lists, setLists] = useState(JSON.parse(localStorage.lists || '[]'))
-  const [files, setFiles] = useState(JSON.parse(localStorage.files || '[]'))
+  const [notes, setNotes] = useState([])
+  const [lists, setLists] = useState([])
+  const [files, setFiles] = useState([])
 
   const notesCollectionRef = useRef()
   const listsCollectionRef = useRef()
@@ -36,7 +36,6 @@ const Main = ({ user, onLogoutRef }) => {
         const notes = snapshot.docs.map(doc => ({ documentRef: doc.ref, id: doc.id, ...doc.data() }))
 
         setNotes(notes)
-        localStorage.setItem('notes', JSON.stringify(notes))
       }
     )
 
@@ -46,16 +45,12 @@ const Main = ({ user, onLogoutRef }) => {
         const lists = snapshot.docs.map(doc => ({ documentRef: doc.ref, id: doc.id, ...doc.data() }))
 
         setLists(lists)
-        localStorage.setItem('lists', JSON.stringify(lists))
       }
     )
 
     onLogoutRef.current = () => {
       unsubscribeNotes()
       unsubscribeLists()
-      localStorage.removeItem('notes')
-      localStorage.removeItem('lists')
-      localStorage.removeItem('files')
     }
   }, [])
 
@@ -68,7 +63,6 @@ const Main = ({ user, onLogoutRef }) => {
     })
 
     setFiles(files)
-    localStorage.setItem('files', JSON.stringify(files))
   }
 
   return (
