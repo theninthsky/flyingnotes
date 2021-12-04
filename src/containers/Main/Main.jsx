@@ -50,6 +50,8 @@ const Main = ({ user, onLogoutRef }) => {
       }
     )
 
+    getFiles()
+
     onLogoutRef.current = () => {
       unsubscribeNotes()
       unsubscribeLists()
