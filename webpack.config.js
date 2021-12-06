@@ -63,7 +63,7 @@ module.exports = (_, { mode }) => {
     },
     output: {
       path: path.join(__dirname, 'build'),
-      filename: '[name].[contenthash].js',
+      filename: 'js/[name].[contenthash].js',
       clean: true
     },
     optimization: {
@@ -96,7 +96,7 @@ module.exports = (_, { mode }) => {
         'MESSAGING_SENDER_ID',
         'APP_ID'
       ]),
-      new MiniCssExtractPlugin({ filename: '[name].[contenthash].css' }),
+      new MiniCssExtractPlugin({ filename: 'css/[name].[contenthash].css' }),
       new ESLintPlugin(),
       new HtmlPlugin({ template: 'public/index.html' }),
       new CopyPlugin({

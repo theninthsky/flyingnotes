@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { hydrate, render } from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
 import { getAuth, signOut } from 'firebase/auth'
 import { ErrorBoundary } from 'react-error-boundary'
@@ -11,12 +11,14 @@ import 'normalize.css'
 import 'styles/_globals.scss'
 
 const auth = getAuth(app)
-
-ReactDOM.render(
+const rootElement = document.getElementById('root')
+const jsx = (
   <BrowserRouter>
-    <ErrorBoundary fallback={<div>An error occured, please reload the app.</div>} onError={() => signOut(auth)}>
-      <App />
-    </ErrorBoundary>
-  </BrowserRouter>,
-  document.getElementById('root')
+  <ErrorBoundary fallback={<div>An error occured, please reload the app.</div>} onError={() => signOut(auth)}>
+    <App />
+  </ErrorBoundary>
+  </BrowserRouter>
 )
+
+if (rootElement.hasChildNodes()) hydrate(jsx, rootElement)
+else render(jsx, rootElement)
