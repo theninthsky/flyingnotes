@@ -104,7 +104,7 @@ export default {
           redirect: 'manual'
         })
       } catch (err) {
-        return new Response(err.toString())
+        return new Response(env.toString())
       }
 
       return res
