@@ -99,7 +99,10 @@ export default {
 
         headersToSend.set('X-Prerender-Token', process.env.PRERENDER_IO_API_KEY)
 
-        res = await fetch(`https://service.prerender.io/${request.url}`, { headers: headersToSend, redirect: 'manual' })
+        res = await env.ASSETS.fetch(`https://service.prerender.io/${request.url}`, {
+          headers: headersToSend,
+          redirect: 'manual'
+        })
       } catch (err) {
         return new Response(JSON.stringify(err))
       }
