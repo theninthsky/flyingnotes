@@ -97,7 +97,7 @@ export default {
       try {
         const headersToSend = new Headers(request.headers)
 
-        headersToSend.set('X-Prerender-Token', process.env.PRERENDER_IO_API_KEY)
+        headersToSend.set('X-Prerender-Token', env.PRERENDER_IO_API_KEY)
 
         res = await env.ASSETS.fetch(`https://service.prerender.io/${request.url}`, {
           headers: headersToSend,
