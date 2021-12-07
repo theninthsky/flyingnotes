@@ -94,18 +94,20 @@ const prerenderRequest = ({ url, headers }) => {
   return fetch(prerenderRequest)
 }
 
-export const onRequestGet = ({ request }) => {
-  const url = new URL(request.url)
-  const requestUserAgent = (request.headers.get('User-Agent') || '').toLowerCase()
+export default {
+  fetch(request, env) {
+    const url = new URL(request.url)
+    const requestUserAgent = (request.headers.get('User-Agent') || '').toLowerCase()
 
-  if (!BOT_AGENTS[requestUserAgent]) return
+    if (!BOT_AGENTS[requestUserAgent]) return env.ASSETS.fetch(request)
 
-  const host = request.headers.get('Host')
-  const xPrerender = request.headers.get('X-Prerender')
-  const pathName = url.pathname.toLowerCase()
-  const ext = pathName.substring(pathName.lastIndexOf('.') || pathName.length)
+    const host = request.headers.get('Host')
+    const xPrerender = request.headers.get('X-Prerender')
+    const pathName = url.pathname.toLowerCase()
+    const ext = pathName.substring(pathName.lastIndexOf('.') || pathName.length)
 
-  if (!xPrerender && host.includes('flyingnotes.pages.dev') && !IGNORE_EXTENSIONS[ext]) {
-    return prerenderRequest(request)
+    if (!xPrerender && host.includes('flyingnotes.pages.dev') && !IGNORE_EXTENSIONS[ext]) {
+      return prerenderRequest(request)
+    }
   }
 }
