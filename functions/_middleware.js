@@ -94,7 +94,7 @@ const prerenderRequest = ({ url, headers }) => {
   return fetch(prerenderRequest)
 }
 
-export const onRequest = ({ request }) => {
+export const onRequestGet = ({ request }) => {
   const url = new URL(request.url)
   const requestUserAgent = (request.headers.get('User-Agent') || '').toLowerCase()
 
