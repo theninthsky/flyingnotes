@@ -85,8 +85,6 @@ const prerenderRequest = ({ url, headers }) => {
 
   headersToSend.set('X-Prerender-Token', process.env.PRERENDER_IO_API_KEY)
 
-  return new Response('lol')
-
   return fetch(new Request(`https://service.prerender.io/${url}`, { headers: headersToSend, redirect: 'manual' }))
 }
 
@@ -102,6 +100,7 @@ export default {
     const ext = pathName.slice(pathName.lastIndexOf('.') || pathName.length)
 
     if (!xPrerender && !IGNORE_EXTENSIONS[ext]) {
+      return new Response('lol')
       return await prerenderRequest(request)
     } else {
       return env.ASSETS.fetch(request)
