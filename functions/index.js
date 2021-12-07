@@ -1,9 +1,3 @@
-const API_KEY = ''
-
-const PRERENDERED_DOMAINS = {
-  'flyingnotes.pages.dev': true
-}
-
 const BOT_AGENTS = {
   googlebot: true,
   'yahoo! slurp': true,
@@ -86,28 +80,11 @@ const IGNORE_EXTENSIONS = {
   '.webmanifest': true
 }
 
-addEventListener('fetch', event => {
-  const { request } = event
-  const url = new URL(request.url)
-  const requestUserAgent = (request.headers.get('User-Agent') || '').toLowerCase()
-
-  if (!BOT_AGENTS[requestUserAgent]) return
-
-  const { hostname } = event
-  const xPrerender = request.headers.get('X-Prerender')
-  const pathName = url.pathname.toLowerCase()
-  const ext = pathName.substring(pathName.lastIndexOf('.') || pathName.length)
-
-  if (!xPrerender && PRERENDERED_DOMAINS[hostname] && !IGNORE_EXTENSIONS[ext]) {
-    event.respondWith(prerenderRequest(request))
-  }
-})
-
 const prerenderRequest = ({ url, headers }) => {
   const prerenderUrl = `https://service.prerender.io/${url}`
   const headersToSend = new Headers(headers)
 
-  headersToSend.set('X-Prerender-Token', API_KEY)
+  headersToSend.set('X-Prerender-Token', process.env.PRERENDER_IO_API_KEY)
 
   const prerenderRequest = new Request(prerenderUrl, {
     headers: headersToSend,
@@ -115,4 +92,20 @@ const prerenderRequest = ({ url, headers }) => {
   })
 
   return fetch(prerenderRequest)
+}
+
+export const onRequest = ({ request }) => {
+  const url = new URL(request.url)
+  const requestUserAgent = (request.headers.get('User-Agent') || '').toLowerCase()
+
+  if (!BOT_AGENTS[requestUserAgent]) return
+
+  const host = request.headers.get('Host')
+  const xPrerender = request.headers.get('X-Prerender')
+  const pathName = url.pathname.toLowerCase()
+  const ext = pathName.substring(pathName.lastIndexOf('.') || pathName.length)
+
+  if (!xPrerender && host.includes('flyingnotes.pages.dev') && !IGNORE_EXTENSIONS[ext]) {
+    return prerenderRequest(request)
+  }
 }
