@@ -95,19 +95,21 @@ const prerenderRequest = ({ url, headers }) => {
 }
 
 export default {
-  fetch(request, env) {
+  async fetch(request, env) {
     const url = new URL(request.url)
     const requestUserAgent = (request.headers.get('User-Agent') || '').toLowerCase()
 
     if (!BOT_AGENTS[requestUserAgent]) return env.ASSETS.fetch(request)
 
-    const host = request.headers.get('Host')
+    const host = request.headers.get('Host') || ''
     const xPrerender = request.headers.get('X-Prerender')
     const pathName = url.pathname.toLowerCase()
     const ext = pathName.substring(pathName.lastIndexOf('.') || pathName.length)
 
     if (!xPrerender && host.includes('flyingnotes.pages.dev') && !IGNORE_EXTENSIONS[ext]) {
       return prerenderRequest(request)
+    } else {
+      return env.ASSETS.fetch(request)
     }
   }
 }
