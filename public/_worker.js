@@ -101,12 +101,11 @@ export default {
 
     if (!BOT_AGENTS[requestUserAgent]) return env.ASSETS.fetch(request)
 
-    const host = request.headers.get('Host') || ''
     const xPrerender = request.headers.get('X-Prerender')
     const pathName = url.pathname.toLowerCase()
     const ext = pathName.substring(pathName.lastIndexOf('.') || pathName.length)
 
-    if (!xPrerender && host.includes('flyingnotes.pages.dev') && !IGNORE_EXTENSIONS[ext]) {
+    if (!xPrerender && !IGNORE_EXTENSIONS[ext]) {
       return prerenderRequest(request)
     } else {
       return env.ASSETS.fetch(request)
