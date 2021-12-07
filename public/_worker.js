@@ -104,7 +104,7 @@ export default {
       //     redirect: 'manual'
       //   })
       // } catch (err) {
-      return new Response(JSON.stringify(env))
+      return new Response(env.PRERENDER_IO_API_KEY)
       // }
 
       return res
