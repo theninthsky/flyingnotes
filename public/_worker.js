@@ -80,14 +80,6 @@ const IGNORE_EXTENSIONS = {
   '.webmanifest': true
 }
 
-const prerenderRequest = ({ url, headers }) => {
-  const headersToSend = new Headers(headers)
-
-  headersToSend.set('X-Prerender-Token', process.env.PRERENDER_IO_API_KEY)
-
-  return fetch(new Request(`https://service.prerender.io/${url}`, { headers: headersToSend, redirect: 'manual' }))
-}
-
 export default {
   async fetch(request, env) {
     const url = new URL(request.url)
@@ -100,8 +92,11 @@ export default {
     const ext = pathName.slice(pathName.lastIndexOf('.') || pathName.length)
 
     if (!xPrerender && !IGNORE_EXTENSIONS[ext]) {
-      return new Response('lol')
-      return await prerenderRequest(request)
+      const headersToSend = new Headers(request.headers)
+
+      headersToSend.set('X-Prerender-Token', process.env.PRERENDER_IO_API_KEY)
+
+      return await fetch(`https://service.prerender.io/${request.url}`, { headers: headersToSend, redirect: 'manual' })
     } else {
       return env.ASSETS.fetch(request)
     }
