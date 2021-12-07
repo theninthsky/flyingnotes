@@ -82,11 +82,11 @@ const IGNORE_EXTENSIONS = {
 
 const prerenderRequest = async ({ url, headers }) => {
   const prerenderUrl = `https://service.prerender.io/${url}`
-  const headers = new Headers(headers)
+  const headersToSend = new Headers(headers)
 
-  headers.set('X-Prerender-Token', process.env.PRERENDER_IO_API_KEY)
+  headersToSend.set('X-Prerender-Token', process.env.PRERENDER_IO_API_KEY)
 
-  return await fetch(new Request(prerenderUrl, { headers, redirect: 'manual' }))
+  return await fetch(new Request(prerenderUrl, { headers: headersToSend, redirect: 'manual' }))
 }
 
 export default {
