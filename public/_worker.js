@@ -86,10 +86,12 @@ const prerenderRequest = ({ url, headers }) => {
 
   headersToSend.set('X-Prerender-Token', process.env.PRERENDER_IO_API_KEY)
 
-  return new Request(prerenderUrl, {
-    headers: headersToSend,
-    redirect: 'manual'
-  })
+  return fetch(
+    new Request(prerenderUrl, {
+      headers: headersToSend,
+      redirect: 'manual'
+    })
+  )
 }
 
 export default {
