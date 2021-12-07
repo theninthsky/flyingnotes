@@ -92,22 +92,14 @@ export default {
     const ext = pathName.slice(pathName.lastIndexOf('.') || pathName.length)
 
     if (!xPrerender && !IGNORE_EXTENSIONS[ext]) {
-      let res
+      const headersToSend = new Headers(request.headers)
 
-      // try {
-      //   const headersToSend = new Headers(request.headers)
+      headersToSend.set('X-Prerender-Token', env.PRERENDER_IO_API_KEY)
 
-      //   headersToSend.set('X-Prerender-Token', env.PRERENDER_IO_API_KEY)
-
-      //   res = await env.ASSETS.fetch(`https://service.prerender.io/${request.url}`, {
-      //     headers: headersToSend,
-      //     redirect: 'manual'
-      //   })
-      // } catch (err) {
-      return new Response(env.PRERENDER_IO_API_KEY)
-      // }
-
-      return res
+      return await env.ASSETS.fetch(`https://service.prerender.io/${request.url}`, {
+        headers: headersToSend,
+        redirect: 'manual'
+      })
     } else return env.ASSETS.fetch(request)
   }
 }
