@@ -8,7 +8,6 @@ const CopyPlugin = require('copy-webpack-plugin')
 const WorkboxPlugin = require('workbox-webpack-plugin')
 
 module.exports = (_, { mode }) => {
-  const development = mode === 'development'
   const production = mode === 'production'
 
   return {
@@ -18,7 +17,7 @@ module.exports = (_, { mode }) => {
       open: true,
       devMiddleware: { stats: 'errors-warnings' }
     },
-    devtool: development ? 'source-map' : undefined,
+    devtool: production ? undefined : 'source-map',
     resolve: {
       modules: [path.resolve(__dirname, 'src'), 'node_modules'],
       extensions: ['*', '.js', '.jsx']
@@ -37,7 +36,7 @@ module.exports = (_, { mode }) => {
             {
               loader: 'css-loader',
               options: {
-                modules: { localIdentName: '[name]_[local]-[hash:base64:5]' },
+                modules: { localIdentName: production ? '[hash:base64:5]' : '[name]_[local]-[hash:base64:5]' },
                 importLoaders: 2
               }
             },
