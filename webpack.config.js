@@ -36,7 +36,7 @@ module.exports = (_, { mode }) => {
             {
               loader: 'css-loader',
               options: {
-                modules: { localIdentName: production ? '[hash:base64:5]' : '[name]_[local]-[hash:base64:5]' },
+                modules: { localIdentName: production ? '[hash:base64:6]' : '[name]_[local]-[hash:base64:5]' },
                 importLoaders: 2
               }
             },
