@@ -5,7 +5,6 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const ESLintPlugin = require('eslint-webpack-plugin')
 const HtmlPlugin = require('html-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
-const WorkboxPlugin = require('workbox-webpack-plugin')
 
 module.exports = (_, { mode }) => {
   const production = mode === 'production'
@@ -105,8 +104,7 @@ module.exports = (_, { mode }) => {
             globOptions: { ignore: ['**/index.html'] }
           }
         ]
-      }),
-      ...(production ? [new WorkboxPlugin.InjectManifest({ swSrc: './public/stale-while-revalidate-sw.js' })] : [])
+      })
     ]
   }
 }

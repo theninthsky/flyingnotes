@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect, memo } from 'react'
 import { addDoc, updateDoc, deleteDoc } from 'firebase/firestore'
-import { LazyRender, useViewport } from 'frontend-essentials'
+import { LazyRender, useMedia } from 'frontend-essentials'
 
 import Filters from 'components/Filters'
 import Note, { TYPE_NOTE } from 'components/Note'
@@ -10,7 +10,7 @@ import style from './Notes.scss'
 const Notes = ({ collectionRef, notes }) => {
   const [filteredNotes, setFilteredNotes] = useState(notes)
 
-  const { viewport12 } = useViewport({ viewport12: '(min-width: 1200px)' })
+  const { viewport12 } = useMedia({ viewport12: '(min-width: 1200px)' })
 
   useEffect(() => {
     setFilteredNotes(notes)

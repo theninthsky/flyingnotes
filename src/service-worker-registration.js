@@ -1,25 +1,11 @@
-const standalone = window.matchMedia('(display-mode: standalone)').matches
+/* eslint-disable no-console */
 
 const register = () => {
   window.addEventListener('load', () => {
     navigator.serviceWorker
-      .register(standalone ? 'stale-while-revalidate-sw.js' : 'network-first-sw.js')
-      .then(registration => {
-        console.log('Service worker registered!')
-
-        registration.onupdatefound = () => {
-          const installingWorker = registration.installing
-
-          if (!installingWorker) return
-
-          installingWorker.onstatechange = () => {
-            if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-              window.dispatchEvent(new CustomEvent('serviceworkerupdate', { detail: registration }))
-            }
-          }
-        }
-      })
-      .catch(error => console.log(`Service worker registration failed: ${error}`))
+      .register('service-worker.js')
+      .then(() => console.log('Service worker registered!'))
+      .catch(err => console.error(err))
   })
 }
 
@@ -27,9 +13,10 @@ const unregister = () => {
   navigator.serviceWorker.ready
     .then(registration => registration.unregister())
     .then(() => console.log('Service worker unregistered!'))
-    .catch(error => console.error(error.message))
+    .catch(err => console.error(err.message))
 }
 
 if ('serviceWorker' in navigator) {
-  process.env.NODE_ENV === 'development' ? unregister() : register()
+  if (process.env.NODE_ENV === 'development') unregister()
+  else register()
 }

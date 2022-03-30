@@ -2,7 +2,6 @@ https://flyingnotes.pages.dev/*
     Strict-Transport-Security: max-age=31536000
     X-Frame-Options: DENY
     X-Content-Type-Options: nosniff
-    Content-Security-Policy: default-src 'self' *.firebaseapp.com *.google.com *.googleapis.com unpkg.com
     X-XSS-Protection: 1; mode=block
 
 /*.js

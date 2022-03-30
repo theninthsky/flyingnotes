@@ -1,13 +1,13 @@
 import { memo } from 'react'
 import { addDoc, updateDoc, deleteDoc } from 'firebase/firestore'
-import { LazyRender, useViewport } from 'frontend-essentials'
+import { LazyRender, useMedia } from 'frontend-essentials'
 
 import Note, { TYPE_LIST } from 'components/Note'
 
 import style from './Lists.scss'
 
 const Lists = ({ collectionRef, lists }) => {
-  const { viewport12 } = useViewport({ viewport12: '(min-width: 1200px)' })
+  const { viewport12 } = useMedia({ viewport12: '(min-width: 1200px)' })
 
   const onCreateList = (list, reset) => {
     addDoc(collectionRef, list)
