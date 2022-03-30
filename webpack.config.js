@@ -68,7 +68,6 @@ module.exports = (_, { mode }) => {
       runtimeChunk: 'single',
       splitChunks: {
         chunks: 'all',
-        minSize: 10000,
         cacheGroups: {
           vendor: {
             test: /[\\/]node_modules[\\/]/,
