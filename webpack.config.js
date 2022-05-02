@@ -16,6 +16,7 @@ module.exports = (_, { mode }) => {
       open: true,
       devMiddleware: { stats: 'errors-warnings' }
     },
+    cache: { type: 'filesystem' },
     devtool: production ? undefined : 'source-map',
     resolve: {
       modules: [path.resolve(__dirname, 'src'), 'node_modules'],
