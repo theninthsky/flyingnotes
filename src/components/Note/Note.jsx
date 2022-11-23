@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react'
 import { bool, string, func, shape, arrayOf, oneOf } from 'prop-types'
 import useClickOutside from 'use-click-outside'
 import TextareaAutosize from 'react-textarea-autosize'
-import { If } from 'frontend-essentials'
 import isEqual from 'lodash/isEqual'
 import pickBy from 'lodash/pickBy'
 import cx from 'clsx'
@@ -102,7 +101,7 @@ const Note = ({
       }}
       onSubmit={onSave}
     >
-      <If condition={!empty}>
+      {!empty && (
         <PinIcon
           className={cx(style.pinIcon, { [style.pinned]: pinned })}
           onClick={event => {
@@ -110,9 +109,9 @@ const Note = ({
             onUpdate({ pinned: !pinned })
           }}
         />
-      </If>
+      )}
 
-      <If condition={variant === TYPE_NOTE && (empty || category || editMode)}>
+      {variant === TYPE_NOTE && (empty || category || editMode) && (
         <input
           className={style.category}
           value={category}
@@ -121,9 +120,9 @@ const Note = ({
           aria-label="category"
           onChange={event => setCategory(event.target.value.toUpperCase().slice(0, 24))}
         />
-      </If>
+      )}
 
-      <If condition={empty || title || editMode}>
+      {(empty || title || editMode) && (
         <TextareaAutosize
           className={style.title}
           value={title}
@@ -135,7 +134,7 @@ const Note = ({
           }}
           onChange={event => setTitle(event.target.value)}
         />
-      </If>
+      )}
 
       <Content
         variant={variant}
@@ -148,19 +147,15 @@ const Note = ({
         onCheckItem={items => onUpdate({ items })}
       />
 
-      <If condition={optionsVisible}>
-        <Options setConfirmMessage={setConfirmMessageVisible} onDelete={onDelete} />
-      </If>
+      {optionsVisible && <Options setConfirmMessage={setConfirmMessageVisible} onDelete={onDelete} />}
 
       {confirmMessageVisible ? (
         <div className={style.confirmMessage}>{DELETE_MESSAGE}</div>
       ) : changed || empty ? (
         <input className={style.save} type="submit" value={SAVE} aria-label="save" />
-      ) : (
-        <If condition={!empty}>
-          <div className={style.date}>{new Date(date).toLocaleString('en-GB').replace(',', '').slice(0, -3)}</div>
-        </If>
-      )}
+      ) : !empty ? (
+        <div className={style.date}>{new Date(date).toLocaleString('en-GB').replace(',', '').slice(0, -3)}</div>
+      ) : null}
     </form>
   )
 }

@@ -1,6 +1,5 @@
 import { useState, cloneElement } from 'react'
 import { NavLink } from 'react-router-dom'
-import { If } from 'frontend-essentials'
 import cx from 'clsx'
 
 import style from './NavigationBar.scss'
@@ -29,7 +28,7 @@ const NavigationBar = ({ children }) => {
           </NavLink>
         </div>
 
-        <If condition={tooltipOpen}>{cloneElement(children, { onClose: () => setTooltipOpen(false) })}</If>
+        {tooltipOpen && cloneElement(children, { onClose: () => setTooltipOpen(false) })}
 
         <div className={cx('d-flex', 'align-items-center')}>
           <button className={style.user} onClick={() => setTooltipOpen(true)}>

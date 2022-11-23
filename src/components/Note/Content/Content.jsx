@@ -1,7 +1,6 @@
 import { useState, useRef } from 'react'
 import useClickOutside from 'use-click-outside'
 import TextareaAutosize from 'react-textarea-autosize'
-import { If } from 'frontend-essentials'
 import cx from 'clsx'
 
 import style from './Content.scss'
@@ -68,7 +67,7 @@ const Content = ({ variant, empty, content, items, keepExpanded, setContent, set
 
   return (
     <div className={style.wrapper} ref={contentRef} onClick={() => setExpanded(true)}>
-      <If condition={expandable}>
+      {expandable && (
         <div
           className={style.cover}
           onClick={event => {
@@ -76,7 +75,7 @@ const Content = ({ variant, empty, content, items, keepExpanded, setContent, set
             setExpanded(true)
           }}
         ></div>
-      </If>
+      )}
 
       {variant === LIST ? (
         <div
@@ -94,13 +93,12 @@ const Content = ({ variant, empty, content, items, keepExpanded, setContent, set
             .sort((a, b) => a.checked - b.checked)
             .map(({ value, checked }, ind) => (
               <div className="d-flex" key={ind}>
-                <If condition={!empty}>
-                  {checked ? (
+                {!empty &&
+                  (checked ? (
                     <CheckedIcon className={style.checkIcon} onClick={event => checkItem(event, ind)} />
                   ) : (
                     <UncheckedIcon className={style.checkIcon} onClick={event => checkItem(event, ind)} />
-                  )}
-                </If>
+                  ))}
 
                 <input
                   className={cx(style.item, { [style.disabled]: checked })}

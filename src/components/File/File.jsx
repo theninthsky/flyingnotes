@@ -1,7 +1,6 @@
 import { useState, useRef } from 'react'
 import { bool, string, func } from 'prop-types'
 import useClickOutside from 'use-click-outside'
-import { If } from 'frontend-essentials'
 import cx from 'clsx'
 
 import style from './File.scss'
@@ -94,8 +93,8 @@ const File = ({ newFile, name: fileName, extension: fileExtension = '', onUpload
           </div>
         )}
 
-        <If condition={newFile}>
-          {selectedFile ? (
+        {newFile ? (
+          selectedFile ? (
             <input className={style.upload} type="submit" value="UPLOAD" />
           ) : (
             <>
@@ -104,15 +103,13 @@ const File = ({ newFile, name: fileName, extension: fileExtension = '', onUpload
               </label>
               <input className="d-none" id="file-input" type="file" onChange={loadFile} />
             </>
-          )}
-        </If>
-
-        <If condition={!newFile}>
+          )
+        ) : (
           <DownloadIcon
             className={cx(style.downloadIcon, { [style.downloading]: downloading })}
             onClick={downloadFile}
           />
-        </If>
+        )}
       </div>
     </form>
   )
